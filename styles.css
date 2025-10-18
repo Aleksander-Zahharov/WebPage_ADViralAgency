@@ -1,0 +1,865 @@
+/* =========================
+   Base, theme, typography
+========================= */
+:root {
+  /* Font families: change these to switch fonts globally */
+  --primary-font-family: "Comfortaa";
+  --secondary-font-family: Arial, sans-serif;
+
+  /* Computed stacks used across the site */
+  --primary-font: var(--primary-font-family), sans-serif;
+  --secondary-font: var(--secondary-font-family);
+  /* Path to primary font file (used in @font-face) */
+  --primary-font-url: url("./assets/fonts/ofont.ru_Comfortaa (2).ttf");
+
+  --bg-page: #121214; /* solid dark gray site background */
+  --bg-1: #0a0a0b;
+  --bg-2: #17171a;
+  --text: #ffffff;
+  --muted: #c9c9d1;
+
+  --primary-1: #6a11cb; /* purple */
+  --primary-2: #b086f9; /* lavender */
+
+  --card: rgba(255,255,255,0.06);
+  --card-border: rgba(255,255,255,0.12);
+  /* Opaque equivalent of --card-border for solid text fills */
+  --card-border-solid: #1f1f1f;
+  --radius-sm: 10px;
+
+  --container: 1160px;
+  --gap: 24px;
+  --z-hero: 1;
+  --z-overlay: 2;
+  --z-header: 10;
+  --z-arrows: 5;
+  --header-h: 72px;
+}
+
+@font-face {
+  font-family: var(--primary-font-family, "Comfortaa");
+  src: var(--primary-font-url) format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  /* Use a uniform dark gray background instead of gradient */
+  background: var(--bg-page);
+}
+
+body {
+  margin: 0;
+  color: var(--text);
+  font: 400 16px/1.55 var(--secondary-font);
+  overflow-x: hidden;
+  /* Soften vertical scroll snapping by disabling it by default */
+  scroll-snap-type: none;
+}
+
+/* Enable gentler snap on large screens only */
+@media (min-width: 1200px) {
+  body { scroll-snap-type: y proximity; }
+  .section { scroll-snap-align: start; }
+  /* Ensure navigating to Services stops there, not on previous section */
+  #services { scroll-snap-stop: always; }
+}
+
+a { color: inherit; text-decoration: none; }
+
+img, video { max-width: 100%; display: block; }
+
+.container {
+  width: 100%;
+  max-width: calc(var(--container) + 2 * var(--gap));
+  margin: 0 auto;
+  padding: 0 var(--gap);
+}
+
+h1, h2, h3 {
+  font-family: var(--primary-font);
+  letter-spacing: 0.03em;
+  margin: 0 0 12px;
+  line-height: 1.1;
+}
+
+h1 { font-size: clamp(38px, 6vw, 72px); }
+h2 { font-size: clamp(28px, 4vw, 44px); }
+h3 { font-size: clamp(18px, 2.2vw, 22px); }
+
+p { color: var(--muted); margin: 0 0 12px; }
+
+/* Buttons */
+/* === Buttons reset: rebuild to remove left white artifact === */
+.btn {
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  line-height: 1;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  border: 0; /* remove transparent border halo */
+  outline: none;
+  background: none; /* set per-variant */
+  overflow: hidden; /* clip any subpixel bleed */
+  transition: transform .2s ease, box-shadow .3s ease, opacity .2s ease, background-color .2s ease;
+  -webkit-tap-highlight-color: transparent;
+  backface-visibility: hidden;
+  transform: translateZ(0); /* avoid AA seams */
+  -webkit-font-smoothing: antialiased;
+  background-clip: padding-box;
+}
+
+.btn-primary {
+  color: #fff;
+  background: linear-gradient(135deg, var(--primary-1), var(--primary-2));
+  box-shadow: 0 8px 24px rgba(138, 88, 255, .35);
+  transition: background 0.2s;
+}
+.btn-primary:hover {
+  /* Убираем зеркалирование цветов, делаем фон чуть светлее */
+  background: linear-gradient(135deg, #7a21db, #c096f9);
+}
+.btn-primary:focus-visible {
+  box-shadow: 0 0 0 3px rgba(138,88,255,.32), 0 8px 24px rgba(138, 88, 255, .35);
+}
+
+/* Make ghost not fully transparent to avoid halo over blurred header */
+.btn-ghost {
+  color: #fff;
+  background-color: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.18);
+  backdrop-filter: blur(4px);
+}
+.btn-ghost:hover { background-color: rgba(255,255,255,.10); border-color: rgba(255,255,255,.28); }
+.btn-ghost:focus-visible { box-shadow: 0 0 0 3px rgba(138,88,255,.25); }
+
+/* Ensure header items take button height without extra artifacts */
+.header-nav a.btn { height: 44px; padding: 0 18px; }
+
+/* =========================
+   Header
+========================= */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  background: rgba(10,10,11,.55);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  font-family: var(--primary-font); /* Apply primary font to the header */
+}
+.header-inner {
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.logo {
+  font-family: var(--primary-font); /* Use primary font variable for the logo */
+  font-size: 1.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  height: 100%; /* Ensure it aligns with other header elements */
+  margin-top: -2px; /* Adjust to visually align */
+}
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+/* Make nav links visually aligned with the button text */
+.header-nav a {
+  display: inline-flex;
+  align-items: center;
+  height: 44px; /* same as .btn */
+  margin: 0 5px; /* Add spacing between buttons */
+}
+.header-nav a, .header-nav .btn { line-height: 1; }
+.header-nav a { align-items: center; }
+.header-nav a { opacity: .9; }
+.header-nav a:hover { opacity: 1; }
+/* Style for active header link */
+.header-nav a.active {
+  transform: scale(1.15) translateY(-2px); /* Slightly smaller scaling and lift */
+  transform-origin: center; /* Ensure scaling happens from the center */
+  color: white; /* Always white when active */
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+/* Glassy primary style for the header Contacts button */
+.header-nav a[href="#contact"].btn,
+.header-nav a[href="#contact"].btn-primary {
+  color: #fff;
+  background: linear-gradient(135deg, rgba(107, 17, 203, 0.721), rgba(176, 134, 249, 0.523));
+  border: 1px solid rgba(255,255,255,.18);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 8px 24px rgba(138, 88, 255, .28);
+}
+.header-nav a[href="#contact"].btn:hover,
+.header-nav a[href="#contact"].btn-primary:hover {
+  background: linear-gradient(135deg, rgba(123, 33, 219, 0.762), rgba(191, 150, 249, 0.507));
+  border-color: rgba(255,255,255,.28);
+}
+.header-nav a[href="#contact"].btn:focus-visible,
+.header-nav a[href="#contact"].btn-primary:focus-visible {
+  box-shadow: 0 0 0 3px rgba(138,88,255,.25), 0 8px 24px rgba(138, 88, 255, .28);
+}
+
+/* Anchor offset for sticky header */
+section { scroll-margin-top: calc(var(--header-h) + 12px); }
+
+
+/* =========================
+   Hero
+========================= */
+.hero {
+  position: relative;
+  min-height: calc(100vh - var(--header-h));
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  scroll-snap-align: start;
+}
+.hero-media {
+  position: absolute; inset: 0;
+  background: center / cover no-repeat;
+  background-image: url("https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=2070&auto=format&fit=crop");
+  filter: saturate(0.8) contrast(1.05) brightness(.6);
+  z-index: 0;
+  transform: scale(1.03);
+}
+.hero-overlay { /* Круглый фиолетовый градиент на банере */
+  position: absolute; inset: 0;
+  background: radial-gradient(900px 600px at 15% 20%, var(--primary-2), transparent 70%), linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.5));
+  z-index: 1;
+}
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 72px 0;
+}
+.hero-content h1 {
+  position: relative;
+  display: inline-block; /* spotlight area equals text glyphs */
+  color: transparent; /* we will fill text with background */
+  line-height: 1.28; /* add inner height above/below glyphs without margin/padding */
+  background-image:
+    radial-gradient(
+      100rem 100rem at var(--x, 50%) var(--y, 50%),
+      rgb(255 255 255 / calc(var(--spot-o, 0) * 0.60)) 0%,
+      rgb(255 255 255 / calc(var(--spot-o, 0) * 0.60)) 28%,
+      rgb(255 255 255 / calc(var(--spot-o, 0) * 0.28)) 41%,
+      rgb(255 255 255 / 0) 54%,
+      rgb(255 255 255 / 0) 100%
+    ),
+    linear-gradient(var(--muted), var(--muted)); /* base muted text */
+  -webkit-background-clip: text;
+  background-clip: text;
+  transition: background-image .2s ease;
+}
+.hero .cta-row {
+  margin-top: 22px;
+  display: inline-flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.hero .btn-primary {
+  /* Keep primary purple but make it glassy like the ghost button */
+  background: linear-gradient(135deg, rgba(107, 17, 203, 0.721), rgba(176, 134, 249, 0.523));
+  border: 1px solid rgba(255,255,255,.18);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 8px 24px rgba(138, 88, 255, .28);
+}
+.hero .btn-primary:hover {
+  background: linear-gradient(135deg, rgba(123, 33, 219, 0.762), rgba(191, 150, 249, 0.507));
+  border-color: rgba(255,255,255,.28);
+}
+.hero .btn-primary:focus-visible {
+  box-shadow: 0 0 0 3px rgba(138,88,255,.25), 0 8px 24px rgba(138, 88, 255, .28);
+}
+
+/* Contact form submit: glassy primary, like hero */
+.contact-form .btn.full.btn-primary,
+.contact-form .btn-primary.full {
+  color: #fff;
+  background: linear-gradient(135deg, rgba(107, 17, 203, 0.721), rgba(176, 134, 249, 0.523));
+  border: 1px solid rgba(255,255,255,.18);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 8px 24px rgba(138, 88, 255, .28);
+}
+.contact-form .btn.full.btn-primary:hover,
+.contact-form .btn-primary.full:hover {
+  background: linear-gradient(135deg, rgba(123, 33, 219, 0.762), rgba(191, 150, 249, 0.507));
+  border-color: rgba(255,255,255,.28);
+}
+.contact-form .btn.full.btn-primary:focus-visible,
+.contact-form .btn-primary.full:focus-visible {
+  box-shadow: 0 0 0 3px rgba(138,88,255,.25), 0 8px 24px rgba(138, 88, 255, .28);
+}
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  filter: saturate(0.9) contrast(1.05) brightness(.7);
+}
+
+/* =========================
+   Generic sections
+========================= */
+.section {
+  position: relative;
+  padding: clamp(64px, 8vw, 120px) 0;
+  /* default: no snap; enabled for large screens above */
+  scroll-snap-align: none;
+  overflow-x: visible;
+}
+
+/* Reveal on scroll */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.reveal-left { transform: translateX(-30px); }
+.reveal.reveal-right { transform: translateX(30px); }
+/* Accept common class names script might add */
+.reveal.in-view,
+.reveal.visible,
+.reveal.show,
+.reveal.active { opacity: 1; transform: none; }
+
+/* Two-column */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: clamp(20px, 4vw, 48px);
+  align-items: center;
+}
+@media (max-width: 900px) {
+  .grid-2 { grid-template-columns: 1fr; }
+}
+
+.media {
+  border-radius: var(--radius);
+  overflow: hidden;
+  position: relative;
+  isolation: isolate;
+}
+.media::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,.25));
+  pointer-events: none;
+}
+.media img {
+  width: 100%; height: auto; display: block;
+  transform: scale(1);
+  transition: transform 1s cubic-bezier(.2,.6,.2,1);
+}
+.media:hover img { transform: scale(1.05); }
+
+.content .bullets { padding: 0; margin: 18px 0 0; list-style: none; }
+.content .bullets li {
+  padding-left: 28px; position: relative; margin: 10px 0; color: var(--muted);
+}
+.content .bullets li::before {
+  content: "•"; position: absolute; left: 8px; color: var(--primary-2);
+}
+
+/* Service cards */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 16px;
+}
+@media (max-width: 900px) {
+  .cards { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (max-width: 600px) {
+  .cards { grid-template-columns: 1fr; }
+}
+.card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 20px;
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  position: relative;
+  overflow: hidden; /* Ensure spotlight stays within the card */
+}
+.card:hover {
+  transform: scale(1.05); /* Slight zoom effect */
+  box-shadow: none; /* Remove shadow effect */
+  border-color: rgba(255, 255, 255, 0.2); /* Keep border color consistent */
+}
+.card-icon { font-size: 22px; opacity: .9; }
+
+/* Ensure spotlight effect does not affect text by isolating layers */
+.card {
+  position: relative;
+  z-index: 0; /* Base layer for the card */
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(138, 88, 255, 0.5); /* Spotlight color */
+  mask: radial-gradient(25rem 25rem at var(--x) var(--y), #000 1%, transparent 50%);
+  -webkit-mask: radial-gradient(25rem 25rem at var(--x) var(--y), #000 1%, transparent 50%);
+  opacity: var(--opacity);
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: -1; /* Ensure spotlight stays below everything */
+}
+
+.card * {
+  position: relative;
+  z-index: 1; /* Ensure all content stays above the spotlight */
+}
+
+/* =========================
+   Works: Instagram-like strip
+========================= */
+.ig-slider {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  max-width: calc(240px * 5 + 64px); /* Allow a slightly wider viewport */
+  margin: 0 auto; /* Center the slider */
+}
+
+.ig-slider::before,
+.ig-slider::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50px; /* Fade effect width */
+  z-index: 3;
+  pointer-events: none;
+}
+
+.ig-slider::before {
+  left: 0; /* Align fade with left arrow */
+  background: linear-gradient(90deg, var(--bg-page), rgba(18, 18, 20, 0));
+}
+
+.ig-slider::after {
+  right: 0; /* Align fade with right arrow */
+  background: linear-gradient(-90deg, var(--bg-page), rgba(18, 18, 20, 0));
+}
+
+/* Move arrows outside the inner container */
+#works > div {
+  position: relative;
+}
+
+.ig-arrow {
+  position: absolute;
+  top: 50%; /* Center vertically */
+  transform: translateY(-50%) translateY(40px); /* Adjust slightly downward */
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(20,20,22,.6);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: border-color .2s ease, color .2s ease;
+  z-index: 4; /* Ensure arrows are above fades */
+  font-size: 2em; /* Double the size of the arrow icons */
+}
+
+.ig-arrow:hover {
+  border-color: #fff; /* Make border white */
+  color: #fff; /* Make arrow white */
+}
+
+.ig-arrow:active {
+  background: linear-gradient(135deg, var(--primary-1), var(--primary-2)); /* Primary purple gradient */
+  border-color: var(--primary-1);
+  color: #fff;
+}
+
+.ig-arrow.prev {
+  left: -80px; /* Position left arrow outside the inner container */
+}
+
+.ig-arrow.next {
+  right: -80px; /* Position right arrow outside the inner container */
+}
+
+/* Adjust the video container to allow horizontal scrolling */
+.ig-strip {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto; /* Enable horizontal scrolling */
+  overflow-y: hidden;
+  padding: 6px 4px 10px;
+  scroll-snap-type: x mandatory; /* Ensure snapping behavior */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on touch devices */
+  scrollbar-width: none; /* Hide native scrollbar */
+  max-width: 100%; /* Allow the strip to take full width */
+  margin: 0 auto; /* Center the strip */
+}
+.ig-strip::-webkit-scrollbar { display: none; }
+
+.ig-item {
+  position: relative;
+  flex: 0 0 auto;
+  width: clamp(180px, 22vw, 240px);
+  aspect-ratio: 9 / 16;
+  border-radius: 16px;
+  overflow: hidden;
+  scroll-snap-align: center; /* Ensure items snap to center */
+  background: #111;
+  border: 1px solid rgba(255,255,255,.08);
+  transition: transform .2s ease, border-color .2s ease;
+}
+.ig-item:hover {
+  transform: translateY(-6px); /* Increase the lift effect on hover */
+  border-color: rgba(255,255,255,.18);
+  box-shadow: 16px 16px 48px rgb(0, 0, 0), 8px 8px 30px rgb(0, 0, 0); /* Longer black glow effect */
+}
+.ig-item video {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.ig-item .play {
+  position: absolute;
+  bottom: 8px; right: 10px;
+  font-size: 14px;
+  background: rgba(0,0,0,.45);
+  padding: 4px 6px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.15);
+  line-height: 1;
+}
+
+/* Increase video title font size */
+.ig-item .video-title {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  font-size: 16px; /* Further increase the font size */
+  color: white;
+  background: rgba(0, 0, 0, 0.5); /* Fade background */
+  padding: 2px 6px;
+  border-radius: 16px; /* Match the video card border radius */
+  pointer-events: none;
+  opacity: 0.8;
+  z-index: 1; /* Ensure it stays above the video */
+}
+
+/* Disable snap when programmatic scrolling active */
+.ig-strip.no-snap { scroll-snap-type: none; }
+
+/* =========================
+   Partners: marquee
+========================= */
+.marquee {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.04);
+  padding: 14px 0;
+  margin-top: 16px;
+}
+
+.track {
+  display: grid;
+  grid-template-rows: repeat(2, auto); /* Two rows */
+  grid-auto-flow: column;
+  gap: 36px;
+  justify-content: center;
+  align-items: center;
+  padding-inline: 24px;
+}
+
+.track img {
+  height: 150px; /* Increased by 10% from the original size */
+  width: auto;
+  transition: transform 0.3s ease;
+}
+
+.track img:hover {
+  transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+/* =========================
+   Contact form & packages
+========================= */
+.contact-form {
+  display: grid;
+  gap: 14px;
+  margin-top: 12px;
+}
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px; /* tighten spacing between left and right columns */
+}
+.contact-left {
+  display: grid;
+  gap: 12px;
+}
+.contact-right {
+  display: grid;
+}
+@media (max-width: 800px) {
+  .contact-grid { grid-template-columns: 1fr; }
+}
+
+/* Align three inputs nicely with the message field on large screens */
+@media (min-width: 900px) {
+  .contact-grid { align-items: stretch; }
+  .contact-left {
+    height: 100%;
+    grid-template-rows: repeat(3, 1fr);
+  }
+  .contact-left input {
+    height: 100%;
+    min-height: 56px; /* keep comfortable touch target */
+  }
+  /* Make the right textarea match the total height of the three left inputs (3*56px + two 12px gaps = 192px) */
+  .contact-right textarea {
+    min-height: calc(56px * 3 + 12px * 2);
+    height: calc(56px * 3 + 12px * 2);
+    align-self: stretch; /* ensure it stretches with the grid area */
+  }
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+@media (max-width: 700px) {
+  .form-row { grid-template-columns: 1fr; }
+}
+input[type="text"],
+input[type="email"],
+textarea {
+  width: 100%;
+  height: 46px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.05);
+  color: #fff;
+  outline: none;
+  transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
+}
+textarea {
+  min-height: 240px;
+  resize: none; /* no vertical resize */
+  line-height: 1.45;
+  overflow-y: auto; /* vertical scroll for long text */
+}
+input::placeholder, textarea::placeholder { color: rgba(255,255,255,.55); }
+input:focus, textarea:focus {
+  border-color: rgba(255,255,255,.28);
+  box-shadow: 0 0 0 4px rgba(138, 88, 255,.15);
+  background: rgba(255,255,255,.07);
+}
+
+.packages {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap: 12px;
+  margin-top: 4px;
+}
+@media (max-width: 1200px) {
+  .packages { grid-template-columns: repeat(3, minmax(0,1fr)); }
+}
+@media (max-width: 900px) {
+  .packages { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (max-width: 600px) {
+  .packages { grid-template-columns: 1fr; }
+}
+
+.pkg { display: block; cursor: pointer; }
+.pkg input { display: none; }
+
+.pkg-body {
+  height: 100%;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 16px;
+  transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease, background .2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.pkg-body .price.custom {
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--primary-1), var(--primary-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.pkg:hover .pkg-body {
+  box-shadow: 0 0 20px rgba(138, 88, 255, 0.5); /* Add glow effect on hover */
+  transform: translateY(-2px);
+}
+.pkg input:checked + .pkg-body {
+  border-color: rgba(176,134,249, .65);
+  box-shadow: none; /* Removed glow effect for selected item */
+  background: linear-gradient(180deg, rgba(176,134,249,.10), rgba(255,255,255,0));
+}
+.pkg input:checked + .pkg-body:hover {
+  box-shadow: 0 0 20px rgba(138, 88, 255, 0.5); /* Add glow effect on hover for selected item */
+  transform: translateY(-2px);
+}
+
+/* Spotlight hover effect for "Контакты и пакеты" */
+.pkg-body::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.5); /* White spotlight */
+  mask: radial-gradient(25rem 25rem at var(--x, 50%) var(--y, 50%), #000 1%, transparent 50%);
+  -webkit-mask: radial-gradient(25rem 25rem at var(--x, 50%) var(--y, 50%), #000 1%, transparent 50%);
+  opacity: var(--opacity, 0);
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: -1; /* Ensure spotlight stays below everything */
+}
+
+.pkg-body * {
+  position: relative;
+  z-index: 1; /* Ensure all content stays above the spotlight */
+}
+
+/* =========================
+   Footer
+========================= */
+.site-footer {
+  border-top: 1px solid rgba(255,255,255,.08);
+  background: #000; /* Solid black background */
+  color: var(--muted); /* Use muted color for footer text */
+  padding: 40px 0; /* Keep the extended padding */
+  font-family: var(--secondary-font);
+  padding-bottom: 72px; /* Extra space at the bottom so text doesn't touch the edge */
+}
+
+.footer-inner {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr; /* left | center | right */
+  align-items: center;
+  gap: 20px;
+}
+
+.footer-left { justify-self: start; color: var(--muted); }
+.footer-center { justify-self: center; }
+.footer-center a { color: #fff; text-decoration: none; }
+.footer-center a:hover { color: var(--primary-1); }
+.footer-right { justify-self: end; display: flex; gap: 16px; }
+.footer-right a { color: #fff; text-decoration: none; }
+.footer-right a:hover { color: var(--primary-1); }
+
+.site-footer .footer-hours,
+.site-footer .footer-email {
+  margin: 0;
+  font-size: 16px; /* Slightly larger font size */
+  color: var(--muted);
+}
+
+.site-footer .footer-social {
+  display: flex;
+  gap: 20px; /* Increased gap between icons */
+  margin-top: 16px;
+}
+
+.site-footer .footer-social a {
+  color: #fff;
+  font-size: 24px; /* Larger icon size */
+  transition: color 0.3s ease;
+}
+
+.site-footer .footer-social a:hover {
+  color: var(--primary-1); /* Purple hover effect */
+}
+
+/* =========================
+   Utilities
+========================= */
+.hidden { display: none !important; }
+.center { text-align: center; }
+.section { overflow-x: visible; }
+/* Add padding to the IG slider for empty space on the sides */
+.ig-strip {
+  padding-left: 50px; /* Add space on the left */
+  padding-right: 50px; /* Add space on the right */
+}
+
+/* =========================
+   About section
+========================= */
+
+
+#about .media.reveal.in-view img {
+  transform: scale(1.2); /* Zoom in by 20% when revealed */
+}
+
+/* Limit the number of visible videos in the slider */
+.ig-strip {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 6px 48px 12px;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Hide native scrollbar */
+  min-width: 100%; /* Ensure the strip spans at least the viewport width */
+  width: max-content; /* Allow the strip to grow wider than the viewport */
+  cursor: grab;
+  user-select: none;
+}
+
+.ig-strip::-webkit-scrollbar { display: none; }
+
+.ig-strip[data-dragging="true"] {
+  cursor: grabbing;
+}
+
+.ig-item {
+  flex: 0 0 auto;
+  width: clamp(180px, 22vw, 240px);
+  scroll-snap-align: center;
+}
+
+/* Ensure the slider does not exceed 10 videos */
+.ig-strip > .ig-item:nth-child(n+11) {
+  display: none; /* Hide videos beyond the 10th */
+}
+
+/* Increase the height of the video container for symmetry */
+.ig-strip {
+  padding: 48px 48px; /* Увеличиваем отступы: сверху/снизу 48px, слева/справа 48px */
+}

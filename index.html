@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ADViral Agency — Рекламное агентство</title>
+    <meta name="description" content="ADViral Agency — рекламное агентство полного цикла: стратегия, креатив, продакшн, перформанс." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="logo">ADViral Agency</div>
+        <nav class="header-nav">
+          <a href="#about">Кто мы</a>
+          <a href="#services">Услуги</a>
+          <a href="#works">Работы</a>
+          <a href="#partners">Партнеры</a>
+          <a href="#contact" class="btn btn-primary">Контакты</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- HERO: декоративный фон. Сейчас — изображение. Позже легко заменить на видео. -->
+    <section id="hero" class="hero" aria-label="ADViral hero">
+      <video class="hero-video" autoplay muted playsinline loop>
+        <source src="assets/videos/ReadCarsTest.mov" type="video/mp4" />
+      </video>
+      <div class="hero-overlay"></div>
+      <div class="container hero-content">
+        <h1>ADViral Agency</h1>
+        <p>Креатив, продакшн и перформанс для роста вашего бизнеса</p>
+        <div class="cta-row">
+          <a href="#contact" class="btn btn-primary">Получить консультацию</a>
+          <a href="#services" class="btn btn-ghost">Наши услуги</a>
+        </div>
+        <!--
+          Как заменить фон на видео:
+          1) Поместите файл в папку проекта (например, assets/hero.mp4)
+          2) Раскомментируйте блок ниже и обновите src
+          3) По желанию удалите <div class="hero-media">
+
+          <video class="hero-video" autoplay muted playsinline loop poster="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=2070&auto=format&fit=crop">
+            <source src="assets/hero.mp4" type="video/mp4" />
+          </video>
+        -->
+      </div>
+    </section>
+
+    <!-- Секция 1: Кто мы -->
+    <section id="about" class="section reveal reveal-left">
+      <div class="container grid-2">
+        <div class="media">
+          <img src="assets/images/krutqjeChuvaki.jpg" alt="Команда ADViral Agency" loading="lazy" />
+        </div>
+        <div class="content">
+          <h2>Кто мы</h2>
+          <p>
+            ADViral — агентство полного цикла. Соединяем стратегию, креатив и
+            перформанс, чтобы ваши кампании не просто видели — ими делились.
+          </p>
+          <ul class="bullets">
+            <li>Кампании с вирусным потенциалом</li>
+            <li>Продакшн под любые площадки: Reels, TikTok, YouTube</li>
+            <li>Аналитика и непрерывная оптимизация</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Секция 2: Что мы предоставляем -->
+    <section id="services" class="section reveal reveal-right">
+      <div class="container">
+        <h2>Что мы предоставляем</h2>
+        <div class="cards">
+          <article class="card">
+            <div class="card-icon">🎯</div>
+            <h3>Стратегия</h3>
+            <p>Аудит, позиционирование, медиаплан и гипотезы роста.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">🎬</div>
+            <h3>Креатив & Продакшн</h3>
+            <p>Сторителлинг и контент, который хочется досмотреть и сохранить.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">📈</div>
+            <h3>Перформанс</h3>
+            <p>Запуск и масштабирование в Meta, TikTok, Google, YouTube.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">🤝</div>
+            <h3>Инфлюенс-маркетинг</h3>
+            <p>Подбор, договоренности, контроль нативных интеграций.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">🧪</div>
+            <h3>A/B тесты</h3>
+            <p>Системное тестирование креативов, офферов и воронки.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">📊</div>
+            <h3>Аналитика</h3>
+            <p>Сбор данных, дешборды и принятие решений на цифрах.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Секция 3: Наши работы (инстаграм-лента) -->
+    <section id="works" class="section reveal reveal-left">
+      <div class="container">
+        <h2 style="text-align: right;">Наши работы</h2>
+        <p class="section-sub" style="text-align: right;">Видео-кейсы. Клик откроет Instagram в новой вкладке.</p>
+        <button class="ig-arrow prev" aria-label="Назад" type="button">‹</button>
+        <div class="ig-slider">
+          <div class="ig-strip">
+            <a class="ig-item" href="https://www.instagram.com/reel/C6bYqs7N9c1/" target="_blank" rel="noopener">
+              <video autoplay muted loop playsinline preload="metadata" aria-label="Кейс 1">
+                <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
+              </video>
+              <div class="video-title">Кейс 1</div>
+              <span class="play">▶</span>
+            </a>
+            <a class="ig-item" href="https://www.instagram.com/reel/C5k7e9oOZ9_/" target="_blank" rel="noopener">
+              <video autoplay muted loop playsinline preload="metadata" aria-label="Кейс 2">
+                <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4" type="video/mp4" />
+              </video>
+              <div class="video-title">Кейс 2</div>
+              <span class="play">▶</span>
+            </a>
+            <a class="ig-item" href="https://www.instagram.com/reel/C4rLkV3uY0N/" target="_blank" rel="noopener">
+              <video autoplay muted loop playsinline preload="metadata" aria-label="Кейс 3">
+                <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4" type="video/mp4" />
+              </video>
+              <div class="video-title">Кейс 3</div>
+              <span class="play">▶</span>
+            </a>
+            <a class="ig-item" href="https://www.instagram.com/reel/C3V1h8yq2Tx/" target="_blank" rel="noopener">
+              <video autoplay muted loop playsinline preload="metadata" aria-label="Кейс 4">
+                <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4" type="video/mp4" />
+              </video>
+              <div class="video-title">Кейс 4</div>
+              <span class="play">▶</span>
+            </a>
+            <a class="ig-item" href="https://www.instagram.com/reel/C2U1n5V-abc/" target="_blank" rel="noopener">
+              <video autoplay muted loop playsinline preload="metadata" aria-label="Кейс 5">
+                <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" type="video/mp4" />
+              </video>
+              <div class="video-title">Кейс 5</div>
+              <span class="play">▶</span>
+            </a>
+            <a class="ig-item" href="https://www.instagram.com/reel/C1TT4tPxyZt/" target="_blank" rel="noopener">
+              <video autoplay muted loop playsinline preload="metadata" aria-label="Кейс 6">
+                <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
+              </video>
+              <div class="video-title">Кейс 6</div>
+              <span class="play">▶</span>
+            </a>
+            <!-- Add 6 more demo items -->
+            <a class="ig-item" href="#" target="_blank" rel="noopener">
+              <video autoplay muted loop playsinline preload="metadata" aria-label="Кейс 7">
+                <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4" type="video/mp4" />
+              </video>
+              <div class="video-title">Кейс 7</div>
+              <span class="play">▶</span>
+            </a>
+            <a class="ig-item" href="#" target="_blank" rel="noopener">
+              <video autoplay muted loop playsinline preload="metadata" aria-label="Кейс 8">
+                <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4" type="video/mp4" />
+              </video>
+              <div class="video-title">Кейс 8</div>
+              <span class="play">▶</span>
+            </a>
+            <a class="ig-item" href="#" target="_blank" rel="noopener">
+              <video autoplay muted loop playsinline preload="metadata" aria-label="Кейс 9">
+                <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4" type="video/mp4" />
+              </video>
+              <div class="video-title">Кейс 9</div>
+              <span class="play">▶</span>
+            </a>
+            <a class="ig-item" href="#" target="_blank" rel="noopener">
+              <video autoplay muted loop playsinline preload="metadata" aria-label="Кейс 10">
+                <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/WhatCarCanYouGetForAGrand.mp4" type="video/mp4" />
+              </video>
+              <div class="video-title">Кейс 10</div>
+              <span class="play">▶</span>
+            </a>
+            <a class="ig-item" href="#" target="_blank" rel="noopener">
+              <video autoplay muted loop playsinline preload="metadata" aria-label="Кейс 11">
+                <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" type="video/mp4" />
+              </video>
+              <div class="video-title">Кейс 11</div>
+              <span class="play">▶</span>
+            </a>
+            <a class="ig-item" href="#" target="_blank" rel="noopener">
+              <video autoplay muted loop playsinline preload="metadata" aria-label="Кейс 12">
+                <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4" type="video/mp4" />
+              </video>
+              <div class="video-title">Кейс 12</div>
+              <span class="play">▶</span>
+            </a>
+          </div>
+        </div>
+        <button class="ig-arrow next" aria-label="Вперед" type="button">›</button>
+      </div>
+    </section>
+
+    <!-- Секция 4: Наши партнеры (бегущая лента логотипов) -->
+    <section id="partners" class="section reveal reveal-right">
+      <div class="container">
+        <h2>Наши партнеры</h2>
+        <div class="marquee">
+          <div class="track">
+            <img src="https://cdn.simpleicons.org/apple/ffffff" alt="Apple" />
+            <img src="https://cdn.simpleicons.org/google/ffffff" alt="Google" />
+            <img src="https://cdn.simpleicons.org/meta/ffffff" alt="Meta" />
+            <img src="https://cdn.simpleicons.org/tiktok/ffffff" alt="TikTok" />
+            <img src="https://cdn.simpleicons.org/youtube/ffffff" alt="YouTube" />
+            <img src="https://cdn.simpleicons.org/netflix/ffffff" alt="Netflix" />
+            <img src="https://cdn.simpleicons.org/amazon/ffffff" alt="Amazon" />
+            <img src="https://cdn.simpleicons.org/microsoft/ffffff" alt="Microsoft" />
+            <img src="https://cdn.simpleicons.org/ibm/ffffff" alt="IBM" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Секция 5: Контакты и пакеты -->
+    <section id="contact" class="section reveal reveal-left">
+      <div class="container">
+        <h2 style="text-align: right;">Контакты и пакеты</h2>
+        <div class="packages">
+          <label class="pkg">
+            <input type="radio" name="package" value="free" />
+            <div class="pkg-body">
+              <div class="pkg-top">
+                <h3>Free</h3>
+                <div class="price">0€</div>
+              </div>
+              <ul>
+                <li>Бесплатная консультация</li>
+              </ul>
+            </div>
+          </label>
+          <label class="pkg">
+            <input type="radio" name="package" value="basic" />
+            <div class="pkg-body">
+              <div class="pkg-top">
+                <h3>Basic</h3>
+                <div class="price">от 990€</div>
+              </div>
+              <ul>
+                <li>3 креатива/мес</li>
+                <li>Запуск рекламных кампаний</li>
+                <li>Еженедельная отчетность</li>
+              </ul>
+            </div>
+          </label>
+
+          <label class="pkg">
+            <input type="radio" name="package" value="pro" checked />
+            <div class="pkg-body">
+              <div class="pkg-top">
+                <h3>Pro</h3>
+                <div class="price">от 2 490€</div>
+              </div>
+              <ul>
+                <li>10 креативов/мес</li>
+                <li>Мультиканальный перформанс</li>
+                <li>A/B тесты и оптимизация</li>
+              </ul>
+            </div>
+          </label>
+
+          <label class="pkg">
+            <input type="radio" name="package" value="elite" />
+            <div class="pkg-body">
+              <div class="pkg-top">
+                <h3>Elite</h3>
+                <div class="price custom">кастом</div>
+              </div>
+              <ul>
+                <li>Стратегия и креатив под ключ</li>
+                <li>Продакшн + инфлюенс</li>
+                <li>Дедикейтед команда</li>
+              </ul>
+            </div>
+          </label>
+        </div>
+
+        <form id="contact-form" class="contact-form">
+          <div class="contact-grid">
+            <div class="contact-left">
+              <input type="text" id="name" name="name" placeholder="Ваше имя" required />
+              <input type="email" id="email" name="email" placeholder="Email" required />
+              <input type="text" id="company" name="company" placeholder="Компания (необязательно)" />
+            </div>
+            <div class="contact-right">
+              <textarea id="message" name="message" placeholder="Коротко опишите задачу"></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary full">Отправить запрос</button>
+          <p class="form-note">Нажимая «Отправить», вы соглашаетесь на sex.</p>
+        </form>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-left">© 2025 ADViral Agency</div>
+        <div class="footer-center"><a href="mailto:hello@adviral.agency">hello@adviral.agency</a></div>
+        <nav class="footer-right social">
+          <a href="#" aria-label="Instagram">Instagram</a>
+          <a href="#" aria-label="Facebook">Facebook</a>
+          <a href="#" aria-label="TikTok">TikTok</a>
+        </nav>
+      </div>
+    </footer>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
