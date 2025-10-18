@@ -263,34 +263,34 @@ document.addEventListener("DOMContentLoaded", () => {
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const formData = new FormData(form);
-      const data = Object.fromEntries(formData.entries());
-      const selectedPackage = formData.get("package") || "Не выбран";
+      const submitBtn = form.querySelector("button[type='submit']");
+      submitBtn?.setAttribute("disabled", "disabled");
 
-      const emailBody = `
-        Имя: ${data.name}
-        Email: ${data.email}
-        Компания: ${data.company || "Не указана"}
-        Пакет: ${selectedPackage}
-        Сообщение: ${data.message || "Не указано"}
-      `;
+      const formData = new FormData(form);
+      const selectedPackage = document.querySelector("input[name='package']:checked");
+      formData.set("package", selectedPackage ? selectedPackage.value : "Не выбран");
+      formData.append("_subject", "Новый запрос с сайта ADViral Agency");
 
       try {
-        await fetch("https://example.com/send-email", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            to: "omego3100@gmail.com",
-            subject: "Новый запрос с сайта ADViral Agency",
-            body: emailBody,
-          }),
+        const response = await fetch(form.action, {
+          method: form.method,
+          headers: { Accept: "application/json" },
+          body: formData,
         });
 
-        alert("Ваш запрос успешно отправлен!");
-        form.reset();
+        if (response.ok) {
+          alert("Ваш запрос успешно отправлен!");
+          form.reset();
+        } else {
+          const data = await response.json().catch(() => null);
+          const message = data?.errors?.[0]?.message || "Не удалось отправить форму. Попробуйте позже.";
+          alert(message);
+        }
       } catch (error) {
         console.error("Ошибка отправки формы:", error);
         alert("Произошла ошибка при отправке. Попробуйте позже.");
+      } finally {
+        submitBtn?.removeAttribute("disabled");
       }
     });
   }
