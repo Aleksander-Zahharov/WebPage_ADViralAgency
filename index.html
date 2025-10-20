@@ -1,41 +1,177 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ADViral Agency — Рекламное агентство</title>
-    <meta name="description" content="ADViral Agency — рекламное агентство полного цикла: стратегия, креатив, продакшн, перформанс." />
+  <title data-i18n="meta.title">ADViral Agency — Social Media, Video Production, and Performance Marketing</title>
+    <meta
+      name="description"
+  content="Full‑service digital marketing agency: social media strategy and management, short‑form video production (Reels, TikTok, Shorts), creative advertising and performance campaigns that drive measurable growth."
+      data-i18n="meta.description"
+      data-i18n-attrs="content"
+      data-i18n-skip-text="true"
+    />
+    <link rel="canonical" href="https://adviral.agency/" />
+    <link rel="alternate" href="?lang=en" hreflang="en" />
+    <link rel="alternate" href="?lang=ru" hreflang="ru" />
+    <link rel="alternate" href="?lang=et" hreflang="et" />
+    <link rel="alternate" href="/" hreflang="x-default" />
+    <meta name="keywords" content="digital marketing agency, social media marketing, SMM, video production, Reels, TikTok, YouTube Shorts, performance marketing, advertising campaigns" />
+    <meta name="robots" content="index,follow" />
+    <!-- Open Graph for rich previews -->
+    <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://adviral.agency/" />
+    <meta
+      property="og:title"
+      content="ADViral Agency — Creative Marketing Agency"
+      data-i18n="meta.title"
+      data-i18n-attrs="content"
+      data-i18n-skip-text="true"
+    />
+    <meta
+      property="og:description"
+      content="ADViral Agency is a full-cycle advertising partner combining strategy, creativity, production, and performance marketing."
+      data-i18n="meta.description"
+      data-i18n-attrs="content"
+      data-i18n-skip-text="true"
+    />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=1600&auto=format&fit=crop" />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="ADViral Agency — Creative Marketing Agency"
+      data-i18n="meta.title"
+      data-i18n-attrs="content"
+      data-i18n-skip-text="true"
+    />
+    <meta
+      name="twitter:description"
+      content="ADViral Agency is a full-cycle advertising partner combining strategy, creativity, production, and performance marketing."
+      data-i18n="meta.description"
+      data-i18n-attrs="content"
+      data-i18n-skip-text="true"
+    />
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=1600&auto=format&fit=crop" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "ADViral Agency",
+        "url": "https://adviral.agency/",
+        "email": "hello@adviral.agency",
+        "description": "Full‑service digital marketing agency specialising in social media marketing, short‑form video production, and performance advertising."
+      }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://storage.googleapis.com" crossorigin />
+    <link rel="preload" href="./assets/fonts/Sansation-Light.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="preload" href="./assets/fonts/Sansation-Regular.ttf" as="font" type="font/ttf" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
+  <!-- Шапка сайта с логотипом и языковым переключателем -->
     <header class="site-header">
       <div class="container header-inner">
-        <div class="logo">ADViral Agency</div>
-        <nav class="header-nav">
-          <a href="#about">Кто мы</a>
-          <a href="#services">Услуги</a>
-          <a href="#works">Работы</a>
-          <a href="#partners">Партнеры</a>
-          <a href="#contact" class="btn btn-primary">Контакты</a>
+        <div class="logo" data-i18n="logo">ADViral Agency</div>
+        <!-- Основная навигация по разделам страницы -->
+        <nav class="header-nav" id="mobile-menu">
+          <a href="#about" data-i18n="nav.about">About</a>
+          <a href="#services" data-i18n="nav.services">Services</a>
+          <a href="#works" data-i18n="nav.works">Cases</a>
+          <a href="#partners" data-i18n="nav.partners">Partners</a>
+          <a href="#contact" class="btn btn-primary" data-i18n="nav.contact">Contact</a>
+          <!-- Переключатель языков перемещён внутрь навигации, чтобы на мобильном он был в бургер-меню -->
+          <div class="lang-switcher" data-active-lang="en">
+          <button
+            type="button"
+            class="lang-switcher__toggle"
+            id="lang-switcher-toggle"
+            aria-haspopup="listbox"
+            aria-expanded="false"
+            aria-controls="lang-switcher-menu"
+            aria-label="Language selection"
+            data-i18n="lang.switcher"
+            data-i18n-attrs="aria-label"
+            data-i18n-skip-text="true"
+            data-lang-toggle
+          >
+            <span class="lang-switcher__value" data-lang-value>EN</span>
+            <span class="lang-switcher__chevron" aria-hidden="true"></span>
+          </button>
+          <ul
+            class="lang-switcher__menu"
+            id="lang-switcher-menu"
+            role="listbox"
+            aria-labelledby="lang-switcher-toggle"
+            hidden
+            data-lang-menu
+          >
+            <li
+              class="lang-switcher__option"
+              id="lang-option-ru"
+              role="option"
+              tabindex="-1"
+              data-lang-option
+              data-value="ru"
+            >
+              RU
+            </li>
+            <li
+              class="lang-switcher__option is-active"
+              id="lang-option-en"
+              role="option"
+              tabindex="0"
+              data-lang-option
+              data-value="en"
+            >
+              EN
+            </li>
+            <li
+              class="lang-switcher__option"
+              id="lang-option-et"
+              role="option"
+              tabindex="-1"
+              data-lang-option
+              data-value="et"
+            >
+              ET
+            </li>
+          </ul>
+        </div>
         </nav>
+        <!-- Кнопка-гамбургер для мобильного меню -->
+        <button
+          class="menu-toggle"
+          id="menu-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          aria-label="Open menu"
+          data-i18n="nav.menuToggle"
+          data-i18n-attrs="aria-label"
+          data-i18n-skip-text="true"
+        >
+          <span class="menu-toggle__bar" aria-hidden="true"></span>
+          <span class="menu-toggle__bar" aria-hidden="true"></span>
+          <span class="menu-toggle__bar" aria-hidden="true"></span>
+        </button>
       </div>
     </header>
-
-    <!-- HERO: декоративный фон. Сейчас — изображение. Позже легко заменить на видео. -->
+  <!-- Герой-секция с видеофоном и основными CTA -->
     <section id="hero" class="hero" aria-label="ADViral hero">
-      <video class="hero-video" autoplay muted playsinline loop>
+      <video class="hero-video" autoplay muted playsinline loop preload="metadata">
         <source src="assets/videos/LAMBO5.mp4" type="video/mp4" />
       </video>
       <div class="hero-overlay"></div>
       <div class="container hero-content">
-        <h1>ADViral Agency</h1>
-        <p>Креатив, продакшн и перформанс для роста вашего бизнеса</p>
+        <h1 data-i18n="hero.title">ADViral Agency</h1>
+  <p data-i18n="hero.subtitle">Creativity, production and performance to grow your business</p>
         <div class="cta-row">
-          <a href="#contact" class="btn btn-primary">Получить консультацию</a>
-          <a href="#services" class="btn btn-ghost">Наши услуги</a>
+          <a href="#contact" class="btn btn-primary" data-i18n="hero.ctaPrimary">Request a consultation</a>
+          <a href="#services" class="btn btn-ghost" data-i18n="hero.ctaSecondary">Our services</a>
         </div>
         <!--
           Как заменить фон на видео:
@@ -50,199 +186,327 @@
       </div>
     </section>
 
-    <!-- Секция 1: Кто мы -->
+  <!-- Секция 1: Кто мы -->
     <section id="about" class="section reveal reveal-left">
       <div class="container grid-2">
         <div class="media">
-          <img src="assets/images/krutqjeChuvaki.jpg" alt="Команда ADViral Agency" loading="lazy" />
+          <img src="assets/images/krutqjeChuvaki.jpg" alt="ADViral Agency team" loading="lazy" />
         </div>
         <div class="content">
-          <h2>Кто мы</h2>
-          <p>
-            ADViral — агентство полного цикла. Соединяем стратегию, креатив и
-            перформанс, чтобы ваши кампании не просто видели — ими делились.
+          <h2 data-i18n="about.title">Who we are</h2>
+          <p data-i18n="about.description">
+            ADViral is a full-service agency. We align strategy, creativity and
+            performance so your campaigns are not only seen — they are shared.
           </p>
           <ul class="bullets">
-            <li>Кампании с вирусным потенциалом</li>
-            <li>Продакшн под любые площадки: Reels, TikTok, YouTube</li>
-            <li>Аналитика и непрерывная оптимизация</li>
+            <li data-i18n="about.list.campaigns">Campaigns with viral potential</li>
+            <li data-i18n="about.list.production">Production for every platform: Reels, TikTok, YouTube</li>
+            <li data-i18n="about.list.analytics">Analytics and continuous optimisation</li>
           </ul>
         </div>
       </div>
     </section>
 
-    <!-- Секция 2: Что мы предоставляем -->
+  <!-- Секция 2: Что мы предоставляем -->
     <section id="services" class="section reveal reveal-right">
       <div class="container">
-        <h2>Что мы предоставляем</h2>
+  <h2 data-i18n="services.title">What we deliver</h2>
         <div class="cards">
           <article class="card">
-            <div class="card-icon">🎯</div>
-            <h3>Стратегия</h3>
-            <p>Аудит, позиционирование, медиаплан и гипотезы роста.</p>
+            <h3 data-i18n="services.cards.socialManagement.title">📱 Social media management</h3>
+            <p data-i18n="services.cards.socialManagement.text">Instagram, Facebook, TikTok — content, visuals, consistent style.</p>
           </article>
           <article class="card">
-            <div class="card-icon">🎬</div>
-            <h3>Креатив & Продакшн</h3>
-            <p>Сторителлинг и контент, который хочется досмотреть и сохранить.</p>
+            <h3 data-i18n="services.cards.growthStrategy.title">🧭 Growth strategy</h3>
+            <p data-i18n="services.cards.growthStrategy.text">Co-create the roadmap to lift reach and engagement.</p>
           </article>
           <article class="card">
-            <div class="card-icon">📈</div>
-            <h3>Перформанс</h3>
-            <p>Запуск и масштабирование в Meta, TikTok, Google, YouTube.</p>
+            <h3 data-i18n="services.cards.adCampaigns.title">🎯 Advertising campaigns</h3>
+            <p data-i18n="services.cards.adCampaigns.text">Creative development, targeting, and continuous optimisation.</p>
           </article>
           <article class="card">
-            <div class="card-icon">🤝</div>
-            <h3>Инфлюенс-маркетинг</h3>
-            <p>Подбор, договоренности, контроль нативных интеграций.</p>
+            <h3 data-i18n="services.cards.communityEngagement.title">💬 Community engagement</h3>
+            <p data-i18n="services.cards.communityEngagement.text">Conversations with audiences in groups, comments, and threads.</p>
           </article>
           <article class="card">
-            <div class="card-icon">🧪</div>
-            <h3>A/B тесты</h3>
-            <p>Системное тестирование креативов, офферов и воронки.</p>
+            <h3 data-i18n="services.cards.socialVideo.title">🎬 Social video production</h3>
+            <p data-i18n="services.cards.socialVideo.text">Short-form videos tailored for Reels, TikTok, Shorts and Stories.</p>
           </article>
           <article class="card">
-            <div class="card-icon">📊</div>
-            <h3>Аналитика</h3>
-            <p>Сбор данных, дешборды и принятие решений на цифрах.</p>
+            <h3 data-i18n="services.cards.brandAudit.title">🧠 Brand deep-dive</h3>
+            <p data-i18n="services.cards.brandAudit.text">Unpack mission, values, and goals to guide communication.</p>
+          </article>
+          <article class="card">
+            <h3 data-i18n="services.cards.marketResearch.title">📊 Market & competitor analysis</h3>
+            <p data-i18n="services.cards.marketResearch.text">Spot opportunities across competitors and trends.</p>
+          </article>
+          <article class="card">
+            <h3 data-i18n="services.cards.productAnalysis.title">🧩 Product portfolio review</h3>
+            <p data-i18n="services.cards.productAnalysis.text">Segment offers for different customer clusters.</p>
+          </article>
+          <article class="card">
+            <h3 data-i18n="services.cards.audienceStrategy.title">👥 Audience insights & acquisition</h3>
+            <p data-i18n="services.cards.audienceStrategy.text">Define personas and craft fresh acquisition plays.</p>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- Секция 3: Наши работы (инстаграм-лента) -->
+  <!-- Секция 3: Наши работы (лента как в Instagram) -->
     <section id="works" class="section reveal reveal-left">
       <div class="container">
-        <h2 style="text-align: right;">Наши работы</h2>
-        <p class="section-sub" style="text-align: right;">Видео-кейсы. Клик откроет Instagram в новой вкладке.</p>
-        <button class="ig-arrow prev" aria-label="Назад" type="button">‹</button>
+  <h2 style="text-align: right;" data-i18n="works.title">Our work</h2>
+  <p class="section-sub" style="text-align: right;" data-i18n="works.subtitle">Video cases. Clicking opens Instagram in a new tab.</p>
+    <button class="ig-arrow prev" aria-label="Previous" type="button">‹</button>
         <div class="ig-slider">
           <div class="ig-strip">
             <a class="ig-item" href="https://www.instagram.com/reel/C6bYqs7N9c1/" target="_blank" rel="noopener">
-              <video autoplay muted loop playsinline preload="metadata" aria-label="Кейс 1">
+              <video
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                aria-label="Case 1"
+                data-i18n="works.cases.case1"
+                data-i18n-attrs="aria-label"
+                data-i18n-skip-text="true"
+              >
                 <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
               </video>
-              <div class="video-title">Кейс 1</div>
+              <div class="video-title" data-i18n="works.cases.case1">Case 1</div>
               <span class="play">▶</span>
             </a>
             <a class="ig-item" href="https://www.instagram.com/reel/C5k7e9oOZ9_/" target="_blank" rel="noopener">
-              <video autoplay muted loop playsinline preload="metadata" aria-label="Кейс 2">
+              <video
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                aria-label="Case 2"
+                data-i18n="works.cases.case2"
+                data-i18n-attrs="aria-label"
+                data-i18n-skip-text="true"
+              >
                 <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4" type="video/mp4" />
               </video>
-              <div class="video-title">Кейс 2</div>
+              <div class="video-title" data-i18n="works.cases.case2">Case 2</div>
               <span class="play">▶</span>
             </a>
             <a class="ig-item" href="https://www.instagram.com/reel/C4rLkV3uY0N/" target="_blank" rel="noopener">
-              <video autoplay muted loop playsinline preload="metadata" aria-label="Кейс 3">
+              <video
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                aria-label="Case 3"
+                data-i18n="works.cases.case3"
+                data-i18n-attrs="aria-label"
+                data-i18n-skip-text="true"
+              >
                 <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4" type="video/mp4" />
               </video>
-              <div class="video-title">Кейс 3</div>
+              <div class="video-title" data-i18n="works.cases.case3">Case 3</div>
               <span class="play">▶</span>
             </a>
             <a class="ig-item" href="https://www.instagram.com/reel/C3V1h8yq2Tx/" target="_blank" rel="noopener">
-              <video autoplay muted loop playsinline preload="metadata" aria-label="Кейс 4">
+              <video
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                aria-label="Case 4"
+                data-i18n="works.cases.case4"
+                data-i18n-attrs="aria-label"
+                data-i18n-skip-text="true"
+              >
                 <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4" type="video/mp4" />
               </video>
-              <div class="video-title">Кейс 4</div>
+              <div class="video-title" data-i18n="works.cases.case4">Case 4</div>
               <span class="play">▶</span>
             </a>
             <a class="ig-item" href="https://www.instagram.com/reel/C2U1n5V-abc/" target="_blank" rel="noopener">
-              <video autoplay muted loop playsinline preload="metadata" aria-label="Кейс 5">
+              <video
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                aria-label="Case 5"
+                data-i18n="works.cases.case5"
+                data-i18n-attrs="aria-label"
+                data-i18n-skip-text="true"
+              >
                 <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" type="video/mp4" />
               </video>
-              <div class="video-title">Кейс 5</div>
+              <div class="video-title" data-i18n="works.cases.case5">Case 5</div>
               <span class="play">▶</span>
             </a>
             <a class="ig-item" href="https://www.instagram.com/reel/C1TT4tPxyZt/" target="_blank" rel="noopener">
-              <video autoplay muted loop playsinline preload="metadata" aria-label="Кейс 6">
+              <video
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                aria-label="Case 6"
+                data-i18n="works.cases.case6"
+                data-i18n-attrs="aria-label"
+                data-i18n-skip-text="true"
+              >
                 <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
               </video>
-              <div class="video-title">Кейс 6</div>
+              <div class="video-title" data-i18n="works.cases.case6">Case 6</div>
               <span class="play">▶</span>
             </a>
-            <!-- Add 6 more demo items -->
+            <!-- Дополнительные демонстрационные карточки -->
             <a class="ig-item" href="#" target="_blank" rel="noopener">
-              <video autoplay muted loop playsinline preload="metadata" aria-label="Кейс 7">
+              <video
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                aria-label="Case 7"
+                data-i18n="works.cases.case7"
+                data-i18n-attrs="aria-label"
+                data-i18n-skip-text="true"
+              >
                 <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4" type="video/mp4" />
               </video>
-              <div class="video-title">Кейс 7</div>
+              <div class="video-title" data-i18n="works.cases.case7">Case 7</div>
               <span class="play">▶</span>
             </a>
             <a class="ig-item" href="#" target="_blank" rel="noopener">
-              <video autoplay muted loop playsinline preload="metadata" aria-label="Кейс 8">
+              <video
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                aria-label="Case 8"
+                data-i18n="works.cases.case8"
+                data-i18n-attrs="aria-label"
+                data-i18n-skip-text="true"
+              >
                 <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4" type="video/mp4" />
               </video>
-              <div class="video-title">Кейс 8</div>
+              <div class="video-title" data-i18n="works.cases.case8">Case 8</div>
               <span class="play">▶</span>
             </a>
             <a class="ig-item" href="#" target="_blank" rel="noopener">
-              <video autoplay muted loop playsinline preload="metadata" aria-label="Кейс 9">
+              <video
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                aria-label="Case 9"
+                data-i18n="works.cases.case9"
+                data-i18n-attrs="aria-label"
+                data-i18n-skip-text="true"
+              >
                 <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4" type="video/mp4" />
               </video>
-              <div class="video-title">Кейс 9</div>
+              <div class="video-title" data-i18n="works.cases.case9">Case 9</div>
               <span class="play">▶</span>
             </a>
             <a class="ig-item" href="#" target="_blank" rel="noopener">
-              <video autoplay muted loop playsinline preload="metadata" aria-label="Кейс 10">
+              <video
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                aria-label="Case 10"
+                data-i18n="works.cases.case10"
+                data-i18n-attrs="aria-label"
+                data-i18n-skip-text="true"
+              >
                 <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/WhatCarCanYouGetForAGrand.mp4" type="video/mp4" />
               </video>
-              <div class="video-title">Кейс 10</div>
+              <div class="video-title" data-i18n="works.cases.case10">Case 10</div>
               <span class="play">▶</span>
             </a>
             <a class="ig-item" href="#" target="_blank" rel="noopener">
-              <video autoplay muted loop playsinline preload="metadata" aria-label="Кейс 11">
+              <video
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                aria-label="Case 11"
+                data-i18n="works.cases.case11"
+                data-i18n-attrs="aria-label"
+                data-i18n-skip-text="true"
+              >
                 <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" type="video/mp4" />
               </video>
-              <div class="video-title">Кейс 11</div>
+              <div class="video-title" data-i18n="works.cases.case11">Case 11</div>
               <span class="play">▶</span>
             </a>
             <a class="ig-item" href="#" target="_blank" rel="noopener">
-              <video autoplay muted loop playsinline preload="metadata" aria-label="Кейс 12">
+              <video
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                aria-label="Case 12"
+                data-i18n="works.cases.case12"
+                data-i18n-attrs="aria-label"
+                data-i18n-skip-text="true"
+              >
                 <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4" type="video/mp4" />
               </video>
-              <div class="video-title">Кейс 12</div>
+              <div class="video-title" data-i18n="works.cases.case12">Case 12</div>
               <span class="play">▶</span>
             </a>
           </div>
         </div>
-        <button class="ig-arrow next" aria-label="Вперед" type="button">›</button>
+  <button class="ig-arrow next" aria-label="Next" type="button">›</button>
       </div>
     </section>
 
-    <!-- Секция 4: Наши партнеры (бегущая лента логотипов) -->
+  <!-- Секция 4: Наши партнеры (бегущая строка) -->
     <section id="partners" class="section reveal reveal-right">
       <div class="container">
-        <h2>Наши партнеры</h2>
+  <h2 data-i18n="partners.title">Our partners</h2>
         <div class="marquee">
           <div class="track">
-            <img src="https://cdn.simpleicons.org/apple/ffffff" alt="Apple" />
-            <img src="https://cdn.simpleicons.org/google/ffffff" alt="Google" />
-            <img src="https://cdn.simpleicons.org/meta/ffffff" alt="Meta" />
-            <img src="https://cdn.simpleicons.org/tiktok/ffffff" alt="TikTok" />
-            <img src="https://cdn.simpleicons.org/youtube/ffffff" alt="YouTube" />
-            <img src="https://cdn.simpleicons.org/netflix/ffffff" alt="Netflix" />
-            <img src="https://cdn.simpleicons.org/amazon/ffffff" alt="Amazon" />
-            <img src="https://cdn.simpleicons.org/microsoft/ffffff" alt="Microsoft" />
-            <img src="https://cdn.simpleicons.org/ibm/ffffff" alt="IBM" />
+            <img src="https://cdn.simpleicons.org/apple/ffffff" alt="Apple" loading="lazy" decoding="async" />
+            <img src="https://cdn.simpleicons.org/google/ffffff" alt="Google" loading="lazy" decoding="async" />
+            <img src="https://cdn.simpleicons.org/meta/ffffff" alt="Meta" loading="lazy" decoding="async" />
+            <img src="https://cdn.simpleicons.org/tiktok/ffffff" alt="TikTok" loading="lazy" decoding="async" />
+            <img src="https://cdn.simpleicons.org/youtube/ffffff" alt="YouTube" loading="lazy" decoding="async" />
+            <img src="https://cdn.simpleicons.org/netflix/ffffff" alt="Netflix" loading="lazy" decoding="async" />
+            <img src="https://cdn.simpleicons.org/amazon/ffffff" alt="Amazon" loading="lazy" decoding="async" />
+            <img src="https://cdn.simpleicons.org/microsoft/ffffff" alt="Microsoft" loading="lazy" decoding="async" />
+            <img src="https://cdn.simpleicons.org/ibm/ffffff" alt="IBM" loading="lazy" decoding="async" />
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Секция 5: Контакты и пакеты -->
+  <!-- Секция 5: Контакты и пакеты -->
     <section id="contact" class="section reveal reveal-left">
       <div class="container">
-        <h2 style="text-align: right;">Контакты и пакеты</h2>
+  <h2 style="text-align: right;" data-i18n="contact.title">Contacts & packages</h2>
+  <!-- Сетка с вариантами тарифов -->
         <div class="packages">
           <label class="pkg">
             <input type="radio" name="package" value="free" />
             <div class="pkg-body">
               <div class="pkg-top">
-                <h3>Free</h3>
-                <div class="price">0€</div>
+                <h3 data-i18n="contact.packages.free.name">Free</h3>
+                <div class="price" data-i18n="contact.packages.free.price">0€</div>
               </div>
               <ul>
-                <li>Бесплатная консультация</li>
+                <li data-i18n="contact.packages.free.features.consultation">Express marketing consultation</li>
+                <li data-i18n="contact.packages.free.features.checklist">Personalised first-steps checklist</li>
               </ul>
             </div>
           </label>
@@ -250,13 +514,13 @@
             <input type="radio" name="package" value="basic" />
             <div class="pkg-body">
               <div class="pkg-top">
-                <h3>Basic</h3>
-                <div class="price">от 990€</div>
+                <h3 data-i18n="contact.packages.basic.name">Basic</h3>
+                <div class="price" data-i18n="contact.packages.basic.price">from €990</div>
               </div>
               <ul>
-                <li>3 креатива/мес</li>
-                <li>Запуск рекламных кампаний</li>
-                <li>Еженедельная отчетность</li>
+                <li data-i18n="contact.packages.basic.features.previous">Everything in Free</li>
+                <li data-i18n="contact.packages.basic.features.socials">Daily social media management and content calendar</li>
+                <li data-i18n="contact.packages.basic.features.strategy">Growth strategy to lift reach</li>
               </ul>
             </div>
           </label>
@@ -265,13 +529,13 @@
             <input type="radio" name="package" value="pro" checked />
             <div class="pkg-body">
               <div class="pkg-top">
-                <h3>Pro</h3>
-                <div class="price">от 2 490€</div>
+                <h3 data-i18n="contact.packages.pro.name">Pro</h3>
+                <div class="price" data-i18n="contact.packages.pro.price">from €2,490</div>
               </div>
               <ul>
-                <li>10 креативов/мес</li>
-                <li>Мультиканальный перформанс</li>
-                <li>A/B тесты и оптимизация</li>
+                <li data-i18n="contact.packages.pro.features.previous">Everything in Basic</li>
+                <li data-i18n="contact.packages.pro.features.campaigns">Creative development and advertising campaign setup</li>
+                <li data-i18n="contact.packages.pro.features.video">Short-form video production and community engagement</li>
               </ul>
             </div>
           </label>
@@ -280,48 +544,50 @@
             <input type="radio" name="package" value="elite" />
             <div class="pkg-body">
               <div class="pkg-top">
-                <h3>Elite</h3>
-                <div class="price custom">кастом</div>
+                <h3 data-i18n="contact.packages.elite.name">Elite</h3>
+                <div class="price custom" data-i18n="contact.packages.elite.price">custom</div>
               </div>
               <ul>
-                <li>Стратегия и креатив под ключ</li>
-                <li>Продакшн + инфлюенс</li>
-                <li>Дедикейтед команда</li>
+                <li data-i18n="contact.packages.elite.features.previous">Everything in Pro</li>
+                <li data-i18n="contact.packages.elite.features.analysis">In-depth brand, market, and product portfolio analysis</li>
+                <li data-i18n="contact.packages.elite.features.acquisition">Audience segmentation and new acquisition plays</li>
               </ul>
             </div>
           </label>
         </div>
 
-        <form id="contact-form" class="contact-form" action="https://formspree.io/f/xjkalnog" method="POST">
+  <!-- Форма обратной связи отправляется через Formspree -->
+  <form id="contact-form" class="contact-form" action="https://formspree.io/f/xjkalnog" method="POST">
           <div class="contact-grid">
             <div class="contact-left">
-              <input type="text" id="name" name="name" placeholder="Ваше имя" required />
-              <input type="email" id="email" name="email" placeholder="Email" required />
-              <input type="text" id="company" name="company" placeholder="Компания (необязательно)" />
+              <input type="text" id="name" name="name" placeholder="Your name" required data-i18n="contact.form.name" data-i18n-attrs="placeholder" />
+              <input type="email" id="email" name="email" placeholder="Email" required data-i18n="contact.form.email" data-i18n-attrs="placeholder" />
+              <input type="text" id="company" name="company" placeholder="Company (optional)" data-i18n="contact.form.company" data-i18n-attrs="placeholder" />
             </div>
             <div class="contact-right">
-              <textarea id="message" name="message" placeholder="Коротко опишите задачу"></textarea>
+              <textarea id="message" name="message" placeholder="Briefly describe your task" data-i18n="contact.form.message" data-i18n-attrs="placeholder"></textarea>
             </div>
           </div>
 
-          <button type="submit" class="btn btn-primary full">Отправить запрос</button>
-          <p class="form-note">Нажимая «Отправить», вы соглашаетесь на sex.</p>
+          <button type="submit" class="btn btn-primary full" data-i18n="contact.form.submit">Send request</button>
+          <p class="form-note" data-i18n="contact.form.note">By clicking "Send", you agree to the processing of your data.</p>
         </form>
       </div>
     </section>
 
-    <footer class="site-footer">
+  <!-- Подвал с копирайтом и ссылками -->
+  <footer class="site-footer">
       <div class="container footer-inner">
-        <div class="footer-left">© 2025 ADViral Agency</div>
-        <div class="footer-center"><a href="mailto:hello@adviral.agency">hello@adviral.agency</a></div>
+        <div class="footer-left" data-i18n="footer.copy">© 2025 ADViral Agency</div>
+        <div class="footer-center"><a href="mailto:hello@adviral.agency" data-i18n="footer.email">hello@adviral.agency</a></div>
         <nav class="footer-right social">
-          <a href="#" aria-label="Instagram">Instagram</a>
-          <a href="#" aria-label="Facebook">Facebook</a>
-          <a href="#" aria-label="TikTok">TikTok</a>
+          <a href="#" aria-label="Instagram" data-i18n="footer.social.instagram">Instagram</a>
+          <a href="#" aria-label="Facebook" data-i18n="footer.social.facebook">Facebook</a>
+          <a href="#" aria-label="TikTok" data-i18n="footer.social.tiktok">TikTok</a>
         </nav>
       </div>
     </footer>
 
-    <script src="./script.js"></script>
+    <script src="./script.js" defer></script>
   </body>
 </html>
