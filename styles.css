@@ -1480,7 +1480,7 @@ input:focus, textarea:focus {
 
 @media (min-width: 769px) {
   .hero-content p[data-i18n="hero.subtitle"] {
-    max-width: 580px; /* Desktop version width */
+    max-width: 550px; /* Desktop version width */
   }
 }
 
