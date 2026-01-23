@@ -154,7 +154,7 @@ const translations = {
     },
     works: {
       title: "Наши работы",
-      subtitle: "Видео‑кейсы по SMM, продакшну и рекламе. Клик откроет видеоплеер.",
+      subtitle: "Наши работы. Клик откроет видеоплеер.",
       cases: {
         case1: { text: "Кейс 1", "aria-label": "Кейс 1" },
         case2: { text: "Кейс 2", "aria-label": "Кейс 2" },
@@ -230,7 +230,10 @@ const translations = {
       },
     },
     email: {
-      copied: "Текст скопирован",
+      copied: "Сообщение скопировано!",
+    },
+    form: {
+      sent: "Сообщение отправлено",
     },
   },
   en: {
@@ -311,7 +314,7 @@ const translations = {
     },
     works: {
       title: "Our work",
-      subtitle: "Video cases across SMM, production, and advertising. Click to open in player.",
+      subtitle: "Our work. Click to open in player.",
       cases: {
         case1: { text: "Case 1", "aria-label": "Case 1" },
         case2: { text: "Case 2", "aria-label": "Case 2" },
@@ -387,7 +390,10 @@ const translations = {
       },
     },
     email: {
-      copied: "Текст скопирован",
+      copied: "Message copied!",
+    },
+    form: {
+      sent: "Message sent",
     },
   },
   et: {
@@ -468,7 +474,7 @@ const translations = {
     },
     works: {
       title: "Meie tööd",
-      subtitle: "Videokesed SMM‑i, produktsiooni ja reklaami teemadel. Klõps avab videomängija.",
+      subtitle: "Meie tööd. Klõps avab videomängija.",
       cases: {
         case1: { text: "Projekt 1", "aria-label": "Projekt 1" },
         case2: { text: "Projekt 2", "aria-label": "Projekt 2" },
@@ -544,7 +550,10 @@ const translations = {
       },
     },
     email: {
-      copied: "Текст скопирован",
+      copied: "Sõnum kopeeritud!",
+    },
+    form: {
+      sent: "Sõnum saadetud",
     },
   },
 };
@@ -1051,63 +1060,11 @@ document.addEventListener("DOMContentLoaded", () => {
     revealEls.forEach((el) => io.observe(el));
   }
 
-  // Auto-scroll sections behavior - только на десктопе, на мобильных отключено
-  const isMobile = window.innerWidth <= 900;
+  // Auto-scroll sections behavior - ОТКЛЮЧЕНО ПОЛНОСТЬЮ
+  // Автодокрутка секций полностью удалена по требованию
   const autoScrollEls = doc.querySelectorAll(".auto-scroll");
-  if (autoScrollEls.length && !isMobile) {
-    const autoScrollIO = new IntersectionObserver(
-      (entries, obs) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const el = entry.target;
-            
-            // Запуск волны карточек, если это секция Services
-            if (el === servicesSection) {
-              prepareServicesWave();
-            }
-
-            const now = performance.now();
-            const alreadyAuto = el.dataset.autoscrolled === '1';
-            
-            const rect = el.getBoundingClientRect();
-            const headerOffset = getHeaderOffsetPx(el);
-            
-            // Если верх секции уже выше хедера, значит мы её уже проехали.
-            // Отписываемся, чтобы не тратить ресурсы.
-            if (rect.top < headerOffset - 10) { 
-                obs.unobserve(el);
-                return;
-            }
-
-            // Условие для автодокрутки:
-            // 1. Скроллим вниз
-            // 2. Верх секции находится в "активной зоне"
-            // Определяем, является ли это последней секцией
-            const index = Array.from(autoScrollEls).indexOf(el);
-            const isLastSection = index === autoScrollEls.length - 1;
-            const isNearBottom = (window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 100);
-            
-            const isTopInActiveZone = rect.top > headerOffset && rect.top < (window.innerHeight * 0.75);
-            const shouldSnap = isTopInActiveZone || (isLastSection && isNearBottom && rect.top > headerOffset);
-
-            if (!alreadyAuto && !isAutoScrolling && shouldSnap && now > navScrollBlockUntil && lastScrollDirection === 'down') {
-              el.dataset.autoscrolled = '1';
-              smoothScrollToTargetTop(el);
-              obs.unobserve(el);
-            }
-          }
-        });
-      },
-      {
-        // Используем массив порогов, чтобы ловить момент "входа" секции 
-        // даже если она очень длинная и процент её видимости растет медленно.
-        threshold: [0.15, 0.3, 0.45, 0.6],
-        rootMargin: "0px"
-      }
-    );
-    autoScrollEls.forEach((el) => autoScrollIO.observe(el));
-  } else if (autoScrollEls.length && isMobile) {
-    // На мобильных только запускаем волну карточек, но не автодокрутку
+  if (autoScrollEls.length) {
+    // Только запускаем волну карточек для секции Services, автодокрутка отключена
     const mobileIO = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -1549,7 +1506,8 @@ document.addEventListener("DOMContentLoaded", () => {
           },
           autoplay: false,
           clickToPlay: true,
-          ratio: null // Отключаем автоматическое соотношение сторон, используем наш контейнер
+          ratio: null, // Отключаем автоматическое соотношение сторон, используем наш контейнер
+          volume: 0.5 // Устанавливаем дефолтную громкость на 50%
         });
 
         // Обработка ошибок загрузки
@@ -1841,7 +1799,31 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         if (response.ok) {
-          alert("Ваш запрос успешно отправлен!");
+          // Создаем уведомление о успешной отправке
+          const notification = doc.createElement("div");
+          notification.className = "email-copy-notification";
+          notification.setAttribute("data-i18n", "form.sent");
+          doc.body.appendChild(notification);
+          
+          // Применяем перевод
+          const currentLang = doc.documentElement.lang || "ru";
+          applyLanguage(currentLang);
+          
+          // Показываем уведомление
+          setTimeout(() => {
+            notification.classList.add("show");
+          }, 10);
+          
+          // Скрываем уведомление через 2 секунды
+          setTimeout(() => {
+            notification.classList.remove("show");
+            setTimeout(() => {
+              if (doc.body.contains(notification)) {
+                doc.body.removeChild(notification);
+              }
+            }, 300);
+          }, 2000);
+          
           form.reset();
         } else {
           const data = await response.json().catch(() => null);

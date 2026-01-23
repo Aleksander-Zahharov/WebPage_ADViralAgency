@@ -1310,30 +1310,13 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   object-fit: cover;
   display: block;
 }
+/* Убраны подписи и иконка плей с видео в ленте */
 .ig-item .play {
-  position: absolute;
-  bottom: 8px; right: 10px;
-  font-size: 14px;
-  background: rgba(0,0,0,.45);
-  padding: 4px 6px;
-  border-radius: 8px;
-  border: 1px solid rgba(255,255,255,.15);
-  line-height: 1;
+  display: none;
 }
 
-/* Увеличиваем размер подписи к видео */
 .ig-item .video-title {
-  position: absolute;
-  bottom: 8px;
-  left: 8px;
-  font-size: 16px; /* дополнительное увеличение размера шрифта */
-  color: white;
-  background: rgba(0, 0, 0, 0.5); /* полупрозрачный фон */
-  padding: 2px 6px;
-  border-radius: 16px; /* повторяем радиус обводки карточки */
-  pointer-events: none;
-  opacity: 0.8;
-  z-index: 1; /* текст держим поверх видео */
+  display: none;
 }
 
 /* Отключаем snap, когда лентой управляет скрипт */
@@ -1357,68 +1340,76 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   align-items: center;
   justify-content: center;
   padding: 24px;
-  background: var(--card);
-  border: 1px solid var(--card-border);
-  border-radius: 12px;
+  background: transparent;
+  border: none;
+  border-radius: 20px;
   text-decoration: none;
   transition: all 0.25s ease;
   position: relative;
   overflow: hidden;
-  min-height: 120px;
-  aspect-ratio: 1;
-}
-
-.client-item::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(138, 88, 255, 0.1);
-  opacity: 0;
-  transition: opacity 0.25s ease;
-  z-index: 0;
+  width: 180px;
+  height: 180px;
+  min-width: 180px;
+  min-height: 180px;
+  max-width: 180px;
+  max-height: 180px;
 }
 
 .client-item:hover {
-  transform: translateY(-4px);
-  border-color: rgba(176, 134, 249, 0.4);
-  box-shadow: 0 8px 20px rgba(138, 88, 255, 0.2);
+  transform: scale(1.08); /* Приближение всего бокса при наведении */
 }
 
-.client-item:hover::before {
-  opacity: 1;
-}
-
+/* Разрешаем логотипам выходить за рамки с обрезкой - заполняют контейнер полностью */
 .client-logo {
-  max-width: 100%;
-  max-height: 80px;
-  width: auto;
-  height: auto;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: cover;
   position: relative;
   z-index: 1;
-  filter: brightness(0) invert(1);
-  opacity: 0.8;
+  filter: none;
+  opacity: 1;
   transition: opacity 0.25s ease, transform 0.25s ease;
+  border-radius: 0; /* Убираем закругление у картинки, оно будет у контейнера */
+  transform: scale(1.44); /* Увеличиваем все логотипы на 20% (1.2 * 1.2 = 1.44), чтобы они заполняли бокс и обрезались */
 }
 
+/* Estee увеличен чуть больше */
+.client-item[data-client="eeste"] .client-logo {
+  transform: scale(1.45); /* Estee увеличен еще чуть больше */
+}
+
+/* BFM - уменьшен чуть-чуть */
+.client-item[data-client="bfm"] .client-logo {
+  transform: scale(1.3); /* Немного меньше остальных */
+}
+
+/* ERR увеличен до стандартного размера, чтобы заполнял рамки */
+.client-item[data-client="err"] .client-logo {
+  transform: scale(1.44); /* ERR увеличен до стандартного размера */
+}
+
+/* Dodo Pizza - немного увеличен */
+.client-item[data-client="dodo"] .client-logo {
+  transform: scale(1.38); /* Dodo Pizza немного больше */
+}
+
+/* При наведении увеличивается весь бокс, а не картинка */
 .client-item:hover .client-logo {
   opacity: 1;
-  transform: scale(1.05);
+  /* Убираем transform у картинки, теперь увеличивается весь контейнер */
 }
 
-.client-name {
-  position: relative;
-  z-index: 1;
-  color: var(--text);
-  font-weight: 500;
-  font-size: 15px;
-  text-align: center;
-  display: none;
+/* BFM увеличен в два раза - может выходить за рамки и обрезается контейнером */
+.client-item[data-client="bfm"] .client-logo {
+  width: 200%;
+  height: 200%;
+  border-radius: 0; /* Убираем закругление у картинки, оно будет у контейнера */
+  /* transform задан выше для всех BFM вместе с ERR и Dodo */
 }
 
-.client-item .client-name.show {
-  display: block;
-}
+/* Названия клиентов убраны, используются только логотипы */
 
 @media (max-width: 768px) {
   .clients-grid {
@@ -1454,15 +1445,57 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   
   .client-item {
     flex: 0 0 auto;
-    width: 140px;
-    min-width: 140px;
-    padding: 16px;
-    min-height: 100px;
+    width: 180px;
+    height: 180px;
+    min-width: 180px;
+    min-height: 180px;
+    max-width: 180px;
+    max-height: 180px;
+    padding: 20px;
     scroll-snap-align: start;
   }
   
   .client-logo {
-    max-height: 60px;
+    max-width: none;
+    max-height: none;
+    border-radius: 0; /* Убираем закругление у картинки */
+    transform: scale(1.44); /* Увеличиваем все логотипы на планшетах на 20% (1.2 * 1.2 = 1.44) */
+  }
+  
+  /* Estee увеличен на планшетах */
+  .client-item[data-client="eeste"] .client-logo {
+    transform: scale(1.45); /* Estee увеличен еще чуть больше */
+  }
+  
+  /* BFM - уменьшен на планшетах */
+  .client-item[data-client="bfm"] .client-logo {
+    transform: scale(1.3); /* Немного меньше остальных */
+  }
+  
+  /* ERR увеличен до стандартного размера на планшетах */
+  .client-item[data-client="err"] .client-logo {
+    transform: scale(1.44); /* ERR увеличен до стандартного размера */
+  }
+  
+  /* Dodo Pizza - немного увеличен на планшетах */
+  .client-item[data-client="dodo"] .client-logo {
+    transform: scale(1.38); /* Dodo Pizza немного больше */
+  }
+  
+  /* BFM увеличен в два раза на планшетах */
+  .client-item[data-client="bfm"] .client-logo {
+    width: 200%;
+    height: 200%;
+    border-radius: 0;
+  }
+  
+  /* При наведении увеличивается весь бокс на планшетах */
+  .client-item:hover {
+    transform: scale(1.08); /* Приближение всего бокса при наведении */
+  }
+  
+  .client-item:hover .client-logo {
+    /* Убираем transform у картинки, теперь увеличивается весь контейнер */
   }
 }
 
@@ -1472,14 +1505,56 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   }
   
   .client-item {
-    width: 120px;
-    min-width: 120px;
-    padding: 12px;
-    min-height: 80px;
+    width: 180px;
+    height: 180px;
+    min-width: 180px;
+    min-height: 180px;
+    max-width: 180px;
+    max-height: 180px;
+    padding: 16px;
   }
   
   .client-logo {
-    max-height: 50px;
+    max-width: none;
+    max-height: none;
+    border-radius: 0; /* Убираем закругление у картинки */
+    transform: scale(1.44); /* Увеличиваем все логотипы на мобильных на 20% (1.2 * 1.2 = 1.44) */
+  }
+  
+  /* Estee увеличен на мобильных */
+  .client-item[data-client="eeste"] .client-logo {
+    transform: scale(1.45); /* Estee увеличен еще чуть больше */
+  }
+  
+  /* BFM - уменьшен на мобильных */
+  .client-item[data-client="bfm"] .client-logo {
+    transform: scale(1.3); /* Немного меньше остальных */
+  }
+  
+  /* ERR увеличен до стандартного размера на мобильных */
+  .client-item[data-client="err"] .client-logo {
+    transform: scale(1.44); /* ERR увеличен до стандартного размера */
+  }
+  
+  /* Dodo Pizza - немного увеличен на мобильных */
+  .client-item[data-client="dodo"] .client-logo {
+    transform: scale(1.38); /* Dodo Pizza немного больше */
+  }
+  
+  /* BFM увеличен в два раза на мобильных */
+  .client-item[data-client="bfm"] .client-logo {
+    width: 200%;
+    height: 200%;
+    border-radius: 0;
+  }
+  
+  /* При наведении увеличивается весь бокс на мобильных */
+  .client-item:hover {
+    transform: scale(1.08); /* Приближение всего бокса при наведении */
+  }
+  
+  .client-item:hover .client-logo {
+    /* Убираем transform у картинки, теперь увеличивается весь контейнер */
   }
 }
 
@@ -1804,19 +1879,21 @@ input:focus, textarea:focus {
 /* Уведомление о копировании email */
 .email-copy-notification {
   position: fixed;
-  bottom: 30px;
+  top: calc(var(--header-h) + 20px);
   left: 50%;
-  transform: translateX(-50%) translateY(100px);
-  background: var(--card);
-  border: 1px solid var(--card-border);
-  color: var(--text);
+  transform: translateX(-50%) translateY(-100px);
+  background: #ffffff;
+  border: none;
+  color: #000000;
   padding: 12px 24px;
-  border-radius: 8px;
+  border-radius: 999px;
   font-size: 14px;
+  font-weight: 500;
   z-index: 10000;
   opacity: 0;
   transition: opacity 0.3s ease, transform 0.3s ease;
   pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .email-copy-notification.show {
@@ -1850,7 +1927,10 @@ input:focus, textarea:focus {
 }
 
 .footer-right .social-icon.meta {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z'/%3E%3Cpath d='M16 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z'/%3E%3Cpath d='M8 12h8'/%3E%3C/svg%3E");
+  background-image: url("./assets/images/meta-icon-white.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .footer-right .social-icon.tiktok {
