@@ -221,13 +221,16 @@ const translations = {
       },
     },
     footer: {
-      copy: "© 2025 ADViral Agency",
-      email: "hello@adviral.agency",
+      copy: "© 2026 ADViral Agency",
+      email: "info@adviral.agency",
       social: {
-        instagram: "Instagram",
-        facebook: "Facebook",
-        tiktok: "TikTok",
+        instagram: "",
+        facebook: "",
+        tiktok: "",
       },
+    },
+    email: {
+      copied: "Текст скопирован",
     },
   },
   en: {
@@ -375,13 +378,16 @@ const translations = {
       },
     },
     footer: {
-      copy: "© 2025 ADViral Agency",
-      email: "hello@adviral.agency",
+      copy: "© 2026 ADViral Agency",
+      email: "info@adviral.agency",
       social: {
-        instagram: "Instagram",
-        facebook: "Facebook",
-        tiktok: "TikTok",
+        instagram: "",
+        facebook: "",
+        tiktok: "",
       },
+    },
+    email: {
+      copied: "Текст скопирован",
     },
   },
   et: {
@@ -529,13 +535,16 @@ const translations = {
       },
     },
     footer: {
-      copy: "© 2025 ADViral Agency",
-      email: "hello@adviral.agency",
+      copy: "© 2026 ADViral Agency",
+      email: "info@adviral.agency",
       social: {
-        instagram: "Instagram",
-        facebook: "Facebook",
-        tiktok: "TikTok",
+        instagram: "",
+        facebook: "",
+        tiktok: "",
       },
+    },
+    email: {
+      copied: "Текст скопирован",
     },
   },
 };
@@ -2015,6 +2024,142 @@ document.addEventListener("DOMContentLoaded", () => {
     heroSection.addEventListener("mousemove", (event) => updateHeroSpotlight(event.clientX, event.clientY));
     heroSection.addEventListener("mouseleave", () => {
       heroTitle.style.setProperty("--spot-o", "0");
+    });
+  }
+
+  // Копирование email при клике
+  const emailLink = doc.getElementById("email-link");
+  if (emailLink) {
+    emailLink.addEventListener("click", async (e) => {
+      e.preventDefault();
+      const email = emailLink.textContent.trim();
+      
+      try {
+        await navigator.clipboard.writeText(email);
+        
+        // Создаем уведомление
+        const notification = doc.createElement("div");
+        notification.className = "email-copy-notification";
+        notification.setAttribute("data-i18n", "email.copied");
+        doc.body.appendChild(notification);
+        
+        // Применяем перевод
+        const currentLang = doc.documentElement.lang || "ru";
+        applyLanguage(currentLang);
+        
+        // Показываем уведомление
+        setTimeout(() => {
+          notification.classList.add("show");
+        }, 10);
+        
+        // Скрываем уведомление через 2 секунды
+        setTimeout(() => {
+          notification.classList.remove("show");
+          setTimeout(() => {
+            doc.body.removeChild(notification);
+          }, 300);
+        }, 2000);
+      } catch (err) {
+        console.error("Ошибка копирования:", err);
+        // Fallback для старых браузеров
+        const textArea = doc.createElement("textarea");
+        textArea.value = email;
+        textArea.style.position = "fixed";
+        textArea.style.opacity = "0";
+        doc.body.appendChild(textArea);
+        textArea.select();
+        try {
+          doc.execCommand("copy");
+          const notification = doc.createElement("div");
+          notification.className = "email-copy-notification";
+          notification.setAttribute("data-i18n", "email.copied");
+          doc.body.appendChild(notification);
+          
+          // Применяем перевод
+          const currentLang = doc.documentElement.lang || "ru";
+          applyLanguage(currentLang);
+          setTimeout(() => {
+            notification.classList.add("show");
+          }, 10);
+          setTimeout(() => {
+            notification.classList.remove("show");
+            setTimeout(() => {
+              doc.body.removeChild(notification);
+            }, 300);
+          }, 2000);
+        } catch (err2) {
+          console.error("Ошибка fallback копирования:", err2);
+        }
+        doc.body.removeChild(textArea);
+      }
+    });
+  }
+
+  // Копирование телефона при клике
+  const phoneLink = doc.getElementById("phone-link");
+  if (phoneLink) {
+    phoneLink.addEventListener("click", async (e) => {
+      e.preventDefault();
+      const phone = phoneLink.textContent.trim();
+      
+      try {
+        await navigator.clipboard.writeText(phone);
+        
+        // Создаем уведомление
+        const notification = doc.createElement("div");
+        notification.className = "email-copy-notification";
+        notification.setAttribute("data-i18n", "email.copied");
+        doc.body.appendChild(notification);
+        
+        // Применяем перевод
+        const currentLang = doc.documentElement.lang || "ru";
+        applyLanguage(currentLang);
+        
+        // Показываем уведомление
+        setTimeout(() => {
+          notification.classList.add("show");
+        }, 10);
+        
+        // Скрываем уведомление через 2 секунды
+        setTimeout(() => {
+          notification.classList.remove("show");
+          setTimeout(() => {
+            doc.body.removeChild(notification);
+          }, 300);
+        }, 2000);
+      } catch (err) {
+        console.error("Ошибка копирования:", err);
+        // Fallback для старых браузеров
+        const textArea = doc.createElement("textarea");
+        textArea.value = phone;
+        textArea.style.position = "fixed";
+        textArea.style.opacity = "0";
+        doc.body.appendChild(textArea);
+        textArea.select();
+        try {
+          doc.execCommand("copy");
+          const notification = doc.createElement("div");
+          notification.className = "email-copy-notification";
+          notification.setAttribute("data-i18n", "email.copied");
+          doc.body.appendChild(notification);
+          
+          // Применяем перевод
+          const currentLang = doc.documentElement.lang || "ru";
+          applyLanguage(currentLang);
+          setTimeout(() => {
+            notification.classList.add("show");
+          }, 10);
+          setTimeout(() => {
+            notification.classList.remove("show");
+            setTimeout(() => {
+              doc.body.removeChild(notification);
+            }, 300);
+          }, 2000);
+        } catch (err2) {
+          console.error("Ошибка fallback копирования:", err2);
+        }
+        doc.body.removeChild(textArea);
+      }
     });
   }
 });
