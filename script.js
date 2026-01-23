@@ -155,7 +155,7 @@ const translations = {
     },
     works: {
       title: "Наши работы",
-      subtitle: "Видео‑кейсы по SMM, продакшну и рекламе. Клик откроет Instagram в новой вкладке.",
+      subtitle: "Видео‑кейсы по SMM, продакшну и рекламе. Клик откроет видеоплеер.",
       cases: {
         case1: { text: "Кейс 1", "aria-label": "Кейс 1" },
         case2: { text: "Кейс 2", "aria-label": "Кейс 2" },
@@ -308,7 +308,7 @@ const translations = {
     },
     works: {
       title: "Our work",
-      subtitle: "Video cases across SMM, production, and advertising. Clicking opens Instagram in a new tab.",
+      subtitle: "Video cases across SMM, production, and advertising. Click to open in player.",
       cases: {
         case1: { text: "Case 1", "aria-label": "Case 1" },
         case2: { text: "Case 2", "aria-label": "Case 2" },
@@ -461,7 +461,7 @@ const translations = {
     },
     works: {
       title: "Meie tööd",
-  subtitle: "Videokesed SMM‑i, produktsiooni ja reklaami teemadel. Klõps avab Instagrami uues vahekaardis.",
+      subtitle: "Videokesed SMM‑i, produktsiooni ja reklaami teemadel. Klõps avab videomängija.",
       cases: {
         case1: { text: "Projekt 1", "aria-label": "Projekt 1" },
         case2: { text: "Projekt 2", "aria-label": "Projekt 2" },
@@ -1274,6 +1274,150 @@ document.addEventListener("DOMContentLoaded", () => {
     video.addEventListener("mouseenter", () => video.play());
     video.addEventListener("mouseleave", () => video.pause());
   });
+
+  // Модальное окно видеоплеера
+  (function setupVideoModal() {
+    const modal = doc.getElementById("video-modal");
+    const modalOverlay = modal?.querySelector(".video-modal-overlay");
+    const modalClose = modal?.querySelector(".video-modal-close");
+    const modalPlayer = doc.getElementById("modal-video-player");
+    const modalSource = doc.getElementById("modal-video-source");
+    
+    if (!modal || !modalPlayer || !modalSource) {
+      console.warn("Video modal elements not found");
+      return;
+    }
+
+    function getVideoSource(item) {
+      // Сначала проверяем data-video атрибут
+      if (item.dataset.video) {
+        return item.dataset.video;
+      }
+      
+      // Затем проверяем старые атрибуты для обратной совместимости
+      if (item.dataset.videoSrc) {
+        return item.dataset.videoSrc;
+      }
+      
+      if (item.dataset.videoFallback) {
+        return item.dataset.videoFallback;
+      }
+
+      // Пробуем получить из video элемента
+      const video = item.querySelector("video");
+      if (!video) return null;
+
+      const sources = Array.from(video.querySelectorAll("source"));
+      if (sources.length > 0 && sources[0].src) {
+        return sources[0].src;
+      }
+
+      if (video.src) {
+        return video.src;
+      }
+
+      return null;
+    }
+
+    function openModal(videoSrc) {
+      if (!videoSrc) {
+        console.warn("No video source found");
+        return;
+      }
+
+      modalSource.src = videoSrc;
+      modalPlayer.src = videoSrc;
+      modalPlayer.load();
+      
+      modal.hidden = false;
+      document.body.style.overflow = "hidden";
+      
+      modalPlayer.addEventListener(
+        "loadeddata",
+        () => {
+          modalPlayer.play().catch(() => {});
+        },
+        { once: true }
+      );
+      
+      setTimeout(() => {
+        modalPlayer.focus();
+      }, 100);
+    }
+
+    function closeModal() {
+      modalPlayer.pause();
+      modalPlayer.currentTime = 0;
+      modalPlayer.src = "";
+      modalSource.src = "";
+      modal.hidden = true;
+      document.body.style.overflow = "";
+    }
+
+    // Обработчик клика для открытия модального окна
+    const igItems = doc.querySelectorAll(".ig-item[data-video]");
+    
+    igItems.forEach((item) => {
+      item.addEventListener("click", (e) => {
+        // Проверяем, не происходит ли перетаскивание
+        const igStrip = item.closest(".ig-strip");
+        if (igStrip && igStrip.dataset.dragging === "true") {
+          return;
+        }
+        
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const videoSrc = getVideoSource(item);
+        if (videoSrc) {
+          openModal(videoSrc);
+        }
+      });
+    });
+    
+    // Также обрабатываем клики на самом видео элементе
+    const igVideos = doc.querySelectorAll(".ig-item video");
+    igVideos.forEach((video) => {
+      video.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const item = video.closest(".ig-item");
+        if (!item) return;
+        
+        const igStrip = item.closest(".ig-strip");
+        if (igStrip && igStrip.dataset.dragging === "true") {
+          return;
+        }
+        
+        const videoSrc = getVideoSource(item);
+        if (videoSrc) {
+          openModal(videoSrc);
+        }
+      });
+    });
+
+    // Закрытие по клику на overlay
+    if (modalOverlay) {
+      modalOverlay.addEventListener("click", (e) => {
+        if (e.target === modalOverlay) {
+          closeModal();
+        }
+      });
+    }
+
+    // Закрытие по клику на кнопку закрытия
+    if (modalClose) {
+      modalClose.addEventListener("click", closeModal);
+    }
+
+    // Закрытие по Escape
+    doc.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !modal.hidden) {
+        closeModal();
+      }
+    });
+  })();
 
   // Обработчик формы (демонстрационный пример)
   const form = doc.querySelector("#contact-form");
