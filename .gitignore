@@ -30,3 +30,9 @@ coverage/
 # Deploy tool folders (optional)
 .vercel/
 .netlify/
+
+# Optimization scripts and docs (temporary tools)
+optimize_media.py
+optimize_video.md
+*.py
+!requirements.txt
