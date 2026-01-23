@@ -1810,7 +1810,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const formData = new FormData(form);
       // Формируем данные формы в том виде, как ожидает Formspree
-      formData.append("_subject", "Новый запрос с сайта ADViral Agency");
+      const emailField = form.querySelector('input[name="email"]');
+      const nameField = form.querySelector('input[name="name"]');
+      const emailValue = emailField?.value || '';
+      const nameValue = nameField?.value || '';
+      
+      // Устанавливаем reply-to на email отправителя для правильной доставки
+      if (emailValue) {
+        formData.set("_replyto", emailValue);
+      }
+      
+      // Улучшенный subject с информацией об отправителе
+      const subject = nameValue 
+        ? `Новый запрос от ${nameValue} - ADViral Agency`
+        : "Новый запрос с сайта ADViral Agency";
+      formData.set("_subject", subject);
+      
+      // Добавляем информацию о компании, если указана
+      const companyField = form.querySelector('input[name="company"]');
+      if (companyField?.value) {
+        formData.set("_subject", `${subject} (${companyField.value})`);
+      }
 
       try {
         // Отправляем запрос на Formspree с JSON-данными

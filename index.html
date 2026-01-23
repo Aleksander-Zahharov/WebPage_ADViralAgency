@@ -462,9 +462,12 @@
         <div class="contact-section-grid reveal reveal-left">
           <!-- Левая колонка: Форма обратной связи -->
           <div class="contact-form-wrapper">
-            <form id="contact-form" class="contact-form" action="https://formspree.io/f/xjkalnog" method="POST">
-              <!-- Скрытое поле для явного указания получателя -->
+            <form id="contact-form" class="contact-form" action="https://formspree.io/f/mzdeagyn" method="POST">
+              <!-- Скрытые поля для настройки Formspree -->
               <input type="hidden" name="_to" value="info@adviral.agency" />
+              <input type="hidden" name="_format" value="plain" />
+              <input type="hidden" name="_cc" value="" />
+              <input type="hidden" name="_next" value="" />
               <div class="input-row">
                 <div class="input-wrapper">
                   <input type="text" id="name" name="name" placeholder="Your name" required data-i18n="contact.form.name" data-i18n-attrs="placeholder" />
