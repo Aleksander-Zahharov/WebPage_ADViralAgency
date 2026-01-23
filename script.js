@@ -175,7 +175,7 @@ const translations = {
       title: "Наши партнеры",
     },
     contact: {
-      title: "Контакты и пакеты",
+      title: "Контакты",
       packages: {
         free: {
           name: "Free",
@@ -219,8 +219,6 @@ const translations = {
         company: { placeholder: "Компания (необязательно)" },
         message: { placeholder: "Коротко опишите задачу" },
     submit: "Отправить запрос",
-    // Исправлено уведомление о согласии
-    note: "Нажимая «Отправить», вы соглашаетесь с обработкой данных",
       },
     },
     footer: {
@@ -330,7 +328,7 @@ const translations = {
       title: "Our partners",
     },
     contact: {
-      title: "Contacts & packages",
+      title: "Contacts",
       packages: {
         free: {
           name: "Free",
@@ -374,8 +372,6 @@ const translations = {
         company: { placeholder: "Company (optional)" },
         message: { placeholder: "Briefly describe the task" },
     submit: "Send request",
-    // Обновлён текст согласия
-    note: "By clicking \"Send\", you agree to the processing of your data.",
       },
     },
     footer: {
@@ -485,7 +481,7 @@ const translations = {
       title: "Meie partnerid",
     },
     contact: {
-      title: "Kontaktid ja paketid",
+      title: "Kontaktid",
       packages: {
         free: {
           name: "Free",
@@ -529,8 +525,6 @@ const translations = {
         company: { placeholder: "Ettevõte (valikuline)" },
         message: { placeholder: "Kirjelda lühidalt vajadust" },
         submit: "Saada päring",
-  // Parandatud nõusoleku teade
-  note: "Nupule \"Saada\" vajutades nõustud oma andmete töötlemisega.",
       },
     },
     footer: {
@@ -1292,8 +1286,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const formData = new FormData(form);
       // Формируем данные формы в том виде, как ожидает Formspree
-  const selectedPackage = doc.querySelector("input[name='package']:checked");
-      formData.set("package", selectedPackage ? selectedPackage.value : "Не выбран");
       formData.append("_subject", "Новый запрос с сайта ADViral Agency");
 
       try {
@@ -1433,6 +1425,31 @@ document.addEventListener("DOMContentLoaded", () => {
   } else {
     pkgBodies.forEach((pkg) => {
       pkg.style.setProperty('--opacity', '0');
+    });
+  }
+
+  // Включаем прожектор при наведении на текстовые поля
+  const inputWrappers = Array.from(doc.querySelectorAll('.input-wrapper'));
+  if (supportsHoverSpotlight) {
+    inputWrappers.forEach((wrapper) => {
+      const input = wrapper.querySelector('input, textarea');
+      if (!input) return;
+
+      const updateInputSpotlight = createRafThrottle((clientX, clientY) => {
+        const rect = wrapper.getBoundingClientRect();
+        wrapper.style.setProperty('--x', `${clientX - rect.left}px`);
+        wrapper.style.setProperty('--y', `${clientY - rect.top}px`);
+        wrapper.style.setProperty('--opacity', '1');
+      });
+
+      wrapper.addEventListener('mousemove', (event) => updateInputSpotlight(event.clientX, event.clientY));
+      wrapper.addEventListener('mouseleave', () => {
+        wrapper.style.setProperty('--opacity', '0');
+      });
+    });
+  } else {
+    inputWrappers.forEach((wrapper) => {
+      wrapper.style.setProperty('--opacity', '0');
     });
   }
 

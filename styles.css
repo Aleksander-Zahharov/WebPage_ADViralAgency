@@ -766,6 +766,76 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
 }
 .media:hover img { transform: scale(1.05); }
 
+/* Наклонные рамки для секции "Кто мы" */
+.media-tilted-group {
+  display: flex;
+  gap: 20px; /* Одинаковое расстояние между фотками */
+  align-items: stretch;
+  height: 100%;
+}
+
+.media-tilted-frame {
+  flex: 1;
+  overflow: hidden; /* Обрезаем изображение, чтобы оно не выходило за рамки */
+  position: relative;
+  border: none; /* Убираем светло-серые границы */
+  background: var(--card);
+  transform: skew(-8deg, 0deg); /* Все рамки наклонены под одним углом (влево) - увеличен наклон */
+}
+
+/* Убираем индивидуальные наклоны - все рамки одинаковые */
+.media-tilted-frame:nth-child(1),
+.media-tilted-frame:nth-child(2),
+.media-tilted-frame:nth-child(3) {
+  transform: skew(-8deg, 0deg);
+}
+
+.media-tilted-frame:hover {
+  z-index: 1;
+}
+
+/* Убираем индивидуальные hover трансформации */
+.media-tilted-frame:nth-child(1):hover,
+.media-tilted-frame:nth-child(2):hover,
+.media-tilted-frame:nth-child(3):hover {
+  transform: skew(-8deg, 0deg);
+}
+
+.media-tilted-frame picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* Дополнительная защита от переполнения */
+}
+
+.media-tilted-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transform: skew(8deg, 0deg) scale(1.25); /* Увеличиваем приближение, чтобы не было пустых краев */
+  transition: transform 0.5s cubic-bezier(.2,.6,.2,1);
+  transform-origin: center center; /* Масштабирование от центра */
+}
+
+/* Все изображения используют одинаковый наклон */
+.media-tilted-frame:nth-child(1) img,
+.media-tilted-frame:nth-child(2) img,
+.media-tilted-frame:nth-child(3) img {
+  transform: skew(8deg, 0deg) scale(1.25);
+}
+
+.media-tilted-frame:hover img {
+  transform: skew(8deg, 0deg) scale(1.35); /* Увеличиваем приближение при наведении */
+}
+
+/* Убираем индивидуальные hover трансформации для изображений */
+.media-tilted-frame:nth-child(1):hover img,
+.media-tilted-frame:nth-child(2):hover img,
+.media-tilted-frame:nth-child(3):hover img {
+  transform: skew(8deg, 0deg) scale(1.35);
+}
+
 .content .bullets { padding: 0; margin: 18px 0 0; list-style: none; }
 .content .bullets li {
   padding-left: 28px; position: relative; margin: 10px 0; color: var(--muted);
@@ -1166,73 +1236,67 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
 /* =========================
   Форма контактов и тарифы
 ========================= */
+.contact-section-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(24px, 4vw, 48px);
+  margin-top: 24px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .contact-section-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+.contact-form-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
 .contact-form {
   display: grid;
   gap: 14px;
-  margin-top: 12px;
 }
-.contact-grid {
+
+.input-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px; /* сужаем расстояние между колонками */
-}
-.contact-left {
-  display: grid;
-  gap: 12px;
-}
-.contact-right {
-  display: grid;
-}
-@media (max-width: 800px) {
-  .contact-grid { grid-template-columns: 1fr; }
+  gap: 14px;
 }
 
-/* Выравниваем три поля слева по высоте правого блока на десктопе */
-@media (min-width: 900px) {
-  .contact-grid { align-items: stretch; }
-  .contact-left {
-    height: 100%;
-    grid-template-rows: repeat(3, 1fr);
-  }
-  .contact-left input {
-    height: 100%;
-  min-height: 56px; /* оставляем комфортную высоту для тач */
-  }
-  /* Правый textarea растягиваем до суммарной высоты трех полей слева (3*56px + два интервала по 12px = 192px) */
-  .contact-right textarea {
-    min-height: calc(56px * 3 + 12px * 2);
-    height: calc(56px * 3 + 12px * 2);
-  align-self: stretch; /* растягиваем по высоте области грида */
-  }
+.packages-wrapper {
+  display: flex;
+  flex-direction: column;
+  overflow: visible; /* Разрешаем эффекту выходить за границы */
+  align-items: stretch;
 }
 
-@media (max-width: 600px) {
-  .contact-form {
-    gap: 18px;
-  }
-
-  .contact-grid {
-    gap: 16px;
-  }
-
-  .contact-form .btn.full {
-    width: 100%;
-  }
-
-  /* Укорачиваем поле сообщения на мобилке — высота как у двух верхних полей вместе */
-  .contact-right textarea {
-    min-height: calc(46px * 2 + 16px); /* 46px высота инпута, 16px промежуток между полями */
-    height: calc(46px * 2 + 16px);
-  }
+.input-wrapper {
+  position: relative;
+  overflow: hidden;
 }
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+
+.input-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.5);
+  mask: radial-gradient(25rem 25rem at var(--x, 50%) var(--y, 50%), #000 1%, transparent 50%);
+  -webkit-mask: radial-gradient(25rem 25rem at var(--x, 50%) var(--y, 50%), #000 1%, transparent 50%);
+  opacity: var(--opacity, 0);
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+  border-radius: 12px;
 }
-@media (max-width: 700px) {
-  .form-row { grid-template-columns: 1fr; }
+
+.textarea-wrapper {
+  overflow: hidden; /* Ограничиваем свечение снизу */
 }
+
 input[type="text"],
 input[type="email"],
 textarea {
@@ -1245,31 +1309,67 @@ textarea {
   color: #fff;
   outline: none;
   transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
+  position: relative;
+  z-index: 2;
+  font-family: var(--secondary-font); /* Общий шрифт сайта */
+  font-size: 16px;
+  line-height: 1.55;
 }
+
 textarea {
-  min-height: 240px;
-  resize: none; /* запрет вертикального изменения размера */
+  min-height: 120px; /* Уменьшаем высоту textarea */
+  resize: none;
   line-height: 1.45;
-  overflow-y: auto; /* скроллим длинные сообщения */
+  overflow-y: auto;
 }
-input::placeholder, textarea::placeholder { color: rgba(255,255,255,.55); }
+
+input::placeholder, textarea::placeholder { 
+  color: rgba(255,255,255,.55); 
+}
+
+/* Подсветка при фокусе как у выбранных пакетов */
 input:focus, textarea:focus {
-  border-color: rgba(255,255,255,.28);
-  box-shadow: 0 0 0 4px rgba(138, 88, 255,.15);
-  background: rgba(255,255,255,.07);
+  border-color: rgba(176,134,249, .65);
+  box-shadow: none;
+  background: linear-gradient(180deg, rgba(176,134,249,.10), rgba(255,255,255,0));
+}
+
+/* Эффект белого пятна остается видимым даже при фокусе */
+
+@media (hover: none) and (pointer: coarse) {
+  .input-wrapper::before {
+    content: none;
+  }
+}
+
+.btn-icon {
+  display: inline-block;
+  margin-right: 8px;
+  font-size: 1.1em;
+}
+
+@media (max-width: 600px) {
+  .contact-form {
+    gap: 18px;
+  }
+
+  .input-row {
+    grid-template-columns: 1fr; /* На мобильных в одну колонку */
+  }
+
+  .contact-form .btn.full {
+    width: 100%;
+  }
+
+  textarea {
+    min-height: 160px;
+  }
 }
 
 .packages {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0,1fr));
+  grid-template-columns: repeat(2, minmax(0,1fr));
   gap: 12px;
-  margin-top: 4px;
-}
-@media (max-width: 1023px) {
-  .packages { grid-template-columns: repeat(3, minmax(0,1fr)); }
-}
-@media (max-width: 900px) {
-  .packages { grid-template-columns: repeat(2, minmax(0,1fr)); }
 }
 @media (max-width: 600px) {
   .packages { grid-template-columns: 1fr; }

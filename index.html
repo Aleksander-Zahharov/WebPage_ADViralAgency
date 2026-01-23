@@ -189,11 +189,25 @@
   <!-- Секция 1: Кто мы -->
     <section id="about" class="section reveal reveal-left">
       <div class="container grid-2">
-        <div class="media">
-          <picture>
-            <source srcset="assets/images/krutqjeChuvaki.webp" type="image/webp">
-            <img src="assets/images/krutqjeChuvaki.jpg" alt="ADViral Agency team" loading="lazy" />
-          </picture>
+        <div class="media-tilted-group">
+          <div class="media-tilted-frame">
+            <picture>
+              <source srcset="assets/images/1white.webp" type="image/webp">
+              <img src="assets/images/1white.jpg" alt="ADViral Agency team" loading="lazy" />
+            </picture>
+          </div>
+          <div class="media-tilted-frame">
+            <picture>
+              <source srcset="assets/images/1green.webp" type="image/webp">
+              <img src="assets/images/1green.jpg" alt="ADViral Agency team" loading="lazy" />
+            </picture>
+          </div>
+          <div class="media-tilted-frame">
+            <picture>
+              <source srcset="assets/images/1red.webp" type="image/webp">
+              <img src="assets/images/1red.jpg" alt="ADViral Agency team" loading="lazy" />
+            </picture>
+          </div>
         </div>
         <div class="content">
           <h2 data-i18n="about.title">Who we are</h2>
@@ -494,89 +508,61 @@
       </div>
     </section>
 
-  <!-- Секция 5: Контакты и пакеты -->
+  <!-- Секция 5: Контакты -->
     <section id="contact" class="section reveal reveal-left">
       <div class="container">
-  <h2 style="text-align: right;" data-i18n="contact.title">Contacts & packages</h2>
-  <!-- Сетка с вариантами тарифов -->
-        <div class="packages">
-          <label class="pkg">
-            <input type="radio" name="package" value="free" />
-            <div class="pkg-body">
-              <div class="pkg-top">
-                <h3 data-i18n="contact.packages.free.name">Free</h3>
-                <div class="price" data-i18n="contact.packages.free.price">0€</div>
+  <h2 data-i18n="contact.title">Контакты</h2>
+        <div class="contact-section-grid">
+          <!-- Левая колонка: Форма обратной связи -->
+          <div class="contact-form-wrapper">
+            <form id="contact-form" class="contact-form" action="https://formspree.io/f/xjkalnog" method="POST">
+              <!-- Скрытое поле для явного указания получателя -->
+              <input type="hidden" name="_to" value="info@adviral.agency" />
+              <div class="input-row">
+                <div class="input-wrapper">
+                  <input type="text" id="name" name="name" placeholder="Your name" required data-i18n="contact.form.name" data-i18n-attrs="placeholder" />
+                </div>
+                <div class="input-wrapper">
+                  <input type="text" id="company" name="company" placeholder="Company (optional)" data-i18n="contact.form.company" data-i18n-attrs="placeholder" />
+                </div>
               </div>
-              <ul>
-                <li data-i18n="contact.packages.free.features.consultation">Express marketing consultation</li>
-                <li data-i18n="contact.packages.free.features.checklist">Personalised first-steps checklist</li>
-              </ul>
-            </div>
-          </label>
-          <label class="pkg">
-            <input type="radio" name="package" value="basic" />
-            <div class="pkg-body">
-              <div class="pkg-top">
-                <h3 data-i18n="contact.packages.basic.name">Basic</h3>
-                <div class="price" data-i18n="contact.packages.basic.price">from €990</div>
+              <div class="input-wrapper">
+                <input type="email" id="email" name="email" placeholder="Email" required data-i18n="contact.form.email" data-i18n-attrs="placeholder" />
               </div>
-              <ul>
-                <li data-i18n="contact.packages.basic.features.previous">Everything in Free</li>
-                <li data-i18n="contact.packages.basic.features.socials">Daily social media management and content calendar</li>
-                <li data-i18n="contact.packages.basic.features.strategy">Growth strategy to lift reach</li>
-              </ul>
-            </div>
-          </label>
-
-          <label class="pkg">
-            <input type="radio" name="package" value="pro" checked />
-            <div class="pkg-body">
-              <div class="pkg-top">
-                <h3 data-i18n="contact.packages.pro.name">Pro</h3>
-                <div class="price" data-i18n="contact.packages.pro.price">from €2,490</div>
+              <div class="input-wrapper textarea-wrapper">
+                <textarea id="message" name="message" placeholder="Briefly describe your task" data-i18n="contact.form.message" data-i18n-attrs="placeholder"></textarea>
               </div>
-              <ul>
-                <li data-i18n="contact.packages.pro.features.previous">Everything in Basic</li>
-                <li data-i18n="contact.packages.pro.features.campaigns">Creative development and advertising campaign setup</li>
-                <li data-i18n="contact.packages.pro.features.video">Short-form video production and community engagement</li>
-              </ul>
-            </div>
-          </label>
-
-          <label class="pkg">
-            <input type="radio" name="package" value="elite" />
-            <div class="pkg-body">
-              <div class="pkg-top">
-                <h3 data-i18n="contact.packages.elite.name">Elite</h3>
-                <div class="price custom" data-i18n="contact.packages.elite.price">custom</div>
-              </div>
-              <ul>
-                <li data-i18n="contact.packages.elite.features.previous">Everything in Pro</li>
-                <li data-i18n="contact.packages.elite.features.analysis">In-depth brand, market, and product portfolio analysis</li>
-                <li data-i18n="contact.packages.elite.features.acquisition">Audience segmentation and new acquisition plays</li>
-              </ul>
-            </div>
-          </label>
-        </div>
-
-  <!-- Форма обратной связи отправляется через Formspree -->
-  <form id="contact-form" class="contact-form" action="https://formspree.io/f/xjkalnog" method="POST">
-          <!-- Скрытое поле для явного указания получателя -->
-          <input type="hidden" name="_to" value="info@adviral.agency" />
-          <div class="contact-grid">
-            <div class="contact-left">
-              <input type="text" id="name" name="name" placeholder="Your name" required data-i18n="contact.form.name" data-i18n-attrs="placeholder" />
-              <input type="email" id="email" name="email" placeholder="Email" required data-i18n="contact.form.email" data-i18n-attrs="placeholder" />
-              <input type="text" id="company" name="company" placeholder="Company (optional)" data-i18n="contact.form.company" data-i18n-attrs="placeholder" />
-            </div>
-            <div class="contact-right">
-              <textarea id="message" name="message" placeholder="Briefly describe your task" data-i18n="contact.form.message" data-i18n-attrs="placeholder"></textarea>
-            </div>
+              <button type="submit" class="btn btn-primary full" data-i18n="contact.form.submit">
+                <span class="btn-icon">✈️</span>
+                <span>Send request</span>
+              </button>
+            </form>
           </div>
 
-          <button type="submit" class="btn btn-primary full" data-i18n="contact.form.submit">Send request</button>
-          <p class="form-note" data-i18n="contact.form.note">By clicking "Send", you agree to the processing of your data.</p>
-        </form>
+          <!-- Правая колонка: Фотографии в стиле секции "Кто мы" -->
+          <div class="packages-wrapper">
+            <div class="media-tilted-group">
+              <div class="media-tilted-frame">
+                <picture>
+                  <source srcset="assets/images/2green.webp" type="image/webp">
+                  <img src="assets/images/2green.webp" alt="ADViral Agency" loading="lazy" />
+                </picture>
+              </div>
+              <div class="media-tilted-frame">
+                <picture>
+                  <source srcset="assets/images/2red.webp" type="image/webp">
+                  <img src="assets/images/2red.webp" alt="ADViral Agency" loading="lazy" />
+                </picture>
+              </div>
+              <div class="media-tilted-frame">
+                <picture>
+                  <source srcset="assets/images/2white.webp" type="image/webp">
+                  <img src="assets/images/2white.webp" alt="ADViral Agency" loading="lazy" />
+                </picture>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
