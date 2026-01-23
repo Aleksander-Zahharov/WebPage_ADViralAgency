@@ -36,3 +36,8 @@ optimize_media.py
 optimize_video.md
 *.py
 !requirements.txt
+
+# Original video files (too large for Git, use optimized versions)
+assets/videos/*.mp4
+assets/videos/*.mov
+!assets/videos/optimized/
