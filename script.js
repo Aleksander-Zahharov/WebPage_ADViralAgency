@@ -89,7 +89,7 @@ const translations = {
       about: "Кто мы",
       services: "Услуги",
       works: "Работы",
-      partners: "Партнеры",
+      partners: "Клиенты",
       contact: "Контакты",
       menuToggle: { "aria-label": "Открыть меню" },
     },
@@ -172,7 +172,7 @@ const translations = {
       },
     },
     partners: {
-      title: "Наши партнеры",
+      title: "Наши клиенты",
     },
     contact: {
       title: "Контакты",
@@ -242,7 +242,7 @@ const translations = {
       about: "About",
       services: "Services",
       works: "Cases",
-      partners: "Partners",
+      partners: "Clients",
       contact: "Contact",
       menuToggle: { "aria-label": "Open menu" },
     },
@@ -325,7 +325,7 @@ const translations = {
       },
     },
     partners: {
-      title: "Our partners",
+      title: "Our clients",
     },
     contact: {
       title: "Contacts",
@@ -395,7 +395,7 @@ const translations = {
       about: "Kes me oleme",
       services: "Teenused",
       works: "Projektid",
-      partners: "Partnerid",
+      partners: "Kliendid",
       contact: "Kontakt",
       menuToggle: { "aria-label": "Ava menüü" },
     },
@@ -478,7 +478,7 @@ const translations = {
       },
     },
     partners: {
-      title: "Meie partnerid",
+      title: "Meie kliendid",
     },
     contact: {
       title: "Kontaktid",
@@ -1268,12 +1268,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }
 
+  // Автоплей видео при появлении в viewport
   const igVideos = igStrip ? igStrip.querySelectorAll("video") : [];
-  igVideos.forEach((video) => {
-    video.preload = "metadata";
-    video.addEventListener("mouseenter", () => video.play());
-    video.addEventListener("mouseleave", () => video.pause());
-  });
+  if (igVideos.length > 0) {
+    const videoObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const video = entry.target;
+          if (entry.isIntersecting) {
+            video.play().catch(() => {
+              // Игнорируем ошибки автоплея (политики браузера)
+            });
+          } else {
+            video.pause();
+          }
+        });
+      },
+      {
+        threshold: 0.5, // Видео должно быть видно минимум на 50%
+        rootMargin: "0px"
+      }
+    );
+
+    igVideos.forEach((video) => {
+      video.preload = "metadata";
+      video.muted = true; // Убеждаемся, что видео без звука для автоплея
+      video.loop = true;
+      videoObserver.observe(video);
+    });
+  }
 
   // Модальное окно видеоплеера
   (function setupVideoModal() {
@@ -1355,13 +1378,43 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Обработчик клика для открытия модального окна
-    const igItems = doc.querySelectorAll(".ig-item[data-video]");
+    // Используем делегирование событий и проверяем существующую логику drag
+    const igStrip = doc.querySelector(".ig-strip");
     
-    igItems.forEach((item) => {
-      item.addEventListener("click", (e) => {
-        // Проверяем, не происходит ли перетаскивание
-        const igStrip = item.closest(".ig-strip");
-        if (igStrip && igStrip.dataset.dragging === "true") {
+    if (igStrip) {
+      let clickStartX = 0;
+      let clickStartY = 0;
+      let clickStartTime = 0;
+      
+      // Отслеживаем начало клика
+      igStrip.addEventListener("mousedown", (e) => {
+        const item = e.target.closest(".ig-item");
+        if (item && item.hasAttribute("data-video")) {
+          clickStartX = e.clientX;
+          clickStartY = e.clientY;
+          clickStartTime = Date.now();
+        }
+      }, true);
+      
+      // Обработка клика
+      igStrip.addEventListener("click", (e) => {
+        const item = e.target.closest(".ig-item");
+        if (!item || !item.hasAttribute("data-video")) return;
+        
+        // Проверяем, не было ли перетаскивания (используем существующую логику)
+        if (igStrip.dataset.dragging === "true") {
+          return;
+        }
+        
+        // Проверяем, был ли это drag по расстоянию и времени
+        const timeDiff = Date.now() - clickStartTime;
+        const deltaX = Math.abs(e.clientX - clickStartX);
+        const deltaY = Math.abs(e.clientY - clickStartY);
+        
+        if (timeDiff > 200 || deltaX > 5 || deltaY > 5) {
+          clickStartX = 0;
+          clickStartY = 0;
+          clickStartTime = 0;
           return;
         }
         
@@ -1372,30 +1425,13 @@ document.addEventListener("DOMContentLoaded", () => {
         if (videoSrc) {
           openModal(videoSrc);
         }
-      });
-    });
-    
-    // Также обрабатываем клики на самом видео элементе
-    const igVideos = doc.querySelectorAll(".ig-item video");
-    igVideos.forEach((video) => {
-      video.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
         
-        const item = video.closest(".ig-item");
-        if (!item) return;
-        
-        const igStrip = item.closest(".ig-strip");
-        if (igStrip && igStrip.dataset.dragging === "true") {
-          return;
-        }
-        
-        const videoSrc = getVideoSource(item);
-        if (videoSrc) {
-          openModal(videoSrc);
-        }
-      });
-    });
+        // Сброс
+        clickStartX = 0;
+        clickStartY = 0;
+        clickStartTime = 0;
+      }, true);
+    }
 
     // Закрытие по клику на overlay
     if (modalOverlay) {
@@ -1628,22 +1664,6 @@ document.addEventListener("DOMContentLoaded", () => {
     sectionsForNav.forEach((_, section) => navObserver.observe(section));
   }
 
-  // Включаем прожектор в секции «Наши партнеры»
-  const partnersSection = doc.querySelector("#partners");
-
-  if (partnersSection) {
-    const updatePartnersSpotlight = createRafThrottle((clientX, clientY) => {
-      const rect = partnersSection.getBoundingClientRect();
-      partnersSection.style.setProperty("--x", `${clientX - rect.left}px`);
-      partnersSection.style.setProperty("--y", `${clientY - rect.top}px`);
-      partnersSection.style.setProperty("--opacity", "1");
-    });
-
-    partnersSection.addEventListener("mousemove", (event) => updatePartnersSpotlight(event.clientX, event.clientY));
-    partnersSection.addEventListener("mouseleave", () => {
-      partnersSection.style.setProperty("--opacity", "0");
-    });
-  }
 
   // Прожектор только для заголовка в герое
   const heroSection = doc.getElementById("hero");

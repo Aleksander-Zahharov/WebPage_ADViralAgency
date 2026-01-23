@@ -20,7 +20,7 @@
 
   --primary-1: #6a11cb; /* основной фиолетовый оттенок */
   --primary-2: #b086f9; /* дополнительный сиреневый оттенок */
-  --selection-bg: #ff6b35; /* оранжевый цвет для выделения текста */
+  --selection-bg: #d97706; /* темный желто-оранжевый цвет для выделения текста */
 
   --card: rgba(255,255,255,0.06);
   --card-border: rgba(255,255,255,0.12);
@@ -1154,9 +1154,9 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   transition: transform .2s ease, border-color .2s ease;
 }
 .ig-item:hover {
-  transform: translateY(-6px); /* усиливаем подъем при наведении */
-  border-color: rgba(255,255,255,.18);
-  box-shadow: 16px 16px 48px rgb(0, 0, 0), 8px 8px 30px rgb(0, 0, 0); /* удлиненный черный подсвет */
+  transform: translateY(-6px); /* подъем при наведении */
+  border-color: rgba(255,255,255,.08); /* убираем подсветку рамок */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* легкая аккуратная тень */
 }
 .ig-item video {
   width: 100%; height: 100%;
@@ -1193,37 +1193,71 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
 .ig-strip.no-snap { scroll-snap-type: none; }
 
 /* =========================
-  Партнеры: бегущая строка логотипов
+  Клиенты: сетка с названиями
 ========================= */
-.marquee {
+.clients-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.client-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 16px;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 15px;
+  text-align: center;
+  transition: all 0.25s ease;
   position: relative;
   overflow: hidden;
-  border-radius: var(--radius);
-  border: 1px solid rgba(255,255,255,.08);
-  background: rgba(255,255,255,.04);
-  padding: 14px 0;
-  margin-top: 16px;
+  min-height: 64px;
 }
 
-.track {
-  display: grid;
-  grid-template-rows: repeat(2, auto); /* две строки с логотипами */
-  grid-auto-flow: column;
-  gap: 36px;
-  justify-content: center;
-  align-items: center;
-  padding-inline: 24px;
+.client-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(138, 88, 255, 0.1);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  z-index: 0;
 }
 
-.track img {
-  height: 150px; /* увеличено на 10% от базового размера */
-  will-change: transform;
-  width: auto;
-  transition: transform 0.3s ease;
+.client-item:hover {
+  transform: translateY(-4px);
+  border-color: rgba(176, 134, 249, 0.4);
+  box-shadow: 0 8px 20px rgba(138, 88, 255, 0.2);
 }
 
-.track img:hover {
-  transform: scale(1.1); /* слегка увеличиваем при наведении */
+.client-item:hover::before {
+  opacity: 1;
+}
+
+.client-item span,
+.client-item {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .clients-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+  }
+  
+  .client-item {
+    padding: 16px 12px;
+    font-size: 14px;
+    min-height: 56px;
+  }
 }
 
 /* =========================
