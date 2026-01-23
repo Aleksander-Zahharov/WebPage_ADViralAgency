@@ -20,6 +20,7 @@
 
   --primary-1: #6a11cb; /* основной фиолетовый оттенок */
   --primary-2: #b086f9; /* дополнительный сиреневый оттенок */
+  --selection-bg: #ff6b35; /* оранжевый цвет для выделения текста */
 
   --card: rgba(255,255,255,0.06);
   --card-border: rgba(255,255,255,0.12);
@@ -152,6 +153,17 @@ body {
   /* Смягчаем вертикальный скролл, отключая snap по умолчанию */
   scroll-snap-type: none;
   padding-top: var(--header-h); /* оставляем место под фиксированный хедер */
+}
+
+/* Стили выделения текста - оранжевый фон с белым текстом */
+::selection {
+  background-color: var(--selection-bg);
+  color: #ffffff; /* белый текст для контраста */
+}
+
+::-moz-selection {
+  background-color: var(--selection-bg); /* для Firefox */
+  color: #ffffff;
 }
 
 /* Включаем плавный snap только на больших экранах */
@@ -622,18 +634,11 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   z-index: 0;
   transform: scale(1.03);
 }
-.hero-overlay { /* Круглый фиолетовый градиент на баннере */
+.hero-overlay { /* Затемнение фона без фиолетового пятна */
   position: absolute; inset: 0;
-  background: radial-gradient(900px 600px at 15% 20%, var(--primary-2), transparent 70%), linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.5));
+  background: linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.5));
   z-index: 1;
   will-change: opacity, transform;
-}
-
-/* На мобильных уменьшаем размер фиолетового свечения в 2 раза */
-@media (max-width: 768px) {
-  .hero-overlay {
-    background: radial-gradient(450px 300px at 15% 20%, var(--primary-2), transparent 70%), linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.5));
-  }
 }
 .hero-content {
   position: relative;
