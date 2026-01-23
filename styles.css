@@ -1245,7 +1245,7 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
 /* Настраиваем контейнер под горизонтальный скролл */
 .ig-strip {
   display: flex;
-  gap: 12px;
+  gap: 18px; /* Увеличено расстояние между элементами */
   overflow-x: auto; /* включаем горизонтальную прокрутку */
   overflow-y: hidden;
   padding: 18px 32px 28px;
@@ -1301,7 +1301,7 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   transition: transform .2s ease, border-color .2s ease;
 }
 .ig-item:hover {
-  transform: translateY(-6px); /* подъем при наведении */
+  transform: scale(1.05); /* приближение при наведении вместо подъема */
   border-color: rgba(255,255,255,.08); /* убираем подсветку рамок */
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* легкая аккуратная тень */
 }
