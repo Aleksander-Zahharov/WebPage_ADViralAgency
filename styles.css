@@ -20,7 +20,7 @@
 
   --primary-1: #6a11cb; /* основной фиолетовый оттенок */
   --primary-2: #b086f9; /* дополнительный сиреневый оттенок */
-  --selection-bg: #d97706; /* темный желто-оранжевый цвет для выделения текста */
+  --selection-bg: var(--primary-1); /* фиолетовый цвет для выделения текста */
 
   --card: rgba(255,255,255,0.06);
   --card-border: rgba(255,255,255,0.12);
@@ -155,15 +155,15 @@ body {
   padding-top: var(--header-h); /* оставляем место под фиксированный хедер */
 }
 
-/* Стили выделения текста - оранжевый фон с белым текстом */
+/* Стили выделения текста - белый фон с черным текстом */
 ::selection {
-  background-color: var(--selection-bg);
-  color: #ffffff; /* белый текст для контраста */
+  background-color: #c9c9d1; /* светло-серый фон */
+  color: #000000; /* черный текст */
 }
 
 ::-moz-selection {
-  background-color: var(--selection-bg); /* для Firefox */
-  color: #ffffff;
+  background-color: #c9c9d1; /* для Firefox */
+  color: #000000;
 }
 
 /* Включаем плавный snap только на больших экранах */
@@ -235,7 +235,7 @@ p { color: var(--muted); margin: 0 0 12px; }
 .btn-primary {
   color: #fff;
   background: linear-gradient(135deg, var(--primary-1), var(--primary-2));
-  box-shadow: 0 8px 24px rgba(138, 88, 255, .35);
+  box-shadow: none;
   transition: background 0.2s;
 }
 .btn-primary:hover {
@@ -308,10 +308,8 @@ p { color: var(--muted); margin: 0 0 12px; }
 .header-nav a:hover { opacity: 1; }
 /* Стили активной ссылки в шапке */
 .header-nav a.active {
-  transform: scale(1.15) translateY(-2px); /* небольшой подъем и масштаб */
-  transform-origin: center; /* масштабируем относительно центра */
   color: white; /* активный пункт всегда белый */
-  transition: transform 0.3s ease, color 0.3s ease;
+  transition: color 0.3s ease;
 }
 
 /* Кнопка-гамбургер: скрыта на десктопе */
@@ -353,7 +351,6 @@ p { color: var(--muted); margin: 0 0 12px; }
   background: linear-gradient(135deg, rgba(107, 17, 203, 0.721), rgba(176, 134, 249, 0.523));
   border: 1px solid rgba(255,255,255,.18);
   backdrop-filter: blur(6px);
-  box-shadow: 0 8px 24px rgba(138, 88, 255, .28);
 }
 .header-nav a[href="#contact"].btn:hover,
 .header-nav a[href="#contact"].btn-primary:hover {
@@ -362,7 +359,7 @@ p { color: var(--muted); margin: 0 0 12px; }
 }
 .header-nav a[href="#contact"].btn:focus-visible,
 .header-nav a[href="#contact"].btn-primary:focus-visible {
-  box-shadow: 0 0 0 3px rgba(138,88,255,.25), 0 8px 24px rgba(138, 88, 255, .28);
+  box-shadow: 0 0 0 3px rgba(138,88,255,.25);
 }
 
 .lang-switcher {
@@ -693,7 +690,7 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   background: linear-gradient(135deg, rgba(107, 17, 203, 0.721), rgba(176, 134, 249, 0.523));
   border: 1px solid rgba(255,255,255,.18);
   backdrop-filter: blur(6px);
-  box-shadow: 0 8px 24px rgba(138, 88, 255, .28);
+  box-shadow: none;
 }
 .contact-form .btn.full.btn-primary:hover,
 .contact-form .btn-primary.full:hover {
@@ -741,7 +738,7 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   display: grid;
   grid-template-columns: 1.1fr 1fr;
   gap: clamp(20px, 4vw, 48px);
-  align-items: center;
+  align-items: start; /* Выравнивание по верхнему краю для одинаковой высоты */
 }
 @media (max-width: 900px) {
   .grid-2 { grid-template-columns: 1fr; }
@@ -772,6 +769,7 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   gap: 20px; /* Одинаковое расстояние между фотками */
   align-items: stretch;
   height: 100%;
+  min-height: 100%; /* Минимальная высота соответствует контенту */
 }
 
 .media-tilted-frame {
@@ -842,7 +840,7 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   display: grid;
   grid-template-columns: repeat(3, minmax(0,1fr));
   gap: 16px;
-  align-items: start; /* соседи не растягиваются по высоте строки */
+  align-items: stretch; /* все карточки одинаковой высоты */
 }
 
 .cards h3 {
@@ -883,16 +881,27 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   .cards {
     grid-template-columns: repeat(2, minmax(0,1fr));
     align-items: stretch; /* на мобилке карточки держим одной высоты */
+    gap: 12px; /* уменьшаем отступы на мобильных */
   }
 
   .cards .card {
-    height: 100%;
+    min-height: 120px; /* минимальная высота для мобильных */
+    height: auto; /* автоматическая высота */
+    padding: 16px; /* уменьшаем padding на мобильных */
   }
 
-  /* Раскрытая карточка занимает всю ширину (две колонки) и сдвигает остальные вниз */
+  /* Раскрытая карточка занимает всю ширину (две колонки), но сохраняет высоту */
   .cards .card.is-open {
     grid-column: 1 / -1;
-    height: auto;
+    min-height: 120px;
+  }
+  
+  /* Уменьшаем размер иконок на мобильных */
+  .cards .card::after {
+    width: 80px;
+    height: 80px;
+    right: 8px;
+    opacity: 0.2;
   }
 }
 .card {
@@ -923,18 +932,125 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(138, 88, 255, 0.5); /* цвет круговой подсветки */
+  background: var(--service-color, rgba(138, 88, 255, 0.5)); /* цвет круговой подсветки - используем цвет услуги */
   mask: radial-gradient(25rem 25rem at var(--x) var(--y), #000 1%, transparent 50%);
   -webkit-mask: radial-gradient(25rem 25rem at var(--x) var(--y), #000 1%, transparent 50%);
-  opacity: var(--opacity);
+  opacity: var(--opacity, 0);
   pointer-events: none;
   transition: opacity 0.3s ease;
   z-index: -1; /* подсветка лежит под контентом */
 }
 
+/* Усиливаем цвет подсветки для карточек услуг */
+.cards .card::before {
+  background: var(--service-color, rgba(138, 88, 255, 0.5));
+  opacity: calc(var(--opacity, 0) * 2); /* увеличиваем интенсивность подсветки при наведении */
+}
+
 .card * {
   position: relative;
   z-index: 1; /* контент поверх подсветки */
+}
+
+/* Фоновые иконки для карточек услуг - единый размер */
+.cards .card::after {
+  content: '';
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 110px;
+  height: 110px;
+  opacity: 0.25;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  pointer-events: none;
+  z-index: 0; /* иконка за текстом */
+}
+
+/* Цвета для каждой услуги - по столбикам: фиолетовый, зеленый, красный/оранжевый */
+/* Столбик 1: фиолетовые оттенки */
+.cards .card[data-service-icon="strategy"] {
+  --service-color: rgba(106, 17, 203, 0.4); /* основной фиолетовый #6a11cb */
+}
+
+.cards .card[data-service-icon="content"] {
+  --service-color: rgba(139, 92, 246, 0.4); /* фиолетовый #8b5cf6 */
+}
+
+.cards .card[data-service-icon="web"] {
+  --service-color: rgba(176, 134, 249, 0.4); /* сиреневый #b086f9 */
+}
+
+/* Столбик 2: зеленые оттенки */
+.cards .card[data-service-icon="social"] {
+  --service-color: rgba(34, 197, 94, 0.4); /* зеленый #22c55e */
+}
+
+.cards .card[data-service-icon="video"] {
+  --service-color: rgba(74, 222, 128, 0.4); /* светлый зеленый #4ade80 */
+}
+
+.cards .card[data-service-icon="community"] {
+  --service-color: rgba(134, 239, 172, 0.4); /* очень светлый зеленый #86efac */
+}
+
+/* Столбик 3: красные/оранжевые оттенки */
+.cards .card[data-service-icon="ads"] {
+  --service-color: rgba(239, 68, 68, 0.4); /* красный #ef4444 */
+}
+
+.cards .card[data-service-icon="design"] {
+  --service-color: rgba(251, 146, 60, 0.4); /* оранжевый #fb923c */
+}
+
+.cards .card[data-service-icon="analysis"] {
+  --service-color: rgba(249, 115, 22, 0.4); /* темный оранжевый #f97316 */
+}
+
+/* Иконки для каждого типа услуги с цветами по столбикам */
+/* Столбик 1: фиолетовые оттенки */
+.cards .card[data-service-icon="strategy"]::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236a11cb'%3E%3Cpath d='M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z'/%3E%3C/svg%3E");
+}
+
+.cards .card[data-service-icon="content"]::after {
+  background-image: url("./assets/images/Icon_Content.png");
+  filter: brightness(0) saturate(100%) invert(30%) sepia(95%) saturate(2000%) hue-rotate(240deg) brightness(0.8) contrast(1.1); /* фиолетовый #8b5cf6 */
+}
+
+.cards .card[data-service-icon="web"]::after {
+  background-image: url("./assets/images/Icon_SoftwareDev.png");
+  filter: brightness(0) saturate(100%) invert(42%) sepia(95%) saturate(2000%) hue-rotate(250deg) brightness(0.85) contrast(1.1); /* сиреневый #b086f9 */
+}
+
+/* Столбик 2: зеленые оттенки */
+.cards .card[data-service-icon="social"]::after {
+  background-image: url("./assets/images/Icon_SocialNetworks.png");
+  filter: brightness(0) saturate(100%) invert(60%) sepia(90%) saturate(2000%) hue-rotate(100deg) brightness(0.9) contrast(1.1); /* зеленый #22c55e */
+}
+
+.cards .card[data-service-icon="video"]::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234ade80'%3E%3Cpath d='M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E");
+}
+
+.cards .card[data-service-icon="community"]::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2386efac'%3E%3Cpath d='M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z'/%3E%3C/svg%3E");
+}
+
+/* Столбик 3: красные/оранжевые оттенки */
+.cards .card[data-service-icon="ads"]::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ef4444'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z'/%3E%3C/svg%3E");
+}
+
+.cards .card[data-service-icon="design"]::after {
+  background-image: url("./assets/images/Icon_Design.png");
+  filter: brightness(0) saturate(100%) invert(55%) sepia(95%) saturate(2000%) hue-rotate(15deg) brightness(0.95) contrast(1.1); /* оранжевый #fb923c */
+}
+
+.cards .card[data-service-icon="analysis"]::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23f97316'%3E%3Cpath d='M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z'/%3E%3C/svg%3E");
 }
 
 /* Скрываем описание по умолчанию и раскрываем вниз, увеличивая высоту карточки */
@@ -946,9 +1062,9 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   margin-bottom: 0;
   transition: max-height .28s ease, opacity .22s ease, margin-top .22s ease;
 }
-/* На всех устройствах раскрываем по классу .is-open */
+/* На всех устройствах раскрываем по классу .is-open - фиксированная высота для всех карточек */
 .cards .card.is-open p {
-  max-height: 200px; /* достаточно для пары строк текста */
+  max-height: 120px; /* фиксированная высота для компактных описаний */
   opacity: 1;
   margin-top: 8px;
   margin-bottom: 0;
@@ -964,17 +1080,29 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   }
 
   .cards .card {
-    min-height: 124px;
+    min-height: 140px; /* увеличенная высота для размещения заголовка и текста */
+    height: 140px; /* фиксированная высота для всех карточек */
+  }
+  
+  .cards .card.is-open {
+    height: 140px; /* та же высота при открытии */
   }
 }
 
 @media (max-width: 600px) {
   .cards h3 {
-    font-size: 12px;
+    font-size: 13px;
+    line-height: 1.3;
+    margin-bottom: 4px;
   }
 
   .cards .card p {
-    font-size: 12px;
+    font-size: 11px;
+    line-height: 1.4;
+  }
+  
+  .cards .card.is-open p {
+    max-height: 100px; /* уменьшаем для мобильных */
   }
 }
 
@@ -982,7 +1110,7 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
 @media (hover: hover) and (pointer: fine) {
   .cards .card:hover p,
   .cards .card:focus-within p {
-    max-height: 200px;
+    max-height: 120px; /* та же фиксированная высота при ховере */
     opacity: 1;
     margin-top: 8px;
   }
@@ -1031,7 +1159,7 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 10px; /* ширина зоны затемнения - уменьшена для более узкого фейда */
+  width: 20px; /* ширина зоны затемнения - уменьшена для более узкого фейда */
   z-index: 3;
   pointer-events: none;
 }
@@ -1064,35 +1192,37 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   width: 64px;
   height: 64px;
   border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.18);
-  background: rgba(20,20,22,.6);
-  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Чуть более заметная рамка */
+  background: rgba(20, 20, 22, 0.7); /* Чуть более плотный фон */
+  backdrop-filter: blur(8px); /* Усиленный блюр */
   color: #fff;
   cursor: pointer;
   display: grid;
   place-items: center;
-  transition: border-color .2s ease, color .2s ease;
-  z-index: 4; /* стрелки выше затемнений */
+  transition: all 0.2s ease; /* Плавная анимация всех свойств */
+  z-index: 10; /* Поднимаем z-index, чтобы их не перекрывали другие элементы */
   font-size: 2em; /* увеличенные иконки стрелок */
+  padding-bottom: 4px; /* Визуальная центровка */
 }
 
 .ig-arrow:hover {
-  border-color: #fff; /* белая обводка */
-  color: #fff; /* белая пиктограмма */
+  background: rgba(176, 134, 249, 0.2); /* Фиолетовая подсветка при наведении */
+  border-color: rgba(176, 134, 249, 0.4);
+  color: #fff;
+  transform: translateY(-50%) translateY(40px) scale(1.1); /* Увеличение с сохранением позиции */
 }
 
 .ig-arrow:active {
-  background: linear-gradient(135deg, var(--primary-1), var(--primary-2)); /* фирменный фиолетовый градиент */
-  border-color: var(--primary-1);
-  color: #fff;
+  background: rgba(176, 134, 249, 0.4);
+  transform: translateY(-50%) translateY(40px) scale(0.95); /* Эффект нажатия */
 }
 
 .ig-arrow.prev {
-  left: -80px; /* сдвигаем левую стрелку за контейнер */
+  left: 0; /* Возвращаем стрелки внутрь контейнера, чтобы их не обрезало */
 }
 
 .ig-arrow.next {
-  right: -80px; /* сдвигаем правую стрелку за контейнер */
+  right: 0;
 }
 
 /* Настраиваем контейнер под горизонтальный скролл */
@@ -1102,7 +1232,7 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   overflow-x: auto; /* включаем горизонтальную прокрутку */
   overflow-y: hidden;
   padding: 18px 32px 28px;
-  scroll-snap-type: x proximity; /* мягкое прилипающее поведение */
+  scroll-snap-type: none; /* отключено - стрелки просто прокручивают ленту */
   scroll-padding: 0 24px;
   -webkit-overflow-scrolling: touch; /* плавный скролл на тач-устройствах */
   scrollbar-width: none; /* прячем стандартный скроллбар */
@@ -1358,6 +1488,7 @@ input[type="text"],
 input[type="email"],
 textarea {
   width: 100%;
+  display: block; /* Убираем отступ снизу (ghost space) */
   height: 46px;
   padding: 10px 14px;
   border-radius: 12px;
@@ -1685,8 +1816,9 @@ input:focus, textarea:focus {
 .video-modal-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.9);
-  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .video-modal-container {
@@ -1720,6 +1852,219 @@ input:focus, textarea:focus {
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+
+/* Стили для Plyr плеера */
+.video-modal-content .plyr {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 16px;
+  background: #000;
+}
+
+.video-modal-content .plyr__video-wrapper {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.video-modal-content .plyr__video-wrapper video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain;
+  display: block;
+}
+
+.video-modal-content .plyr video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain;
+  display: block;
+}
+
+/* Скрываем бейджи качества (HD/SD) в меню */
+.video-modal-content .plyr__badge {
+  display: none !important;
+}
+
+/* Настройка кнопки Play по центру видео (инверсия + стиль как у стрелок) */
+.video-modal-content .plyr__control--overlaid {
+  background: rgba(20, 20, 22, 0.6) !important;
+  backdrop-filter: blur(8px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: none !important;
+  z-index: 15 !important;
+  display: flex !important;
+  color: #fff !important;
+  transition: all 0.2s ease !important;
+}
+
+.video-modal-content .plyr__control--overlaid:hover,
+.video-modal-content .plyr__control--overlaid:active,
+.video-modal-content .plyr__control--overlaid:focus-visible {
+  background: rgba(176, 134, 249, 0.2) !important; /* Фиолетовая подсветка при наведении как у стрелок */
+  border-color: rgba(176, 134, 249, 0.4) !important;
+  box-shadow: none !important; /* Убираем тень */
+  transform: translate(-50%, -50%) scale(1.1) !important;
+}
+
+/* Скрываем кнопку Play, когда видео играет и нет ховера на плеере, или даем Plyr самому управлять классами */
+.video-modal-content .plyr--playing .plyr__control--overlaid {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* Настройка цветов Plyr */
+.video-modal-content .plyr--full-ui input[type=range] {
+  color: var(--primary-1) !important; /* Основной фиолетовый для прогресса и громкости */
+}
+
+/* Фон меню настроек */
+.video-modal-content .plyr__menu__container {
+  background: rgba(20, 20, 22, 0.95) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  color: #fff !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.video-modal-content .plyr__menu__container .plyr__control {
+  color: #c9c9d1 !important; /* Muted text */
+  border-radius: 8px;
+}
+
+.video-modal-content .plyr__menu__container .plyr__control:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #fff !important;
+}
+
+.video-modal-content .plyr__menu__container .plyr__control[role="menuitemradio"][aria-checked="true"]::before {
+  background: var(--primary-1) !important;
+}
+
+.video-modal-content .plyr__menu__container .plyr__control[role="menuitemradio"][aria-checked="true"] {
+  color: var(--primary-1) !important;
+}
+
+/* Прозрачный фон для слайдера громкости */
+.video-modal-content .plyr__volume input[type=range] {
+  background: transparent !important;
+}
+
+.video-modal-content .plyr__controls {
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent) !important;
+  border-radius: 0 0 16px 16px;
+  z-index: 10 !important;
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.video-modal-content .plyr__control {
+  color: #fff !important;
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.video-modal-content .plyr__control:hover {
+  background: rgba(176, 134, 249, 0.2) !important;
+}
+
+.video-modal-content .plyr__control[aria-expanded="true"] {
+  background: rgba(20, 20, 22, 0.8) !important; /* Темный фон для активной кнопки настроек */
+  color: var(--primary-1) !important;
+}
+
+.video-modal-content .plyr__control[aria-expanded="true"]:hover {
+  background: rgba(30, 30, 32, 0.9) !important;
+}
+
+/* Стрелки навигации в модальном окне */
+.modal-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(20, 20, 22, 0.6);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: 32px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 20; /* Высокий z-index для модальных стрелок */
+  padding-bottom: 4px; /* Визуальная центровка стрелки */
+}
+
+.modal-arrow:hover {
+  background: rgba(176, 134, 249, 0.2);
+  border-color: rgba(176, 134, 249, 0.4);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.modal-arrow:active {
+  transform: translateY(-50%) scale(0.95);
+  background: rgba(176, 134, 249, 0.4);
+}
+
+.modal-arrow-left {
+  left: -72px;
+}
+
+.modal-arrow-right {
+  right: -72px;
+}
+
+/* Адаптив для стрелок */
+@media (max-width: 900px) {
+  .modal-arrow {
+    width: 44px;
+    height: 44px;
+    font-size: 24px;
+  }
+  .modal-arrow-left { left: -50px; }
+  .modal-arrow-right { right: -50px; }
+}
+
+@media (max-width: 600px) {
+  .modal-arrow {
+    position: absolute;
+    top: auto;
+    bottom: -60px; /* Перемещаем под видео на мобильных */
+    transform: none;
+    background: rgba(255,255,255,0.1);
+  }
+  .modal-arrow:hover {
+    transform: scale(1.1);
+  }
+  .modal-arrow:active {
+    transform: scale(0.95);
+  }
+  .modal-arrow-left {
+    left: 20%;
+  }
+  .modal-arrow-right {
+    right: 20%;
+  }
 }
 
 .video-modal-close {

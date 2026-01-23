@@ -69,6 +69,7 @@
     <link rel="preload" href="./assets/fonts/Sansation-Light.ttf" as="font" type="font/ttf" crossorigin />
     <link rel="preload" href="./assets/fonts/Sansation-Regular.ttf" as="font" type="font/ttf" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
@@ -187,9 +188,9 @@
     </section>
 
   <!-- Секция 1: Кто мы -->
-    <section id="about" class="section reveal reveal-left">
+    <section id="about" class="section auto-scroll">
       <div class="container grid-2">
-        <div class="media-tilted-group">
+        <div class="media-tilted-group reveal reveal-left">
           <div class="media-tilted-frame">
             <img src="assets/images/1white.webp" alt="ADViral Agency team" loading="lazy" />
           </div>
@@ -202,71 +203,66 @@
         </div>
         <div class="content">
           <h2 data-i18n="about.title">Who we are</h2>
-          <p data-i18n="about.description">
+          <p data-i18n="about.description" class="reveal reveal-left">
             ADViral is a full-service agency. We align strategy, creativity and
             performance so your campaigns are not only seen — they are shared.
           </p>
-          <ul class="bullets">
-            <li data-i18n="about.list.campaigns">Campaigns with viral potential</li>
-            <li data-i18n="about.list.production">Production for every platform: Reels, TikTok, YouTube</li>
-            <li data-i18n="about.list.analytics">Analytics and continuous optimisation</li>
-          </ul>
         </div>
       </div>
     </section>
 
   <!-- Секция 2: Что мы предоставляем -->
-    <section id="services" class="section reveal reveal-right">
+    <section id="services" class="section auto-scroll">
       <div class="container">
   <h2 data-i18n="services.title">What we deliver</h2>
-        <div class="cards">
-          <article class="card">
-            <h3 data-i18n="services.cards.socialManagement.title">📱 Social media management</h3>
-            <p data-i18n="services.cards.socialManagement.text">Instagram, Facebook, TikTok — content, visuals, consistent style.</p>
+        <div class="cards reveal reveal-right">
+          <article class="card" data-service-icon="strategy">
+            <h3 data-i18n="services.cards.strategy.title">Development and execution of promotion strategies</h3>
+            <p data-i18n="services.cards.strategy.text">Customer acquisition and retention strategies. Development of brand growth roadmap, reach, and conversion.</p>
           </article>
-          <article class="card">
-            <h3 data-i18n="services.cards.growthStrategy.title">🧭 Growth strategy</h3>
-            <p data-i18n="services.cards.growthStrategy.text">Co-create the roadmap to lift reach and engagement.</p>
+          <article class="card" data-service-icon="social">
+            <h3 data-i18n="services.cards.socialManagement.title">Social media management and growth</h3>
+            <p data-i18n="services.cards.socialManagement.text">Instagram, Facebook, TikTok, YouTube: content planning, visuals, consistent branding. Brand presence development in social media.</p>
           </article>
-          <article class="card">
-            <h3 data-i18n="services.cards.adCampaigns.title">🎯 Advertising campaigns</h3>
-            <p data-i18n="services.cards.adCampaigns.text">Creative development, targeting, and continuous optimisation.</p>
+          <article class="card" data-service-icon="ads">
+            <h3 data-i18n="services.cards.adCampaigns.title">Launch and optimization of advertising campaigns</h3>
+            <p data-i18n="services.cards.adCampaigns.text">Targeted advertising, Google Ads, creative development. Continuous performance analysis and optimization of performance campaigns.</p>
           </article>
-          <article class="card">
-            <h3 data-i18n="services.cards.communityEngagement.title">💬 Community engagement</h3>
-            <p data-i18n="services.cards.communityEngagement.text">Conversations with audiences in groups, comments, and threads.</p>
+          <article class="card" data-service-icon="content">
+            <h3 data-i18n="services.cards.contentCreation.title">Video and photo content creation</h3>
+            <p data-i18n="services.cards.contentCreation.text">Content for social media and advertising formats. Reels, TikTok, YouTube Shorts, Stories. Dynamic videos and high-quality visuals.</p>
           </article>
-          <article class="card">
-            <h3 data-i18n="services.cards.socialVideo.title">🎬 Social video production</h3>
-            <p data-i18n="services.cards.socialVideo.text">Short-form videos tailored for Reels, TikTok, Shorts and Stories.</p>
+          <article class="card" data-service-icon="video">
+            <h3 data-i18n="services.cards.videoProduction.title">Professional video production & 3D graphics</h3>
+            <p data-i18n="services.cards.videoProduction.text">Video production for advertising and social media. Creation of 3D graphics, animation, and visual effects.</p>
           </article>
-          <article class="card">
-            <h3 data-i18n="services.cards.brandAudit.title">🧠 Brand deep-dive</h3>
-            <p data-i18n="services.cards.brandAudit.text">Unpack mission, values, and goals to guide communication.</p>
+          <article class="card" data-service-icon="design">
+            <h3 data-i18n="services.cards.design.title">Graphic & web design</h3>
+            <p data-i18n="services.cards.design.text">Development of brand identity, logos, banners, and web design. Creation of visual brand identity.</p>
           </article>
-          <article class="card">
-            <h3 data-i18n="services.cards.marketResearch.title">📊 Market & competitor analysis</h3>
-            <p data-i18n="services.cards.marketResearch.text">Spot opportunities across competitors and trends.</p>
+          <article class="card" data-service-icon="web">
+            <h3 data-i18n="services.cards.webDevelopment.title">Website and software development from scratch</h3>
+            <p data-i18n="services.cards.webDevelopment.text">Creation of websites and software from scratch. Responsive design, SEO optimization, and integration with advertising systems.</p>
           </article>
-          <article class="card">
-            <h3 data-i18n="services.cards.productAnalysis.title">🧩 Product portfolio review</h3>
-            <p data-i18n="services.cards.productAnalysis.text">Segment offers for different customer clusters.</p>
+          <article class="card" data-service-icon="community">
+            <h3 data-i18n="services.cards.communityEngagement.title">Community engagement and promotion</h3>
+            <p data-i18n="services.cards.communityEngagement.text">Active dialogue with audiences in groups, comments, and discussions. Brand promotion in communities.</p>
           </article>
-          <article class="card">
-            <h3 data-i18n="services.cards.audienceStrategy.title">👥 Audience insights & acquisition</h3>
-            <p data-i18n="services.cards.audienceStrategy.text">Define personas and craft fresh acquisition plays.</p>
+          <article class="card" data-service-icon="analysis">
+            <h3 data-i18n="services.cards.analysis.title">Brand, market, and product line analysis</h3>
+            <p data-i18n="services.cards.analysis.text">In-depth analysis of mission, values, and company goals. Competitor research, trends, and growth opportunities.</p>
           </article>
         </div>
       </div>
     </section>
 
   <!-- Секция 3: Наши работы (лента как в Instagram) -->
-    <section id="works" class="section reveal reveal-left">
+    <section id="works" class="section auto-scroll">
       <div class="container">
   <h2 style="text-align: right;" data-i18n="works.title">Our work</h2>
-  <p class="section-sub" style="text-align: right;" data-i18n="works.subtitle">Video cases. Click to open in player.</p>
+  <p class="section-sub reveal reveal-left" style="text-align: right;" data-i18n="works.subtitle">Video cases. Click to open in player.</p>
     <button class="ig-arrow prev" aria-label="Previous" type="button">‹</button>
-        <div class="ig-slider">
+        <div class="ig-slider reveal reveal-left">
           <div class="ig-strip">
             <a class="ig-item" href="#" data-video="assets/videos/optimized/7.mp4">
               <video
@@ -319,7 +315,7 @@
               <div class="video-title" data-i18n="works.cases.case3">Case 3</div>
               <span class="play">▶</span>
             </a>
-            <a class="ig-item" href="#" data-video="assets/videos/optimized/Idea_actor_edit_@alex_andressonDOP_MeLight_Me_+_@blackwizard_raw.mp4">
+            <a class="ig-item" href="#" data-video="assets/videos/optimized/Styleva Battles - Aleks Vald (1080p, h264).mp4">
               <video
                 autoplay
                 muted
@@ -331,12 +327,12 @@
                 data-i18n-attrs="aria-label"
                 data-i18n-skip-text="true"
               >
-                <source src="assets/videos/optimized/Idea_actor_edit_@alex_andressonDOP_MeLight_Me_+_@blackwizard_raw.mp4" type="video/mp4" />
+                <source src="assets/videos/optimized/Styleva Battles - Aleks Vald (1080p, h264).mp4" type="video/mp4" />
               </video>
               <div class="video-title" data-i18n="works.cases.case4">Case 4</div>
               <span class="play">▶</span>
             </a>
-            <a class="ig-item" href="#" data-video="assets/videos/optimized/quadlock.mp4">
+            <a class="ig-item" href="#" data-video="assets/videos/optimized/Idea_actor_edit_@alex_andressonDOP_MeLight_Me_+_@blackwizard_raw.mp4">
               <video
                 autoplay
                 muted
@@ -348,12 +344,12 @@
                 data-i18n-attrs="aria-label"
                 data-i18n-skip-text="true"
               >
-                <source src="assets/videos/optimized/quadlock.mp4" type="video/mp4" />
+                <source src="assets/videos/optimized/Idea_actor_edit_@alex_andressonDOP_MeLight_Me_+_@blackwizard_raw.mp4" type="video/mp4" />
               </video>
               <div class="video-title" data-i18n="works.cases.case5">Case 5</div>
               <span class="play">▶</span>
             </a>
-            <a class="ig-item" href="#" data-video="assets/videos/optimized/Styleva Battles - Aleks Vald (1080p, h264).mp4">
+            <a class="ig-item" href="#" data-video="assets/videos/optimized/quadlock.mp4">
               <video
                 autoplay
                 muted
@@ -365,7 +361,7 @@
                 data-i18n-attrs="aria-label"
                 data-i18n-skip-text="true"
               >
-                <source src="assets/videos/optimized/Styleva Battles - Aleks Vald (1080p, h264).mp4" type="video/mp4" />
+                <source src="assets/videos/optimized/quadlock.mp4" type="video/mp4" />
               </video>
               <div class="video-title" data-i18n="works.cases.case6">Case 6</div>
               <span class="play">▶</span>
@@ -411,11 +407,11 @@
     </section>
 
   <!-- Секция 4: Наши клиенты -->
-    <section id="partners" class="section reveal reveal-right">
+    <section id="partners" class="section auto-scroll">
       <div class="container">
   <h2 data-i18n="partners.title">Our clients</h2>
-        <div class="clients-grid">
-          <a href="https://gogps.ee" target="_blank" rel="noopener" class="client-item">GoGPS</a>
+        <div class="clients-grid reveal reveal-right">
+          <a href="https://gogps.eu/en/" target="_blank" rel="noopener" class="client-item">GoGPS</a>
           <a href="https://dodo.ee" target="_blank" rel="noopener" class="client-item">DODO</a>
           <a href="https://erasmusplus.ee" target="_blank" rel="noopener" class="client-item">Erasmus</a>
           <a href="https://stockmann.com" target="_blank" rel="noopener" class="client-item">Stockmann</a>
@@ -428,7 +424,7 @@
           <a href="https://moto24.ee" target="_blank" rel="noopener" class="client-item">Moto24</a>
           <a href="https://eesteilusalong.ee" target="_blank" rel="noopener" class="client-item">Eeste ilusalong</a>
           <a href="https://err.ee" target="_blank" rel="noopener" class="client-item">ERR</a>
-          <a href="https://sudamest.ee" target="_blank" rel="noopener" class="client-item">Sudamest</a>
+          <a href="https://sudamest.com/" target="_blank" rel="noopener" class="client-item">Sudamest</a>
           <a href="https://beststandup.ee" target="_blank" rel="noopener" class="client-item">Beststandup</a>
           <a href="https://expertautokool.ee" target="_blank" rel="noopener" class="client-item">Expert Autokool</a>
           <a href="https://barberhouse.ee" target="_blank" rel="noopener" class="client-item">BarberHouse</a>
@@ -441,10 +437,10 @@
     </section>
 
   <!-- Секция 5: Контакты -->
-    <section id="contact" class="section reveal reveal-left">
+    <section id="contact" class="section auto-scroll">
       <div class="container">
   <h2 data-i18n="contact.title">Contacts</h2>
-        <div class="contact-section-grid">
+        <div class="contact-section-grid reveal reveal-left">
           <!-- Левая колонка: Форма обратной связи -->
           <div class="contact-form-wrapper">
             <form id="contact-form" class="contact-form" action="https://formspree.io/f/xjkalnog" method="POST">
@@ -496,8 +492,10 @@
     <div class="video-modal-overlay"></div>
     <div class="video-modal-container">
       <button class="video-modal-close" aria-label="Close video player" type="button">×</button>
+      <button class="modal-arrow modal-arrow-left" id="modal-prev-btn" aria-label="Previous video" type="button">‹</button>
+      <button class="modal-arrow modal-arrow-right" id="modal-next-btn" aria-label="Next video" type="button">›</button>
       <div class="video-modal-content">
-        <video id="modal-video-player" class="modal-video-player" controls playsinline>
+        <video id="modal-video-player" class="modal-video-player" playsinline>
           <source id="modal-video-source" src="" type="video/mp4" />
         </video>
       </div>
@@ -517,6 +515,7 @@
       </div>
     </footer>
 
+    <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
     <script src="./script.js" defer></script>
   </body>
 </html>

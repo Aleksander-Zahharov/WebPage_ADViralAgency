@@ -8,6 +8,8 @@ const LANG_COOKIE_NAME = "adviral-lang";
 // Поддерживаемые коды языков
 const SUPPORTED_LANGS = ["ru", "en", "et"];
 
+// Тестовый комментарий для проверки изменений
+
 // Достаём значение параметра lang из URL, если оно валидное
 function readLangFromQuery() {
   try {
@@ -104,52 +106,49 @@ const translations = {
     },
     about: {
       title: "Кто мы",
-      description:
-        "ADViral — агентство полного цикла. Мы объединяем стратегию, SMM, видеопродакшн и performance‑маркетинг: кампании не только видят — ими делятся, а лиды превращаются в клиентов.",
-      list: {
-        campaigns: "SMM‑стратегии и кампании с вирусным потенциалом",
-        production: "Видео для Reels, TikTok, YouTube Shorts и сторис",
-        analytics: "Аналитика, A/B‑тесты и непрерывная оптимизация",
+      description: {
+        html: "<strong>ADViral Agency</strong> — агентство комплексного digital-продвижения брендов в социальных сетях и цифровой среде, ориентированное на рост и реальные бизнес-результаты. Мы базируемся в <strong>Таллине, Эстония</strong>, и работаем с проектами как на локальном, так и на международном рынке.<br><br>Наша цель — не просто присутствие бренда в онлайне, а его рост, узнаваемость и стабильный поток клиентов. Мы выстраиваем продвижение как целостную систему: от глубокой аналитики до креатива и масштабирования.<br><br>Мы объединяем стратегию, креатив и аналитику, чтобы создавать не просто контент, а измеримые бизнес-результаты.<br><br><strong>ADViral Agency</strong> — это команда, которая думает о бизнесе клиента как о своём собственном и берёт на себя ответственность за результат."
       },
+      list: {},
     },
     services: {
-      title: "Услуги: SMM, видеопродакшн и реклама",
+      title: "Услуги для продвижения",
       cards: {
-        socialManagement: {
-          title: "📱 Ведение соцсетей",
-          text: "Instagram, Facebook, TikTok, YouTube: контент, визуал и единый стиль.",
+        strategy: {
+          title: "Разработка и реализация стратегий продвижения",
+          text: "Стратегии привлечения и удержания клиентов. Разработка маршрута роста бренда, охватов и конверсии.",
         },
-        growthStrategy: {
-          title: "🧭 Стратегия продвижения",
-          text: "Совместно строим маршрут роста охватов и вовлеченности.",
+        socialManagement: {
+          title: "Ведение и развитие социальных сетей",
+          text: "Instagram, Facebook, TikTok, YouTube: контент-план, визуал, единый стиль. Развитие присутствия бренда в соцсетях.",
         },
         adCampaigns: {
-          title: "🎯 Рекламные кампании",
-          text: "Креативы, таргет и постоянный анализ эффективности.",
+          title: "Запуск и оптимизация рекламных кампаний",
+          text: "Таргетированная реклама, Google Ads, креативы. Постоянный анализ эффективности и оптимизация performance-кампаний.",
+        },
+        contentCreation: {
+          title: "Создание видео- и фото-контента",
+          text: "Контент для социальных сетей и рекламных форматов. Reels, TikTok, YouTube Shorts, сторис. Динамичные ролики и качественные визуалы.",
+        },
+        videoProduction: {
+          title: "Профессиональная видеосъёмка и 3D-графика",
+          text: "Видеопродакшн для рекламы и соцсетей. Создание 3D-графики, анимации и визуальных эффектов.",
+        },
+        design: {
+          title: "Графический и веб-дизайн",
+          text: "Разработка фирменного стиля, логотипов, баннеров и веб-дизайна. Создание визуальной идентичности бренда.",
+        },
+        webDevelopment: {
+          title: "Разработка сайтов и программного обеспечения",
+          text: "Создание веб-сайтов и ПО с нуля. Адаптивный дизайн, SEO-оптимизация и интеграция с рекламными системами.",
         },
         communityEngagement: {
-          title: "💬 Активность в сообществах",
-          text: "Диалог с аудиторией в группах, комментариях и обсуждениях.",
+          title: "Активность и продвижение в сообществах",
+          text: "Диалог с аудиторией в группах, комментариях и обсуждениях. Продвижение бренда в сообществах.",
         },
-        socialVideo: {
-          title: "🎬 Видео для соцсетей",
-          text: "Динамичные ролики для Reels, TikTok и сторис.",
-        },
-        brandAudit: {
-          title: "🧠 Анализ бренда",
-          text: "Разбираем миссию, ценности и цели компании.",
-        },
-        marketResearch: {
-          title: "📊 Анализ рынка",
-          text: "Ищем точки роста на фоне конкурентов и трендов.",
-        },
-        productAnalysis: {
-          title: "🧩 Анализ продуктовой линейки",
-          text: "Сегментируем предложения для разных аудиторий.",
-        },
-        audienceStrategy: {
-          title: "👥 ЦА и стратегии привлечения",
-          text: "Портрет клиента и новые сценарии привлечения.",
+        analysis: {
+          title: "Анализ бренда, рынка и продуктовой линейки",
+          text: "Глубокий анализ миссии, ценностей и целей компании. Исследование конкурентов, трендов и возможностей роста.",
         },
       },
     },
@@ -257,8 +256,9 @@ const translations = {
     },
     about: {
       title: "Who we are",
-      description:
-        "ADViral is a full‑service digital agency. We align social media strategy, creative production, and performance marketing so your campaigns are seen, shared, and convert.",
+      description: {
+        html: "<strong>ADViral Agency</strong> is a full-cycle digital marketing agency focused on brand growth and measurable business results across social media and the broader digital landscape. We are based in <strong>Tallinn, Estonia</strong>, and work with both local and international projects.<br><br>Our goal goes beyond simple online presence. We help brands grow, build strong recognition, and generate a consistent flow of new customers. We approach promotion as an integrated system — from in-depth analytics to creative execution and scalable growth.<br><br>We combine strategy, creativity, and data to deliver more than just content — we deliver measurable business results.<br><br><strong>ADViral Agency</strong> is a team that treats each client's business as its own and takes full responsibility for the outcome."
+      },
       list: {
         campaigns: "SMM strategies and campaigns with viral potential",
         production: "Short‑form production for Reels, TikTok, YouTube Shorts",
@@ -266,43 +266,43 @@ const translations = {
       },
     },
     services: {
-      title: "Services: Social Media, Video, Advertising",
+      title: "Services for growth",
       cards: {
-        socialManagement: {
-          title: "📱 Social media management",
-          text: "Instagram, Facebook, TikTok, YouTube — content, visuals, consistent style.",
+        strategy: {
+          title: "Development and execution of promotion strategies",
+          text: "Customer acquisition and retention strategies. Development of brand growth roadmap, reach, and conversion.",
         },
-        growthStrategy: {
-          title: "🧭 Growth strategy",
-          text: "Co-create the roadmap to lift reach and engagement.",
+        socialManagement: {
+          title: "Social media management and growth",
+          text: "Instagram, Facebook, TikTok, YouTube: content planning, visuals, consistent branding. Brand presence development in social media.",
         },
         adCampaigns: {
-          title: "🎯 Advertising campaigns",
-          text: "Creative development, targeting, and continuous optimisation.",
+          title: "Launch and optimization of advertising campaigns",
+          text: "Targeted advertising, Google Ads, creative development. Continuous performance analysis and optimization of performance campaigns.",
+        },
+        contentCreation: {
+          title: "Video and photo content creation",
+          text: "Content for social media and advertising formats. Reels, TikTok, YouTube Shorts, Stories. Dynamic videos and high-quality visuals.",
+        },
+        videoProduction: {
+          title: "Professional video production & 3D graphics",
+          text: "Video production for advertising and social media. Creation of 3D graphics, animation, and visual effects.",
+        },
+        design: {
+          title: "Graphic & web design",
+          text: "Development of brand identity, logos, banners, and web design. Creation of visual brand identity.",
+        },
+        webDevelopment: {
+          title: "Website and software development from scratch",
+          text: "Creation of websites and software from scratch. Responsive design, SEO optimization, and integration with advertising systems.",
         },
         communityEngagement: {
-          title: "💬 Community engagement",
-          text: "Conversations with audiences in groups, comments, and threads.",
+          title: "Community engagement and promotion",
+          text: "Active dialogue with audiences in groups, comments, and discussions. Brand promotion in communities.",
         },
-        socialVideo: {
-          title: "🎬 Social video production",
-          text: "Short-form videos tailored for Reels, TikTok, and Stories.",
-        },
-        brandAudit: {
-          title: "🧠 Brand deep-dive",
-          text: "Unpack mission, values, and goals to guide communication.",
-        },
-        marketResearch: {
-          title: "📊 Market & competitor analysis",
-          text: "Spot opportunities across competitors and trends.",
-        },
-        productAnalysis: {
-          title: "🧩 Product portfolio review",
-          text: "Segment offers for different customer clusters.",
-        },
-        audienceStrategy: {
-          title: "👥 Audience insights & acquisition",
-          text: "Define personas and craft fresh acquisition plays.",
+        analysis: {
+          title: "Brand, market, and product line analysis",
+          text: "In-depth analysis of mission, values, and company goals. Competitor research, trends, and growth opportunities.",
         },
       },
     },
@@ -410,8 +410,9 @@ const translations = {
     },
     about: {
       title: "Kes me oleme",
-      description:
-        "ADViral on täisteenust pakkuv digiagentuur. Seome sotsiaalmeedia strateegia, loovproduktsiooni ja performance‑turunduse: kampaaniad mitte ainult ei paista silma, vaid ka konverteerivad.",
+      description: {
+        html: "<strong>ADViral Agency</strong> on täisteenust pakkuv digiturundusagentuur, mis keskendub brändide kasvule ja mõõdetavatele ärilistele tulemustele sotsiaalmeedias ja digitaalses keskkonnas. Meie asukoht on <strong>Tallinn, Eesti</strong>, ning töötame nii kohalike kui ka rahvusvaheliste projektidega.<br><br>Meie eesmärk ei ole pelgalt brändi olemasolu veebis, vaid selle kasv, tuntuse suurendamine ja stabiilse kliendivoo loomine. Läheneme turundusele tervikliku süsteemina — alates põhjalikust analüüsist kuni loovlahenduste ja skaleeritava kasvuni.<br><br>Ühendame strateegia, loovuse ja andmed, et pakkuda enamat kui lihtsalt sisu — saavutame reaalseid ja mõõdetavaid ärilisi tulemusi.<br><br><strong>ADViral Agency</strong> on meeskond, kes suhtub kliendi ärisse nagu enda omasse ja võtab vastutuse tulemuste eest."
+      },
       list: {
         campaigns: "SMM‑strateegiad ja viirusliku potentsiaaliga kampaaniad",
         production: "Lühivideod Reelsi, TikToki ja YouTube Shortsi jaoks",
@@ -419,43 +420,43 @@ const translations = {
       },
     },
     services: {
-      title: "Teenused: SMM, videod, reklaam",
+      title: "Teenused kasvuks",
       cards: {
-        socialManagement: {
-          title: "📱 Sotsiaalmeedia haldus",
-          text: "Instagram, Facebook, TikTok, YouTube: sisu, visuaal ja ühtne stiil.",
+        strategy: {
+          title: "Turundusstrateegiate väljatöötamine ja elluviimine",
+          text: "Kliendide kaasamise ja hoidmise strateegiad. Brändi kasvu, haarde ja konversiooni marsruudi väljatöötamine.",
         },
-        growthStrategy: {
-          title: "🧭 Kasvustrateegia",
-          text: "Loome koos plaani, mis kasvatab haaret ja kaasatust.",
+        socialManagement: {
+          title: "Sotsiaalmeedia haldamine ja arendamine",
+          text: "Instagram, Facebook, TikTok, YouTube: sisukalender, visuaal, ühtne stiil. Brändi kohalolu arendamine sotsiaalmeedias.",
         },
         adCampaigns: {
-          title: "🎯 Reklaamikampaaniad",
-          text: "Loovlahendused, sihtimine ja pidev tulemuslikkuse analüüs.",
+          title: "Reklaamikampaaniate käivitamine ja optimeerimine",
+          text: "Sihitud reklaamid, Google Ads, loovlahendused. Pidev tulemuslikkuse analüüs ja performance-kampaaniate optimeerimine.",
+        },
+        contentCreation: {
+          title: "Video- ja fotokontendi loomine",
+          text: "Kontent sotsiaalmeediale ja reklaamiformaatidele. Reels, TikTok, YouTube Shorts, lood. Dünaamilised videod ja kvaliteetsed visuaalid.",
+        },
+        videoProduction: {
+          title: "Professionaalne videoproduktsioon ja 3D-graafika",
+          text: "Videoproduktsioon reklaamiks ja sotsiaalmeediale. 3D-graafika, animatsiooni ja visuaalefektide loomine.",
+        },
+        design: {
+          title: "Graafiline ja veebidisain",
+          text: "Firmastiili, logode, bännerite ja veebidisaini väljatöötamine. Visuaalse brändiidentiteedi loomine.",
+        },
+        webDevelopment: {
+          title: "Veebilehtede ja tarkvara arendus nullist",
+          text: "Veebilehtede ja tarkvara loomine nullist. Adaptiivne disain, SEO-optimeerimine ja integratsioon reklaamisüsteemidega.",
         },
         communityEngagement: {
-          title: "💬 Kogukondade kaasamine",
-          text: "Vestlused sihtrühmaga gruppides, kommentaarides ja aruteludes.",
+          title: "Kogukondade aktiveerimine ja brändi nähtavuse tõstmine",
+          text: "Aktiivne dialoog sihtrühmaga gruppides, kommentaarides ja aruteludes. Brändi edendamine kogukondades.",
         },
-        socialVideo: {
-          title: "🎬 Videod sotsiaalmeediale",
-          text: "Lühiformaadid Reelsi, TikToki, Shorts ja lugude jaoks.",
-        },
-        brandAudit: {
-          title: "🧠 Brändi süvaanalüüs",
-          text: "Kaardistame ettevõtte missiooni, väärtused ja eesmärgid.",
-        },
-        marketResearch: {
-          title: "📊 Turuanalüüs ja konkurendid",
-          text: "Leiame kasvuvõimalused konkurentide ja trendide põhjal.",
-        },
-        productAnalysis: {
-          title: "🧩 Tooteportfelli analüüs",
-          text: "Segmentime pakkumised erinevatele kliendigruppidele.",
-        },
-        audienceStrategy: {
-          title: "👥 Sihtgrupp ja uued strateegiad",
-          text: "Kirjeldame personad ja loome uued kliendihankestrateegiad.",
+        analysis: {
+          title: "Brändi, turu ja tooteportfelli analüüs",
+          text: "Põhjalik analüüs ettevõtte missioonist, väärtustest ja eesmärkidest. Konkurentide ja trendide uuring ning kasvuvõimalused.",
         },
       },
     },
@@ -990,8 +991,14 @@ document.addEventListener("DOMContentLoaded", () => {
     return h + extra;
   }
 
+  let isAutoScrolling = false;
+
   function smoothScrollToTargetTop(el) {
-    if (!el) return;
+    if (!el || isAutoScrolling) return; // Не начинаем новый скролл, если старый еще идет
+    
+    // Блокируем другие автоскроллы
+    isAutoScrolling = true;
+    
     const startY = window.scrollY || window.pageYOffset;
     const rect = el.getBoundingClientRect();
     const offset = getHeaderOffsetPx(el);
@@ -1008,7 +1015,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (Math.abs(newRect.top - offset) > 2) {
         window.scrollTo({ top: adjust, behavior: 'auto' });
       }
-    }, 420);
+      // Разблокируем автоскролл с запасом времени
+      setTimeout(() => { isAutoScrolling = false; }, 300);
+    }, 800); // Увеличиваем время ожидания завершения скролла
   }
 
   // Reveal on scroll — появление секций при прокрутке
@@ -1020,18 +1029,6 @@ document.addEventListener("DOMContentLoaded", () => {
           if (entry.isIntersecting) {
             const el = entry.target;
             el.classList.add("in-view");
-
-            // Одноразовая автодокрутка при первом появлении секции в зоне видимости
-            // Не мешаем якорной навигации из шапки (если недавно кликнули по меню)
-            const now = performance.now();
-            const alreadyAuto = el.dataset.autoscrolled === '1';
-            if (!alreadyAuto && now > navScrollBlockUntil && lastScrollDirection === 'down') {
-              el.dataset.autoscrolled = '1';
-              smoothScrollToTargetTop(el);
-            }
-            if (entry.target === servicesSection) {
-              prepareServicesWave();
-            }
             obs.unobserve(entry.target);
           }
         });
@@ -1045,17 +1042,79 @@ document.addEventListener("DOMContentLoaded", () => {
     revealEls.forEach((el) => io.observe(el));
   }
 
+  // Auto-scroll sections behavior - только на десктопе, на мобильных отключено
+  const isMobile = window.innerWidth <= 900;
+  const autoScrollEls = doc.querySelectorAll(".auto-scroll");
+  if (autoScrollEls.length && !isMobile) {
+    const autoScrollIO = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const el = entry.target;
+            
+            // Запуск волны карточек, если это секция Services
+            if (el === servicesSection) {
+              prepareServicesWave();
+            }
+
+            const now = performance.now();
+            const alreadyAuto = el.dataset.autoscrolled === '1';
+            
+            const rect = el.getBoundingClientRect();
+            const headerOffset = getHeaderOffsetPx(el);
+            
+            // Если верх секции уже выше хедера, значит мы её уже проехали.
+            // Отписываемся, чтобы не тратить ресурсы.
+            if (rect.top < headerOffset - 10) { 
+                obs.unobserve(el);
+                return;
+            }
+
+            // Условие для автодокрутки:
+            // 1. Скроллим вниз
+            // 2. Верх секции находится в "активной зоне"
+            // Определяем, является ли это последней секцией
+            const index = Array.from(autoScrollEls).indexOf(el);
+            const isLastSection = index === autoScrollEls.length - 1;
+            const isNearBottom = (window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 100);
+            
+            const isTopInActiveZone = rect.top > headerOffset && rect.top < (window.innerHeight * 0.75);
+            const shouldSnap = isTopInActiveZone || (isLastSection && isNearBottom && rect.top > headerOffset);
+
+            if (!alreadyAuto && !isAutoScrolling && shouldSnap && now > navScrollBlockUntil && lastScrollDirection === 'down') {
+              el.dataset.autoscrolled = '1';
+              smoothScrollToTargetTop(el);
+              obs.unobserve(el);
+            }
+          }
+        });
+      },
+      {
+        // Используем массив порогов, чтобы ловить момент "входа" секции 
+        // даже если она очень длинная и процент её видимости растет медленно.
+        threshold: [0.15, 0.3, 0.45, 0.6],
+        rootMargin: "0px"
+      }
+    );
+    autoScrollEls.forEach((el) => autoScrollIO.observe(el));
+  } else if (autoScrollEls.length && isMobile) {
+    // На мобильных только запускаем волну карточек, но не автодокрутку
+    const mobileIO = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.target === servicesSection) {
+            prepareServicesWave();
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    autoScrollEls.forEach((el) => mobileIO.observe(el));
+  }
+
   // Instagram-like slider — горизонтальная витрина кейсов
   const igSlider = doc.querySelector(".ig-slider");
   const igStrip = doc.querySelector(".ig-strip");
-
-  function withNoSnap(fn, durationMs = 450) {
-    if (!igStrip) return fn();
-    igStrip.classList.add('no-snap');
-    try { fn(); } finally {
-      setTimeout(() => igStrip.classList.remove('no-snap'), durationMs);
-    }
-  }
 
   function getScrollStep() {
     if (!igStrip) return 320;
@@ -1066,13 +1125,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return Math.max(160, w + gap);
   }
 
-  function scrollStrip(dir = 1) {
-    if (!igStrip) return;
-    withNoSnap(() => {
-      igStrip.scrollBy({ left: dir * getScrollStep(), behavior: "smooth" });
-    });
-  }
-
   let hoverRafId = null;
   let pressRafId = null;
 
@@ -1080,7 +1132,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (hoverRafId) {
       cancelAnimationFrame(hoverRafId);
       hoverRafId = null;
-      setTimeout(() => igStrip?.classList.remove('no-snap'), 120);
     }
   }
 
@@ -1088,13 +1139,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (pressRafId) {
       cancelAnimationFrame(pressRafId);
       pressRafId = null;
-      setTimeout(() => igStrip?.classList.remove('no-snap'), 120);
     }
   }
 
   function startRafScroll(dir, speedPxPerSec, assignId) {
     if (!igStrip) return;
-    igStrip.classList.add('no-snap');
     let last = performance.now();
     let rem = 0;
     function frame(now) {
@@ -1147,7 +1196,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function startPressScroll(dir, speed) {
     if (!igStrip) return;
-    igStrip.classList.add("no-snap");
     let lastTime = performance.now();
 
     function scrollFrame(now) {
@@ -1164,13 +1212,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (pressRafId) {
       cancelAnimationFrame(pressRafId);
       pressRafId = null;
-      igStrip.classList.remove("no-snap");
     }
   }
 
   function startHoverScroll(dir, speed) {
     if (!igStrip) return;
-    igStrip.classList.add("no-snap");
     let lastTime = performance.now();
 
     function scrollFrame(now) {
@@ -1187,7 +1233,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (hoverRafId) {
       cancelAnimationFrame(hoverRafId);
       hoverRafId = null;
-      igStrip.classList.remove("no-snap");
     }
   }
 
@@ -1195,9 +1240,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!el) return null;
     const btn = el.cloneNode(true);
     el.replaceWith(btn);
+    
+    let pressStartTime = 0;
+
     btn.addEventListener("pointerdown", (e) => {
       e.preventDefault();
       btn.setPointerCapture?.(e.pointerId);
+      pressStartTime = performance.now();
       startPressScroll(dir, 300);
     });
     btn.addEventListener("pointerup", (e) => {
@@ -1213,6 +1262,16 @@ document.addEventListener("DOMContentLoaded", () => {
       stopHoverScroll();
     });
     btn.addEventListener("pointerenter", () => startHoverScroll(dir, 300));
+
+    // Prevent click (next/prev step) if we held the button for scrolling
+    btn.addEventListener("click", (e) => {
+        if (performance.now() - pressStartTime > 250) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+        }
+    });
+
     return btn;
   }
 
@@ -1224,6 +1283,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const nextArrow = igSlider.querySelector(".ig-arrow.next");
 
     function scrollStripBy(direction) {
+      if (!igStrip) return;
       const scrollAmount = igStrip.offsetWidth / 2;
       igStrip.scrollBy({ left: direction * scrollAmount, behavior: "smooth" });
     }
@@ -1240,7 +1300,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const stopDrag = (evt) => {
       if (!isDragging) return;
       isDragging = false;
-      igStrip.classList.remove("no-snap");
       delete igStrip.dataset.dragging;
       if (evt?.pointerId !== undefined) {
         igStrip.releasePointerCapture?.(evt.pointerId);
@@ -1248,10 +1307,16 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     igStrip.addEventListener("pointerdown", (evt) => {
+      // Пропускаем клики на видео элементы - они обрабатываются отдельно
+      const item = evt.target.closest(".ig-item");
+      if (item && item.hasAttribute("data-video")) {
+        return; // Не начинаем drag для видео элементов
+      }
+      
+      // Обычный drag для прокрутки
       isDragging = true;
       dragStartX = evt.clientX;
       dragStartScroll = igStrip.scrollLeft;
-      igStrip.classList.add("no-snap");
       igStrip.dataset.dragging = "true";
       igStrip.setPointerCapture?.(evt.pointerId);
     });
@@ -1298,17 +1363,28 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Модальное окно видеоплеера
+  // Модальное окно видеоплеера с Plyr
   (function setupVideoModal() {
     const modal = doc.getElementById("video-modal");
     const modalOverlay = modal?.querySelector(".video-modal-overlay");
     const modalClose = modal?.querySelector(".video-modal-close");
     const modalPlayer = doc.getElementById("modal-video-player");
-    const modalSource = doc.getElementById("modal-video-source");
+    const prevBtn = doc.getElementById("modal-prev-btn");
+    const nextBtn = doc.getElementById("modal-next-btn");
     
-    if (!modal || !modalPlayer || !modalSource) {
+    if (!modal || !modalPlayer) {
       console.warn("Video modal elements not found");
       return;
+    }
+
+    let player = null;
+    let currentVideoSrc = "";
+    let currentIndex = -1;
+    let videoItems = [];
+
+    // Обновляем список видео элементов
+    function updateVideoItems() {
+      videoItems = Array.from(doc.querySelectorAll(".ig-item[data-video]"));
     }
 
     function getVideoSource(item) {
@@ -1342,95 +1418,238 @@ document.addEventListener("DOMContentLoaded", () => {
       return null;
     }
 
-    function openModal(videoSrc) {
+    function setupQualitySources(videoSrc) {
+      // Устанавливаем источник видео
+      const source = modalPlayer.querySelector("source");
+      if (source) {
+        source.src = videoSrc;
+      }
+      // Также устанавливаем src напрямую на video элемент
+      modalPlayer.src = videoSrc;
+    }
+
+    function updateNavigationState() {
+      if (currentIndex === -1) {
+        if (prevBtn) prevBtn.style.display = 'none';
+        if (nextBtn) nextBtn.style.display = 'none';
+        return;
+      }
+
+      if (prevBtn) prevBtn.style.display = 'flex';
+      if (nextBtn) nextBtn.style.display = 'flex';
+    }
+
+    function navigateVideo(direction) {
+      updateVideoItems();
+      if (videoItems.length === 0) return;
+
+      let newIndex = currentIndex + direction;
+      
+      // Зацикливаем навигацию
+      if (newIndex < 0) newIndex = videoItems.length - 1;
+      if (newIndex >= videoItems.length) newIndex = 0;
+
+      const newItem = videoItems[newIndex];
+      const newSrc = getVideoSource(newItem);
+
+      if (newSrc) {
+        // Если плеер уже играет, ставим на паузу перед переключением
+        if (player) {
+          player.pause();
+        } else {
+          modalPlayer.pause();
+        }
+
+        currentIndex = newIndex;
+        currentVideoSrc = newSrc;
+        
+        setupQualitySources(newSrc);
+        
+        if (player) {
+          // Для Plyr нужно обновить источник через API
+          player.source = {
+            type: 'video',
+            sources: [
+              {
+                src: newSrc,
+                type: 'video/mp4',
+              },
+            ],
+          };
+          
+          player.once("ready", () => {
+             player.play().catch(() => {});
+          });
+        } else {
+          modalPlayer.load();
+          modalPlayer.play().catch(() => {});
+        }
+        
+        updateNavigationState();
+      }
+    }
+
+    function initPlayer() {
+      if (player) {
+        return; // Уже инициализирован
+      }
+
+      // Проверяем наличие Plyr перед инициализацией
+      if (typeof Plyr === "undefined") {
+        console.warn("Plyr not available, using standard HTML5 video");
+        modalPlayer.controls = true;
+        return;
+      }
+
+      try {
+        // Убеждаемся, что video элемент виден
+        modalPlayer.style.display = "block";
+        modalPlayer.style.width = "100%";
+        modalPlayer.style.height = "100%";
+        
+        player = new Plyr(modalPlayer, {
+          controls: [
+            "play-large",
+            "play",
+            "progress",
+            "current-time",
+            "duration",
+            "mute",
+            "volume",
+            "settings",
+            // "pip", // Removed as requested
+            "airplay",
+            "fullscreen"
+          ],
+          settings: ["quality", "speed"],
+          quality: {
+            default: 720,
+            options: [1080, 720, 480, 360],
+            forced: true,
+            onChange: (quality) => {
+              // В будущем здесь можно добавить логику переключения между разными источниками
+            }
+          },
+          speed: {
+            selected: 1,
+            options: [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]
+          },
+          keyboard: {
+            focused: true,
+            global: false
+          },
+          autoplay: false,
+          clickToPlay: true,
+          ratio: null // Отключаем автоматическое соотношение сторон, используем наш контейнер
+        });
+
+        // Обработка ошибок загрузки
+        player.on("error", (event) => {
+          console.error("Plyr error:", event.detail);
+        });
+        
+        // Проверяем, что Plyr правильно инициализировался
+        player.on("ready", () => {
+          // console.log("Plyr ready");
+        });
+      } catch (error) {
+        console.error("Error initializing Plyr:", error);
+        // Fallback на стандартный HTML5 video
+        modalPlayer.controls = true;
+      }
+    }
+
+    function openModal(videoSrc, itemElement) {
       if (!videoSrc) {
         console.warn("No video source found");
         return;
       }
 
-      modalSource.src = videoSrc;
-      modalPlayer.src = videoSrc;
-      modalPlayer.load();
+      updateVideoItems();
+      if (itemElement) {
+        currentIndex = videoItems.indexOf(itemElement);
+      } else {
+        // Пытаемся найти по src если элемент не передан
+        currentIndex = videoItems.findIndex(item => getVideoSource(item) === videoSrc);
+      }
+
+      updateNavigationState();
+
+      currentVideoSrc = videoSrc;
+
+      // Устанавливаем источник видео
+      setupQualitySources(videoSrc);
+
+      // Инициализируем Plyr при первом открытии
+      if (!player && typeof Plyr !== "undefined") {
+        initPlayer();
+      }
+
+      // Если Plyr не инициализирован, используем стандартный HTML5 video
+      if (!player) {
+        modalPlayer.controls = true;
+        modalPlayer.load();
+      } else {
+        // Обновляем источники видео для Plyr через API, если он уже создан, или просто load если только что создан
+        // Но лучше всегда использовать source setter если плеер готов, или src attr если нет.
+        // Выше мы уже установили src атрибут.
+        
+        // Важно: если плеер уже был создан, просто смена атрибута src может не сработать в Plyr v3
+        if (player.source) {
+             player.source = {
+                type: 'video',
+                sources: [{ src: videoSrc, type: 'video/mp4' }]
+             };
+        } else {
+             // Первый запуск
+             modalPlayer.load();
+        }
+      }
       
       modal.hidden = false;
       document.body.style.overflow = "hidden";
       
-      modalPlayer.addEventListener(
-        "loadeddata",
-        () => {
-          modalPlayer.play().catch(() => {});
-        },
-        { once: true }
-      );
-      
-      setTimeout(() => {
-        modalPlayer.focus();
-      }, 100);
+      // Воспроизводим после загрузки
+      if (player) {
+        player.once("ready", () => { // Ждем ready для нового source
+          player.play().catch((err) => {
+            // Автоплей может быть заблокирован политикой браузера - это нормально
+          });
+        });
+        // Если плеер уже был готов и мы просто сменили сурс, событие ready может сработать быстро или мы его пропустим?
+        // Plyr usually fires ready after source change.
+        
+        setTimeout(() => {
+          if (player) {
+            player.focus();
+          }
+        }, 100);
+      } else {
+        // Fallback для стандартного HTML5 video
+        const playHandler = () => {
+          modalPlayer.play().catch((err) => {
+            // Автоплей может быть заблокирован политикой браузера - это нормально
+          });
+        };
+        modalPlayer.addEventListener("loadeddata", playHandler, { once: true });
+        // Также пробуем play сразу, если видео уже загружено
+        if (modalPlayer.readyState >= 2) {
+          playHandler();
+        }
+      }
     }
 
     function closeModal() {
-      modalPlayer.pause();
-      modalPlayer.currentTime = 0;
-      modalPlayer.src = "";
-      modalSource.src = "";
+      if (player) {
+        player.pause();
+        player.currentTime = 0;
+      } else {
+        modalPlayer.pause();
+        modalPlayer.currentTime = 0;
+      }
+      currentVideoSrc = "";
       modal.hidden = true;
       document.body.style.overflow = "";
-    }
-
-    // Обработчик клика для открытия модального окна
-    // Используем делегирование событий и проверяем существующую логику drag
-    const igStrip = doc.querySelector(".ig-strip");
-    
-    if (igStrip) {
-      let clickStartX = 0;
-      let clickStartY = 0;
-      let clickStartTime = 0;
-      
-      // Отслеживаем начало клика
-      igStrip.addEventListener("mousedown", (e) => {
-        const item = e.target.closest(".ig-item");
-        if (item && item.hasAttribute("data-video")) {
-          clickStartX = e.clientX;
-          clickStartY = e.clientY;
-          clickStartTime = Date.now();
-        }
-      }, true);
-      
-      // Обработка клика
-      igStrip.addEventListener("click", (e) => {
-        const item = e.target.closest(".ig-item");
-        if (!item || !item.hasAttribute("data-video")) return;
-        
-        // Проверяем, не было ли перетаскивания (используем существующую логику)
-        if (igStrip.dataset.dragging === "true") {
-          return;
-        }
-        
-        // Проверяем, был ли это drag по расстоянию и времени
-        const timeDiff = Date.now() - clickStartTime;
-        const deltaX = Math.abs(e.clientX - clickStartX);
-        const deltaY = Math.abs(e.clientY - clickStartY);
-        
-        if (timeDiff > 200 || deltaX > 5 || deltaY > 5) {
-          clickStartX = 0;
-          clickStartY = 0;
-          clickStartTime = 0;
-          return;
-        }
-        
-        e.preventDefault();
-        e.stopPropagation();
-        
-        const videoSrc = getVideoSource(item);
-        if (videoSrc) {
-          openModal(videoSrc);
-        }
-        
-        // Сброс
-        clickStartX = 0;
-        clickStartY = 0;
-        clickStartTime = 0;
-      }, true);
     }
 
     // Закрытие по клику на overlay
@@ -1447,11 +1666,127 @@ document.addEventListener("DOMContentLoaded", () => {
       modalClose.addEventListener("click", closeModal);
     }
 
-    // Закрытие по Escape
+    // Навигация по стрелкам
+    if (prevBtn) {
+        prevBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            navigateVideo(-1);
+        });
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            navigateVideo(1);
+        });
+    }
+
+    // Закрытие по Escape и навигация стрелками клавиатуры
     doc.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && !modal.hidden) {
+      if (modal.hidden) return;
+      
+      if (e.key === "Escape") {
         closeModal();
+      } else if (e.key === "ArrowLeft") {
+          // Если фокус не в инпуте (например, громкость)
+          if (document.activeElement.tagName !== 'INPUT') {
+             navigateVideo(-1);
+          }
+      } else if (e.key === "ArrowRight") {
+          if (document.activeElement.tagName !== 'INPUT') {
+             navigateVideo(1);
+          }
       }
+    });
+
+    // Обработчик клика для открытия модального окна
+    // Используем pointer events для лучшей совместимости
+    const igItems = doc.querySelectorAll(".ig-item[data-video]");
+    
+    igItems.forEach((item) => {
+      let pointerDownX = 0;
+      let pointerDownY = 0;
+      let hasMoved = false;
+      let isPointerDown = false; // Булевый флаг для отслеживания pointerdown
+      
+      item.addEventListener("pointerdown", (e) => {
+        pointerDownX = e.clientX;
+        pointerDownY = e.clientY;
+        hasMoved = false;
+        isPointerDown = true; // Устанавливаем флаг
+        // Предотвращаем захват pointer для drag логики
+        e.stopPropagation();
+      });
+      
+      item.addEventListener("pointermove", (e) => {
+        if (isPointerDown) { // Используем булевый флаг вместо проверки координат
+          const deltaX = Math.abs(e.clientX - pointerDownX);
+          const deltaY = Math.abs(e.clientY - pointerDownY);
+          if (deltaX > 5 || deltaY > 5) {
+            hasMoved = true;
+          }
+        }
+      });
+      
+      item.addEventListener("pointerup", (e) => {
+        // Если был drag, не открываем модальное окно
+        if (hasMoved) {
+          // Сброс состояния
+          pointerDownX = 0;
+          pointerDownY = 0;
+          hasMoved = false;
+          isPointerDown = false;
+          return;
+        }
+        
+        // Проверяем, не было ли перетаскивания ленты
+        const igStrip = item.closest(".ig-strip");
+        if (igStrip && igStrip.dataset.dragging === "true") {
+          // Сброс состояния
+          pointerDownX = 0;
+          pointerDownY = 0;
+          hasMoved = false;
+          isPointerDown = false;
+          return;
+        }
+        
+        // Открываем модальное окно только если был клик (не drag)
+        if (isPointerDown) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          const videoSrc = getVideoSource(item);
+          if (videoSrc) {
+            openModal(videoSrc, item); // Передаем элемент для определения индекса
+          }
+        }
+        
+        // Сброс состояния
+        pointerDownX = 0;
+        pointerDownY = 0;
+        hasMoved = false;
+        isPointerDown = false;
+      });
+      
+      // Также обрабатываем обычный click для совместимости
+      item.addEventListener("click", (e) => {
+        const igStrip = item.closest(".ig-strip");
+        if (igStrip && igStrip.dataset.dragging === "true") {
+          return;
+        }
+        
+        if (hasMoved) {
+          return;
+        }
+        
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const videoSrc = getVideoSource(item);
+        if (videoSrc) {
+          openModal(videoSrc, item);
+        }
+      });
     });
   })();
 

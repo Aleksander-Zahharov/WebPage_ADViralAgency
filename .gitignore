@@ -35,7 +35,7 @@ coverage/
 optimize_media.py
 optimize_video.md
 *.py
-!requirements.txt
+!requirements.txt  # Allow requirements.txt if needed in the future
 
 # Original video files (too large for Git, use optimized versions)
 assets/videos/*.mp4
