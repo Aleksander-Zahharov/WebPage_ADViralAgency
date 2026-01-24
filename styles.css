@@ -779,6 +779,12 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   flex-direction: column;
 }
 
+/* Уменьшенные отступы сверху у заголовка */
+#about .content h2 {
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
 /* Контейнер для прокрутки текста (без заголовка) */
 #about .text-scroll {
   flex: 1; /* Занимает оставшееся место после заголовка */
@@ -787,20 +793,64 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   padding-right: 8px; /* Отступ для scrollbar */
 }
 
-/* Отключаем адаптивность для секции "Кто мы" */
+/* Обертка для медиа-слайдов (по умолчанию не нужна) */
+#about .media-wrapper {
+  display: contents; /* На десктопе ведет себя как будто её нет */
+}
+
+/* Вертикальное расположение для секции "Кто мы" на мобильных */
 @media (max-width: 900px) {
   #about {
-    overflow-x: auto; /* Горизонтальный скролл на маленьких экранах */
+    overflow-x: visible; /* Разрешаем внутренним элементам управлять прокруткой */
   }
   
   #about .container {
-    max-width: none; /* Убираем ограничение на мобильных */
-    min-width: calc(687px + 625px + 48px); /* Минимальная ширина для размещения контента */
+    max-width: 100%; /* Полная ширина на мобильных */
+    width: 100%;
+    padding: 0; /* Убираем боковые отступы у контейнера */
   }
   
   #about .grid-2 {
-    grid-template-columns: 687px 625px; /* Сохраняем фиксированные размеры */
-    min-width: calc(687px + 625px + 48px); /* Минимальная ширина */
+    display: flex; /* Используем flexbox вместо grid */
+    flex-direction: column; /* Вертикальное расположение */
+    gap: 32px; /* Отступ между секциями */
+    width: 100%;
+    align-items: stretch; /* Растягиваем элементы */
+  }
+  
+  /* Обертка для медиа-слайдов с горизонтальной прокруткой */
+  #about .media-wrapper {
+    display: block; /* На мобильных становится блоком */
+    order: 1; /* Сначала идут слайды */
+    overflow-x: auto; /* Горизонтальная прокрутка только для слайдов */
+    overflow-y: hidden;
+    width: 100%;
+    padding: 0 var(--gap); /* Боковые отступы для слайдов */
+  }
+  
+  /* Медиа-слайды остаются фиксированными внутри wrapper */
+  #about .media-tilted-group {
+    /* Размеры остаются фиксированными: 687px × 420px */
+    margin: 0 auto; /* Центрируем если помещается */
+  }
+  
+  /* Текстовый блок становится адаптивным */
+  #about .content {
+    order: 2; /* Потом идет текст */
+    width: 100%; /* Занимает всю доступную ширину */
+    max-width: 100%; /* Убираем ограничение на мобильных */
+    min-width: 0; /* Убираем минимальную ширину */
+    height: auto; /* Автоматическая высота */
+    min-height: auto; /* Убираем минимальную высоту */
+    flex-shrink: 1; /* Разрешаем сжатие на мобильных */
+    padding: 0 var(--gap); /* Боковые отступы для текста */
+  }
+  
+  /* Текстовый контейнер также становится адаптивным */
+  #about .text-scroll {
+    max-height: none; /* Убираем ограничение высоты */
+    overflow-y: visible; /* Отключаем прокрутку */
+    padding-right: 0; /* Убираем отступ для scrollbar */
   }
 }
 
@@ -883,18 +933,18 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   /* Без задержки - сразу начинается */
 }
 
-/* Второе изображение: такая же анимация */
+/* Второе изображение (Slide_Green): такая же анимация с задержкой 0.2 секунды */
 .media-tilted-frame:nth-child(2) img {
   object-position: left center; /* Начальная позиция - левая часть (0%) */
   animation: slidePhotoPan 10s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  /* Без задержки - сразу начинается */
+  animation-delay: 0.2s; /* Фриз на 0.2 секунды после загрузки */
 }
 
-/* Третье изображение: такая же анимация */
+/* Третье изображение (Slide_Red): такая же анимация с задержкой 0.4 секунды */
 .media-tilted-frame:nth-child(3) img {
   object-position: left center; /* Начальная позиция - левая часть (0%) */
   animation: slidePhotoPan 10s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  /* Без задержки - сразу начинается */
+  animation-delay: 0.4s; /* Фриз на 0.4 секунды после загрузки */
 }
 
 /* Анимация панорамирования фотографии: движение только вперед, конец цикла */
@@ -990,6 +1040,25 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   }
 }
 
+/* Анимация иконки при наведении - увеличение и поворот */
+@keyframes icon-hover {
+  0% {
+    transform: translateY(-50%) scale(1) rotate(0deg);
+  }
+  100% {
+    transform: translateY(-50%) scale(1.111) rotate(10deg); /* 1.111 = увеличение на 10% от уменьшенного размера */
+  }
+}
+
+@keyframes icon-hover-out {
+  0% {
+    transform: translateY(-50%) scale(1.111) rotate(10deg);
+  }
+  100% {
+    transform: translateY(-50%) scale(1) rotate(0deg);
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   #services .cards .card[data-wave-ready="true"] {
     animation: press-bounce 1000ms cubic-bezier(.22,.7,.18,1) 1 both;
@@ -1026,8 +1095,8 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   
   /* Уменьшаем размер иконок на мобильных */
   .cards .card::after {
-    width: 80px;
-    height: 80px;
+    width: 72px; /* Уменьшено на 10% (было 80px) */
+    height: 72px; /* Уменьшено на 10% (было 80px) */
     right: 8px;
     opacity: 0.2;
   }
@@ -1039,7 +1108,7 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   padding: 20px;
   transition: box-shadow .25s ease;
   position: relative;
-  overflow: visible; /* Разрешаем свечение выходить за границы */
+  overflow: hidden; /* Обрезаем иконки по границам карточки */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1089,14 +1158,24 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  width: 110px;
-  height: 110px;
+  width: 99px; /* Уменьшено на 10% (было 110px) */
+  height: 99px; /* Уменьшено на 10% (было 110px) */
   opacity: 0.25;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   pointer-events: none;
   z-index: 0; /* иконка за текстом */
+  transition: none; /* Отключаем transition для управления через animation */
+}
+
+/* Применяем анимацию иконки через классы */
+.cards .card.icon-animating::after {
+  animation: icon-hover 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.cards .card.icon-animating-out::after {
+  animation: icon-hover-out 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
 /* Цвета для каждой услуги - по столбикам: фиолетовый, зеленый, красный/оранжевый */
@@ -1178,8 +1257,8 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
 .cards .card[data-service-icon="community"]::after {
   background-image: url("./assets/images/icons/Icon_ComunityDev.png");
   filter: brightness(0) saturate(100%) invert(65%) sepia(95%) saturate(2000%) hue-rotate(75deg) brightness(1.1) contrast(1.05); /* светлый зеленый с желтоватым оттенком #a3e635 */
-  width: 130px;
-  height: 130px;
+  width: 117px; /* Уменьшено на 10% (было 130px) */
+  height: 117px; /* Уменьшено на 10% (было 130px) */
 }
 
 /* Столбик 3: красные/оранжевые оттенки */
@@ -1252,8 +1331,8 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   
   /* Увеличиваем размер иконки community на мобильных */
   .cards .card[data-service-icon="community"]::after {
-    width: 95px;
-    height: 95px;
+    width: 86px; /* Уменьшено на 10% (было 95px) */
+    height: 86px; /* Уменьшено на 10% (было 95px) */
   }
 }
 

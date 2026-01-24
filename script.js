@@ -109,7 +109,7 @@ const translations = {
     about: {
       title: "Кто мы",
       description: {
-        html: "<strong>ADViral Agency</strong> — агентство комплексного digital-продвижения брендов в социальных сетях и цифровой среде, ориентированное на рост и реальные бизнес-результаты. Мы базируемся в <strong>Таллине, Эстония</strong>, и работаем с проектами как на локальном, так и на международном рынке.<br><br>Наша цель — не просто присутствие бренда в онлайне, а его рост, узнаваемость и стабильный поток клиентов. Мы выстраиваем продвижение как целостную систему: от глубокой аналитики до креатива и масштабирования.<br><br>Мы объединяем стратегию, креатив и аналитику, чтобы создавать не просто контент, а измеримые бизнес-результаты.<br><br><strong>ADViral Agency</strong> — это команда, которая думает о бизнесе клиента как о своём собственном и берёт на себя ответственность за результат."
+        html: "<strong>ADViral Agency</strong> — агентство комплексного digital-продвижения брендов в социальных сетях и цифровой среде, ориентированное на рост и реальные бизнес-результаты. Мы базируемся в <strong>Таллине, Эстония</strong>, и работаем с проектами как на локальном, так и на международном рынке.<br><br>Наша цель — не просто присутствие бренда в онлайне, а его рост, узнаваемость и стабильный поток клиентов. Мы выстраиваем продвижение системно: от аналитики до креатива и масштабирования.<br><br>Мы объединяем стратегию, креатив и аналитику, чтобы создавать не просто контент, а измеримые бизнес-результаты.<br><br><strong>ADViral Agency</strong> — это команда, которая думает о бизнесе клиента как о своём собственном и берёт на себя ответственность за результат."
       },
       list: {},
     },
@@ -2185,6 +2185,46 @@ document.addEventListener("DOMContentLoaded", () => {
     card.addEventListener('mouseleave', startFadeOutAnimation);
     card.addEventListener('focus', startGlowAnimation);
     card.addEventListener('blur', startFadeOutAnimation);
+  });
+
+  // Гарантируем полное проигрывание анимации иконки при наведении
+  cards.forEach((card) => {
+    let iconAnimationStartTime = null;
+    
+    const startIconAnimation = () => {
+      // Удаляем все классы анимации
+      card.classList.remove('icon-animating', 'icon-animating-out');
+      void card.offsetWidth; // Принудительная перерисовка
+      
+      // Запускаем анимацию иконки
+      card.classList.add('icon-animating');
+      iconAnimationStartTime = performance.now();
+    };
+    
+    const stopIconAnimation = () => {
+      // Если анимация еще идет, ждем её завершения
+      if (iconAnimationStartTime) {
+        const elapsed = performance.now() - iconAnimationStartTime;
+        const remaining = Math.max(0, 600 - elapsed);
+        
+        setTimeout(() => {
+          card.classList.remove('icon-animating', 'icon-animating-out');
+          void card.offsetWidth;
+          card.classList.add('icon-animating-out');
+          iconAnimationStartTime = null;
+        }, remaining);
+      } else {
+        // Сразу запускаем анимацию возврата
+        card.classList.remove('icon-animating', 'icon-animating-out');
+        void card.offsetWidth;
+        card.classList.add('icon-animating-out');
+      }
+    };
+    
+    card.addEventListener('mouseenter', startIconAnimation);
+    card.addEventListener('mouseleave', stopIconAnimation);
+    card.addEventListener('focus', startIconAnimation);
+    card.addEventListener('blur', stopIconAnimation);
   });
 
   cards.forEach((card) => {
