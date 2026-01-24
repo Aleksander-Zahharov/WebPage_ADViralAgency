@@ -1,5 +1,6 @@
 // Язык, который подставляется, если пользователь ещё ничего не выбирал
 // Комментарий для теста
+// TEST COMMENT ADDED BY AI
 const DEFAULT_LANG = "en";
 // Ключ в localStorage, где хранится выбранный язык
 const LANG_STORAGE_KEY = "adviral-lang";
@@ -1961,6 +1962,29 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   })();
+
+  // Обработка фокуса на полях ввода в секции контактов для усиления затемнения
+  const contactSection = doc.getElementById("contact");
+  if (contactSection) {
+    const contactInputs = contactSection.querySelectorAll("input, textarea");
+    
+    const handleFocus = () => {
+      contactSection.classList.add("has-focus");
+    };
+    
+    const handleBlur = () => {
+      // Проверяем, есть ли еще активные поля
+      const hasActiveField = Array.from(contactInputs).some(input => input === doc.activeElement);
+      if (!hasActiveField) {
+        contactSection.classList.remove("has-focus");
+      }
+    };
+    
+    contactInputs.forEach(input => {
+      input.addEventListener("focus", handleFocus);
+      input.addEventListener("blur", handleBlur);
+    });
+  }
 
   // Обработчик формы (демонстрационный пример)
   const form = doc.querySelector("#contact-form");

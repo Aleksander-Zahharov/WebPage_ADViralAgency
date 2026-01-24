@@ -530,54 +530,45 @@
     </section>
 
   <!-- Секция 5: Контакты -->
-    <section id="contact" class="section auto-scroll">
+    <section id="contact" class="section auto-scroll contact-section">
+      <video class="contact-video" autoplay muted playsinline loop preload="metadata">
+        <source src="assets/videos/Horizontal/LAMBO5.mp4" type="video/mp4" />
+      </video>
+      <div class="contact-overlay"></div>
       <div class="container">
-  <h2 data-i18n="contact.title">Contacts</h2>
-        <div class="contact-section-grid reveal reveal-left">
-          <!-- Левая колонка: Форма обратной связи -->
-          <div class="contact-form-wrapper">
-            <form id="contact-form" class="contact-form" action="https://formspree.io/f/mzdeagyn" method="POST">
-              <!-- Скрытые поля для настройки Formspree -->
-              <input type="hidden" name="_to" value="info@adviral.agency" />
-              <input type="hidden" name="_format" value="plain" />
-              <input type="hidden" name="_cc" value="" />
-              <input type="hidden" name="_next" value="" />
-              <div class="input-row">
+        <div class="contact-content">
+          <h2 data-i18n="contact.title">Contacts</h2>
+          <div class="contact-section-grid reveal reveal-left">
+            <!-- Левая колонка: Форма обратной связи -->
+            <div class="contact-form-wrapper">
+              <form id="contact-form" class="contact-form" action="https://formspree.io/f/mzdeagyn" method="POST">
+                <!-- Скрытые поля для настройки Formspree -->
+                <input type="hidden" name="_to" value="info@adviral.agency" />
+                <input type="hidden" name="_format" value="plain" />
+                <input type="hidden" name="_cc" value="" />
+                <input type="hidden" name="_next" value="" />
                 <div class="input-wrapper">
                   <input type="text" id="name" name="name" placeholder="Your name" required data-i18n="contact.form.name" data-i18n-attrs="placeholder" />
                 </div>
                 <div class="input-wrapper">
+                  <input type="email" id="email" name="email" placeholder="Email" required data-i18n="contact.form.email" data-i18n-attrs="placeholder" />
+                </div>
+                <div class="input-wrapper">
                   <input type="text" id="company" name="company" placeholder="Company (optional)" data-i18n="contact.form.company" data-i18n-attrs="placeholder" />
                 </div>
-              </div>
-              <div class="input-wrapper">
-                <input type="email" id="email" name="email" placeholder="Email" required data-i18n="contact.form.email" data-i18n-attrs="placeholder" />
-              </div>
-              <div class="input-wrapper textarea-wrapper">
-                <textarea id="message" name="message" placeholder="Briefly describe your task" data-i18n="contact.form.message" data-i18n-attrs="placeholder"></textarea>
-              </div>
-              <button type="submit" class="btn btn-primary full">
-                <span class="btn-icon">
-                  <img src="assets/images/icons/sendIcon.png" alt="" aria-hidden="true" />
-                </span>
-                <span data-i18n="contact.form.submit">Send request</span>
-              </button>
-            </form>
-          </div>
-
-          <!-- Правая колонка: Фотографии в стиле секции "Кто мы" -->
-          <div class="packages-wrapper">
-            <div class="media-tilted-group">
-              <div class="media-tilted-frame">
-                <img src="assets/images/photos/2green.webp" alt="ADViral Agency" loading="lazy" />
-              </div>
-              <div class="media-tilted-frame">
-                <img src="assets/images/photos/2red.webp" alt="ADViral Agency" loading="lazy" />
-              </div>
-              <div class="media-tilted-frame">
-                <img src="assets/images/photos/2white.webp" alt="ADViral Agency" loading="lazy" />
-              </div>
+                <div class="input-wrapper textarea-wrapper">
+                  <textarea id="message" name="message" placeholder="Briefly describe your task" data-i18n="contact.form.message" data-i18n-attrs="placeholder"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary full">
+                  <span class="btn-icon">
+                    <img src="assets/images/icons/sendIcon.png" alt="" aria-hidden="true" />
+                  </span>
+                  <span data-i18n="contact.form.submit">Send request</span>
+                </button>
+              </form>
             </div>
+            <!-- Правая колонка: пусто -->
+            <div class="contact-right-column"></div>
           </div>
         </div>
       </div>
