@@ -1,4 +1,5 @@
 // Язык, который подставляется, если пользователь ещё ничего не выбирал
+// Комментарий для теста
 const DEFAULT_LANG = "en";
 // Ключ в localStorage, где хранится выбранный язык
 const LANG_STORAGE_KEY = "adviral-lang";
@@ -1406,13 +1407,13 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Оптимизированная загрузка и автоплей видео для всех лент
-  // Загружаем видео только когда они близки к viewport, и последовательно
+  // Загружаем видео последовательно в фоновом режиме сразу после загрузки страницы
   igStrips.forEach((strip) => {
     const igVideos = Array.from(strip.querySelectorAll("video"));
     if (igVideos.length === 0) return;
 
     // Очередь для последовательной загрузки видео
-    let loadingQueue = [];
+    let loadingQueue = [...igVideos]; // Сразу добавляем все видео в очередь
     let isLoading = false;
 
     // Функция для загрузки следующего видео из очереди
@@ -1444,41 +1445,34 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
       
-      // Загружаем только metadata сначала
+      // Загружаем metadata для начала
       video.preload = "metadata";
       video.muted = true;
       video.loop = true;
-      
-      // Загружаем metadata асинхронно
       video.load();
       
-      // После загрузки metadata, если видео видно, загружаем полностью
       video.addEventListener("loadedmetadata", () => {
         isLoading = false;
         
-        // Проверяем, видно ли видео сейчас
-        const rect = video.getBoundingClientRect();
-        const isVisible = rect.top < window.innerHeight + 200 && rect.bottom > -200;
-        
-        if (isVisible) {
-          // Видео видно - загружаем полностью и запускаем
-          // Используем requestIdleCallback для загрузки когда браузер свободен
-          const loadFullVideo = () => {
-            video.preload = "auto";
-            video.load();
-            video.play().catch(() => {
-              // Игнорируем ошибки автоплея
-            });
-          };
-          
-          if (window.requestIdleCallback) {
-            requestIdleCallback(loadFullVideo, { timeout: 1000 });
-          } else {
-            setTimeout(loadFullVideo, 100);
+        // После загрузки metadata начинаем подгружать само видео в фоне
+        const loadFullVideo = () => {
+          video.preload = "auto";
+          // Не вызываем load() повторно если не нужно, но для уверенности в фоне:
+          // Если видео уже во viewport, оно должно начать играть
+          const rect = video.getBoundingClientRect();
+          const isVisible = rect.top < window.innerHeight + 200 && rect.bottom > -200;
+          if (isVisible) {
+            video.play().catch(() => {});
           }
+        };
+        
+        if (window.requestIdleCallback) {
+          requestIdleCallback(loadFullVideo, { timeout: 2000 });
+        } else {
+          setTimeout(loadFullVideo, 200);
         }
         
-        // Загружаем следующее видео
+        // Переходим к следующему видео в очереди
         loadNextVideo();
       }, { once: true });
       
@@ -1488,27 +1482,23 @@ document.addEventListener("DOMContentLoaded", () => {
           isLoading = false;
           loadNextVideo();
         }
-      }, 2000);
+      }, 3000);
     }
 
-    // IntersectionObserver для отслеживания видимости видео
+    // IntersectionObserver для play/pause
     const videoObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           const video = entry.target;
           
           if (entry.isIntersecting) {
-            // Видео видно - добавляем в очередь загрузки если еще не загружено
-            if (video.dataset.loaded !== "true" && !loadingQueue.includes(video)) {
-              loadingQueue.push(video);
-              loadNextVideo();
-            }
-            
-            // Если видео уже загружено, запускаем его
-            if (video.readyState >= 2) { // HAVE_CURRENT_DATA
-              video.play().catch(() => {
-                // Игнорируем ошибки автоплея
-              });
+            // Если видео вошло в viewport, пробуем запустить
+            // Если оно еще не загружено, оно подхватится очередью или loadNextVideo
+            if (video.readyState >= 2) {
+              video.play().catch(() => {});
+            } else if (video.dataset.loaded === "true") {
+              // Если в процессе загрузки, ставим preload="auto" чтобы ускориться
+              video.preload = "auto";
             }
           } else {
             // Видео не видно - останавливаем
@@ -1517,18 +1507,24 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       },
       {
-        threshold: 0.1, // Видео должно быть видно минимум на 10%
-        rootMargin: "200px" // Предзагружаем только видео в радиусе 200px
+        threshold: 0.1,
+        rootMargin: "300px"
       }
     );
 
-    // Наблюдаем за всеми видео, но не загружаем их сразу
+    // Инициализируем видео и начинаем фоновую загрузку
     igVideos.forEach((video) => {
-      video.preload = "none"; // Не загружаем ничего до появления в viewport
       video.muted = true;
       video.loop = true;
       videoObserver.observe(video);
     });
+
+    // Запускаем фоновую загрузку через небольшую паузу после DOMContentLoaded
+    if (window.requestIdleCallback) {
+      requestIdleCallback(() => loadNextVideo(), { timeout: 1000 });
+    } else {
+      setTimeout(loadNextVideo, 500);
+    }
   });
 
   // Модальное окно видеоплеера с Plyr
