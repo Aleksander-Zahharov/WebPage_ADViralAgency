@@ -1192,7 +1192,7 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
 }
 
 /* Выносим стрелки вне внутреннего контейнера */
-#works > div {
+#works > div.container {
   position: relative;
 }
 
@@ -1232,6 +1232,16 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
 .ig-arrow:active {
   background: rgba(176, 134, 249, 0.4);
   transform: translateY(-50%) translateY(40px) scale(0.95); /* Эффект нажатия */
+}
+
+/* Убеждаемся, что все стрелки в секции works имеют одинаковое позиционирование */
+#works .container {
+  position: relative;
+}
+
+/* Стрелки должны быть на одном уровне относительно ленты */
+#works .ig-slider {
+  position: relative;
 }
 
 .ig-arrow.prev {
@@ -1293,22 +1303,36 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   flex: 0 0 auto;
   width: clamp(180px, 22vw, 240px);
   aspect-ratio: 9 / 16;
-  border-radius: 16px;
+  border-radius: 0; /* Убираем закругление для острых углов */
   overflow: hidden;
   scroll-snap-align: center; /* карточки прилипают центру */
-  background: #111;
-  border: 1px solid rgba(255,255,255,.08);
-  transition: transform .2s ease, border-color .2s ease;
+  background: var(--card); /* Используем тот же фон, что и в секции "Кто мы" */
+  border: none; /* Убираем рамку */
+  transform: skew(-8deg, 0deg); /* Наклон рамки как в секции "Кто мы" */
+  transition: transform .2s ease, z-index .2s ease;
 }
 .ig-item:hover {
-  transform: scale(1.05); /* приближение при наведении вместо подъема */
-  border-color: rgba(255,255,255,.08); /* убираем подсветку рамок */
+  transform: skew(-8deg, 0deg) scale(1.05); /* Сохраняем наклон при приближении */
+  z-index: 1; /* Поднимаем при наведении */
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* легкая аккуратная тень */
 }
 .ig-item video {
-  width: 100%; height: 100%;
+  width: 100%; 
+  height: 100%;
   object-fit: cover;
   display: block;
+  transform: skew(8deg, 0deg) scale(1.25); /* Компенсируем наклон и приближаем видео, чтобы не было пустых углов */
+  transition: transform 0.5s cubic-bezier(.2,.6,.2,1);
+  transform-origin: center center;
+}
+.ig-item:hover video {
+  transform: skew(8deg, 0deg) scale(1.35); /* Увеличиваем приближение при наведении */
+}
+
+/* Горизонтальные видео - те же наклонные рамки, но горизонтальный формат */
+.ig-item-horizontal {
+  aspect-ratio: 16 / 9; /* Горизонтальный формат вместо вертикального */
+  width: clamp(240px, 30vw, 320px); /* Шире для горизонтальных видео */
 }
 /* Убраны подписи и иконка плей с видео в ленте */
 .ig-item .play {

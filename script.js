@@ -1079,8 +1079,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Instagram-like slider — горизонтальная витрина кейсов
-  const igSlider = doc.querySelector(".ig-slider");
-  const igStrip = doc.querySelector(".ig-strip");
+  // Обрабатываем все ленты (вертикальные и горизонтальные)
+  const igSliders = doc.querySelectorAll(".ig-slider");
+  const igStrips = doc.querySelectorAll(".ig-strip");
+  
+  // Для обратной совместимости оставляем старые переменные для первой ленты
+  const igSlider = igSliders[0];
+  const igStrip = igStrips[0];
 
   function getScrollStep() {
     if (!igStrip) return 320;
@@ -1207,27 +1212,71 @@ document.addEventListener("DOMContentLoaded", () => {
     const btn = el.cloneNode(true);
     el.replaceWith(btn);
     
+    // Находим соответствующую ленту для этой стрелки
+    const slider = btn.closest(".ig-slider");
+    const strip = slider?.querySelector(".ig-strip");
+    
     let pressStartTime = 0;
+    let pressRafId = null;
+    let hoverRafId = null;
+
+    function startPressScrollForStrip(dir, speed) {
+      if (!strip) return;
+      let lastTime = performance.now();
+      function scrollFrame(now) {
+        const deltaTime = (now - lastTime) / 1000;
+        lastTime = now;
+        strip.scrollLeft += dir * speed * deltaTime * 2;
+        pressRafId = requestAnimationFrame(scrollFrame);
+      }
+      pressRafId = requestAnimationFrame(scrollFrame);
+    }
+
+    function stopPressScrollForStrip() {
+      if (pressRafId) {
+        cancelAnimationFrame(pressRafId);
+        pressRafId = null;
+      }
+    }
+
+    function startHoverScrollForStrip(dir, speed) {
+      if (!strip) return;
+      let lastTime = performance.now();
+      function scrollFrame(now) {
+        const deltaTime = (now - lastTime) / 1000;
+        lastTime = now;
+        strip.scrollLeft += dir * speed * deltaTime * 0.5;
+        hoverRafId = requestAnimationFrame(scrollFrame);
+      }
+      hoverRafId = requestAnimationFrame(scrollFrame);
+    }
+
+    function stopHoverScrollForStrip() {
+      if (hoverRafId) {
+        cancelAnimationFrame(hoverRafId);
+        hoverRafId = null;
+      }
+    }
 
     btn.addEventListener("pointerdown", (e) => {
       e.preventDefault();
       btn.setPointerCapture?.(e.pointerId);
       pressStartTime = performance.now();
-      startPressScroll(dir, 300);
+      startPressScrollForStrip(dir, 300);
     });
     btn.addEventListener("pointerup", (e) => {
       btn.releasePointerCapture?.(e.pointerId);
-      stopPressScroll();
+      stopPressScrollForStrip();
     });
     btn.addEventListener("pointerleave", () => {
-      stopPressScroll();
-      stopHoverScroll();
+      stopPressScrollForStrip();
+      stopHoverScrollForStrip();
     });
     btn.addEventListener("lostpointercapture", () => {
-      stopPressScroll();
-      stopHoverScroll();
+      stopPressScrollForStrip();
+      stopHoverScrollForStrip();
     });
-    btn.addEventListener("pointerenter", () => startHoverScroll(dir, 300));
+    btn.addEventListener("pointerenter", () => startHoverScrollForStrip(dir, 300));
 
     // Prevent click (next/prev step) if we held the button for scrolling
     btn.addEventListener("click", (e) => {
@@ -1241,9 +1290,66 @@ document.addEventListener("DOMContentLoaded", () => {
     return btn;
   }
 
-  rewireArrow(doc.querySelector(".ig-arrow.prev"), -1);
-  rewireArrow(doc.querySelector(".ig-arrow.next"), 1);
+  // Обрабатываем стрелки для всех лент
+  igSliders.forEach((slider) => {
+    const strip = slider.querySelector(".ig-strip");
+    if (!strip) return;
+    
+    // Ищем стрелки в родительском контейнере, так как они находятся вне .ig-slider
+    const container = slider.closest(".container");
+    if (!container) return;
+    
+    // Находим стрелки, которые находятся рядом с этим слайдером в DOM
+    // Стрелки находятся перед и после .ig-slider
+    const containerChildren = Array.from(container.children);
+    const sliderIndex = containerChildren.indexOf(slider);
+    
+    let prevArrow = null;
+    let nextArrow = null;
+    
+    // Ищем prev стрелку перед слайдером
+    for (let i = sliderIndex - 1; i >= 0; i--) {
+      const child = containerChildren[i];
+      if (child.classList.contains("ig-arrow") && child.classList.contains("prev")) {
+        prevArrow = child;
+        break;
+      }
+    }
+    
+    // Ищем next стрелку после слайдера
+    for (let i = sliderIndex + 1; i < containerChildren.length; i++) {
+      const child = containerChildren[i];
+      if (child.classList.contains("ig-arrow") && child.classList.contains("next")) {
+        nextArrow = child;
+        break;
+      }
+    }
 
+    function scrollStripBy(direction) {
+      if (!strip) return;
+      const scrollAmount = strip.offsetWidth / 2;
+      strip.scrollBy({ left: direction * scrollAmount, behavior: "smooth" });
+    }
+
+    // Добавляем обработчики клика для стрелок
+    if (prevArrow) {
+      prevArrow.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        scrollStripBy(-1);
+      });
+    }
+    
+    if (nextArrow) {
+      nextArrow.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        scrollStripBy(1);
+      });
+    }
+  });
+
+  // Для обратной совместимости оставляем обработку первой ленты
   if (igSlider && igStrip) {
     const prevArrow = igSlider.querySelector(".ig-arrow.prev");
     const nextArrow = igSlider.querySelector(".ig-arrow.next");
@@ -1258,7 +1364,8 @@ document.addEventListener("DOMContentLoaded", () => {
     nextArrow?.addEventListener("click", () => scrollStripBy(1));
   }
 
-  if (igStrip) {
+  // Обрабатываем drag для всех лент
+  igStrips.forEach((strip) => {
     let isDragging = false;
     let dragStartX = 0;
     let dragStartScroll = 0;
@@ -1266,13 +1373,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const stopDrag = (evt) => {
       if (!isDragging) return;
       isDragging = false;
-      delete igStrip.dataset.dragging;
+      delete strip.dataset.dragging;
       if (evt?.pointerId !== undefined) {
-        igStrip.releasePointerCapture?.(evt.pointerId);
+        strip.releasePointerCapture?.(evt.pointerId);
       }
     };
 
-    igStrip.addEventListener("pointerdown", (evt) => {
+    strip.addEventListener("pointerdown", (evt) => {
       // Пропускаем клики на видео элементы - они обрабатываются отдельно
       const item = evt.target.closest(".ig-item");
       if (item && item.hasAttribute("data-video")) {
@@ -1282,52 +1389,53 @@ document.addEventListener("DOMContentLoaded", () => {
       // Обычный drag для прокрутки
       isDragging = true;
       dragStartX = evt.clientX;
-      dragStartScroll = igStrip.scrollLeft;
-      igStrip.dataset.dragging = "true";
-      igStrip.setPointerCapture?.(evt.pointerId);
+      dragStartScroll = strip.scrollLeft;
+      strip.dataset.dragging = "true";
+      strip.setPointerCapture?.(evt.pointerId);
     });
 
-    igStrip.addEventListener("pointermove", (evt) => {
+    strip.addEventListener("pointermove", (evt) => {
       if (!isDragging) return;
       const delta = evt.clientX - dragStartX;
-      igStrip.scrollLeft = dragStartScroll - delta;
+      strip.scrollLeft = dragStartScroll - delta;
     });
 
-    igStrip.addEventListener("pointerup", stopDrag);
-    igStrip.addEventListener("pointerleave", stopDrag);
-    igStrip.addEventListener("lostpointercapture", stopDrag);
+    strip.addEventListener("pointerup", stopDrag);
+    strip.addEventListener("pointerleave", stopDrag);
+    strip.addEventListener("lostpointercapture", stopDrag);
+  });
 
-  }
+  // Автоплей видео при появлении в viewport для всех лент
+  igStrips.forEach((strip) => {
+    const igVideos = strip.querySelectorAll("video");
+    if (igVideos.length > 0) {
+      const videoObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            const video = entry.target;
+            if (entry.isIntersecting) {
+              video.play().catch(() => {
+                // Игнорируем ошибки автоплея (политики браузера)
+              });
+            } else {
+              video.pause();
+            }
+          });
+        },
+        {
+          threshold: 0.1, // Видео должно быть видно минимум на 10% для более раннего старта
+          rootMargin: "50px" // Добавляем запас, чтобы видео начинало проигрываться раньше
+        }
+      );
 
-  // Автоплей видео при появлении в viewport
-  const igVideos = igStrip ? igStrip.querySelectorAll("video") : [];
-  if (igVideos.length > 0) {
-    const videoObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const video = entry.target;
-          if (entry.isIntersecting) {
-            video.play().catch(() => {
-              // Игнорируем ошибки автоплея (политики браузера)
-            });
-          } else {
-            video.pause();
-          }
-        });
-      },
-      {
-        threshold: 0.5, // Видео должно быть видно минимум на 50%
-        rootMargin: "0px"
-      }
-    );
-
-    igVideos.forEach((video) => {
-      video.preload = "metadata";
-      video.muted = true; // Убеждаемся, что видео без звука для автоплея
-      video.loop = true;
-      videoObserver.observe(video);
-    });
-  }
+      igVideos.forEach((video) => {
+        video.preload = "metadata";
+        video.muted = true; // Убеждаемся, что видео без звука для автоплея
+        video.loop = true;
+        videoObserver.observe(video);
+      });
+    }
+  });
 
   // Модальное окно видеоплеера с Plyr
   (function setupVideoModal() {
@@ -1668,6 +1776,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Обработчик клика для открытия модального окна
     // Используем pointer events для лучшей совместимости
+    // Обрабатываем все видео элементы во всех лентах
     const igItems = doc.querySelectorAll(".ig-item[data-video]");
     
     igItems.forEach((item) => {
