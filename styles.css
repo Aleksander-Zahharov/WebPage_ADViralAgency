@@ -216,7 +216,7 @@ p { color: var(--muted); margin: 0 0 12px; }
   justify-content: center;
   height: 44px;
   padding: 0 18px;
-  border-radius: 999px;
+  border-radius: 12px;
   line-height: 1;
   font-weight: 600;
   white-space: nowrap;
@@ -318,7 +318,7 @@ p { color: var(--muted); margin: 0 0 12px; }
   display: none;
   width: 44px;
   height: 38px;
-  border-radius: 10px;
+  border-radius: 12px;
   border: 1px solid rgba(255,255,255,.14);
   background: linear-gradient(135deg, rgba(38,38,44,.92), rgba(62,62,70,.9));
   color: #fff;
@@ -374,9 +374,9 @@ p { color: var(--muted); margin: 0 0 12px; }
 .lang-switcher__toggle {
   appearance: none;
   -webkit-appearance: none;
-  height: 38px;
+  height: 44px;
   padding: 0 44px 0 16px;
-  border-radius: 14px;
+  border-radius: 12px;
   border: 1px solid rgba(255,255,255,.14);
   background: linear-gradient(135deg, rgba(38,38,44,.92), rgba(62,62,70,.9));
   color: #f5f6ff;
@@ -441,7 +441,7 @@ p { color: var(--muted); margin: 0 0 12px; }
   width: 100%;
   min-width: 100%;
   padding: 8px;
-  border-radius: 16px;
+  border-radius: 12px;
   border: 1px solid rgba(255,255,255,.12);
   background: rgba(24,24,28,.92);
   backdrop-filter: blur(18px);
@@ -1371,7 +1371,7 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   padding: 24px;
   background: transparent;
   border: none;
-  border-radius: 20px;
+  border-radius: 12px;
   text-decoration: none;
   transition: all 0.25s ease;
   position: relative;
@@ -1620,11 +1620,10 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   backdrop-filter: blur(0px);
 }
 
-/* Усиление затемнения и блюра при фокусе на полях ввода */
+/* Убираем глобальное затемнение при фокусе - эффект применяется только к полю */
 .contact-section:has(input:focus, textarea:focus) .contact-overlay,
 .contact-section.has-focus .contact-overlay {
-  background: linear-gradient(180deg, rgba(0,0,0,.75), rgba(0,0,0,.8));
-  backdrop-filter: blur(12px);
+  /* Эффект отключен - используется индивидуальный overlay для каждого поля */
 }
 
 .contact-content {
@@ -1695,7 +1694,7 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   opacity: var(--opacity, 0);
   pointer-events: none;
   transition: opacity 0.3s ease;
-  z-index: 1;
+  z-index: 3; /* Поверх затемненного фона поля */
   border-radius: 12px;
 }
 
@@ -1715,12 +1714,24 @@ textarea {
   background: rgba(255,255,255,.05);
   color: #fff;
   outline: none;
-  transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
+  transition: border-color .2s ease, background .2s ease, box-shadow .2s ease, backdrop-filter .3s ease;
   position: relative;
-  z-index: 2;
+  z-index: 2; /* Поле ввода поверх wrapper, но под свечением */
   font-family: var(--secondary-font); /* Общий шрифт сайта */
   font-size: 16px;
   line-height: 1.55;
+  backdrop-filter: blur(0px);
+}
+
+/* Затемнение только для активного поля ввода (без блюра) */
+input[type="text"]:focus,
+input[type="email"]:focus,
+textarea:focus {
+  background: rgba(30, 30, 35, 0.9); /* Темно-серый цвет для инфила */
+  backdrop-filter: blur(0px); /* Блюр отключен */
+  border-color: rgba(176, 134, 249, 0.8); /* Фиолетовая граница */
+  border-width: 2px; /* Утолщаем границу для подчеркивания */
+  box-shadow: 0 0 0 2px rgba(176, 134, 249, 0.3), 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 textarea {
@@ -1734,12 +1745,7 @@ input::placeholder, textarea::placeholder {
   color: rgba(255,255,255,.55); 
 }
 
-/* Подсветка при фокусе как у выбранных пакетов */
-input:focus, textarea:focus {
-  border-color: rgba(176,134,249, .65);
-  box-shadow: none;
-  background: linear-gradient(180deg, rgba(176,134,249,.10), rgba(255,255,255,0));
-}
+/* Подсветка при фокусе - эффект уже применен выше */
 
 /* Эффект белого пятна остается видимым даже при фокусе */
 
@@ -1941,7 +1947,7 @@ input:focus, textarea:focus {
   border: none;
   color: #000000;
   padding: 12px 24px;
-  border-radius: 999px;
+  border-radius: 12px;
   font-size: 14px;
   font-weight: 500;
   z-index: 10000;
@@ -2128,7 +2134,7 @@ input:focus, textarea:focus {
   width: 100%;
   padding-bottom: 56.25%; /* 16:9 aspect ratio */
   background: #000;
-  border-radius: 16px;
+  border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
 }
@@ -2149,7 +2155,7 @@ input:focus, textarea:focus {
   left: 0 !important;
   width: 100% !important;
   height: 100% !important;
-  border-radius: 16px;
+  border-radius: 12px;
   background: #000;
 }
 
@@ -2159,7 +2165,7 @@ input:focus, textarea:focus {
   left: 0 !important;
   width: 100% !important;
   height: 100% !important;
-  border-radius: 16px;
+  border-radius: 12px;
   overflow: hidden;
 }
 
@@ -2226,7 +2232,7 @@ input:focus, textarea:focus {
 
 .video-modal-content .plyr__menu__container .plyr__control {
   color: #c9c9d1 !important; /* Muted text */
-  border-radius: 8px;
+  border-radius: 12px;
 }
 
 .video-modal-content .plyr__menu__container .plyr__control:hover {
