@@ -36,8 +36,12 @@ optimize_media.py
 optimize_video.md
 *.py
 !requirements.txt  # Allow requirements.txt if needed in the future
+*.ps1
+create_*.ps1
+update_*.ps1
+VIDEO_OPTIMIZATION_README.md
 
 # Original video files (too large for Git, use optimized versions)
 assets/videos/*.mp4
 assets/videos/*.mov
-!assets/videos/optimized/
+!assets/videos/vertical/

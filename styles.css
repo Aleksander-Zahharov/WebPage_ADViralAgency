@@ -1021,18 +1021,18 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
 }
 
 .cards .card[data-service-icon="content"]::after {
-  background-image: url("./assets/images/Icon_Content.png");
+  background-image: url("./assets/images/icons/Icon_Content.png");
   filter: brightness(0) saturate(100%) invert(30%) sepia(95%) saturate(2000%) hue-rotate(240deg) brightness(0.8) contrast(1.1); /* фиолетовый #8b5cf6 */
 }
 
 .cards .card[data-service-icon="web"]::after {
-  background-image: url("./assets/images/Icon_SoftwareDev.png");
+  background-image: url("./assets/images/icons/Icon_SoftwareDev.png");
   filter: brightness(0) saturate(100%) invert(42%) sepia(95%) saturate(2000%) hue-rotate(250deg) brightness(0.85) contrast(1.1); /* сиреневый #b086f9 */
 }
 
 /* Столбик 2: зеленые оттенки */
 .cards .card[data-service-icon="social"]::after {
-  background-image: url("./assets/images/Icon_SocialNetworks.png");
+  background-image: url("./assets/images/icons/Icon_SocialNetworks.png");
   filter: brightness(0) saturate(100%) invert(60%) sepia(90%) saturate(2000%) hue-rotate(100deg) brightness(0.9) contrast(1.1); /* зеленый #22c55e */
 }
 
@@ -1050,7 +1050,7 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
 }
 
 .cards .card[data-service-icon="design"]::after {
-  background-image: url("./assets/images/Icon_Design.png");
+  background-image: url("./assets/images/icons/Icon_Design.png");
   filter: brightness(0) saturate(100%) invert(25%) sepia(95%) saturate(2000%) hue-rotate(350deg) brightness(0.85) contrast(1.1); /* красный #dc2626 */
 }
 
@@ -1152,11 +1152,11 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   }
 
   .ig-arrow.prev {
-    left: -56px;
+    left: -76px; /* Симметрично правой стрелке */
   }
 
   .ig-arrow.next {
-    right: -56px;
+    right: -76px; /* Симметрично левой стрелке */
   }
 }
 
@@ -1236,11 +1236,11 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
 }
 
 .ig-arrow.prev {
-  left: 0; /* Возвращаем стрелки внутрь контейнера, чтобы их не обрезало */
+  left: -40px; /* Симметрично правой стрелке */
 }
 
 .ig-arrow.next {
-  right: 0;
+  right: -40px; /* Симметрично левой стрелке */
 }
 
 /* Стрелки для горизонтальной ленты - отцентрованы относительно высоты ленты */
@@ -1305,7 +1305,7 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
 .ig-item {
   position: relative;
   flex: 0 0 auto;
-  width: clamp(180px, 22vw, 240px);
+  width: clamp(129.6px, 15.84vw, 172.8px); /* Уменьшено на 10% от предыдущего размера (всего на 28%) */
   aspect-ratio: 9 / 16;
   border-radius: 0; /* Убираем закругление для острых углов */
   overflow: hidden;
@@ -1336,7 +1336,7 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
 /* Горизонтальные видео - те же наклонные рамки, но горизонтальный формат */
 .ig-item-horizontal {
   aspect-ratio: 16 / 9; /* Горизонтальный формат вместо вертикального */
-  width: clamp(240px, 30vw, 320px); /* Шире для горизонтальных видео */
+  width: clamp(172.8px, 21.6vw, 230.4px); /* Уменьшено на 10% от предыдущего размера (всего на 28%) для горизонтальных видео */
 }
 /* Убраны подписи и иконка плей с видео в ленте */
 .ig-item .play {
@@ -1955,7 +1955,7 @@ input:focus, textarea:focus {
 }
 
 .footer-right .social-icon.meta {
-  background-image: url("./assets/images/meta-icon-white.png");
+  background-image: url("./assets/images/icons/meta-icon-white.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -2084,9 +2084,9 @@ input:focus, textarea:focus {
 
 .video-modal-container {
   position: relative;
-  width: 90%;
-  max-width: 1200px;
-  max-height: 90vh;
+  width: 85%; /* Уменьшено с 90% */
+  max-width: 1000px; /* Уменьшено с 1200px */
+  max-height: 85vh; /* Уменьшено с 90vh */
   z-index: 1;
   transform: scale(0.95);
   transition: transform 0.3s ease;
@@ -2270,11 +2270,11 @@ input:focus, textarea:focus {
 }
 
 .modal-arrow-left {
-  left: -72px;
+  left: -112px; /* Симметрично правой стрелке */
 }
 
 .modal-arrow-right {
-  right: -72px;
+  right: -112px; /* Симметрично левой стрелке */
 }
 
 /* Адаптив для стрелок */
@@ -2285,8 +2285,8 @@ input:focus, textarea:focus {
     width: 56px; /* Немного меньше зона клика на средних экранах */
     height: 56px;
   }
-  .modal-arrow-left { left: -50px; }
-  .modal-arrow-right { right: -50px; }
+  .modal-arrow-left { left: -90px; /* Симметрично правой стрелке */ }
+  .modal-arrow-right { right: -90px; /* Симметрично левой стрелке */ }
 }
 
 @media (max-width: 600px) {
@@ -2352,8 +2352,8 @@ input:focus, textarea:focus {
 
 @media (max-width: 768px) {
   .video-modal-container {
-    width: 95%;
-    max-height: 85vh;
+    width: 90%; /* Уменьшено для маленьких экранов */
+    max-height: 80vh; /* Уменьшено для лучшего размещения */
   }
 
   .video-modal-content {

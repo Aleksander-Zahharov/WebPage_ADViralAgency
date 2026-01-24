@@ -1405,36 +1405,130 @@ document.addEventListener("DOMContentLoaded", () => {
     strip.addEventListener("lostpointercapture", stopDrag);
   });
 
-  // Автоплей видео при появлении в viewport для всех лент
+  // Оптимизированная загрузка и автоплей видео для всех лент
+  // Загружаем видео только когда они близки к viewport, и последовательно
   igStrips.forEach((strip) => {
-    const igVideos = strip.querySelectorAll("video");
-    if (igVideos.length > 0) {
-      const videoObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            const video = entry.target;
-            if (entry.isIntersecting) {
-              video.play().catch(() => {
-                // Игнорируем ошибки автоплея (политики браузера)
-              });
-            } else {
-              video.pause();
-            }
-          });
-        },
-        {
-          threshold: 0.1, // Видео должно быть видно минимум на 10% для более раннего старта
-          rootMargin: "50px" // Добавляем запас, чтобы видео начинало проигрываться раньше
-        }
-      );
+    const igVideos = Array.from(strip.querySelectorAll("video"));
+    if (igVideos.length === 0) return;
 
-      igVideos.forEach((video) => {
-        video.preload = "metadata";
-        video.muted = true; // Убеждаемся, что видео без звука для автоплея
-        video.loop = true;
-        videoObserver.observe(video);
-      });
+    // Очередь для последовательной загрузки видео
+    let loadingQueue = [];
+    let isLoading = false;
+
+    // Функция для загрузки следующего видео из очереди
+    function loadNextVideo() {
+      if (isLoading || loadingQueue.length === 0) return;
+      
+      const video = loadingQueue.shift();
+      if (!video || video.dataset.loaded === "true") {
+        loadNextVideo();
+        return;
+      }
+
+      isLoading = true;
+      video.dataset.loaded = "true";
+      
+      // Используем превью версию видео для ленты
+      const item = video.closest(".ig-item");
+      const previewSrc = item?.dataset.videoPreview;
+      const source = video.querySelector("source");
+      
+      // Если есть превью версия, используем её для ленты
+      if (previewSrc && source) {
+        source.src = previewSrc;
+      } else if (source && !source.src) {
+        // Fallback на обычный источник если превью нет
+        const normalSrc = item?.dataset.video;
+        if (normalSrc) {
+          source.src = normalSrc;
+        }
+      }
+      
+      // Загружаем только metadata сначала
+      video.preload = "metadata";
+      video.muted = true;
+      video.loop = true;
+      
+      // Загружаем metadata асинхронно
+      video.load();
+      
+      // После загрузки metadata, если видео видно, загружаем полностью
+      video.addEventListener("loadedmetadata", () => {
+        isLoading = false;
+        
+        // Проверяем, видно ли видео сейчас
+        const rect = video.getBoundingClientRect();
+        const isVisible = rect.top < window.innerHeight + 200 && rect.bottom > -200;
+        
+        if (isVisible) {
+          // Видео видно - загружаем полностью и запускаем
+          // Используем requestIdleCallback для загрузки когда браузер свободен
+          const loadFullVideo = () => {
+            video.preload = "auto";
+            video.load();
+            video.play().catch(() => {
+              // Игнорируем ошибки автоплея
+            });
+          };
+          
+          if (window.requestIdleCallback) {
+            requestIdleCallback(loadFullVideo, { timeout: 1000 });
+          } else {
+            setTimeout(loadFullVideo, 100);
+          }
+        }
+        
+        // Загружаем следующее видео
+        loadNextVideo();
+      }, { once: true });
+      
+      // Таймаут на случай если событие не сработает
+      setTimeout(() => {
+        if (isLoading) {
+          isLoading = false;
+          loadNextVideo();
+        }
+      }, 2000);
     }
+
+    // IntersectionObserver для отслеживания видимости видео
+    const videoObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const video = entry.target;
+          
+          if (entry.isIntersecting) {
+            // Видео видно - добавляем в очередь загрузки если еще не загружено
+            if (video.dataset.loaded !== "true" && !loadingQueue.includes(video)) {
+              loadingQueue.push(video);
+              loadNextVideo();
+            }
+            
+            // Если видео уже загружено, запускаем его
+            if (video.readyState >= 2) { // HAVE_CURRENT_DATA
+              video.play().catch(() => {
+                // Игнорируем ошибки автоплея
+              });
+            }
+          } else {
+            // Видео не видно - останавливаем
+            video.pause();
+          }
+        });
+      },
+      {
+        threshold: 0.1, // Видео должно быть видно минимум на 10%
+        rootMargin: "200px" // Предзагружаем только видео в радиусе 200px
+      }
+    );
+
+    // Наблюдаем за всеми видео, но не загружаем их сразу
+    igVideos.forEach((video) => {
+      video.preload = "none"; // Не загружаем ничего до появления в viewport
+      video.muted = true;
+      video.loop = true;
+      videoObserver.observe(video);
+    });
   });
 
   // Модальное окно видеоплеера с Plyr
@@ -1462,7 +1556,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function getVideoSource(item) {
-      // Сначала проверяем data-video атрибут
+      // Для модального окна используем высокое качество (data-video-high или data-video)
+      // Сначала проверяем data-video-high для высокого качества
+      if (item.dataset.videoHigh) {
+        return item.dataset.videoHigh;
+      }
+      
+      // Затем проверяем обычный data-video атрибут
       if (item.dataset.video) {
         return item.dataset.video;
       }
