@@ -586,6 +586,7 @@
       <button class="modal-arrow modal-arrow-left" id="modal-prev-btn" aria-label="Previous video" type="button">‹</button>
       <button class="modal-arrow modal-arrow-right" id="modal-next-btn" aria-label="Next video" type="button">›</button>
       <div class="video-modal-content">
+        <div class="video-seek-indicator" id="video-seek-indicator"></div>
         <video id="modal-video-player" class="modal-video-player" playsinline>
           <source id="modal-video-source" src="" type="video/mp4" />
         </video>
@@ -611,6 +612,21 @@
         </div>
       </div>
     </footer>
+
+  <!-- Popup для описания услуг на мобильных -->
+  <div id="service-popup" class="service-popup">
+    <div class="service-popup-overlay"></div>
+    <div class="service-popup-container">
+      <button class="service-popup-close" aria-label="Close">×</button>
+      <div class="service-popup-icon"></div>
+      <h3 class="service-popup-title"></h3>
+      <p class="service-popup-text"></p>
+      <div class="service-popup-navigation">
+        <button class="service-popup-arrow service-popup-prev" aria-label="Previous">‹</button>
+        <button class="service-popup-arrow service-popup-next" aria-label="Next">›</button>
+      </div>
+    </div>
+  </div>
 
     <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
     <script src="./script.js" defer></script>

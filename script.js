@@ -1681,24 +1681,39 @@ document.addEventListener("DOMContentLoaded", () => {
         modalPlayer.style.width = "100%";
         modalPlayer.style.height = "100%";
         
+        // Определяем, мобильное ли устройство
+        const isMobile = window.innerWidth <= 768;
+        
+        // Настройки для мобильных и десктопа
+        const mobileControls = [
+          "play-large",
+          "play",
+          "progress",
+          "current-time",
+          "duration",
+          "settings",
+          "fullscreen"
+        ];
+        
+        const desktopControls = [
+          "play-large",
+          "play",
+          "progress",
+          "current-time",
+          "duration",
+          "mute",
+          "volume",
+          "settings",
+          "airplay",
+          "fullscreen"
+        ];
+        
         player = new Plyr(modalPlayer, {
-          controls: [
-            "play-large",
-            "play",
-            "progress",
-            "current-time",
-            "duration",
-            "mute",
-            "volume",
-            "settings",
-            // "pip", // Removed as requested
-            "airplay",
-            "fullscreen"
-          ],
-          settings: ["quality", "speed"],
+          controls: isMobile ? mobileControls : desktopControls,
+          settings: isMobile ? ["quality"] : ["quality", "speed"], // На мобильных только качество
           quality: {
-            default: 720,
-            options: [1080, 720, 480, 360],
+            default: isMobile ? 720 : 720,
+            options: isMobile ? [720, 480, 360] : [1080, 720, 480, 360], // На мобильных меньше опций
             forced: true,
             onChange: (quality) => {
               // В будущем здесь можно добавить логику переключения между разными источниками
@@ -1714,8 +1729,10 @@ document.addEventListener("DOMContentLoaded", () => {
           },
           autoplay: false,
           clickToPlay: true,
+          hideControls: isMobile, // На мобильных автоматически скрываем контролы
+          resetOnEnd: true, // Сбрасываем видео в начало после окончания
           ratio: null, // Отключаем автоматическое соотношение сторон, используем наш контейнер
-          volume: 0.5 // Устанавливаем дефолтную громкость на 50%
+          volume: isMobile ? 1 : 0.5 // На мобильных громкость зависит от системной
         });
 
         // Обработка ошибок загрузки
@@ -1726,7 +1743,69 @@ document.addEventListener("DOMContentLoaded", () => {
         // Проверяем, что Plyr правильно инициализировался
         player.on("ready", () => {
           // console.log("Plyr ready");
+          
+          // Добавляем поддержку жестов на мобильных устройствах
+          if (window.innerWidth <= 768) {
+            setupMobileGestures();
+          }
         });
+        
+        // Функция для настройки жестов на мобильных
+        function setupMobileGestures() {
+          const videoWrapper = modalPlayer.closest('.video-modal-content');
+          const seekIndicator = doc.getElementById('video-seek-indicator');
+          if (!videoWrapper) return;
+          
+          let lastTapTime = 0;
+          let tapTimeout = null;
+          let indicatorTimeout = null;
+          
+          function showSeekIndicator(direction) {
+            if (!seekIndicator) return;
+            
+            // Устанавливаем иконку направления
+            seekIndicator.textContent = direction === 'forward' ? '⏩' : '⏪';
+            seekIndicator.classList.add('show');
+            
+            // Скрываем индикатор через 500ms
+            clearTimeout(indicatorTimeout);
+            indicatorTimeout = setTimeout(() => {
+              seekIndicator.classList.remove('show');
+            }, 500);
+          }
+          
+          videoWrapper.addEventListener('touchend', (e) => {
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTapTime;
+            
+            // Двойное нажатие (в течение 300ms)
+            if (tapLength < 300 && tapLength > 0) {
+              clearTimeout(tapTimeout);
+              
+              // Определяем, где нажали (левая или правая половина экрана)
+              const touch = e.changedTouches[0];
+              const rect = videoWrapper.getBoundingClientRect();
+              const x = touch.clientX - rect.left;
+              const screenWidth = rect.width;
+              
+              if (player && player.currentTime !== undefined) {
+                if (x < screenWidth / 2) {
+                  // Левая половина - перемотка назад на 10 секунд
+                  player.rewind(10);
+                  showSeekIndicator('backward');
+                } else {
+                  // Правая половина - перемотка вперед на 10 секунд
+                  player.forward(10);
+                  showSeekIndicator('forward');
+                }
+              }
+              
+              lastTapTime = 0; // Сброс для следующего двойного нажатия
+            } else {
+              lastTapTime = currentTime;
+            }
+          }, { passive: true });
+        }
       } catch (error) {
         console.error("Error initializing Plyr:", error);
         // Fallback на стандартный HTML5 video
@@ -2227,8 +2306,109 @@ document.addEventListener("DOMContentLoaded", () => {
     card.addEventListener('blur', stopIconAnimation);
   });
 
+  // Popup для мобильных
+  const servicePopup = doc.getElementById('service-popup');
+  const servicePopupContainer = servicePopup?.querySelector('.service-popup-container');
+  const servicePopupTitle = servicePopup?.querySelector('.service-popup-title');
+  const servicePopupText = servicePopup?.querySelector('.service-popup-text');
+  const servicePopupIcon = servicePopup?.querySelector('.service-popup-icon');
+  const servicePopupClose = servicePopup?.querySelector('.service-popup-close');
+  const servicePopupOverlay = servicePopup?.querySelector('.service-popup-overlay');
+  const servicePopupPrev = servicePopup?.querySelector('.service-popup-prev');
+  const servicePopupNext = servicePopup?.querySelector('.service-popup-next');
+  
+  let currentServiceIndex = -1;
+
+  function openServicePopup(card, index = -1) {
+    if (!servicePopup || !servicePopupContainer || !servicePopupTitle || !servicePopupText) return;
+    
+    currentServiceIndex = index >= 0 ? index : cards.indexOf(card);
+    
+    const title = card.querySelector('h3')?.textContent || '';
+    const text = card.querySelector('p')?.textContent || '';
+    const serviceType = card.getAttribute('data-service-icon') || '';
+    
+    servicePopupTitle.textContent = title;
+    servicePopupText.textContent = text;
+    servicePopupContainer.setAttribute('data-service-type', serviceType);
+    
+    // Копируем CSS переменные цвета услуги
+    const computedStyle = getComputedStyle(card);
+    const serviceColor = computedStyle.getPropertyValue('--service-color');
+    const serviceBorderColor = computedStyle.getPropertyValue('--service-border-color');
+    
+    servicePopupContainer.style.setProperty('--service-color', serviceColor);
+    servicePopupContainer.style.setProperty('--service-border-color', serviceBorderColor);
+    
+    // Копируем иконку из карточки
+    if (servicePopupIcon) {
+      const cardIcon = getComputedStyle(card, '::after');
+      const iconUrl = cardIcon.backgroundImage;
+      const iconFilter = cardIcon.filter;
+      servicePopupIcon.style.backgroundImage = iconUrl;
+      servicePopupIcon.style.filter = iconFilter;
+    }
+    
+    servicePopup.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeServicePopup() {
+    if (!servicePopup) return;
+    servicePopup.classList.remove('active');
+    document.body.style.overflow = '';
+    currentServiceIndex = -1;
+  }
+  
+  function navigateServicePopup(direction) {
+    if (currentServiceIndex === -1 || cards.length === 0) return;
+    
+    let newIndex = currentServiceIndex + direction;
+    
+    // Зацикливаем навигацию
+    if (newIndex < 0) newIndex = cards.length - 1;
+    if (newIndex >= cards.length) newIndex = 0;
+    
+    const newCard = cards[newIndex];
+    if (newCard) {
+      openServicePopup(newCard, newIndex);
+    }
+  }
+
+  // Закрытие popup
+  if (servicePopupClose) {
+    servicePopupClose.addEventListener('click', closeServicePopup);
+  }
+  
+  if (servicePopupOverlay) {
+    servicePopupOverlay.addEventListener('click', closeServicePopup);
+  }
+  
+  // Навигация в popup
+  if (servicePopupPrev) {
+    servicePopupPrev.addEventListener('click', () => navigateServicePopup(-1));
+  }
+  
+  if (servicePopupNext) {
+    servicePopupNext.addEventListener('click', () => navigateServicePopup(1));
+  }
+
+  // Закрытие по Escape
+  doc.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && servicePopup?.classList.contains('active')) {
+      closeServicePopup();
+    }
+  });
+
   cards.forEach((card) => {
     card.addEventListener('click', () => {
+      // На мобильных (max-width: 600px) показываем popup
+      if (window.innerWidth <= 600) {
+        openServicePopup(card);
+        return;
+      }
+      
+      // На десктопе работает старая логика раскрытия
       const isOpen = card.classList.contains('is-open');
       const shouldAnimate = mobileServicesQuery.matches && !prefersReducedMotionQuery.matches && cards.length > 0;
       const beforeLayout = shouldAnimate ? captureCardLayout(cards) : null;
