@@ -746,6 +746,54 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   .grid-2 { grid-template-columns: 1fr; }
 }
 
+/* Фиксированные размеры для секции "Кто мы" */
+#about .container {
+  max-width: none; /* Убираем ограничение максимальной ширины контейнера */
+  width: auto; /* Автоматическая ширина */
+  padding: 0 var(--gap); /* Сохраняем боковые отступы */
+}
+
+#about .grid-2 {
+  grid-template-columns: 687px 625px; /* Фиксированные размеры колонок */
+  gap: 48px; /* Фиксированный отступ */
+  max-width: none; /* Убираем ограничение максимальной ширины */
+  width: fit-content; /* Ширина по содержимому */
+}
+
+#about .media-tilted-group {
+  width: 687px;
+  height: 420px;
+  flex-shrink: 0; /* Запрещаем сжатие */
+  min-width: 687px; /* Минимальная ширина */
+  max-width: 687px; /* Максимальная ширина */
+}
+
+#about .content {
+  width: 625px;
+  height: 420px;
+  flex-shrink: 0; /* Запрещаем сжатие */
+  overflow: hidden; /* Обрезаем контент, если не помещается */
+  min-width: 625px; /* Минимальная ширина */
+  max-width: 625px; /* Максимальная ширина */
+}
+
+/* Отключаем адаптивность для секции "Кто мы" */
+@media (max-width: 900px) {
+  #about {
+    overflow-x: auto; /* Горизонтальный скролл на маленьких экранах */
+  }
+  
+  #about .container {
+    max-width: none; /* Убираем ограничение на мобильных */
+    min-width: calc(687px + 625px + 48px); /* Минимальная ширина для размещения контента */
+  }
+  
+  #about .grid-2 {
+    grid-template-columns: 687px 625px; /* Сохраняем фиксированные размеры */
+    min-width: calc(687px + 625px + 48px); /* Минимальная ширина */
+  }
+}
+
 .media {
   border-radius: var(--radius);
   overflow: hidden;
