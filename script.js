@@ -224,6 +224,7 @@ const translations = {
     },
     footer: {
       copy: "© 2026 ADViral Agency",
+      author: "Made by: Aleksander Zahharov",
       email: "info@adviral.agency",
       social: {
         instagram: "",
@@ -384,6 +385,7 @@ const translations = {
     },
     footer: {
       copy: "© 2026 ADViral Agency",
+      author: "Made by: Aleksander Zahharov",
       email: "info@adviral.agency",
       social: {
         instagram: "",
@@ -544,6 +546,7 @@ const translations = {
     },
     footer: {
       copy: "© 2026 ADViral Agency",
+      author: "Made by: Aleksander Zahharov",
       email: "info@adviral.agency",
       social: {
         instagram: "",
