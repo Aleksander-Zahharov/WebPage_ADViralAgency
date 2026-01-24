@@ -938,9 +938,9 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   border: 1px solid var(--card-border);
   border-radius: 12px;
   padding: 20px;
-  transition: transform .25s ease, box-shadow .25s ease;
+  transition: box-shadow .25s ease;
   position: relative;
-  overflow: hidden; /* сохраняем подсветку внутри карточки */
+  overflow: visible; /* Разрешаем свечение выходить за границы */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -950,8 +950,8 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
 
 .card:hover,
 .card:focus-within {
-  transform: translateY(-2px); /* Убрано увеличение scale */
-  box-shadow: 0 10px 24px rgba(0,0,0,.28); /* лёгкая тень при ховере */
+  transform: none; /* Убрано приподнятие и увеличение */
+  box-shadow: 0 0 12px var(--service-border-color, rgba(255, 255, 255, 0.15)); /* Менее интенсивная цветная подсветка вокруг элемента */
   /* Анимация управляется через JavaScript для гарантии полного проигрывания */
 }
 .card {
