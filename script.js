@@ -2130,6 +2130,60 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
+  // Гарантируем полное проигрывание анимации границы при наведении
+  cards.forEach((card) => {
+    let currentAnimation = null;
+    let animationStartTime = null;
+    
+    const startGlowAnimation = () => {
+      // Отменяем предыдущую анимацию
+      if (currentAnimation) {
+        currentAnimation.cancel();
+      }
+      
+      // Сбрасываем анимацию и запускаем заново
+      card.style.animation = 'none';
+      void card.offsetWidth; // Принудительная перерисовка
+      
+      // Запускаем анимацию загорания
+      card.style.animation = 'border-glow 0.8s ease-in-out forwards';
+      animationStartTime = performance.now();
+      
+      // Отслеживаем завершение анимации
+      const handleAnimationEnd = () => {
+        currentAnimation = null;
+        animationStartTime = null;
+        card.removeEventListener('animationend', handleAnimationEnd);
+      };
+      
+      card.addEventListener('animationend', handleAnimationEnd, { once: true });
+    };
+    
+    const startFadeOutAnimation = () => {
+      // Если анимация загорания еще идет, ждем её завершения
+      if (animationStartTime) {
+        const elapsed = performance.now() - animationStartTime;
+        const remaining = Math.max(0, 800 - elapsed);
+        
+        setTimeout(() => {
+          card.style.animation = 'none';
+          void card.offsetWidth;
+          card.style.animation = 'border-glow-out 0.4s ease-in-out forwards';
+        }, remaining);
+      } else {
+        // Сразу запускаем анимацию потухания
+        card.style.animation = 'none';
+        void card.offsetWidth;
+        card.style.animation = 'border-glow-out 0.4s ease-in-out forwards';
+      }
+    };
+    
+    card.addEventListener('mouseenter', startGlowAnimation);
+    card.addEventListener('mouseleave', startFadeOutAnimation);
+    card.addEventListener('focus', startGlowAnimation);
+    card.addEventListener('blur', startFadeOutAnimation);
+  });
+
   cards.forEach((card) => {
     card.addEventListener('click', () => {
       const isOpen = card.classList.contains('is-open');

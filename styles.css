@@ -868,6 +868,29 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   100% { transform: translateY(0) scale(1); }
 }
 
+/* Анимация загорания и потухания границы */
+@keyframes border-glow {
+  0% {
+    border-color: var(--card-border);
+  }
+  50% {
+    border-color: var(--service-border-color, var(--card-border));
+  }
+  100% {
+    border-color: var(--service-border-color, var(--card-border)); /* Остается подсвеченной при наведении */
+  }
+}
+
+/* Анимация потухания при уходе курсора */
+@keyframes border-glow-out {
+  0% {
+    border-color: var(--service-border-color, var(--card-border));
+  }
+  100% {
+    border-color: var(--card-border);
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   #services .cards .card[data-wave-ready="true"] {
     animation: press-bounce 1000ms cubic-bezier(.22,.7,.18,1) 1 both;
@@ -915,19 +938,21 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   border: 1px solid var(--card-border);
   border-radius: 12px;
   padding: 20px;
-  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  transition: transform .25s ease, box-shadow .25s ease;
   position: relative;
   overflow: hidden; /* сохраняем подсветку внутри карточки */
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 0;
+  animation: none; /* По умолчанию анимация отключена */
 }
+
 .card:hover,
 .card:focus-within {
-  transform: translateY(-2px) scale(1.04); /* чуть сильнее увеличение при ховере */
+  transform: translateY(-2px); /* Убрано увеличение scale */
   box-shadow: 0 10px 24px rgba(0,0,0,.28); /* лёгкая тень при ховере */
-  border-color: rgba(255, 255, 255, 0.2); /* оставляем светлый бордер */
+  /* Анимация управляется через JavaScript для гарантии полного проигрывания */
 }
 .card {
   position: relative;
@@ -979,40 +1004,49 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
 /* Столбик 1: фиолетовые оттенки */
 .cards .card[data-service-icon="strategy"] {
   --service-color: rgba(106, 17, 203, 0.4); /* основной фиолетовый #6a11cb */
+  --service-border-color: rgba(106, 17, 203, 0.8); /* Яркий фиолетовый для границы */
 }
 
 .cards .card[data-service-icon="content"] {
   --service-color: rgba(139, 92, 246, 0.4); /* фиолетовый #8b5cf6 */
+  --service-border-color: rgba(139, 92, 246, 0.8); /* Яркий фиолетовый для границы */
 }
 
 .cards .card[data-service-icon="web"] {
   --service-color: rgba(176, 134, 249, 0.4); /* сиреневый #b086f9 */
+  --service-border-color: rgba(176, 134, 249, 0.8); /* Яркий сиреневый для границы */
 }
 
 /* Столбик 2: зеленые оттенки */
 .cards .card[data-service-icon="social"] {
   --service-color: rgba(34, 197, 94, 0.4); /* зеленый #22c55e */
+  --service-border-color: rgba(34, 197, 94, 0.8); /* Яркий зеленый для границы */
 }
 
 .cards .card[data-service-icon="video"] {
   --service-color: rgba(74, 222, 128, 0.4); /* светлый зеленый #4ade80 */
+  --service-border-color: rgba(74, 222, 128, 0.8); /* Яркий светлый зеленый для границы */
 }
 
 .cards .card[data-service-icon="community"] {
   --service-color: rgba(134, 239, 172, 0.4); /* очень светлый зеленый #86efac */
+  --service-border-color: rgba(134, 239, 172, 0.8); /* Яркий очень светлый зеленый для границы */
 }
 
 /* Столбик 3: красные/оранжевые оттенки */
 .cards .card[data-service-icon="ads"] {
   --service-color: rgba(127, 29, 29, 0.4); /* темно-бордовый #7f1d1d */
+  --service-border-color: rgba(127, 29, 29, 0.8); /* Яркий темно-бордовый для границы */
 }
 
 .cards .card[data-service-icon="design"] {
   --service-color: rgba(220, 38, 38, 0.4); /* красный #dc2626 */
+  --service-border-color: rgba(220, 38, 38, 0.8); /* Яркий красный для границы */
 }
 
 .cards .card[data-service-icon="analysis"] {
   --service-color: rgba(251, 146, 60, 0.4); /* оранжевый #fb923c */
+  --service-border-color: rgba(251, 146, 60, 0.8); /* Яркий оранжевый для границы */
 }
 
 /* Иконки для каждого типа услуги с цветами по столбикам */
