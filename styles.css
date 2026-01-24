@@ -821,45 +821,41 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
 /* Первое изображение: показываем самую левую часть фотографии с анимацией */
 .media-tilted-frame:nth-child(1) img {
   object-position: left center; /* Начальная позиция - левая часть (0%) */
-  animation: slidePhotoPan 6.6s ease-in-out infinite;
-  animation-delay: 2s; /* Задержка 2 секунды после загрузки */
+  animation: slidePhotoPan 6.8s ease-in-out infinite;
+  /* Без задержки - сразу начинается */
 }
 
 /* Второе изображение: такая же анимация */
 .media-tilted-frame:nth-child(2) img {
   object-position: left center; /* Начальная позиция - левая часть (0%) */
-  animation: slidePhotoPan 6.6s ease-in-out infinite;
-  animation-delay: 2.1s; /* Задержка 2.1 секунды после загрузки */
+  animation: slidePhotoPan 6.8s ease-in-out infinite;
+  /* Без задержки - сразу начинается */
 }
 
 /* Третье изображение: такая же анимация */
 .media-tilted-frame:nth-child(3) img {
   object-position: left center; /* Начальная позиция - левая часть (0%) */
-  animation: slidePhotoPan 6.6s ease-in-out infinite;
-  animation-delay: 2.4s; /* Задержка 2.4 секунды после загрузки */
+  animation: slidePhotoPan 6.8s ease-in-out infinite;
+  /* Без задержки - сразу начинается */
 }
 
 /* Анимация панорамирования фотографии: движение только вперед, конец цикла */
 @keyframes slidePhotoPan {
-  /* Начало: левая часть (0%) - без паузы, сразу переход */
-  0% {
+  /* Начало: левая часть (0%) - пауза 3 секунды */
+  0%, 44.12% {
     object-position: 0% center;
   }
-  /* Сдвиг вперед на половину длины фотографии (50%) - переход 0.3 секунды */
-  4.55% {
+  /* Сдвиг вперед на половину длины фотографии (50%) - переход 0.4 секунды */
+  50% {
     object-position: 50% center;
   }
   /* Пауза 3 секунды на позиции 50% */
-  4.55%, 50% {
+  50%, 94.12% {
     object-position: 50% center;
   }
-  /* Сдвиг еще на половину вперед (100%) - переход 0.3 секунды */
-  54.55% {
-    object-position: 100% center;
-  }
-  /* Пауза 3 секунды на позиции 100% - КОНЕЦ цикла */
-  54.55%, 100% {
-    object-position: 100% center;
+  /* Сдвиг еще на почти половину вперед (95.50%) - переход 0.4 секунды - КОНЕЦ цикла */
+  100% {
+    object-position: 95.50% center;
   }
 }
 
