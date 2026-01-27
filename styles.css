@@ -1031,13 +1031,15 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   align-items: stretch; /* все карточки одинаковой высоты */
 }
 
+/* Заголовок и параграф: visibility исключает артефакт «два текста» при лагах/подвисаниях */
 .cards h3 {
   font-size: clamp(14px, 1.4vw, 17px);
   margin: 0;
-  transition: max-height .14s ease, opacity .11s ease, margin .11s ease;
   max-height: 100px;
   opacity: 1;
   overflow: hidden;
+  visibility: visible;
+  transition: max-height .18s ease, opacity .18s ease, margin .18s ease, visibility 0s 0s;
 }
 
 /* Анимация «нажатия с bounce» запускается с диагональной волной */
@@ -1124,13 +1126,6 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
     padding: 16px; /* уменьшаем padding на мобильных */
   }
 
-  /* На мобильных карточки не раскрываются */
-  .cards .card.is-open {
-    grid-column: auto; /* не занимаем всю ширину */
-    min-height: 120px;
-    height: 120px;
-  }
-  
   /* Увеличиваем размер иконок на мобильных - 64px для всех, привязываем к правой стороне */
   .cards .card::after {
     width: 64px !important; /* !important чтобы переопределить специфичные правила */
@@ -1141,30 +1136,26 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   }
 }
 .card {
+  position: relative;
+  z-index: 0;
   background: var(--card);
   border: 1px solid var(--card-border);
   border-radius: 20px;
   padding: 20px;
   transition: box-shadow .25s ease;
-  position: relative;
-  overflow: hidden; /* Обрезаем иконки по границам карточки */
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 0;
-  animation: none; /* По умолчанию анимация отключена */
-  text-align: left; /* Выравниваем текст по левому краю */
+  animation: none;
+  text-align: left;
 }
 
 .card:hover,
 .card:focus-within {
-  transform: none; /* Убрано приподнятие и увеличение */
-  box-shadow: 0 0 12px var(--service-border-color, rgba(255, 255, 255, 0.15)); /* Менее интенсивная цветная подсветка вокруг элемента */
-  /* Анимация управляется через JavaScript для гарантии полного проигрывания */
-}
-.card {
-  position: relative;
-  z-index: 0; /* базовый слой карточки */
+  transform: none;
+  box-shadow: 0 0 12px var(--service-border-color, rgba(255, 255, 255, 0.15));
 }
 
 .card::before {
@@ -1317,25 +1308,15 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   filter: brightness(0) saturate(100%) invert(60%) sepia(95%) saturate(2000%) hue-rotate(-15deg) brightness(1.1) contrast(1.05); /* оранжевый #fb923c */
 }
 
-/* Скрываем описание по умолчанию и раскрываем вниз, увеличивая высоту карточки */
+/* Скрываем описание по умолчанию; раскрытие только при hover */
 .cards .card p {
   max-height: 0;
   opacity: 0;
   overflow: hidden;
   margin-top: 0;
   margin-bottom: 0;
-  transition: max-height .14s ease, opacity .11s ease, margin-top .11s ease;
-}
-/* На всех устройствах раскрываем по классу .is-open - фиксированная высота для всех карточек */
-.cards .card.is-open p {
-  max-height: 120px; /* фиксированная высота для компактных описаний */
-  opacity: 1;
-  margin-top: 8px;
-  margin-bottom: 0;
-}
-
-.cards .card.is-open {
-  justify-content: flex-start; /* при раскрытии выравниваем контент к началу */
+  visibility: hidden;
+  transition: max-height .18s ease, opacity .18s ease, margin-top .18s ease, visibility 0s linear .18s;
 }
 
 @media (min-width: 901px) {
@@ -1344,12 +1325,8 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   }
 
   .cards .card {
-    min-height: 140px; /* увеличенная высота для размещения заголовка и текста */
-    height: 140px; /* фиксированная высота для всех карточек */
-  }
-  
-  .cards .card.is-open {
-    height: 140px; /* та же высота при открытии */
+    min-height: 140px;
+    height: 140px;
   }
 }
 
@@ -1363,14 +1340,8 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   .cards .card p {
     font-size: 11px;
     line-height: 1.4;
-    display: none; /* На мобильных параграфы не показываются в карточках */
+    display: none; /* На мобильных описание в popup */
   }
-  
-  .cards .card.is-open p {
-    display: none; /* На мобильных параграфы всегда скрыты, показываются в popup */
-  }
-  
-  /* На мобильных все иконки одинакового размера 32px - правило выше с !important */
 }
 
 /* Popup для описания услуг на мобильных */
@@ -1547,19 +1518,23 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
-/* Анимация только по ховеру; при клике/фокусе раскладка не меняется — без смещения текста */
+/* Раскрытие только по ховеру. visibility убирает артефакт «два текста» при лагах. */
 @media (hover: hover) and (pointer: fine) {
   .cards .card:hover h3 {
     max-height: 0;
     opacity: 0;
     margin: 0;
     overflow: hidden;
+    visibility: hidden;
+    transition: max-height .18s ease, opacity .18s ease, margin .18s ease, visibility 0s linear .18s;
   }
-  
+
   .cards .card:hover p {
-    max-height: 120px; /* та же фиксированная высота при ховере */
+    max-height: 120px;
     opacity: 1;
     margin-top: 0;
+    visibility: visible;
+    transition: max-height .18s ease, opacity .18s ease, margin-top .18s ease, visibility 0s 0s;
   }
 }
 

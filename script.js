@@ -1,6 +1,4 @@
 // Язык, который подставляется, если пользователь ещё ничего не выбирал
-// Комментарий для теста
-// TEST COMMENT ADDED BY AI
 const DEFAULT_LANG = "en";
 // Ключ в localStorage, где хранится выбранный язык
 const LANG_STORAGE_KEY = "adviral-lang";
@@ -9,8 +7,6 @@ const LANG_COOKIE_NAME = "adviral-lang";
 
 // Поддерживаемые коды языков
 const SUPPORTED_LANGS = ["ru", "en", "et"];
-
-// Тестовый комментарий для проверки изменений
 
 // Достаём значение параметра lang из URL, если оно валидное
 function readLangFromQuery() {
@@ -2163,77 +2159,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   })();
 
-  const prefersReducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const mobileServicesQuery = window.matchMedia('(max-width: 600px)');
   const cardsContainer = servicesSection ? servicesSection.querySelector('.cards') : doc.querySelector('.cards');
   const cards = cardsContainer ? Array.from(cardsContainer.querySelectorAll('.card')) : [];
 
-  const captureCardLayout = (cardList) => {
-    const scrollY = window.scrollY || window.pageYOffset;
-    const scrollX = window.scrollX || window.pageXOffset;
-    return new Map(
-      cardList.map((item) => {
-        const rect = item.getBoundingClientRect();
-        return [item, {
-          top: rect.top + scrollY,
-          left: rect.left + scrollX,
-          width: rect.width || 1,
-          height: rect.height || 1,
-        }];
-      })
-    );
-  };
-
-  const animateCardLayoutChange = (beforeMap, afterMap) => {
-    afterMap.forEach((afterMetrics, card) => {
-      const beforeMetrics = beforeMap.get(card);
-      if (!beforeMetrics) return;
-
-      const dx = beforeMetrics.left - afterMetrics.left;
-      const dy = beforeMetrics.top - afterMetrics.top;
-      const scaleX = beforeMetrics.width / afterMetrics.width;
-      const scaleY = beforeMetrics.height / afterMetrics.height;
-
-      const positionShiftMinimal = Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5;
-      const scaleShiftMinimal = Math.abs(1 - scaleX) < 0.01 && Math.abs(1 - scaleY) < 0.01;
-      if (positionShiftMinimal && scaleShiftMinimal) return;
-
-      card.animate(
-        [
-          { transform: `translate(${dx}px, ${dy}px) scale(${scaleX}, ${scaleY})` },
-          { transform: 'translate(0, 0) scale(1, 1)' }
-        ],
-        {
-          duration: 460,
-          easing: 'cubic-bezier(0.22, 0.7, 0.18, 1)',
-          fill: 'both',
-        }
-      );
-    });
-  };
-
   // Гарантируем полное проигрывание анимации границы при наведении
   cards.forEach((card) => {
-    let currentAnimation = null;
     let animationStartTime = null;
-    
+
     const startGlowAnimation = () => {
-      // Отменяем предыдущую анимацию
-      if (currentAnimation) {
-        currentAnimation.cancel();
-      }
-      
-      // Сбрасываем анимацию и запускаем заново
       card.style.animation = 'none';
-      void card.offsetWidth; // Принудительная перерисовка
-      
-      // Запускаем анимацию загорания
+      void card.offsetWidth;
       card.style.animation = 'border-glow 0.8s ease-in-out forwards';
       animationStartTime = performance.now();
-      
-      // Отслеживаем завершение анимации
+
       const handleAnimationEnd = () => {
-        currentAnimation = null;
         animationStartTime = null;
         card.removeEventListener('animationend', handleAnimationEnd);
       };
