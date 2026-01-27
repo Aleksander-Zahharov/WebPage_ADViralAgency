@@ -1633,6 +1633,7 @@ section { scroll-margin-top: 0; }
 /* Выносим стрелки вне внутреннего контейнера */
 #works > div.container {
   position: relative;
+  overflow: visible; /* при наведении увеличенные элементы не обрезать */
 }
 
 @media (max-width: 768px) {
@@ -1687,6 +1688,7 @@ section { scroll-margin-top: 0; }
 /* Вертикальная лента: стрелки центрируются по своей ленте (контекст — works-vertical-row) */
 #works .works-vertical-row {
   position: relative;
+  overflow: visible; /* при наведении края карточек не обрезать */
 }
 
 /* Стрелки вертикальной ленты — по центру по оси Y относительно works-vertical-row, ось X не трогаем */
@@ -1721,17 +1723,18 @@ section { scroll-margin-top: 0; }
 }
 #works .works-vertical-row > .ig-slider > .ig-strip {
   padding-top: 18px;
-  padding-bottom: 0;
+  padding-bottom: 24px; /* запас снизу: при overflow-x:auto overflow-y не бывает visible, края не обрезаются за счёт паддинга */
   padding-left: 32px;
 }
 #works .container-horizontal {
-  margin-top: 18px;
+  margin-top: -30px; /* 18 - 48: компенсация за padding-bottom 24px и padding-top 24px, визуальный зазор 18px сохраняем */
   position: relative;
   display: flex;
   align-items: center;
+  overflow: visible;
 }
 #works .container-horizontal .ig-strip {
-  padding-top: 0;
+  padding-top: 24px; /* запас сверху под наведение, т.к. overflow-y visible с overflow-x:auto не работает */
   padding-bottom: 12px;
   padding-left: 24px;
 }
@@ -1772,7 +1775,7 @@ section { scroll-margin-top: 0; }
 }
 .ig-strip::-webkit-scrollbar { display: none; }
 
-/* При наведении на видео верх/низ элемента не обрезать (переопределяем overflow ленты в секции works) */
+/* При наведении верх/низ не обрезать; overflow-x: auto сохраняем для горизонтальной прокрутки */
 #works .ig-strip {
   overflow-y: visible;
 }
