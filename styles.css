@@ -833,11 +833,11 @@ section { scroll-margin-top: 0; }
   width: min(280px, 55%);
   height: min(280px, 55%);
   background-color: #3d3d3d; /* тёмно-серый */
-  mask-image: url("./assets/images/icons/Icon_Filming.png");
+  mask-image: url("./assets/images/icons/Icon_Filming.webp");
   mask-size: contain;
   mask-position: center;
   mask-repeat: no-repeat;
-  -webkit-mask-image: url("./assets/images/icons/Icon_Filming.png");
+  -webkit-mask-image: url("./assets/images/icons/Icon_Filming.webp");
   -webkit-mask-size: contain;
   -webkit-mask-position: center;
   -webkit-mask-repeat: no-repeat;
@@ -1183,7 +1183,7 @@ section { scroll-margin-top: 0; }
   border: 1px solid var(--card-border);
   border-radius: 20px;
   padding: 20px;
-  transition: box-shadow .25s ease;
+  transition: box-shadow .25s ease, transform .2s ease;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -1195,8 +1195,12 @@ section { scroll-margin-top: 0; }
 
 .card:hover,
 .card:focus-within {
-  transform: none;
+  transform: scale(1.03); /* Вся карточка приближается на 3% при наведении */
   box-shadow: 0 0 12px var(--service-border-color, rgba(255, 255, 255, 0.15));
+}
+
+.card:active {
+  transform: scale(0.98); /* Эффект вминания при зажатии мышки */
 }
 
 .card::before {
@@ -1302,7 +1306,7 @@ section { scroll-margin-top: 0; }
 /* Иконки для каждого типа услуги с цветами по столбикам */
 /* Столбик 1: фиолетовые оттенки */
 .cards .card[data-service-icon="analysis"]::after {
-  background-image: url("./assets/images/icons/Icon_Analysis.png");
+  background-image: url("./assets/images/icons/Icon_Analysis.webp");
   filter: brightness(0) saturate(100%) invert(30%) sepia(95%) saturate(2000%) hue-rotate(240deg) brightness(0.8) contrast(1.1); /* основной фиолетовый #6a11cb */
 }
 
@@ -1311,23 +1315,23 @@ section { scroll-margin-top: 0; }
 }
 
 .cards .card[data-service-icon="ads"]::after {
-  background-image: url("./assets/images/icons/Icon_Target.png");
+  background-image: url("./assets/images/icons/Icon_Target.webp");
   filter: brightness(0) saturate(100%) invert(42%) sepia(95%) saturate(2000%) hue-rotate(250deg) brightness(0.85) contrast(1.1); /* сиреневый #b086f9 */
 }
 
 /* Столбик 2: зеленые оттенки */
 .cards .card[data-service-icon="content"]::after {
-  background-image: url("./assets/images/icons/Icon_Content.png");
+  background-image: url("./assets/images/icons/Icon_Content.webp");
   filter: brightness(0) saturate(100%) invert(60%) sepia(90%) saturate(2000%) hue-rotate(100deg) brightness(0.9) contrast(1.1); /* зеленый #22c55e */
 }
 
 .cards .card[data-service-icon="social"]::after {
-  background-image: url("./assets/images/icons/Icon_SocialNetworks.png");
+  background-image: url("./assets/images/icons/Icon_SocialNetworks.webp");
   filter: brightness(0) saturate(100%) invert(63%) sepia(93%) saturate(2000%) hue-rotate(72deg) brightness(1.05) contrast(1.08); /* переходный зеленый между content и community #65d94f */
 }
 
 .cards .card[data-service-icon="community"]::after {
-  background-image: url("./assets/images/icons/Icon_ComunityDev.png");
+  background-image: url("./assets/images/icons/Icon_ComunityDev.webp");
   filter: brightness(0) saturate(100%) invert(65%) sepia(95%) saturate(2000%) hue-rotate(75deg) brightness(1.1) contrast(1.05); /* светлый зеленый с желтоватым оттенком #a3e635 */
   width: 117px; /* Уменьшено на 10% (было 130px) */
   height: 117px; /* Уменьшено на 10% (было 130px) */
@@ -1335,17 +1339,17 @@ section { scroll-margin-top: 0; }
 
 /* Столбик 3: красные/оранжевые оттенки */
 .cards .card[data-service-icon="video"]::after {
-  background-image: url("./assets/images/icons/Icon_clapper.png");
+  background-image: url("./assets/images/icons/Icon_clapper.webp");
   filter: brightness(0) saturate(100%) invert(25%) sepia(95%) saturate(2000%) hue-rotate(350deg) brightness(0.85) contrast(1.1); /* темно-бордовый #7f1d1d */
 }
 
 .cards .card[data-service-icon="design"]::after {
-  background-image: url("./assets/images/icons/Icon_Design.png");
+  background-image: url("./assets/images/icons/Icon_Design.webp");
   filter: brightness(0) saturate(100%) invert(25%) sepia(95%) saturate(2000%) hue-rotate(350deg) brightness(0.85) contrast(1.1); /* красный #dc2626 */
 }
 
 .cards .card[data-service-icon="web"]::after {
-  background-image: url("./assets/images/icons/Icon_SoftwareDev.png");
+  background-image: url("./assets/images/icons/Icon_SoftwareDev.webp");
   filter: brightness(0) saturate(100%) invert(60%) sepia(95%) saturate(2000%) hue-rotate(-15deg) brightness(1.1) contrast(1.05); /* оранжевый #fb923c */
 }
 
@@ -1825,6 +1829,10 @@ section { scroll-margin-top: 0; }
   z-index: 1; /* Поднимаем при наведении */
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* легкая аккуратная тень */
 }
+
+.ig-item:active {
+  transform: skew(-8deg, 0deg) scale(0.98); /* Эффект вминания при зажатии мышки */
+}
 .ig-item video {
   width: 100%; 
   height: 100%;
@@ -1846,6 +1854,10 @@ section { scroll-margin-top: 0; }
 }
 .ig-item-horizontal:hover {
   transform: skew(8deg, 0deg) scale(1.05);
+}
+
+.ig-item-horizontal:active {
+  transform: skew(8deg, 0deg) scale(0.98); /* Эффект вминания при зажатии мышки */
 }
 .ig-item-horizontal video {
   transform: skew(-8deg, 0deg) scale(1.25); /* компенсация под рамку */
@@ -1926,7 +1938,11 @@ section { scroll-margin-top: 0; }
 }
 
 .client-item:hover {
-  transform: scale(1.08); /* Приближение всего бокса при наведении */
+  transform: scale(1.05); /* Приближение всего бокса при наведении на 5% */
+}
+
+.client-item:active {
+  transform: scale(0.98); /* Эффект вминания при зажатии мышки */
 }
 
 /* Разрешаем логотипам выходить за рамки с обрезкой - заполняют контейнер полностью */
@@ -2072,7 +2088,11 @@ section { scroll-margin-top: 0; }
   
   /* При наведении увеличивается весь бокс на планшетах */
   .client-item:hover {
-    transform: scale(1.08); /* Приближение всего бокса при наведении */
+    transform: scale(1.05); /* Приближение всего бокса при наведении на 5% */
+  }
+
+  .client-item:active {
+    transform: scale(0.98); /* Эффект вминания при зажатии мышки */
   }
   
   .client-item:hover .client-logo {
@@ -2133,7 +2153,11 @@ section { scroll-margin-top: 0; }
   
   /* При наведении увеличивается весь бокс на мобильных */
   .client-item:hover {
-    transform: scale(1.08); /* Приближение всего бокса при наведении */
+    transform: scale(1.05); /* Приближение всего бокса при наведении на 5% */
+  }
+
+  .client-item:active {
+    transform: scale(0.98); /* Эффект вминания при зажатии мышки */
   }
   
   .client-item:hover .client-logo {
@@ -2724,7 +2748,7 @@ input::placeholder, textarea::placeholder {
 }
 
 .footer-right .social-icon.meta {
-  background-image: url("./assets/images/icons/meta-icon-white.png");
+  background-image: url("./assets/images/icons/meta-icon-white.webp");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
