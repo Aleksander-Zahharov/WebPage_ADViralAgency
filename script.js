@@ -1263,13 +1263,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const strip = slider.querySelector(".ig-strip");
     if (!strip) return;
     
-    // Ищем стрелки в родительском контейнере, так как они находятся вне .ig-slider
-    const container = slider.closest(".container");
-    if (!container) return;
-    
-    // Находим стрелки, которые находятся рядом с этим слайдером в DOM
-    // Стрелки находятся перед и после .ig-slider
-    const containerChildren = Array.from(container.children);
+    // Ищем стрелки среди соседей слайдера (родитель — контейнер или .horizontal-row)
+    const arrowContainer = slider.parentElement;
+    if (!arrowContainer) return;
+
+    const containerChildren = Array.from(arrowContainer.children);
     const sliderIndex = containerChildren.indexOf(slider);
     
     let prevArrow = null;

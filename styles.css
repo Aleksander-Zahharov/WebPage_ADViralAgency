@@ -1698,15 +1698,21 @@ section { scroll-margin-top: 0; }
 }
 
 /* Стрелки для горизонтальной ленты - отцентрованы относительно высоты ленты */
-/* От границы вертикального видео до границы горизонтального = 18px (как между элементами в ленте) */
+/* Расстояние между лентами: снизу у вертикальной, сверху у горизонтальной убрано на ту же величину */
 #works .container:not(.container-horizontal) .ig-strip {
   padding-bottom: 0;
 }
+#works .container > .ig-slider > .ig-strip {
+  padding-top: 9px;   /* было 18px — сокращено в 2 раза */
+  padding-bottom: 9px; /* было 18px — сокращено в 2 раза */
+}
 #works .container-horizontal {
-  margin-top: 18px;
+  margin-top: 0; /* убрано, т.к. тот же отступ перенесён в padding-bottom первой ленты */
+  position: relative; /* для позиционирования стрелок горизонтальной ленты */
 }
 #works .container-horizontal .ig-strip {
-  padding-top: 0;
+  padding-top: 0;     /* сверху отступ убавлен на ту же величину */
+  padding-bottom: 6px; /* было 12px из базового — сокращено в 2 раза */
   padding-left: 24px; /* левый край первой карточки на уровне вертикальной ленты */
 }
 
