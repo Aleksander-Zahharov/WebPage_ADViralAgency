@@ -768,10 +768,14 @@ section { scroll-margin-top: 0; }
   text-align: left;
 }
 
-/* Анимация появления при прокрутке */
-.reveal { opacity: 0; transform: translateY(16px); transition: opacity .7s ease, transform .7s ease; }
-.reveal.reveal-left { transform: translateX(-30px); }
-.reveal.reveal-right { transform: translateX(30px); }
+/* Анимация появления при прокрутке: reveal-left = справа налево (Кто мы, Работы, Контакты); reveal-right = слева направо (Услуги, Клиенты) */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1), transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.reveal-left { transform: translateX(40px); }   /* справа налево */
+.reveal.reveal-right { transform: translateX(-40px); } /* слева направо */
 /* Допускаем классы, которые добавляет скрипт */
 .reveal.in-view,
 .reveal.visible,
@@ -1083,17 +1087,11 @@ section { scroll-margin-top: 0; }
   transition: max-height .18s ease, opacity .18s ease, margin .18s ease, visibility 0s 0s;
 }
 
-/* Анимация «нажатия с bounce» запускается с диагональной волной */
+/* Анимация волны: карточка приподнимается на 2% как при хавере */
 @keyframes press-bounce {
-  /* стартуем из исходного состояния */
   0%   { transform: translateY(0) scale(1); }
-  /* небольшое отдаление (уменьшение) в начале */
-  12%  { transform: translateY(1px) scale(0.985); }
-  /* затем лёгкое приближение */
-  42%  { transform: translateY(-1px) scale(1.03); }
-  /* плавное возвращение близко к исходному */
-  72%  { transform: translateY(0) scale(0.997); }
-  /* финал — ровно исходное положение */
+  40%  { transform: translateY(-3px) scale(1.02); }
+  80%  { transform: translateY(-1px) scale(1.01); }
   100% { transform: translateY(0) scale(1); }
 }
 
@@ -1141,8 +1139,8 @@ section { scroll-margin-top: 0; }
 
 @media (prefers-reduced-motion: no-preference) {
   #services .cards .card[data-wave-ready="true"] {
-    animation: press-bounce 1000ms cubic-bezier(.22,.7,.18,1) 1 both;
-    animation-delay: var(--wave-delay, 0.26s);
+    animation: press-bounce 1.5s cubic-bezier(0.33, 1, 0.68, 1) 1 both;
+    animation-delay: var(--wave-delay, 0.3s);
     animation-play-state: paused;
     will-change: transform;
   }
@@ -1150,6 +1148,8 @@ section { scroll-margin-top: 0; }
   #services.in-view .cards .card[data-wave-ready="true"] {
     animation-play-state: running;
   }
+
+  /* wave-active только гасит hover-scale, чтобы не удваивать; тень/граница при волне не триггерятся */
 }
 @media (max-width: 900px) {
   .cards { grid-template-columns: repeat(2, minmax(0,1fr)); }
@@ -1171,7 +1171,7 @@ section { scroll-margin-top: 0; }
   .cards .card::after {
     width: 64px !important; /* !important чтобы переопределить специфичные правила */
     height: 64px !important;
-    right: 10px; /* Привязываем к правой стороне элемента */
+    right: 14px;
     transform: translateY(-50%); /* Центрируем только по вертикали */
     opacity: 0.25;
   }
@@ -1193,14 +1193,19 @@ section { scroll-margin-top: 0; }
   text-align: left;
 }
 
-.card:hover,
-.card:focus-within {
-  transform: scale(1.03); /* Вся карточка приближается на 3% при наведении */
+/* При хавере: тень, граница, scale 2%. Волна триггерит только приближение (press-bounce) и иконку с наклоном */
+.card:hover:not(.wave-active),
+.card:focus-within:not(.wave-active) {
   box-shadow: 0 0 12px var(--service-border-color, rgba(255, 255, 255, 0.15));
+  border-color: var(--service-border-color, var(--card-border));
+  transform: scale(1.02);
 }
 
-.card:active {
-  transform: scale(0.98); /* Эффект вминания при зажатии мышки */
+/* Вдавливание на -2% при зажатии (перебивает hover) */
+.card:active,
+.card:hover:active:not(.wave-active),
+.card:focus-within:active:not(.wave-active) {
+  transform: scale(0.98);
 }
 
 .card::before {
@@ -1231,7 +1236,7 @@ section { scroll-margin-top: 0; }
 .cards .card::after {
   content: '';
   position: absolute;
-  right: 10px;
+  right: 18px;
   top: 50%;
   transform: translateY(-50%);
   width: 99px; /* Уменьшено на 10% (было 110px) */

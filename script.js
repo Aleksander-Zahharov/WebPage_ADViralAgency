@@ -970,6 +970,8 @@ document.addEventListener("DOMContentLoaded", () => {
     return bestIdx;
   };
 
+  const WAVE_DURATION_MS = 1500;
+
   const prepareServicesWave = () => {
     if (!servicesSection || servicesWavePrepared || servicesCards.length === 0) return;
     servicesWavePrepared = true;
@@ -983,16 +985,30 @@ document.addEventListener("DOMContentLoaded", () => {
     const rowClusters = clusterAxis(positions.map((item) => item.top), tolerance);
     const colClusters = clusterAxis(positions.map((item) => item.left), tolerance);
 
-    const baseDelay = 0.26;
-    const stepDelay = 0.08;
+    const baseDelay = 0.3;
+    const stepDelay = 0.1;
 
+    const numRows = rowClusters.length;
     positions.forEach(({ card, top, left }) => {
       const rowIndex = findClusterIndex(rowClusters, top);
       const colIndex = findClusterIndex(colClusters, left);
-      const waveIndex = rowIndex + colIndex;
-      const delay = baseDelay + waveIndex * stepDelay;
+      const waveIndex = colIndex * numRows + rowIndex;
+      const delaySec = baseDelay + waveIndex * stepDelay;
+      const delayMs = delaySec * 1000;
       card.dataset.waveReady = 'true';
-      card.style.setProperty('--wave-delay', `${delay.toFixed(2)}s`);
+      card.style.setProperty('--wave-delay', `${delaySec.toFixed(2)}s`);
+
+      /* Волна триггерит только приближение (press-bounce) и иконку с наклоном */
+      const tStart = setTimeout(() => {
+        card.classList.add('wave-active', 'icon-animating');
+      }, delayMs);
+      const tEnd = setTimeout(() => {
+        card.classList.remove('wave-active', 'icon-animating');
+        card.classList.add('icon-animating-out');
+        setTimeout(() => card.classList.remove('icon-animating-out'), 400);
+      }, delayMs + WAVE_DURATION_MS);
+      card.dataset.waveStartTimer = tStart;
+      card.dataset.waveEndTimer = tEnd;
     });
   };
 
@@ -1038,6 +1054,7 @@ document.addEventListener("DOMContentLoaded", () => {
         entries.forEach((entry) => {
           if (entry.isIntersecting && entry.target === servicesSection) {
             prepareServicesWave();
+            servicesSection.classList.add('in-view');
           }
         });
       },
