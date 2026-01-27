@@ -1090,8 +1090,16 @@ section { scroll-margin-top: 0; }
   — волна: animation: press-bounce (без skew)
 
   Сейчас: острые углы (border-radius: 0), наклон -8°, сдвиги рядов, пятно следует наклону карточки.
+
+  СПРАВКА: смешанный вариант («туда‑сюда») — сохранён в комментарий, на сайте включён «все в одну сторону».
+  Это не лишний код — комментарий для отката к варианту «второй ряд в другую сторону».
+  Смешанный вариант:
+  — первый и третий ряд: skew(-8deg) translateX(22px); второй ряд: skew(8deg) translateX(22px)
+  — h3, p: у 1–3 skew(8deg), у второго ряда skew(-8deg); ::after так же
+  — волна: r1/r3 как сейчас, у второго ряда animation-name: press-bounce-skew-v-r2 (skew 8deg, translateX 22px)
+  — иконка: у второго ряда icon-hover-skew-r2 / icon-hover-out-skew-r2 с skew(-8deg)
 */
-/* Секция услуг: стиль как media-tilted — острые углы, наклон -8°, одинаковые отступы */
+/* Секция услуг: все карточки наклонены в одну сторону (skew -8°), первый ряд вправо 22px, третий влево -22px */
 #services .cards {
   gap: 20px; /* как в media-tilted-group */
   padding-left: 20px;
@@ -1102,7 +1110,7 @@ section { scroll-margin-top: 0; }
   border-radius: 0;
   transform: skew(-8deg, 0deg); /* наклон границ как в media-tilted */
 }
-/* Первый ряд чуть вправо, последний — влево, диагонали колонок совпадают */
+/* Первый ряд — вправо 22px, третий — влево -22px, второй без сдвига */
 #services .cards .card:nth-child(-n+3) {
   transform: skew(-8deg, 0deg) translateX(22px);
 }
@@ -1174,11 +1182,17 @@ section { scroll-margin-top: 0; }
   40%  { transform: skew(-8deg, 0deg) translateX(22px) translateY(-3px) scale(var(--wave-scale, 1.02)); }
   100% { transform: skew(-8deg, 0deg) translateX(22px) translateY(0) scale(1); }
 }
-/* Услуги: последний ряд, сдвиг влево (-22px) */
+/* Услуги: последний ряд, сдвиг влево translateX(-22px) */
 @keyframes press-bounce-skew-v-r3 {
   0%   { transform: skew(-8deg, 0deg) translateX(-22px) translateY(0) scale(1); }
   40%  { transform: skew(-8deg, 0deg) translateX(-22px) translateY(-3px) scale(var(--wave-scale, 1.02)); }
   100% { transform: skew(-8deg, 0deg) translateX(-22px) translateY(0) scale(1); }
+}
+/* Услуги: второй ряд, смешанный вариант — см. комментарий в начале блока #services */
+@keyframes press-bounce-skew-v-r2 {
+  0%   { transform: skew(8deg, 0deg) translateX(22px) translateY(0) scale(1); }
+  40%  { transform: skew(8deg, 0deg) translateX(22px) translateY(-3px) scale(var(--wave-scale, 1.02)); }
+  100% { transform: skew(8deg, 0deg) translateX(22px) translateY(0) scale(1); }
 }
 @keyframes press-bounce-skew-h {
   0%   { transform: skew(8deg, 0deg) translateY(0) scale(1); }
@@ -1243,6 +1257,23 @@ section { scroll-margin-top: 0; }
   }
   100% {
     transform: translateY(-50%) skew(8deg, 0deg) scale(1) rotate(0deg);
+  }
+}
+/* Иконка во втором ряду услуг: контр-наклон skew(-8deg) под карточку skew(8deg) */
+@keyframes icon-hover-skew-r2 {
+  0% {
+    transform: translateY(-50%) skew(-8deg, 0deg) scale(1) rotate(0deg);
+  }
+  100% {
+    transform: translateY(-50%) skew(-8deg, 0deg) scale(1.111) rotate(8deg);
+  }
+}
+@keyframes icon-hover-out-skew-r2 {
+  0% {
+    transform: translateY(-50%) skew(-8deg, 0deg) scale(1.111) rotate(8deg);
+  }
+  100% {
+    transform: translateY(-50%) skew(-8deg, 0deg) scale(1) rotate(0deg);
   }
 }
 
