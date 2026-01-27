@@ -190,7 +190,6 @@
   <p data-i18n="hero.subtitle">Creativity, production and performance to grow your business</p>
         <div class="cta-row">
           <a href="#contact" class="btn btn-primary" data-i18n="hero.ctaPrimary">Request a consultation</a>
-          <a href="#services" class="btn btn-ghost" data-i18n="hero.ctaSecondary">Our services</a>
         </div>
         <!--
           Как заменить фон на видео:
@@ -599,17 +598,35 @@
   <!-- Popup для описания услуг на мобильных -->
   <div id="service-popup" class="service-popup">
     <div class="service-popup-overlay"></div>
-    <div class="service-popup-container">
+    <div class="service-popup-wrapper">
       <button class="service-popup-close" aria-label="Close">×</button>
-      <div class="service-popup-icon"></div>
-      <h3 class="service-popup-title"></h3>
-      <p class="service-popup-text"></p>
+      <div class="service-popup-container">
+        <div class="service-popup-body">
+          <div class="service-popup-content">
+            <h3 class="service-popup-title"></h3>
+            <div class="service-popup-text-block">
+              <div class="service-popup-icon"></div>
+              <p class="service-popup-text"></p>
+            </div>
+          </div>
+        </div>
+      <div class="service-popup-video-block">
+        <div class="service-popup-video-placeholder" aria-hidden="true">
+          <button type="button" class="service-popup-video-play" aria-label="Play video">▶</button>
+        </div>
+        <video class="service-popup-video" playsinline controls style="display:none;" preload="metadata"></video>
+        <button type="button" class="service-popup-video-fullscreen" aria-label="Expand to fullscreen" style="display:none;">⛶</button>
+      </div>
       <div class="service-popup-navigation">
-        <button class="service-popup-arrow service-popup-prev" aria-label="Previous">‹</button>
-        <button class="service-popup-arrow service-popup-next" aria-label="Next">›</button>
+        <button class="service-popup-arrow service-popup-prev" aria-label="Previous"></button>
+        <button class="service-popup-arrow service-popup-next" aria-label="Next"></button>
+      </div>
       </div>
     </div>
   </div>
+
+  <!-- Кнопка «Вверх»: круглая в стиле ghost, стрелка как у ig-arrow next, повёрнута на -90deg -->
+  <a href="#" class="scroll-to-top" id="scroll-to-top" aria-label="Back to top" title=""><span aria-hidden="true">›</span></a>
 
     <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
     <script src="./script.js" defer></script>

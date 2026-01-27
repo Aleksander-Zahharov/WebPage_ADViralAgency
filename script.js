@@ -829,6 +829,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const doc = document;
   const rootEl = doc.documentElement;
+
+  // Блокировка прокрутки фона при открытых попапах и плеере (колесо мыши не крутит страницу)
+  let bodyScrollLockCount = 0;
+  function lockBodyScroll() {
+    bodyScrollLockCount++;
+    doc.body.style.overflow = "hidden";
+    doc.documentElement.style.overflow = "hidden";
+  }
+  function unlockBodyScroll() {
+    if (bodyScrollLockCount > 0) bodyScrollLockCount--;
+    if (bodyScrollLockCount === 0) {
+      doc.body.style.overflow = "";
+      doc.documentElement.style.overflow = "";
+    }
+  }
+  function isScrollLocked() {
+    return bodyScrollLockCount > 0;
+  }
+  doc.addEventListener("wheel", (e) => {
+    if (isScrollLocked()) e.preventDefault();
+  }, { passive: false });
+
   const headerNavLinks = Array.from(doc.querySelectorAll('.header-nav a[href^="#"]'));
   const createRafThrottle = (fn) => {
     let rafId = 0;
@@ -1083,6 +1105,27 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     lastScrollY = currentY;
   }, { passive: true });
+
+  // Кнопка «Вверх»: показывается после прокрутки мимо героя, по клику — скролл в самый верх
+  (function initScrollToTop() {
+    const scrollToTopBtn = doc.getElementById('scroll-to-top');
+    const heroSection = doc.getElementById('hero');
+    if (!scrollToTopBtn || !heroSection) return;
+
+    function updateVisibility() {
+      const heroBottom = heroSection.getBoundingClientRect().bottom;
+      const isPastHero = heroBottom < 0;
+      scrollToTopBtn.classList.toggle('visible', isPastHero);
+    }
+
+    window.addEventListener('scroll', updateVisibility, { passive: true });
+    updateVisibility();
+
+    scrollToTopBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  })();
 
   // Reveal on scroll — появление секций при прокрутке
   const revealEls = doc.querySelectorAll(".reveal");
@@ -1913,8 +1956,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
       
+      if (modal.hidden) lockBodyScroll();
       modal.hidden = false;
-      document.body.style.overflow = "hidden";
       
       // Воспроизводим после загрузки
       if (player) {
@@ -1947,6 +1990,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function closeModal() {
+      const srcEmit = currentVideoSrc;
       if (player) {
         player.pause();
         player.currentTime = 0;
@@ -1956,7 +2000,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       currentVideoSrc = "";
       modal.hidden = true;
-      document.body.style.overflow = "";
+      unlockBodyScroll();
+      if (srcEmit) {
+        doc.dispatchEvent(new CustomEvent("video-modal-closed", { detail: { src: srcEmit } }));
+      }
     }
 
     // Закрытие по клику на overlay
@@ -2095,6 +2142,12 @@ document.addEventListener("DOMContentLoaded", () => {
           openModal(videoSrc, item);
         }
       });
+    });
+
+    // Открытие плеера извне (например, из попапа «Услуги» — кнопка «растянуть на весь экран»)
+    doc.addEventListener("open-video-modal", (e) => {
+      const src = e.detail?.src;
+      if (src) openModal(src, null);
     });
   })();
 
@@ -2312,8 +2365,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const servicePopupOverlay = servicePopup?.querySelector('.service-popup-overlay');
   const servicePopupPrev = servicePopup?.querySelector('.service-popup-prev');
   const servicePopupNext = servicePopup?.querySelector('.service-popup-next');
+  const servicePopupVideoPlaceholder = servicePopup?.querySelector('.service-popup-video-placeholder');
+  const servicePopupVideoPlay = servicePopup?.querySelector('.service-popup-video-play');
+  const servicePopupVideoEl = servicePopup?.querySelector('.service-popup-video');
+  const servicePopupVideoFullscreen = servicePopup?.querySelector('.service-popup-video-fullscreen');
   
   let currentServiceIndex = -1;
+  const SERVICE_POPUP_PLACEHOLDER_VIDEO = "assets/videos/Horizontal/LAMBO5.mp4";
 
   function openServicePopup(card, index = -1) {
     if (!servicePopup || !servicePopupContainer || !servicePopupTitle || !servicePopupText) return;
@@ -2345,15 +2403,27 @@ document.addEventListener("DOMContentLoaded", () => {
       servicePopupIcon.style.filter = iconFilter;
     }
     
+    if (!servicePopup.classList.contains('active')) lockBodyScroll();
     servicePopup.classList.add('active');
-    document.body.style.overflow = 'hidden';
+    resetServicePopupVideo();
+  }
+
+  function resetServicePopupVideo() {
+    if (!servicePopupVideoEl || !servicePopupVideoPlaceholder || !servicePopupVideoPlay || !servicePopupVideoFullscreen) return;
+    servicePopupVideoEl.pause();
+    servicePopupVideoEl.src = "";
+    servicePopupVideoEl.style.display = "none";
+    servicePopupVideoPlaceholder.style.display = "flex";
+    servicePopupVideoPlay.style.display = "flex";
+    servicePopupVideoFullscreen.style.display = "none";
   }
 
   function closeServicePopup() {
     if (!servicePopup) return;
     servicePopup.classList.remove('active');
-    document.body.style.overflow = '';
+    unlockBodyScroll();
     currentServiceIndex = -1;
+    resetServicePopupVideo();
   }
   
   function navigateServicePopup(direction) {
@@ -2396,14 +2466,36 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Видео в попапе: Плей и «Полный экран» открывают плеер поверх окна на весь экран; при закрытии — возврат к попапу с играющим видео
+  function openPopupVideoFullscreen(src) {
+    if (src) doc.dispatchEvent(new CustomEvent("open-video-modal", { detail: { src } }));
+  }
+  if (servicePopupVideoPlay && servicePopupVideoEl && servicePopupVideoPlaceholder && servicePopupVideoFullscreen) {
+    servicePopupVideoPlay.addEventListener("click", () => {
+      const card = currentServiceIndex >= 0 && cards[currentServiceIndex] ? cards[currentServiceIndex] : null;
+      const src = (card && card.dataset.serviceVideo) ? card.dataset.serviceVideo : SERVICE_POPUP_PLACEHOLDER_VIDEO;
+      openPopupVideoFullscreen(src);
+    });
+    servicePopupVideoFullscreen.addEventListener("click", () => {
+      const src = servicePopupVideoEl.src || SERVICE_POPUP_PLACEHOLDER_VIDEO;
+      openPopupVideoFullscreen(src);
+    });
+  }
+  doc.addEventListener("video-modal-closed", (e) => {
+    const src = e.detail?.src;
+    if (!src || !servicePopup?.classList.contains("active") || !servicePopupVideoEl || !servicePopupVideoPlaceholder || !servicePopupVideoPlay || !servicePopupVideoFullscreen) return;
+    servicePopupVideoEl.src = src;
+    servicePopupVideoEl.style.display = "block";
+    servicePopupVideoPlaceholder.style.display = "none";
+    servicePopupVideoPlay.style.display = "none";
+    servicePopupVideoFullscreen.style.display = "flex";
+    servicePopupVideoEl.play().catch(() => {});
+  });
+
   cards.forEach((card) => {
     card.addEventListener('click', () => {
-      // На мобильных (max-width: 600px) показываем popup
-      if (window.innerWidth <= 600) {
-        openServicePopup(card);
-        return;
-      }
-      // На десктопе при клике ничего не меняем — раскрытие текста только при наведении (hover)
+      // Показываем popup при клике и на мобильных, и на десктопе
+      openServicePopup(card);
     });
 
     const updateSpotlight = createRafThrottle((clientX, clientY) => {
