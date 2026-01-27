@@ -224,7 +224,7 @@ const translations = {
     },
     footer: {
       copy: "© 2026 ADViral Agency",
-      author: "Made by: Aleksander Zahharov",
+      authorLabel: "Made by: ",
       email: "info@adviral.agency",
       social: {
         instagram: "",
@@ -385,7 +385,7 @@ const translations = {
     },
     footer: {
       copy: "© 2026 ADViral Agency",
-      author: "Made by: Aleksander Zahharov",
+      authorLabel: "Made by: ",
       email: "info@adviral.agency",
       social: {
         instagram: "",
@@ -546,7 +546,7 @@ const translations = {
     },
     footer: {
       copy: "© 2026 ADViral Agency",
-      author: "Made by: Aleksander Zahharov",
+      authorLabel: "Made by: ",
       email: "info@adviral.agency",
       social: {
         instagram: "",
@@ -2407,21 +2407,7 @@ document.addEventListener("DOMContentLoaded", () => {
         openServicePopup(card);
         return;
       }
-      
-      // На десктопе работает старая логика раскрытия
-      const isOpen = card.classList.contains('is-open');
-      const shouldAnimate = mobileServicesQuery.matches && !prefersReducedMotionQuery.matches && cards.length > 0;
-      const beforeLayout = shouldAnimate ? captureCardLayout(cards) : null;
-
-      cards.forEach((c) => c.classList.remove('is-open'));
-      if (!isOpen) {
-        card.classList.add('is-open');
-      }
-
-      if (shouldAnimate && beforeLayout) {
-        const afterLayout = captureCardLayout(cards);
-        animateCardLayoutChange(beforeLayout, afterLayout);
-      }
+      // На десктопе при клике ничего не меняем — раскрытие текста только при наведении (hover)
     });
 
     const updateSpotlight = createRafThrottle((clientX, clientY) => {
@@ -2668,6 +2654,51 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         doc.body.removeChild(textArea);
       }
+    });
+  }
+
+  // Копирование email автора при клике (Made by: alexander.zahharov@gmail.com)
+  const authorEmailLink = doc.getElementById("author-email-link");
+  if (authorEmailLink) {
+    const copyAuthorEmail = async (textToCopy) => {
+      try {
+        await navigator.clipboard.writeText(textToCopy);
+        return true;
+      } catch {
+        const ta = doc.createElement("textarea");
+        ta.value = textToCopy;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        doc.body.appendChild(ta);
+        ta.select();
+        try {
+          doc.execCommand("copy");
+          return true;
+        } catch {
+          return false;
+        } finally {
+          doc.body.removeChild(ta);
+        }
+      }
+    };
+    const showCopyNotification = () => {
+      const notification = doc.createElement("div");
+      notification.className = "email-copy-notification";
+      notification.setAttribute("data-i18n", "email.copied");
+      doc.body.appendChild(notification);
+      const currentLang = doc.documentElement.lang || "ru";
+      applyLanguage(currentLang);
+      setTimeout(() => notification.classList.add("show"), 10);
+      setTimeout(() => {
+        notification.classList.remove("show");
+        setTimeout(() => doc.body.removeChild(notification), 300);
+      }, 2000);
+    };
+    authorEmailLink.addEventListener("click", async (e) => {
+      e.preventDefault();
+      const text = authorEmailLink.getAttribute("data-copy") || "alexander.zahharov@gmail.com";
+      const ok = await copyAuthorEmail(text);
+      if (ok) showCopyNotification();
     });
   }
 });
