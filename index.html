@@ -205,9 +205,18 @@
       </div>
     </section>
 
-  <!-- Секция 1: Кто мы -->
+  <!-- Секция 1: Кто мы (текст слева, фото справа — блоки свапнуты в разметке) -->
     <section id="about" class="section auto-scroll">
       <div class="container grid-2">
+        <div class="content">
+          <h2 data-i18n="about.title">Who we are</h2>
+          <div class="text-scroll">
+            <p data-i18n="about.description" class="reveal reveal-left">
+              ADViral is a full-service agency. We align strategy, creativity and
+              performance so your campaigns are not only seen — they are shared.
+            </p>
+          </div>
+        </div>
         <div class="media-wrapper">
           <div class="media-tilted-group reveal reveal-left">
             <div class="media-tilted-frame">
@@ -219,15 +228,6 @@
             <div class="media-tilted-frame">
               <img src="assets/images/photos/Slide_Red.png" alt="ADViral Agency team" loading="lazy" />
             </div>
-          </div>
-        </div>
-        <div class="content">
-          <h2 data-i18n="about.title">Who we are</h2>
-          <div class="text-scroll">
-            <p data-i18n="about.description" class="reveal reveal-left">
-              ADViral is a full-service agency. We align strategy, creativity and
-              performance so your campaigns are not only seen — they are shared.
-            </p>
           </div>
         </div>
       </div>
@@ -281,8 +281,8 @@
   <!-- Секция 3: Наши работы (лента как в Instagram) -->
     <section id="works" class="section auto-scroll">
       <div class="container">
-  <h2 style="text-align: right;" data-i18n="works.title">Our work</h2>
-  <p class="section-sub reveal reveal-left" style="text-align: right;" data-i18n="works.subtitle">Video cases. Click to open in player.</p>
+  <h2 data-i18n="works.title">Our work</h2>
+  <p class="section-sub reveal reveal-left" data-i18n="works.subtitle">Video cases. Click to open in player.</p>
     <button class="ig-arrow prev" aria-label="Previous" type="button">‹</button>
         <div class="ig-slider reveal reveal-left">
           <div class="ig-strip">
@@ -426,7 +426,7 @@
       </div>
       
       <!-- Горизонтальные видео -->
-      <div class="container container-horizontal" style="margin-top: 4px;">
+      <div class="container container-horizontal">
     <button class="ig-arrow prev" aria-label="Previous" type="button">‹</button>
         <div class="ig-slider reveal reveal-left">
           <div class="ig-strip">
@@ -513,36 +513,46 @@
       <div class="container">
   <h2 data-i18n="partners.title">Our clients</h2>
         <div class="clients-grid reveal reveal-right">
-          <a href="https://stockmann.com" target="_blank" rel="noopener" class="client-item" data-client="stockmann">
-            <img src="./assets/images/Clients Logos/stockmann.jpg" alt="Stockmann" class="client-logo">
-          </a>
-          <a href="https://err.ee" target="_blank" rel="noopener" class="client-item" data-client="err">
-            <img src="./assets/images/Clients Logos/ERR.png" alt="ERR" class="client-logo">
-          </a>
-          <a href="https://dodo.ee" target="_blank" rel="noopener" class="client-item" data-client="dodo">
-            <img src="./assets/images/Clients Logos/DoDoPizza.webp" alt="Dodo Pizza" class="client-logo">
-          </a>
-          <a href="https://bfm.ee" target="_blank" rel="noopener" class="client-item" data-client="bfm">
-            <img src="./assets/images/Clients Logos/BFM.jpg" alt="BFM" class="client-logo">
-          </a>
-          <a href="https://moto24.ee" target="_blank" rel="noopener" class="client-item" data-client="moto24">
-            <img src="./assets/images/Clients Logos/Moto24ee.PNG" alt="Moto24" class="client-logo">
-          </a>
-          <a href="https://gogps.eu/en/" target="_blank" rel="noopener" class="client-item" data-client="gogps">
-            <img src="./assets/images/Clients Logos/goGPS.png" alt="GoGPS" class="client-logo">
-          </a>
-          <a href="https://roses.ee" target="_blank" rel="noopener" class="client-item" data-client="roses">
-            <img src="./assets/images/Clients Logos/rosesee.jpg" alt="Roses" class="client-logo">
-          </a>
-          <a href="https://expertautokool.ee" target="_blank" rel="noopener" class="client-item" data-client="expert">
-            <img src="./assets/images/Clients Logos/ExpertAutokool.jpg" alt="Expert Autokool" class="client-logo">
-          </a>
-          <a href="https://eesteilusalong.ee" target="_blank" rel="noopener" class="client-item" data-client="eeste">
-            <img src="./assets/images/Clients Logos/Estee.jpg" alt="Eeste ilusalong" class="client-logo">
-          </a>
-          <a href="https://kaitsevagi.ee" target="_blank" rel="noopener" class="client-item" data-client="kaitsevagi">
-            <img src="./assets/images/Clients Logos/Kajtsevägi.png" alt="Kaitsevägi" class="client-logo">
-          </a>
+          <div class="client-pair">
+            <a href="https://stockmann.com" target="_blank" rel="noopener" class="client-item" data-client="stockmann">
+              <img src="./assets/images/Clients Logos/stockmann.jpg" alt="Stockmann" class="client-logo">
+            </a>
+            <a href="https://err.ee" target="_blank" rel="noopener" class="client-item" data-client="err">
+              <img src="./assets/images/Clients Logos/ERR.png" alt="ERR" class="client-logo">
+            </a>
+          </div>
+          <div class="client-pair">
+            <a href="https://dodo.ee" target="_blank" rel="noopener" class="client-item" data-client="dodo">
+              <img src="./assets/images/Clients Logos/DoDoPizza.webp" alt="Dodo Pizza" class="client-logo">
+            </a>
+            <a href="https://bfm.ee" target="_blank" rel="noopener" class="client-item" data-client="bfm">
+              <img src="./assets/images/Clients Logos/BFM.jpg" alt="BFM" class="client-logo">
+            </a>
+          </div>
+          <div class="client-pair">
+            <a href="https://moto24.ee" target="_blank" rel="noopener" class="client-item" data-client="moto24">
+              <img src="./assets/images/Clients Logos/Moto24ee.PNG" alt="Moto24" class="client-logo">
+            </a>
+            <a href="https://gogps.eu/en/" target="_blank" rel="noopener" class="client-item" data-client="gogps">
+              <img src="./assets/images/Clients Logos/goGPS.png" alt="GoGPS" class="client-logo">
+            </a>
+          </div>
+          <div class="client-pair">
+            <a href="https://roses.ee" target="_blank" rel="noopener" class="client-item" data-client="roses">
+              <img src="./assets/images/Clients Logos/rosesee.jpg" alt="Roses" class="client-logo">
+            </a>
+            <a href="https://expertautokool.ee" target="_blank" rel="noopener" class="client-item" data-client="expert">
+              <img src="./assets/images/Clients Logos/ExpertAutokool.jpg" alt="Expert Autokool" class="client-logo">
+            </a>
+          </div>
+          <div class="client-pair">
+            <a href="https://eesteilusalong.ee" target="_blank" rel="noopener" class="client-item" data-client="eeste">
+              <img src="./assets/images/Clients Logos/Estee.jpg" alt="Eeste ilusalong" class="client-logo">
+            </a>
+            <a href="https://kaitsevagi.ee" target="_blank" rel="noopener" class="client-item" data-client="kaitsevagi">
+              <img src="./assets/images/Clients Logos/Kajtsevägi.png" alt="Kaitsevägi" class="client-logo">
+            </a>
+          </div>
         </div>
       </div>
     </section>

@@ -307,6 +307,26 @@ p { color: var(--muted); margin: 0 0 12px; }
 .header-nav a { align-items: center; }
 .header-nav a { opacity: .9; }
 .header-nav a:hover { opacity: 1; }
+
+/* Подчёркивание при наведении (анимация слева направо) — только у текстовых ссылок */
+.header-nav a:not(.btn) {
+  position: relative;
+}
+.header-nav a:not(.btn)::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 8px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+.header-nav a:not(.btn):hover::after {
+  transform: scaleX(1);
+}
 /* Стили активной ссылки в шапке */
 .header-nav a.active {
   color: white; /* активный пункт всегда белый */
@@ -598,12 +618,8 @@ p { color: var(--muted); margin: 0 0 12px; }
   }
 }
 
-/* Отступ для якорей учитывает фиксированную шапку */
-section { scroll-margin-top: calc(var(--header-h) + 12px); }
-@media (max-width: 768px) {
-  /* На мобильных учитываем возможное смещение из‑за UI браузера */
-  section { scroll-margin-top: calc(var(--header-h) + 16px); }
-}
+/* Якоря ведут на начало секции; отступ между началом секции и текстовым хедером — в padding секции */
+section { scroll-margin-top: 0; }
 
 
 /* =========================
@@ -726,10 +742,32 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
 ========================= */
 .section {
   position: relative;
-  padding: clamp(64px, 8vw, 120px) 0;
-  /* по умолчанию snap выключен, включается на широкой версии */
+  padding: calc(var(--header-h) + 20px) 0 clamp(64px, 8vw, 120px);
+  /* сверху: хедер + 20px (как расстояние между фотками в «Кто мы») */
   scroll-snap-align: none;
   overflow-x: visible;
+}
+
+/* Услуги и Наши клиенты: хедер и параграф начинаются справа */
+#services h2,
+#services .section-sub,
+#partners h2,
+#partners .section-sub {
+  text-align: right;
+}
+
+/* Хедеры карточек Услуги начинаются слева, текст параграфа — справа */
+#services .card h3 {
+  text-align: left;
+}
+#services .card p {
+  text-align: right;
+}
+
+/* Наши работы: хедер и параграф начинаются слева */
+#works h2,
+#works .section-sub {
+  text-align: left;
 }
 
 /* Анимация появления при прокрутке */
@@ -761,7 +799,7 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
 }
 
 #about .grid-2 {
-  grid-template-columns: 687px 625px; /* Фиксированные размеры колонок */
+  grid-template-columns: 625px 687px; /* текст слева (первый в разметке), фотки справа */
   gap: 48px; /* Фиксированный отступ */
   max-width: none; /* Убираем ограничение максимальной ширины */
   width: fit-content; /* Ширина по содержимому */
@@ -816,6 +854,13 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   z-index: 1;
 }
 
+/* Заголовок и параграф секции «Кто мы» начинаются слева */
+#about .content h2,
+#about .content .text-scroll,
+#about .content .text-scroll p {
+  text-align: left;
+}
+
 /* Уменьшенные отступы сверху у заголовка */
 #about .content h2 {
   margin-top: 0;
@@ -858,7 +903,6 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   /* Обертка для медиа-слайдов с горизонтальной прокруткой */
   #about .media-wrapper {
     display: block; /* На мобильных становится блоком */
-    order: 1; /* Сначала идут слайды */
     overflow-x: auto; /* Горизонтальная прокрутка только для слайдов */
     overflow-y: hidden;
     width: 100%;
@@ -873,7 +917,6 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   
   /* Текстовый блок становится адаптивным */
   #about .content {
-    order: 2; /* Потом идет текст */
     width: 100%; /* Занимает всю доступную ширину */
     max-width: 100%; /* Убираем ограничение на мобильных */
     min-width: 0; /* Убираем минимальную ширину */
@@ -921,11 +964,11 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
 
 .media-tilted-frame {
   flex: 1;
-  overflow: hidden; /* Обрезаем изображение, чтобы оно не выходило за рамки */
+  overflow: hidden;
   position: relative;
-  border: none; /* Убираем светло-серые границы */
+  border: none;
   background: var(--card);
-  transform: skew(-8deg, 0deg); /* Все рамки наклонены под одним углом (влево) - увеличен наклон */
+  transform: skew(-8deg, 0deg);
 }
 
 /* Убираем индивидуальные наклоны - все рамки одинаковые */
@@ -1079,19 +1122,19 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   }
 }
 
-/* Анимация иконки при наведении - увеличение и поворот */
+/* Анимация иконки при наведении - увеличение и поворот (8° как у рамок в «Кто мы») */
 @keyframes icon-hover {
   0% {
     transform: translateY(-50%) scale(1) rotate(0deg);
   }
   100% {
-    transform: translateY(-50%) scale(1.111) rotate(10deg); /* 1.111 = увеличение на 10% от уменьшенного размера */
+    transform: translateY(-50%) scale(1.111) rotate(8deg);
   }
 }
 
 @keyframes icon-hover-out {
   0% {
-    transform: translateY(-50%) scale(1.111) rotate(10deg);
+    transform: translateY(-50%) scale(1.111) rotate(8deg);
   }
   100% {
     transform: translateY(-50%) scale(1) rotate(0deg);
@@ -1649,6 +1692,17 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
 }
 
 /* Стрелки для горизонтальной ленты - отцентрованы относительно высоты ленты */
+/* От границы вертикального видео до границы горизонтального = 18px (как между элементами в ленте) */
+#works .container:not(.container-horizontal) .ig-strip {
+  padding-bottom: 0;
+}
+#works .container-horizontal {
+  margin-top: 18px;
+}
+#works .container-horizontal .ig-strip {
+  padding-top: 0;
+}
+
 .container-horizontal .ig-arrow {
   transform: translateY(-50%); /* Без смещения вниз - строго по центру высоты ленты */
 }
@@ -1738,10 +1792,20 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   transform: skew(8deg, 0deg) scale(1.35); /* Увеличиваем приближение при наведении */
 }
 
-/* Горизонтальные видео - те же наклонные рамки, но горизонтальный формат */
+/* Горизонтальные видео — инвертированный наклон рамок (skew +8deg вместо -8deg) */
 .ig-item-horizontal {
-  aspect-ratio: 16 / 9; /* Горизонтальный формат вместо вертикального */
-  width: clamp(172.8px, 21.6vw, 230.4px); /* Уменьшено на 10% от предыдущего размера (всего на 28%) для горизонтальных видео */
+  aspect-ratio: 16 / 9;
+  width: clamp(172.8px, 21.6vw, 230.4px);
+  transform: skew(8deg, 0deg); /* инверсия наклона относительно вертикальной ленты */
+}
+.ig-item-horizontal:hover {
+  transform: skew(8deg, 0deg) scale(1.05);
+}
+.ig-item-horizontal video {
+  transform: skew(-8deg, 0deg) scale(1.25); /* компенсация под рамку */
+}
+.ig-item-horizontal:hover video {
+  transform: skew(-8deg, 0deg) scale(1.35);
 }
 /* Убраны подписи и иконка плей с видео в ленте */
 .ig-item .play {
@@ -1766,6 +1830,33 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
+}
+
+/* Наши клиенты: пары в боксах, по ширине, край пар = край хедера */
+#partners .clients-grid {
+  width: 100%;
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+#partners .client-pair {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center;
+}
+
+#partners .client-pair .client-item {
+  flex: 0 0 auto;
+}
+
+/* Правый край крайней правой пары совпадает с концом надписи «Наши клиенты» */
+#partners .client-pair:last-child {
+  align-items: flex-end;
+}
+#partners .client-pair:first-child {
+  align-items: flex-start;
 }
 
 .client-item {
@@ -1859,6 +1950,16 @@ section { scroll-margin-top: calc(var(--header-h) + 12px); }
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  }
+
+  /* Наши клиенты с парами: одна строка из 5 колонок-пар, пара — столбик из 2 элементов */
+  #partners .clients-grid {
+    grid-template-rows: auto;
+    grid-auto-flow: row;
+  }
+  #partners .client-pair {
+    scroll-snap-align: start;
+    min-width: 180px;
   }
   
   .clients-grid::-webkit-scrollbar {
@@ -2455,15 +2556,32 @@ input::placeholder, textarea::placeholder {
   color: var(--muted);
 }
 
-/* alexander.zahharov@gmail.com — кликабельно, фиолетовая подсветка как у телефона */
+/* alexander.zahharov@gmail.com — кликабельно, светлая подсветка как в хедере */
 .footer-left .author-email-link {
   color: var(--muted);
   text-decoration: none;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+  position: relative;
 }
 .footer-left .author-email-link:hover {
-  color: var(--primary-1);
+  color: #fff;
+}
+/* Подчёркивание при наведении (анимация слева направо) */
+.footer-left .author-email-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+.footer-left .author-email-link:hover::after {
+  transform: scaleX(1);
 }
 
 .footer-center { 
@@ -2473,9 +2591,25 @@ input::placeholder, textarea::placeholder {
   align-items: center;
   gap: 8px;
 }
-.footer-center a { color: var(--muted); text-decoration: none; cursor: pointer; }
-.footer-center a:hover { color: var(--primary-1); }
+.footer-center a { color: var(--muted); text-decoration: none; cursor: pointer; position: relative; }
+.footer-center a:hover { color: #fff; }
 .footer-center .phone-link { font-size: 14px; }
+/* Подчёркивание при наведении (анимация слева направо) */
+.footer-center a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+.footer-center a:hover::after {
+  transform: scaleX(1);
+}
 
 /* Уведомление о копировании email */
 .email-copy-notification {
@@ -2502,8 +2636,24 @@ input::placeholder, textarea::placeholder {
   transform: translateX(-50%) translateY(0);
 }
 .footer-right { justify-self: start; display: flex; gap: 16px; }
-.footer-right a { color: var(--muted); text-decoration: none; }
-.footer-right a:hover { color: var(--primary-1); }
+.footer-right a { color: var(--muted); text-decoration: none; position: relative; }
+.footer-right a:hover { color: #fff; }
+/* Подчёркивание при наведении (анимация слева направо) */
+.footer-right a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+.footer-right a:hover::after {
+  transform: scaleX(1);
+}
 
 /* Иконки соцсетей в футере */
 .footer-right .social-icon {
@@ -2559,7 +2709,7 @@ input::placeholder, textarea::placeholder {
 }
 
 .site-footer .footer-social a:hover {
-  color: var(--primary-1); /* фиолетовый цвет при наведении */
+  color: #fff; /* светлая подсветка как в хедере */
 }
 
 @media (max-width: 700px) {

@@ -916,22 +916,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Автоскрытие хедера отключено по требованию: хедер всегда виден во всех разрешениях.
 
-  // Флаг: если кликнули пункт в шапке — временно не автодокручиваем секции и прокручиваем к секции вручную
-  let navScrollBlockUntil = 0;
-  headerNavLinks.forEach((a) => {
+  // Якоря: каждый ведёт на начало секции (без смещения). Отступ хедера — только в padding секции.
+  function scrollToSectionStart(el) {
+    if (!el) return;
+    const top = window.scrollY + el.getBoundingClientRect().top;
+    window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+    if (history.replaceState && el.id) {
+      history.replaceState(null, '', '#' + el.id);
+    }
+  }
+
+  doc.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a) return;
     const href = a.getAttribute('href');
-    if (!href || !href.startsWith('#')) return;
+    if (href === '#') return;
     const target = doc.querySelector(href);
     if (!target) return;
-
-    a.addEventListener('click', (event) => {
-      navScrollBlockUntil = performance.now() + 1400; // даём приоритет якорной навигации ~1.4с
-      event.preventDefault();
-      smoothScrollToTargetTop(target);
-      if (history.replaceState) {
-        history.replaceState(null, '', href);
-      }
-    });
+    e.preventDefault();
+    scrollToSectionStart(target);
   });
 
   let lastScrollY = window.scrollY || window.pageYOffset;
@@ -1002,42 +1005,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     lastScrollY = currentY;
   }, { passive: true });
-
-  function getHeaderOffsetPx(el) {
-    const cs = getComputedStyle(rootEl);
-    const h = parseFloat(cs.getPropertyValue('--header-h')) || 64;
-    let extra = -55;
-    return h + extra;
-  }
-
-  let isAutoScrolling = false;
-
-  function smoothScrollToTargetTop(el) {
-    if (!el || isAutoScrolling) return; // Не начинаем новый скролл, если старый еще идет
-    
-    // Блокируем другие автоскроллы
-    isAutoScrolling = true;
-    
-    const startY = window.scrollY || window.pageYOffset;
-    const rect = el.getBoundingClientRect();
-    const offset = getHeaderOffsetPx(el);
-    const target = Math.max(0, startY + rect.top - offset);
-    try {
-      window.scrollTo({ top: target, behavior: 'smooth' });
-    } catch (_) {
-      window.scrollTo(0, target);
-    }
-
-    setTimeout(() => {
-      const newRect = el.getBoundingClientRect();
-      const adjust = Math.max(0, (window.scrollY || window.pageYOffset) + newRect.top - offset);
-      if (Math.abs(newRect.top - offset) > 2) {
-        window.scrollTo({ top: adjust, behavior: 'auto' });
-      }
-      // Разблокируем автоскролл с запасом времени
-      setTimeout(() => { isAutoScrolling = false; }, 300);
-    }, 800); // Увеличиваем время ожидания завершения скролла
-  }
 
   // Reveal on scroll — появление секций при прокрутке
   const revealEls = doc.querySelectorAll(".reveal");
