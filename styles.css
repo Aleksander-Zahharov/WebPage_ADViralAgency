@@ -1717,24 +1717,24 @@ section { scroll-margin-top: 0; }
 }
 
 /* Стрелки для горизонтальной ленты: по центру горизонтальной ig-strip по оси Y, ось X без изменений */
-/* Margin и padding секций — как до изменений со стрелками */
+/* Границы лент пересекаются по одной линии (margin 0), а не накладываются; визуальный зазор 18px — за счёт паддинга 9+9 */
 #works .container:not(.container-horizontal) .ig-strip {
   padding-bottom: 0;
 }
 #works .works-vertical-row > .ig-slider > .ig-strip {
   padding-top: 18px;
-  padding-bottom: 24px; /* запас снизу: при overflow-x:auto overflow-y не бывает visible, края не обрезаются за счёт паддинга */
+  padding-bottom: 9px;  /* нижняя граница ленты идёт до линии пересечения с горизонтальной */
   padding-left: 32px;
 }
 #works .container-horizontal {
-  margin-top: -30px; /* 18 - 48: компенсация за padding-bottom 24px и padding-top 24px, визуальный зазор 18px сохраняем */
+  margin-top: 0; /* границы соприкасаются, без наложения */
   position: relative;
   display: flex;
   align-items: center;
   overflow: visible;
 }
 #works .container-horizontal .ig-strip {
-  padding-top: 24px; /* запас сверху под наведение, т.к. overflow-y visible с overflow-x:auto не работает */
+  padding-top: 9px;   /* верхняя граница ленты начинается на линии пересечения с вертикальной; 9+9=18px зазор между контентом */
   padding-bottom: 12px;
   padding-left: 24px;
 }
