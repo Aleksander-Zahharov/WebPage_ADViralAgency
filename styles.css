@@ -756,12 +756,10 @@ section { scroll-margin-top: 0; }
   text-align: right;
 }
 
-/* Хедеры карточек Услуги начинаются слева, текст параграфа — справа */
-#services .card h3 {
-  text-align: left;
-}
+/* Хедеры и параграфы карточек Услуги начинаются слева */
+#services .card h3,
 #services .card p {
-  text-align: right;
+  text-align: left;
 }
 
 /* Наши работы: хедер и параграф начинаются слева */
@@ -1594,6 +1592,14 @@ section { scroll-margin-top: 0; }
   margin: 0 auto; /* центрируем слайдер */
 }
 
+/* При наведении элемент увеличивается — верх/низ не обрезать, не скрывать за границами секции */
+#works {
+  overflow: visible;
+}
+#works .ig-slider {
+  overflow: visible;
+}
+
 @media (max-width: 1024px) {
   .ig-slider {
     max-width: 100%;
@@ -1701,6 +1707,7 @@ section { scroll-margin-top: 0; }
 }
 #works .container-horizontal .ig-strip {
   padding-top: 0;
+  padding-left: 24px; /* левый край первой карточки на уровне вертикальной ленты */
 }
 
 .container-horizontal .ig-arrow {
@@ -1733,6 +1740,11 @@ section { scroll-margin-top: 0; }
   will-change: scroll-position;
 }
 .ig-strip::-webkit-scrollbar { display: none; }
+
+/* При наведении на видео верх/низ элемента не обрезать (переопределяем overflow ленты в секции works) */
+#works .ig-strip {
+  overflow-y: visible;
+}
 
 @media (max-width: 900px) {
   .ig-strip {
