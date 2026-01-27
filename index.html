@@ -283,9 +283,10 @@
       <div class="container">
         <h2 data-i18n="works.title">Our work</h2>
         <p class="section-sub reveal reveal-left" data-i18n="works.subtitle">Video cases. Click to open in player.</p>
-        <button class="ig-arrow prev" aria-label="Previous" type="button">‹</button>
-        <div class="ig-slider reveal reveal-left">
-          <div class="ig-strip">
+        <div class="works-vertical-row">
+          <button class="ig-arrow prev" aria-label="Previous" type="button">‹</button>
+          <div class="ig-slider reveal reveal-left">
+            <div class="ig-strip">
             <a class="ig-item" href="#" data-video="assets/videos/vertical/7.mp4?v=2" data-video-preview="assets/videos/preview/7_preview.mp4">
               <video
                 autoplay
@@ -422,12 +423,13 @@
             </a>
           </div>
         </div>
-        <button class="ig-arrow next" aria-label="Next" type="button">›</button>
+          <button class="ig-arrow next" aria-label="Next" type="button">›</button>
+        </div>
 
         <!-- Лента горизонтальных видео -->
         <div class="horizontal-row container-horizontal">
-          <button class="ig-arrow prev" aria-label="Previous" type="button">‹</button>
-          <div class="ig-slider reveal reveal-left">
+          <button class="ig-arrow prev ig-arrow-horizontal" aria-label="Previous" type="button">‹</button>
+          <div class="ig-slider ig-slider-horizontal reveal reveal-left">
             <div class="ig-strip">
               <a class="ig-item ig-item-horizontal" href="#" data-video="assets/videos/Horizontal/BSU3.mp4" data-video-preview="assets/videos/preview/BSU3_preview.mp4">
                 <video autoplay muted loop playsinline preload="none" aria-label="Horizontal Case 1">
@@ -461,7 +463,7 @@
               </a>
             </div>
           </div>
-          <button class="ig-arrow next" aria-label="Next" type="button">›</button>
+          <button class="ig-arrow next ig-arrow-horizontal" aria-label="Next" type="button">›</button>
         </div>
       </div>
     </section>
