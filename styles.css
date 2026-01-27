@@ -35,6 +35,7 @@
   --z-header: 10;
   --z-arrows: 5;
   --header-h: 72px;
+  --blur: 6px; /* единое значение блюра для всех backdrop-filter на странице */
 }
 
 @media (max-width: 768px) {
@@ -252,7 +253,7 @@ p { color: var(--muted); margin: 0 0 12px; }
   color: #fff;
   background-color: rgba(255,255,255,.07);
   border: 1px solid rgba(255,255,255,.18);
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(var(--blur));
 }
 .btn-ghost:hover { background-color: rgba(255,255,255,.10); border-color: rgba(255,255,255,.28); }
 .btn-ghost:focus-visible { box-shadow: 0 0 0 3px rgba(138,88,255,.25); }
@@ -269,8 +270,8 @@ p { color: var(--muted); margin: 0 0 12px; }
   left: 0;
   right: 0;
   z-index: var(--z-header);
-  background: rgba(10,10,11,.55);
-  backdrop-filter: blur(8px);
+  background: rgba(10,10,11,.5);
+  backdrop-filter: blur(var(--blur));
   border-bottom: 1px solid rgba(255,255,255,.08);
   font-family: var(--primary-font); /* подключаем основной шрифт для шапки */
   transition: transform .24s ease;
@@ -471,7 +472,7 @@ p { color: var(--muted); margin: 0 0 12px; }
   border-radius: 20px;
   border: 1px solid rgba(255,255,255,.12);
   background: rgba(24,24,28,.92);
-  backdrop-filter: blur(18px);
+  backdrop-filter: blur(var(--blur));
   box-shadow: 0 18px 42px rgba(0,0,0,.55);
   list-style: none;
   margin: 0;
@@ -535,8 +536,8 @@ p { color: var(--muted); margin: 0 0 12px; }
     position: fixed;
     inset: var(--header-h) 0 auto 0;
     height: calc(100vh - var(--header-h));
-    background: rgba(18,18,20,.96);
-    backdrop-filter: blur(10px);
+    background: rgba(10,10,11,.5);
+    backdrop-filter: blur(var(--blur));
     border-top: 1px solid rgba(255,255,255,.08);
     display: grid;
     grid-auto-rows: min-content;
@@ -693,14 +694,14 @@ section { scroll-margin-top: 0; }
   flex-wrap: wrap;
 }
 .hero .btn-primary {
-  /* Сохраняем фиолетовый, но добавляем стеклянный эффект как у ghost-кнопки */
-  background: linear-gradient(135deg, rgba(107, 17, 203, 0.721), rgba(176, 134, 249, 0.523));
+  /* Стеклянный эффект: 50% непрозрачности, блюр 6px */
+  background: linear-gradient(135deg, rgba(107, 17, 203, 0.5), rgba(176, 134, 249, 0.5));
   border: 1px solid rgba(255,255,255,.18);
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(var(--blur));
   box-shadow: none;
 }
 .hero .btn-primary:hover {
-  background: linear-gradient(135deg, rgba(123, 33, 219, 0.762), rgba(191, 150, 249, 0.507));
+  background: linear-gradient(135deg, rgba(123, 33, 219, 0.5), rgba(191, 150, 249, 0.5));
   border-color: rgba(255,255,255,.28);
   box-shadow: none;
 }
@@ -708,18 +709,18 @@ section { scroll-margin-top: 0; }
   box-shadow: 0 0 0 3px rgba(138,88,255,.25);
 }
 
-/* Кнопка отправки формы: такой же стеклянный фиолетовый как в герое */
+/* Кнопка отправки формы: стеклянный фиолетовый, 50% непрозрачности, блюр 6px */
 .contact-form .btn.full.btn-primary,
 .contact-form .btn-primary.full {
   color: #fff;
-  background: linear-gradient(135deg, rgba(107, 17, 203, 0.721), rgba(176, 134, 249, 0.523));
+  background: linear-gradient(135deg, rgba(107, 17, 203, 0.5), rgba(176, 134, 249, 0.5));
   border: 1px solid rgba(255,255,255,.18);
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(var(--blur));
   box-shadow: none;
 }
 .contact-form .btn.full.btn-primary:hover,
 .contact-form .btn-primary.full:hover {
-  background: linear-gradient(135deg, rgba(123, 33, 219, 0.762), rgba(191, 150, 249, 0.507));
+  background: linear-gradient(135deg, rgba(123, 33, 219, 0.5), rgba(191, 150, 249, 0.5));
   border-color: rgba(255,255,255,.28);
 }
 .contact-form .btn.full.btn-primary:focus-visible,
@@ -996,7 +997,7 @@ section { scroll-margin-top: 0; }
   height: 100%;
   object-fit: cover;
   display: block;
-  transform: skew(8deg, 0deg) scale(1.25); /* Увеличиваем приближение, чтобы не было пустых краев */
+  transform: skew(8deg, 0deg) scale(1.28); /* Чуть больше приближение, без зума при наведении */
   transition: transform 0.5s cubic-bezier(.2,.6,.2,1);
   transform-origin: center center; /* Масштабирование от центра */
 }
@@ -1005,7 +1006,7 @@ section { scroll-margin-top: 0; }
 .media-tilted-frame:nth-child(1) img,
 .media-tilted-frame:nth-child(2) img,
 .media-tilted-frame:nth-child(3) img {
-  transform: skew(8deg, 0deg) scale(1.25);
+  transform: skew(8deg, 0deg) scale(1.28);
 }
 
 /* Первое изображение: показываем самую левую часть фотографии с анимацией */
@@ -1049,15 +1050,16 @@ section { scroll-margin-top: 0; }
   }
 }
 
+/* Без приближения при наведении — масштаб тот же, что и по умолчанию */
 .media-tilted-frame:hover img {
-  transform: skew(8deg, 0deg) scale(1.35); /* Увеличиваем приближение при наведении */
+  transform: skew(8deg, 0deg) scale(1.28);
 }
 
 /* Убираем индивидуальные hover трансформации для изображений */
 .media-tilted-frame:nth-child(1):hover img,
 .media-tilted-frame:nth-child(2):hover img,
 .media-tilted-frame:nth-child(3):hover img {
-  transform: skew(8deg, 0deg) scale(1.35);
+  transform: skew(8deg, 0deg) scale(1.28);
 }
 
 .content .bullets { padding: 0; margin: 18px 0 0; list-style: none; }
@@ -1652,8 +1654,8 @@ section { scroll-margin-top: 0; }
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
 }
 
 .service-popup-container {
@@ -2614,7 +2616,7 @@ input[type="email"] {
   font-family: var(--secondary-font); /* Общий шрифт сайта */
   font-size: 16px;
   line-height: 1.55;
-  backdrop-filter: blur(0px);
+  backdrop-filter: blur(var(--blur));
 }
 
 textarea {
@@ -2632,15 +2634,15 @@ textarea {
   font-family: var(--secondary-font); /* Общий шрифт сайта */
   font-size: 16px;
   line-height: 1.55;
-  backdrop-filter: blur(0px);
+  backdrop-filter: blur(var(--blur));
 }
 
-/* Затемнение только для активного поля ввода (без блюра) */
+/* Затемнение для активного поля ввода, блюр 6px */
 input[type="text"]:focus,
 input[type="email"]:focus,
 textarea:focus {
   background: rgba(30, 30, 35, 0.9); /* Темно-серый цвет для инфила */
-  backdrop-filter: blur(0px); /* Блюр отключен */
+  backdrop-filter: blur(var(--blur));
   border-color: rgba(176, 134, 249, 0.8); /* Фиолетовая граница */
   border-width: 2px; /* Утолщаем границу для подчеркивания */
   box-shadow: 0 0 0 2px rgba(176, 134, 249, 0.3), 0 8px 24px rgba(0, 0, 0, 0.4);
@@ -2820,8 +2822,8 @@ input::placeholder, textarea::placeholder {
 .site-footer {
   position: relative;
   border-top: 1px solid rgba(255,255,255,.08);
-  background: rgba(10,10,11,.55);
-  backdrop-filter: blur(8px);
+  background: rgba(10,10,11,.5);
+  backdrop-filter: blur(var(--blur));
   color: var(--muted);
   padding: 40px 0;
   font-family: var(--secondary-font);
@@ -3165,8 +3167,8 @@ input::placeholder, textarea::placeholder {
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
 }
 
 .video-modal-container {
@@ -3249,7 +3251,7 @@ input::placeholder, textarea::placeholder {
 /* Настройка кнопки Play по центру видео (инверсия + стиль как у стрелок) */
 .video-modal-content .plyr__control--overlaid {
   background: rgba(20, 20, 22, 0.6) !important;
-  backdrop-filter: blur(8px) !important;
+  backdrop-filter: blur(var(--blur)) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   box-shadow: none !important;
   z-index: 15 !important;
@@ -3281,8 +3283,8 @@ input::placeholder, textarea::placeholder {
 /* Фон меню настроек */
 .video-modal-content .plyr__menu__container {
   background: rgba(20, 20, 22, 0.95) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
+  backdrop-filter: blur(var(--blur)) !important;
+  -webkit-backdrop-filter: blur(var(--blur)) !important;
   color: #fff !important;
   border-radius: 20px !important;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -3420,7 +3422,7 @@ input::placeholder, textarea::placeholder {
   border-radius: 50%;
   border: 2px solid rgba(255, 255, 255, 0.3);
   background: rgba(20, 20, 22, 0.8);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(var(--blur));
   color: #fff;
   font-size: 28px;
   line-height: 1;
