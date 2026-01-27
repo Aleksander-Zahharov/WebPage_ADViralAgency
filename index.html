@@ -420,6 +420,23 @@
               <div class="video-title" data-i18n="works.cases.case8">Case 8</div>
               <span class="play">▶</span>
             </a>
+            <a class="ig-item" href="#" data-video="assets/videos/vertical/Sun_girl.mp4" data-video-preview="assets/videos/preview/Sun_girl_preview.mp4">
+              <video
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="none"
+                aria-label="Case 9"
+                data-i18n="works.cases.case9"
+                data-i18n-attrs="aria-label"
+                data-i18n-skip-text="true"
+              >
+                <source src="assets/videos/preview/Sun_girl_preview.mp4" type="video/mp4" />
+              </video>
+              <div class="video-title" data-i18n="works.cases.case9">Case 9</div>
+              <span class="play">▶</span>
+            </a>
           </div>
         </div>
           <button class="ig-arrow next" aria-label="Next" type="button">›</button>
@@ -458,6 +475,16 @@
               <a class="ig-item ig-item-horizontal" href="#" data-video="assets/videos/Horizontal/TWTWfinal.mp4" data-video-preview="assets/videos/preview/TWTWfinal_preview.mp4">
                 <video autoplay muted loop playsinline preload="none" aria-label="Horizontal Case 6">
                   <source src="assets/videos/preview/TWTWfinal_preview.mp4" type="video/mp4" />
+                </video>
+              </a>
+              <a class="ig-item ig-item-horizontal" href="#" data-video="assets/videos/Horizontal/bfm_ice.mp4" data-video-preview="assets/videos/preview/bfm_ice_preview.mp4">
+                <video autoplay muted loop playsinline preload="none" aria-label="Horizontal Case 7">
+                  <source src="assets/videos/preview/bfm_ice_preview.mp4" type="video/mp4" />
+                </video>
+              </a>
+              <a class="ig-item ig-item-horizontal" href="#" data-video="assets/videos/Horizontal/Porsche.mp4" data-video-preview="assets/videos/preview/Porsche_preview.mp4">
+                <video autoplay muted loop playsinline preload="none" aria-label="Horizontal Case 8">
+                  <source src="assets/videos/preview/Porsche_preview.mp4" type="video/mp4" />
                 </video>
               </a>
             </div>
@@ -543,6 +570,18 @@
                 <div class="input-wrapper">
                   <input type="text" id="company" name="company" placeholder="Company (optional)" data-i18n="contact.form.company" data-i18n-attrs="placeholder" />
                 </div>
+                <div class="input-wrapper contact-services-dropdown-wrapper">
+                  <label class="services-dropdown-label visually-hidden" id="interested-services-label" data-i18n="contact.form.interestedServices">Интересующие Услуги</label>
+                  <div class="services-dropdown-trigger" id="interested-services-toggle" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-labelledby="interested-services-label" aria-controls="interested-services-list">
+                    <span class="services-dropdown-selected" aria-live="polite"></span>
+                    <span class="services-dropdown-placeholder" data-i18n="contact.form.interestedServices">Интересующие Услуги</span>
+                    <span class="services-dropdown-chevron" aria-hidden="true"></span>
+                  </div>
+                  <input type="hidden" name="interested_services" id="interested_services_value" />
+                </div>
+                <div class="input-wrapper">
+                  <input type="text" id="budget" name="budget" placeholder="Your approximate budget, e.g.: 990€" data-i18n="contact.form.budget" data-i18n-attrs="placeholder" inputmode="decimal" />
+                </div>
                 <div class="input-wrapper textarea-wrapper">
                   <textarea id="message" name="message" placeholder="Briefly describe your task" data-i18n="contact.form.message" data-i18n-attrs="placeholder"></textarea>
                 </div>
@@ -553,6 +592,17 @@
                   <span data-i18n="contact.form.submit">Send request</span>
                 </button>
               </form>
+              <div class="services-dropdown-panel" id="interested-services-list" role="listbox" aria-multiselectable="true" aria-labelledby="interested-services-label" hidden>
+                <div class="services-dropdown-option" role="option" data-value="analysis" tabindex="0"><img src="assets/images/icons/Icon_Analysis.webp" alt="" width="24" height="24" loading="lazy" /><span data-i18n="services.cards.analysis.title">Brand, market, and product line analysis</span></div>
+                <div class="services-dropdown-option" role="option" data-value="content" tabindex="0"><img src="assets/images/icons/Icon_Content.webp" alt="" width="24" height="24" loading="lazy" /><span data-i18n="services.cards.contentCreation.title">Video and photo content creation</span></div>
+                <div class="services-dropdown-option" role="option" data-value="video" tabindex="0"><img src="assets/images/icons/Icon_clapper.webp" alt="" width="24" height="24" loading="lazy" /><span data-i18n="services.cards.videoProduction.title">Professional video production & 3D graphics</span></div>
+                <div class="services-dropdown-option" role="option" data-value="strategy" tabindex="0"><img src="assets/images/icons/Icon_Target.webp" alt="" width="24" height="24" loading="lazy" /><span data-i18n="services.cards.strategy.title">Development and execution of promotion strategies</span></div>
+                <div class="services-dropdown-option" role="option" data-value="social" tabindex="0"><img src="assets/images/icons/Icon_SocialNetworks.webp" alt="" width="24" height="24" loading="lazy" /><span data-i18n="services.cards.socialManagement.title">Social media management and growth</span></div>
+                <div class="services-dropdown-option" role="option" data-value="design" tabindex="0"><img src="assets/images/icons/Icon_Design.webp" alt="" width="24" height="24" loading="lazy" /><span data-i18n="services.cards.design.title">Graphic & web design</span></div>
+                <div class="services-dropdown-option" role="option" data-value="ads" tabindex="0"><img src="assets/images/icons/Icon_Target.webp" alt="" width="24" height="24" loading="lazy" /><span data-i18n="services.cards.adCampaigns.title">Launch and optimization of advertising campaigns</span></div>
+                <div class="services-dropdown-option" role="option" data-value="community" tabindex="0"><img src="assets/images/icons/Icon_ComunityDev.webp" alt="" width="24" height="24" loading="lazy" /><span data-i18n="services.cards.communityEngagement.title">Community engagement and promotion</span></div>
+                <div class="services-dropdown-option" role="option" data-value="web" tabindex="0"><img src="assets/images/icons/Icon_SoftwareDev.webp" alt="" width="24" height="24" loading="lazy" /><span data-i18n="services.cards.webDevelopment.title">Website and software development from scratch</span></div>
+              </div>
             </div>
             <!-- Правая колонка: пусто -->
             <div class="contact-right-column"></div>

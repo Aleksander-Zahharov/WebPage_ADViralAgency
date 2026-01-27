@@ -214,8 +214,11 @@ const translations = {
         name: { placeholder: "Ваше имя" },
         email: { placeholder: "Email" },
         company: { placeholder: "Компания (необязательно)" },
+        interestedServices: "Интересующие Услуги",
+        interestedServicesPlaceholder: "Выберите услуги",
+        budget: { placeholder: "Ваш примерный бюджет, нап: 990€" },
         message: { placeholder: "Коротко опишите задачу" },
-    submit: "Отправить запрос",
+        submit: "Отправить запрос",
       },
     },
     footer: {
@@ -375,8 +378,11 @@ const translations = {
         name: { placeholder: "Your name" },
         email: { placeholder: "Email" },
         company: { placeholder: "Company (optional)" },
+        interestedServices: "Interested Services",
+        interestedServicesPlaceholder: "Select services",
+        budget: { placeholder: "Your approximate budget, e.g.: 990€" },
         message: { placeholder: "Briefly describe the task" },
-    submit: "Send request",
+        submit: "Send request",
       },
     },
     footer: {
@@ -536,6 +542,9 @@ const translations = {
         name: { placeholder: "Teie nimi" },
         email: { placeholder: "Email" },
         company: { placeholder: "Ettevõte (valikuline)" },
+        interestedServices: "Teenused, mis teid huvitavad",
+        interestedServicesPlaceholder: "Vali teenused",
+        budget: { placeholder: "Teie ligikaudne eelarve, nt: 990€" },
         message: { placeholder: "Kirjelda lühidalt vajadust" },
         submit: "Saada päring",
       },
@@ -812,6 +821,21 @@ function applyLanguage(lang) {
   });
 
   syncLanguageSwitcher(targetLang);
+  document.dispatchEvent(new CustomEvent("i18n-applied", { detail: { lang: targetLang } }));
+}
+
+function showTransientNotification(i18nKey) {
+  const notification = document.createElement("div");
+  notification.className = "email-copy-notification";
+  notification.setAttribute("data-i18n", i18nKey);
+  document.body.appendChild(notification);
+  const currentLang = document.documentElement.lang || DEFAULT_LANG;
+  applyLanguage(currentLang);
+  setTimeout(() => notification.classList.add("show"), 10);
+  setTimeout(() => {
+    notification.classList.remove("show");
+    setTimeout(() => { if (document.body.contains(notification)) document.body.removeChild(notification); }, 300);
+  }, 2000);
 }
 
 // Запускаем инициализацию, когда DOM полностью готов
@@ -935,8 +959,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (window.innerWidth > 820) closeMenu();
     });
   })();
-
-  // Автоскрытие хедера отключено по требованию: хедер всегда виден во всех разрешениях.
 
   // Якоря: каждый ведёт на начало секции (без смещения). Отступ хедера — только в padding секции.
   function scrollToSectionStart(el) {
@@ -1096,6 +1118,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
+  const siteHeader = doc.querySelector('.site-header');
+  const scrollThreshold = 80;
   window.addEventListener('scroll', () => {
     const currentY = window.scrollY || window.pageYOffset;
     if (currentY > lastScrollY) {
@@ -1104,6 +1128,13 @@ document.addEventListener("DOMContentLoaded", () => {
       lastScrollDirection = 'up';
     }
     lastScrollY = currentY;
+    if (siteHeader && !doc.documentElement.classList.contains('menu-open')) {
+      if (lastScrollDirection === 'down' && currentY > scrollThreshold) {
+        siteHeader.classList.add('header--hidden');
+      } else {
+        siteHeader.classList.remove('header--hidden');
+      }
+    }
   }, { passive: true });
 
   // Кнопка «Вверх»: показывается после прокрутки мимо героя, по клику — скролл в самый верх
@@ -2155,24 +2186,117 @@ document.addEventListener("DOMContentLoaded", () => {
   const contactSection = doc.getElementById("contact");
   if (contactSection) {
     const contactInputs = contactSection.querySelectorAll("input, textarea");
-    
-    const handleFocus = () => {
-      contactSection.classList.add("has-focus");
+    const contactFocusables = Array.from(contactInputs);
+
+    const handleFocus = () => contactSection.classList.add("has-focus");
+    const checkBlur = () => {
+      const hasActive = contactFocusables.some((el) => el === doc.activeElement) ||
+        doc.activeElement?.closest?.(".services-dropdown-panel");
+      if (!hasActive) contactSection.classList.remove("has-focus");
     };
-    
-    const handleBlur = () => {
-      // Проверяем, есть ли еще активные поля
-      const hasActiveField = Array.from(contactInputs).some(input => input === doc.activeElement);
-      if (!hasActiveField) {
-        contactSection.classList.remove("has-focus");
-      }
-    };
-    
-    contactInputs.forEach(input => {
+
+    contactFocusables.forEach((input) => {
       input.addEventListener("focus", handleFocus);
-      input.addEventListener("blur", handleBlur);
+      input.addEventListener("blur", checkBlur);
     });
   }
+
+  // Дропдаун «Интересующие Услуги» — мультивыбор, скрытое поле для Formspree
+  (function initInterestedServicesDropdown() {
+    const trigger = doc.getElementById("interested-services-toggle");
+    const panel = doc.getElementById("interested-services-list");
+    const hiddenInput = doc.getElementById("interested_services_value");
+    if (!trigger || !panel || !hiddenInput) return;
+
+    const options = Array.from(panel.querySelectorAll(".services-dropdown-option"));
+    const selectedEl = trigger.querySelector(".services-dropdown-selected");
+    const placeholderEl = trigger.querySelector(".services-dropdown-placeholder");
+
+    function updateSelectedDisplay() {
+      const selected = options.filter((o) => o.classList.contains("selected"));
+      const values = selected.map((o) => o.dataset.value || "").filter(Boolean);
+      const items = selected.map((o) => ({
+        value: o.dataset.value || "",
+        iconSrc: o.querySelector("img")?.getAttribute("src") || "",
+        label: (o.querySelector("span")?.textContent || "").trim(),
+      }));
+      hiddenInput.value = values.join(", ");
+      if (selectedEl) {
+        selectedEl.innerHTML = items
+          .filter((it) => it.value)
+          .map(
+            (it) =>
+              `<span class="service-tag service-tag-icon" data-value="${escapeHtml(it.value)}" title="${escapeHtml(it.label)}"><img src="${escapeHtml(it.iconSrc)}" alt="" width="24" height="24" /></span>`
+          )
+          .join("");
+      }
+    }
+    function escapeHtml(s) {
+      const div = doc.createElement("div");
+      div.textContent = s;
+      return div.innerHTML;
+    }
+
+    function openPanel() {
+      panel.removeAttribute("hidden");
+      trigger.setAttribute("aria-expanded", "true");
+      contactSection?.classList.add("has-focus");
+    }
+    function closePanel() {
+      panel.setAttribute("hidden", "");
+      trigger.setAttribute("aria-expanded", "false");
+      if (contactSection && !doc.activeElement?.closest?.(".contact-form-wrapper")) {
+        contactSection.classList.remove("has-focus");
+      }
+    }
+
+    trigger.addEventListener("click", (e) => {
+      const iconChip = e.target.closest(".service-tag-icon");
+      if (iconChip) {
+        e.preventDefault();
+        e.stopPropagation();
+        const value = iconChip.dataset.value;
+        const opt = options.find((o) => o.dataset.value === value);
+        if (opt) {
+          opt.classList.remove("selected");
+          opt.setAttribute("aria-selected", "false");
+          updateSelectedDisplay();
+        }
+        return;
+      }
+      e.preventDefault();
+      if (panel.hasAttribute("hidden")) openPanel();
+      else closePanel();
+    });
+
+    options.forEach((opt) => {
+      opt.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        opt.classList.toggle("selected");
+        opt.setAttribute("aria-selected", opt.classList.contains("selected"));
+        updateSelectedDisplay();
+      });
+      opt.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          opt.click();
+        }
+      });
+    });
+
+    doc.addEventListener("click", (e) => {
+      if (panel.hasAttribute("hidden")) return;
+      if (!trigger.contains(e.target) && !panel.contains(e.target)) closePanel();
+    });
+    doc.addEventListener("i18n-applied", () => updateSelectedDisplay());
+    const form = doc.querySelector("#contact-form");
+    if (form) form.addEventListener("reset", () => {
+      options.forEach((o) => o.classList.remove("selected"));
+      options.forEach((o) => o.removeAttribute("aria-selected"));
+      updateSelectedDisplay();
+    });
+  })();
 
   // Обработчик формы (демонстрационный пример)
   const form = doc.querySelector("#contact-form");
@@ -2216,31 +2340,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         if (response.ok) {
-          // Создаем уведомление о успешной отправке
-          const notification = doc.createElement("div");
-          notification.className = "email-copy-notification";
-          notification.setAttribute("data-i18n", "form.sent");
-          doc.body.appendChild(notification);
-          
-          // Применяем перевод
-          const currentLang = doc.documentElement.lang || "ru";
-          applyLanguage(currentLang);
-          
-          // Показываем уведомление
-          setTimeout(() => {
-            notification.classList.add("show");
-          }, 10);
-          
-          // Скрываем уведомление через 2 секунды
-          setTimeout(() => {
-            notification.classList.remove("show");
-            setTimeout(() => {
-              if (doc.body.contains(notification)) {
-                doc.body.removeChild(notification);
-              }
-            }, 300);
-          }, 2000);
-          
+          showTransientNotification("form.sent");
           form.reset();
         } else {
           const data = await response.json().catch(() => null);
@@ -2618,32 +2718,9 @@ document.addEventListener("DOMContentLoaded", () => {
       
       try {
         await navigator.clipboard.writeText(email);
-        
-        // Создаем уведомление
-        const notification = doc.createElement("div");
-        notification.className = "email-copy-notification";
-        notification.setAttribute("data-i18n", "email.copied");
-        doc.body.appendChild(notification);
-        
-        // Применяем перевод
-        const currentLang = doc.documentElement.lang || "ru";
-        applyLanguage(currentLang);
-        
-        // Показываем уведомление
-        setTimeout(() => {
-          notification.classList.add("show");
-        }, 10);
-        
-        // Скрываем уведомление через 2 секунды
-        setTimeout(() => {
-          notification.classList.remove("show");
-          setTimeout(() => {
-            doc.body.removeChild(notification);
-          }, 300);
-        }, 2000);
+        showTransientNotification("email.copied");
       } catch (err) {
         console.error("Ошибка копирования:", err);
-        // Fallback для старых браузеров
         const textArea = doc.createElement("textarea");
         textArea.value = email;
         textArea.style.position = "fixed";
@@ -2652,25 +2729,9 @@ document.addEventListener("DOMContentLoaded", () => {
         textArea.select();
         try {
           doc.execCommand("copy");
-          const notification = doc.createElement("div");
-          notification.className = "email-copy-notification";
-          notification.setAttribute("data-i18n", "email.copied");
-          doc.body.appendChild(notification);
-          
-          // Применяем перевод
-          const currentLang = doc.documentElement.lang || "ru";
-          applyLanguage(currentLang);
-          setTimeout(() => {
-            notification.classList.add("show");
-          }, 10);
-          setTimeout(() => {
-            notification.classList.remove("show");
-            setTimeout(() => {
-              doc.body.removeChild(notification);
-            }, 300);
-          }, 2000);
+          showTransientNotification("email.copied");
         } catch (err2) {
-          console.error("Ошибка fallback копирования:", err2);
+          console.error("Ошибка копирования:", err2);
         }
         doc.body.removeChild(textArea);
       }
@@ -2686,32 +2747,9 @@ document.addEventListener("DOMContentLoaded", () => {
       
       try {
         await navigator.clipboard.writeText(phone);
-        
-        // Создаем уведомление
-        const notification = doc.createElement("div");
-        notification.className = "email-copy-notification";
-        notification.setAttribute("data-i18n", "email.copied");
-        doc.body.appendChild(notification);
-        
-        // Применяем перевод
-        const currentLang = doc.documentElement.lang || "ru";
-        applyLanguage(currentLang);
-        
-        // Показываем уведомление
-        setTimeout(() => {
-          notification.classList.add("show");
-        }, 10);
-        
-        // Скрываем уведомление через 2 секунды
-        setTimeout(() => {
-          notification.classList.remove("show");
-          setTimeout(() => {
-            doc.body.removeChild(notification);
-          }, 300);
-        }, 2000);
+        showTransientNotification("email.copied");
       } catch (err) {
         console.error("Ошибка копирования:", err);
-        // Fallback для старых браузеров
         const textArea = doc.createElement("textarea");
         textArea.value = phone;
         textArea.style.position = "fixed";
@@ -2720,23 +2758,7 @@ document.addEventListener("DOMContentLoaded", () => {
         textArea.select();
         try {
           doc.execCommand("copy");
-          const notification = doc.createElement("div");
-          notification.className = "email-copy-notification";
-          notification.setAttribute("data-i18n", "email.copied");
-          doc.body.appendChild(notification);
-          
-          // Применяем перевод
-          const currentLang = doc.documentElement.lang || "ru";
-          applyLanguage(currentLang);
-          setTimeout(() => {
-            notification.classList.add("show");
-          }, 10);
-          setTimeout(() => {
-            notification.classList.remove("show");
-            setTimeout(() => {
-              doc.body.removeChild(notification);
-            }, 300);
-          }, 2000);
+          showTransientNotification("email.copied");
         } catch (err2) {
           console.error("Ошибка fallback копирования:", err2);
         }
@@ -2769,19 +2791,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
     };
-    const showCopyNotification = () => {
-      const notification = doc.createElement("div");
-      notification.className = "email-copy-notification";
-      notification.setAttribute("data-i18n", "email.copied");
-      doc.body.appendChild(notification);
-      const currentLang = doc.documentElement.lang || "ru";
-      applyLanguage(currentLang);
-      setTimeout(() => notification.classList.add("show"), 10);
-      setTimeout(() => {
-        notification.classList.remove("show");
-        setTimeout(() => doc.body.removeChild(notification), 300);
-      }, 2000);
-    };
+    const showCopyNotification = () => showTransientNotification("email.copied");
     authorEmailLink.addEventListener("click", async (e) => {
       e.preventDefault();
       const text = authorEmailLink.getAttribute("data-copy") || "alexander.zahharov@gmail.com";
