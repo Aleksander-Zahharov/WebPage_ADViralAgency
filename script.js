@@ -943,6 +943,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const servicesSection = doc.getElementById('services');
   const servicesCards = servicesSection ? Array.from(servicesSection.querySelectorAll('.cards .card')) : [];
   let servicesWavePrepared = false;
+  const partnersSection = doc.getElementById('partners');
+  const partnersItems = partnersSection ? Array.from(partnersSection.querySelectorAll('.client-item')) : [];
+  let partnersWavePrepared = false;
+  const worksSection = doc.getElementById('works');
+  const worksItems = worksSection ? Array.from(worksSection.querySelectorAll('.ig-strip .ig-item')) : [];
+  let worksWavePrepared = false;
 
   const clusterAxis = (values, epsilon) => {
     const clusters = [];
@@ -970,7 +976,9 @@ document.addEventListener("DOMContentLoaded", () => {
     return bestIdx;
   };
 
-  const WAVE_DURATION_MS = 1500;
+  const WAVE_DURATION_MS = 1000;
+  const WAVE_SHRINK_START = 0.4; /* фаза уменьшения press-bounce начинается с 40% */
+  const REVEAL_DURATION_MS = 750;
 
   const prepareServicesWave = () => {
     if (!servicesSection || servicesWavePrepared || servicesCards.length === 0) return;
@@ -985,8 +993,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const rowClusters = clusterAxis(positions.map((item) => item.top), tolerance);
     const colClusters = clusterAxis(positions.map((item) => item.left), tolerance);
 
-    const baseDelay = 0.3;
-    const stepDelay = 0.1;
+    const baseDelay = 0.2;
+    const stepDelay = 0.067;
 
     const numRows = rowClusters.length;
     positions.forEach(({ card, top, left }) => {
@@ -998,17 +1006,71 @@ document.addEventListener("DOMContentLoaded", () => {
       card.dataset.waveReady = 'true';
       card.style.setProperty('--wave-delay', `${delaySec.toFixed(2)}s`);
 
-      /* Волна триггерит только приближение (press-bounce) и иконку с наклоном */
+      /* Волна: подъём карточки + иконки; уменьшение иконки стартует вместе с фазой уменьшения карточки (40% анимации), а не в конце */
       const tStart = setTimeout(() => {
+        if (card.matches(':hover')) return;
         card.classList.add('wave-active', 'icon-animating');
       }, delayMs);
-      const tEnd = setTimeout(() => {
-        card.classList.remove('wave-active', 'icon-animating');
+      const shrinkStartMs = delayMs + WAVE_DURATION_MS * WAVE_SHRINK_START;
+      const tIconShrink = setTimeout(() => {
+        if (card.matches(':hover')) return;
+        card.classList.remove('icon-animating');
         card.classList.add('icon-animating-out');
         setTimeout(() => card.classList.remove('icon-animating-out'), 400);
+      }, shrinkStartMs);
+      const tEnd = setTimeout(() => {
+        card.classList.remove('wave-active');
       }, delayMs + WAVE_DURATION_MS);
       card.dataset.waveStartTimer = tStart;
       card.dataset.waveEndTimer = tEnd;
+    });
+  };
+
+  const preparePartnersWave = () => {
+    if (!partnersSection || partnersWavePrepared || partnersItems.length === 0) return;
+    partnersWavePrepared = true;
+    const tolerance = 48;
+    const positions = partnersItems.map((el) => {
+      const rect = el.getBoundingClientRect();
+      return { el, top: rect.top, left: rect.left };
+    });
+    const rowClusters = clusterAxis(positions.map((p) => p.top), tolerance);
+    const colClusters = clusterAxis(positions.map((p) => p.left), tolerance);
+    const numRows = rowClusters.length;
+    const baseDelay = 0.2;
+    const stepDelay = 0.067;
+    positions.forEach(({ el, top, left }) => {
+      const rowIndex = findClusterIndex(rowClusters, top);
+      const colIndex = findClusterIndex(colClusters, left);
+      const waveIndex = colIndex * numRows + rowIndex;
+      const delaySec = baseDelay + waveIndex * stepDelay;
+      el.dataset.waveReady = 'true';
+      el.style.setProperty('--wave-delay', `${delaySec.toFixed(2)}s`);
+    });
+  };
+
+  const prepareWorksWave = () => {
+    if (!worksSection || worksWavePrepared || worksItems.length === 0) return;
+    worksWavePrepared = true;
+    const tolerance = 48;
+    const positions = worksItems.map((el) => {
+      const rect = el.getBoundingClientRect();
+      return { el, top: rect.top, left: rect.left };
+    });
+    const rowClusters = clusterAxis(positions.map((p) => p.top), tolerance);
+    const colClusters = clusterAxis(positions.map((p) => p.left), tolerance);
+    const numRows = rowClusters.length;
+    const numCols = colClusters.length;
+    const baseDelay = 0.2;
+    const stepDelay = 0.067;
+    /* Сверху справа налево вниз: по строкам, в строке — справа налево */
+    positions.forEach(({ el, top, left }) => {
+      const rowIndex = findClusterIndex(rowClusters, top);
+      const colIndex = findClusterIndex(colClusters, left);
+      const waveIndex = rowIndex * numCols + (numCols - 1 - colIndex);
+      const delaySec = baseDelay + waveIndex * stepDelay;
+      el.dataset.waveReady = 'true';
+      el.style.setProperty('--wave-delay', `${delaySec.toFixed(2)}s`);
     });
   };
 
@@ -1048,13 +1110,26 @@ document.addEventListener("DOMContentLoaded", () => {
   // Автодокрутка секций полностью удалена по требованию
   const autoScrollEls = doc.querySelectorAll(".auto-scroll");
   if (autoScrollEls.length) {
-    // Только запускаем волну карточек для секции Services, автодокрутка отключена
     const mobileIO = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.target === servicesSection) {
-            prepareServicesWave();
-            servicesSection.classList.add('in-view');
+          if (!entry.isIntersecting) return;
+          const target = entry.target;
+          if (target === servicesSection) {
+            setTimeout(() => {
+              prepareServicesWave();
+              servicesSection.classList.add('in-view');
+            }, REVEAL_DURATION_MS);
+          } else if (target === partnersSection) {
+            setTimeout(() => {
+              preparePartnersWave();
+              partnersSection.classList.add('in-view');
+            }, REVEAL_DURATION_MS);
+          } else if (target === worksSection) {
+            setTimeout(() => {
+              prepareWorksWave();
+              worksSection.classList.add('in-view');
+            }, REVEAL_DURATION_MS);
           }
         });
       },

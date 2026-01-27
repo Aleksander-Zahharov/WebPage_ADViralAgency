@@ -1087,12 +1087,21 @@ section { scroll-margin-top: 0; }
   transition: max-height .18s ease, opacity .18s ease, margin .18s ease, visibility 0s 0s;
 }
 
-/* Анимация волны: карточка приподнимается на 2% как при хавере */
+/* Анимация волны: размер пика = hover (--wave-scale). Один подъём и один плавный возврат */
 @keyframes press-bounce {
   0%   { transform: translateY(0) scale(1); }
-  40%  { transform: translateY(-3px) scale(1.02); }
-  80%  { transform: translateY(-1px) scale(1.01); }
+  40%  { transform: translateY(-3px) scale(var(--wave-scale, 1.02)); }
   100% { transform: translateY(0) scale(1); }
+}
+@keyframes press-bounce-skew-v {
+  0%   { transform: skew(-8deg, 0deg) translateY(0) scale(1); }
+  40%  { transform: skew(-8deg, 0deg) translateY(-3px) scale(var(--wave-scale, 1.05)); }
+  100% { transform: skew(-8deg, 0deg) translateY(0) scale(1); }
+}
+@keyframes press-bounce-skew-h {
+  0%   { transform: skew(8deg, 0deg) translateY(0) scale(1); }
+  40%  { transform: skew(8deg, 0deg) translateY(-3px) scale(var(--wave-scale, 1.05)); }
+  100% { transform: skew(8deg, 0deg) translateY(0) scale(1); }
 }
 
 /* Анимация загорания и потухания границы */
@@ -1139,8 +1148,8 @@ section { scroll-margin-top: 0; }
 
 @media (prefers-reduced-motion: no-preference) {
   #services .cards .card[data-wave-ready="true"] {
-    animation: press-bounce 1.5s cubic-bezier(0.33, 1, 0.68, 1) 1 both;
-    animation-delay: var(--wave-delay, 0.3s);
+    animation: press-bounce 1s cubic-bezier(0.33, 1, 0.68, 1) 1 both;
+    animation-delay: var(--wave-delay, 0.2s);
     animation-play-state: paused;
     will-change: transform;
   }
@@ -1149,7 +1158,59 @@ section { scroll-margin-top: 0; }
     animation-play-state: running;
   }
 
-  /* wave-active только гасит hover-scale, чтобы не удваивать; тень/граница при волне не триггерятся */
+  /* Хавер приоритетнее волны: под курсором — только hover-трансформ */
+  #services .cards .card[data-wave-ready="true"]:hover,
+  #services .cards .card[data-wave-ready="true"]:focus-within {
+    animation: none;
+    transform: scale(1.02);
+  }
+  /* Вжатие при зажатии приоритетнее хавера */
+  #services .cards .card[data-wave-ready="true"]:active,
+  #services .cards .card[data-wave-ready="true"]:hover:active,
+  #services .cards .card[data-wave-ready="true"]:focus-within:active {
+    animation: none;
+    transform: scale(0.98);
+  }
+
+  /* Волна в Наши клиенты — масштаб как при хавере (1.05) */
+  #partners .client-item[data-wave-ready="true"] {
+    --wave-scale: 1.05;
+    animation: press-bounce 1s cubic-bezier(0.33, 1, 0.68, 1) 1 both;
+    animation-delay: var(--wave-delay, 0.2s);
+    animation-play-state: paused;
+    will-change: transform;
+  }
+  #partners.in-view .client-item[data-wave-ready="true"] { animation-play-state: running; }
+  #partners .client-item[data-wave-ready="true"]:hover,
+  #partners .client-item[data-wave-ready="true"]:focus-within { animation: none; transform: scale(1.05); }
+  #partners .client-item[data-wave-ready="true"]:active,
+  #partners .client-item[data-wave-ready="true"]:hover:active { animation: none; transform: scale(0.98); }
+
+  /* Волна в Наши работы — сверху справа налево вниз, scale как при хавере (1.05), сохраняем skew */
+  #works .ig-item[data-wave-ready="true"]:not(.ig-item-horizontal) {
+    --wave-scale: 1.05;
+    animation: press-bounce-skew-v 1s cubic-bezier(0.33, 1, 0.68, 1) 1 both;
+    animation-delay: var(--wave-delay, 0.2s);
+    animation-play-state: paused;
+    will-change: transform;
+  }
+  #works .ig-item-horizontal[data-wave-ready="true"] {
+    --wave-scale: 1.05;
+    animation: press-bounce-skew-h 1s cubic-bezier(0.33, 1, 0.68, 1) 1 both;
+    animation-delay: var(--wave-delay, 0.2s);
+    animation-play-state: paused;
+    will-change: transform;
+  }
+  #works.in-view .ig-item[data-wave-ready="true"] { animation-play-state: running; }
+  #works .ig-item[data-wave-ready="true"]:hover,
+  #works .ig-item[data-wave-ready="true"]:focus-within { animation: none; }
+  #works .ig-item[data-wave-ready="true"]:not(.ig-item-horizontal):hover { transform: skew(-8deg, 0deg) scale(1.05); }
+  #works .ig-item-horizontal[data-wave-ready="true"]:hover { transform: skew(8deg, 0deg) scale(1.05); }
+  #works .ig-item[data-wave-ready="true"]:active { animation: none; }
+  #works .ig-item[data-wave-ready="true"]:not(.ig-item-horizontal):active,
+  #works .ig-item[data-wave-ready="true"]:not(.ig-item-horizontal):hover:active { transform: skew(-8deg, 0deg) scale(0.98); }
+  #works .ig-item-horizontal[data-wave-ready="true"]:active,
+  #works .ig-item-horizontal[data-wave-ready="true"]:hover:active { transform: skew(8deg, 0deg) scale(0.98); }
 }
 @media (max-width: 900px) {
   .cards { grid-template-columns: repeat(2, minmax(0,1fr)); }
