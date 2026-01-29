@@ -1044,10 +1044,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const stepDelay = 0.067;
 
     const numRows = rowClusters.length;
+    const numCols = colClusters.length;
     positions.forEach(({ card, top, left }) => {
       const rowIndex = findClusterIndex(rowClusters, top);
       const colIndex = findClusterIndex(colClusters, left);
-      const waveIndex = colIndex * numRows + rowIndex;
+      const waveIndex = (numCols - 1 - colIndex) * numRows + rowIndex;
       const delaySec = baseDelay + waveIndex * stepDelay;
       const delayMs = delaySec * 1000;
       card.dataset.waveReady = 'true';
@@ -1116,11 +1117,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const numCols = colClusters.length;
     const baseDelay = 0.2;
     const stepDelay = 0.067;
-    /* Сверху справа налево вниз: по строкам, в строке — справа налево */
+    /* Сверху слева направо вниз: по строкам, в строке — слева направо */
     positions.forEach(({ el, top, left }) => {
       const rowIndex = findClusterIndex(rowClusters, top);
       const colIndex = findClusterIndex(colClusters, left);
-      const waveIndex = rowIndex * numCols + (numCols - 1 - colIndex);
+      const waveIndex = rowIndex * numCols + colIndex;
       const delaySec = baseDelay + waveIndex * stepDelay;
       el.dataset.waveReady = 'true';
       el.style.setProperty('--wave-delay', `${delaySec.toFixed(2)}s`);
