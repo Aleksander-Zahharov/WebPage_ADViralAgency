@@ -1817,21 +1817,8 @@ document.addEventListener("DOMContentLoaded", () => {
         modalPlayer.style.width = "100%";
         modalPlayer.style.height = "100%";
         
-        // Определяем, мобильное ли устройство
-        const isMobile = window.innerWidth <= 768;
-        
-        // Настройки для мобильных и десктопа
-        const mobileControls = [
-          "play-large",
-          "play",
-          "progress",
-          "current-time",
-          "duration",
-          "settings",
-          "fullscreen"
-        ];
-        
-        const desktopControls = [
+        // Один и тот же набор контролов и настроек для десктопа и мобильных; громкость скрывается в CSS на мобильных
+        const controls = [
           "play-large",
           "play",
           "progress",
@@ -1844,12 +1831,14 @@ document.addEventListener("DOMContentLoaded", () => {
           "fullscreen"
         ];
         
+        const isMobile = window.innerWidth <= 768;
+        
         player = new Plyr(modalPlayer, {
-          controls: isMobile ? mobileControls : desktopControls,
-          settings: isMobile ? ["quality"] : ["quality", "speed"], // На мобильных только качество
+          controls,
+          settings: ["quality", "speed"],
           quality: {
-            default: isMobile ? 720 : 720,
-            options: isMobile ? [720, 480, 360] : [1080, 720, 480, 360], // На мобильных меньше опций
+            default: 720,
+            options: [1080, 720, 480, 360],
             forced: true,
             onChange: (quality) => {
               // В будущем здесь можно добавить логику переключения между разными источниками
@@ -1865,10 +1854,10 @@ document.addEventListener("DOMContentLoaded", () => {
           },
           autoplay: false,
           clickToPlay: true,
-          hideControls: isMobile, // На мобильных автоматически скрываем контролы
-          resetOnEnd: true, // Сбрасываем видео в начало после окончания
-          ratio: null, // Отключаем автоматическое соотношение сторон, используем наш контейнер
-          volume: isMobile ? 1 : 0.5 // На мобильных громкость зависит от системной
+          hideControls: isMobile,
+          resetOnEnd: true,
+          ratio: null,
+          volume: isMobile ? 1 : 0.5
         });
 
         // Обработка ошибок загрузки

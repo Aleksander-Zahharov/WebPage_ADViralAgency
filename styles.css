@@ -4697,13 +4697,38 @@ input::placeholder, textarea::placeholder {
   }
 }
 
-/* Мобильные телефоны (до 480px): плеер прижат к низу окна */
+/* Мобильная версия (до 768px): тот же плеер, громкость отключена, контролы выровнены по горизонтали */
+@media (max-width: 768px) {
+  .video-modal-content .plyr__volume,
+  .video-modal-content .plyr__controls__item.plyr__volume,
+  .video-modal-content .plyr__control[data-plyr="mute"] {
+    display: none !important;
+  }
+
+  .video-modal-content .plyr__controls {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    min-height: 44px !important;
+  }
+
+  .video-modal-content .plyr__controls > *,
+  .video-modal-content .plyr__controls .plyr__time-group,
+  .video-modal-content .plyr__controls .plyr__control {
+    align-self: center !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+}
+
+/* Мобильные телефоны (до 480px): плеер по центру экрана */
 @media (max-width: 480px) {
   .video-modal-container {
     width: 95%;
     max-height: 100vh;
     min-height: 100vh;
-    align-items: flex-end !important; /* плеер упирается вниз окна */
+    align-items: center !important;
     justify-content: center;
   }
 
@@ -4811,13 +4836,13 @@ input::placeholder, textarea::placeholder {
   }
 }
 
-/* Очень маленькие телефоны (до 375px): плеер прижат к низу */
+/* Очень маленькие телефоны (до 375px): плеер по центру */
 @media (max-width: 375px) {
   .video-modal-container {
     width: 100%;
     max-height: 100vh;
     min-height: 100vh;
-    align-items: flex-end !important;
+    align-items: center !important;
     justify-content: center;
   }
 
