@@ -5361,15 +5361,15 @@ input::placeholder, textarea::placeholder {
   }
 }
 
-/* Мобильные (≤768px): при зажатии карточек услуг — никакого движения. Только при клике — hover-эффект. */
+/* Мобильные (≤768px): при зажатии карточек услуг — никакого движения. База на моб — без translateX, :active тоже без сдвига. */
 @media (max-width: 768px) {
-  /* Отключаем transition у карточек — тогда при :active не будет плавного «вдавливания» */
+  /* Отключаем transition — при смене состояния не будет анимации */
   #services .cards .card,
   #services .cards .card:nth-child(-n+3),
   #services .cards .card:nth-child(n+7) {
     transition: none !important;
   }
-  /* При касании браузер может дать :hover — оставляем тот же вид, без scale (эффект только при клике через .hover-tap-active) */
+  /* При касании :hover — без scale и без сдвига (как база на моб) */
   #services .cards .card:hover:not(.hover-tap-active),
   #services .cards .card:nth-child(-n+3):hover:not(.hover-tap-active),
   #services .cards .card:nth-child(n+7):hover:not(.hover-tap-active),
@@ -5378,15 +5378,7 @@ input::placeholder, textarea::placeholder {
   #services .cards .card[data-wave-ready="true"]:nth-child(n+7):hover:not(.hover-tap-active) {
     transform: skew(-8deg, 0deg) !important;
   }
-  #services .cards .card:nth-child(-n+3):hover:not(.hover-tap-active),
-  #services .cards .card[data-wave-ready="true"]:nth-child(-n+3):hover:not(.hover-tap-active) {
-    transform: skew(-8deg, 0deg) translateX(22px) !important;
-  }
-  #services .cards .card:nth-child(n+7):hover:not(.hover-tap-active),
-  #services .cards .card[data-wave-ready="true"]:nth-child(n+7):hover:not(.hover-tap-active) {
-    transform: skew(-8deg, 0deg) translateX(-22px) !important;
-  }
-  /* При зажатии (:active) — тот же transform, что и в покое; анимации отключены */
+  /* При зажатии (:active) — тот же вид, что и база на моб: только skew, без translateX и без scale */
   #services .cards .card:active,
   #services .cards .card:hover:active,
   #services .cards .card:focus-within:active,
@@ -5394,24 +5386,16 @@ input::placeholder, textarea::placeholder {
   #services .cards .card[data-wave-ready="true"]:hover:active,
   #services .cards .card[data-wave-ready="true"]:focus-within:active,
   #services .cards .card[data-wave-ready="true"]:nth-child(-n+3):active,
-  #services .cards .card[data-wave-ready="true"]:nth-child(n+7):active {
-    transform: skew(-8deg, 0deg) !important;
-    animation: none !important;
-    transition: none !important;
-  }
+  #services .cards .card[data-wave-ready="true"]:nth-child(n+7):active,
   #services .cards .card:nth-child(-n+3):active,
   #services .cards .card:nth-child(-n+3):hover:active,
   #services .cards .card:nth-child(-n+3):focus-within:active,
-  #services .cards .card[data-wave-ready="true"]:nth-child(-n+3):active {
-    transform: skew(-8deg, 0deg) translateX(22px) !important;
-    animation: none !important;
-    transition: none !important;
-  }
+  #services .cards .card[data-wave-ready="true"]:nth-child(-n+3):active,
   #services .cards .card:nth-child(n+7):active,
   #services .cards .card:nth-child(n+7):hover:active,
   #services .cards .card:nth-child(n+7):focus-within:active,
   #services .cards .card[data-wave-ready="true"]:nth-child(n+7):active {
-    transform: skew(-8deg, 0deg) translateX(-22px) !important;
+    transform: skew(-8deg, 0deg) !important;
     animation: none !important;
     transition: none !important;
   }
