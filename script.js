@@ -214,11 +214,12 @@ const translations = {
         name: { placeholder: "Ваше имя" },
         email: { placeholder: "Email" },
         company: { placeholder: "Компания (необязательно)" },
-        interestedServices: "Интересующие Услуги",
+        interestedServices: "Интересующие услуги",
         interestedServicesPlaceholder: "Выберите услуги",
         budget: { placeholder: "Ваш бюджет, нап: 990€" },
         message: { placeholder: "Коротко опишите задачу" },
         submit: "Отправить запрос",
+        saveServicesSelection: "Сохранить выбор",
       },
     },
     footer: {
@@ -378,11 +379,12 @@ const translations = {
         name: { placeholder: "Your name" },
         email: { placeholder: "Email" },
         company: { placeholder: "Company (optional)" },
-        interestedServices: "Interested Services",
+        interestedServices: "Interested services",
         interestedServicesPlaceholder: "Select services",
         budget: { placeholder: "Your budget, e.g.: 990€" },
         message: { placeholder: "Briefly describe the task" },
         submit: "Send request",
+        saveServicesSelection: "Save selection",
       },
     },
     footer: {
@@ -547,6 +549,7 @@ const translations = {
         budget: { placeholder: "Teie eelarve, nt: 990€" },
         message: { placeholder: "Kirjelda lühidalt vajadust" },
         submit: "Saada päring",
+        saveServicesSelection: "Salvesta valik",
       },
     },
     footer: {
@@ -2206,6 +2209,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const trigger = doc.getElementById("interested-services-toggle");
     const panel = doc.getElementById("interested-services-list");
     const hiddenInput = doc.getElementById("interested_services_value");
+    const saveBtn = doc.getElementById("interested-services-save-btn");
     if (!trigger || !panel || !hiddenInput) return;
 
     const options = Array.from(panel.querySelectorAll(".services-dropdown-option"));
@@ -2289,6 +2293,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (panel.hasAttribute("hidden")) return;
       if (!trigger.contains(e.target) && !panel.contains(e.target)) closePanel();
     });
+    if (saveBtn) saveBtn.addEventListener("click", (e) => { e.preventDefault(); closePanel(); });
     doc.addEventListener("i18n-applied", () => updateSelectedDisplay());
     const form = doc.querySelector("#contact-form");
     if (form) form.addEventListener("reset", () => {

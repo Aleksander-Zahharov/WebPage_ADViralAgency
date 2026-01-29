@@ -2999,6 +2999,10 @@ section { scroll-margin-top: 0; }
 .services-dropdown-panel[hidden] {
   display: none !important;
 }
+/* Футер с кнопкой «Сохранить выбор» — только в мобильном попапе */
+.services-dropdown-popup-footer {
+  display: none;
+}
 .services-dropdown-option {
   box-sizing: border-box;
   display: flex;
@@ -3190,24 +3194,66 @@ section#contact .services-dropdown-selected .service-tag-icon:hover img {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
   }
-  /* Панель — фиксированный overlay поверх формы; начинается выше, перекрывает поля ввода */
+  /* Когда попап открыт — контейнер поднимаем выше хедера и футера (попап поверх них) */
+  .contact-section > .container:has(.services-dropdown-panel:not([hidden])) {
+    z-index: 100001;
+  }
+  /* Полноэкранный попап: строго в границах экрана */
   .services-dropdown-panel {
     position: fixed;
-    left: calc(var(--gap) + env(safe-area-inset-left));
-    right: calc(var(--gap) + env(safe-area-inset-right));
-    top: calc(var(--header-h) + 16px);
-    bottom: auto;
-    width: auto;
-    min-width: unset;
-    max-width: none;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: 100vw;
+    max-height: 100dvh;
     margin: 0;
-    max-height: calc(100dvh - var(--header-h) - 32px);
-    border-radius: 20px;
-    z-index: 9999;
+    padding: 0;
+    border-radius: 0;
+    box-sizing: border-box;
+    z-index: 100000;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
     -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
   }
-  /* Затемнённый фон под панелью; клик «сквозь» закрывает дропдаун */
+  .services-dropdown-options-scroll {
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    max-width: 100vw;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 14px;
+    padding-left: calc(14px + env(safe-area-inset-left));
+    padding-right: calc(14px + env(safe-area-inset-right));
+    padding-bottom: 100px;
+    overscroll-behavior: contain;
+    box-sizing: border-box;
+  }
+  .services-dropdown-popup-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
+    padding: 16px calc(var(--gap) + env(safe-area-inset-left)) calc(16px + env(safe-area-inset-bottom)) calc(var(--gap) + env(safe-area-inset-right));
+    background: rgba(18, 18, 20, 0.98);
+    border-top: 1px solid rgba(255,255,255,.08);
+    z-index: 1;
+  }
+  .services-dropdown-popup-footer .btn {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  /* Затемнённый фон под попапом; клик «сквозь» закрывает */
   .services-dropdown-panel:not([hidden])::before {
     content: "";
     position: fixed;
@@ -3216,8 +3262,20 @@ section#contact .services-dropdown-selected .service-tag-icon:hover img {
     z-index: -1;
     pointer-events: none;
   }
+  .services-dropdown-option {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
   .services-dropdown-option > span {
+    display: block;
+    width: 100%;
+    max-width: 100%;
     white-space: normal;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    box-sizing: border-box;
   }
   /* Стрелка вниз/вверх как на десктопе (симметричный треугольник), не наискось */
   .services-dropdown-chevron {
@@ -3701,12 +3759,12 @@ input::placeholder, textarea::placeholder {
   }
 }
 
-/* Кнопка «Вверх»: круглая в стиле ghost, icon_arrow.png (по умолчанию вверх), меньший размер */
+/* Кнопка «Вверх»: ниже всех попапов и оверлеев, чтобы модалки перекрывали её */
 .scroll-to-top {
   position: fixed;
   bottom: 24px;
   right: 24px;
-  z-index: 20;
+  z-index: 5;
   width: 56px;
   height: 56px;
   border-radius: 50%;
