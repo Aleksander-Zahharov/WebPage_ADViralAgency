@@ -1815,7 +1815,19 @@ section { scroll-margin-top: 0; }
   z-index: 1;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+}
+
+/* Обёртка контейнера + стрелок: контейнер по центру, стрелки позиционируются относительно inner (как modal-arrow) */
+.service-popup-inner {
+  position: relative;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .service-popup-container {
@@ -1832,13 +1844,119 @@ section { scroll-margin-top: 0; }
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
 }
-/* Десктоп: попап ещё шире, непрозрачный фон */
+/* Десктоп: попап по центру, стрелки слева и справа от окна */
 @media (min-width: 601px) {
   .service-popup-container {
     max-width: 960px;
-    width: 92%;
+    width: 90%;
     padding: 24px 40px 32px;
+  }
+  /* Стрелки слева и справа от границ контейнера, X и Y как у modal-arrow (left/right -112px, top 50%) */
+  .service-popup-navigation {
+    position: absolute;
+    left: -112px;
+    right: -112px;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-top: 0;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    gap: 0;
+  }
+  .service-popup-navigation .service-popup-arrow {
+    pointer-events: auto;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .service-popup-navigation .service-popup-prev {
+    left: 0;
+    right: auto;
+  }
+  .service-popup-navigation .service-popup-next {
+    left: auto;
+    right: 0;
+  }
+  /* Дизайн как у modal-arrow: круг 64px, иконка icon_arrow.png 22px, прозрачный фон */
+  .service-popup-arrow {
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    min-width: 64px;
+    min-height: 64px;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: transparent;
+    font-size: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .service-popup-arrow::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 22px;
+    height: 22px;
+    margin: -11px 0 0 -11px;
+    background-image: url("./assets/images/icons/icon_arrow.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: brightness(0) invert(1);
+    transition: transform 0.2s ease;
+  }
+  .service-popup-prev::before { transform: rotate(-90deg); }
+  .service-popup-next::before { transform: rotate(90deg); }
+  .service-popup-arrow:hover {
+    background: transparent;
+    border-color: transparent;
+    transform: translateY(-50%) scale(var(--arrow-hover-scale));
+  }
+  .service-popup-arrow:active {
+    background: transparent;
+    border-color: transparent;
+    transform: translateY(-50%) scale(var(--arrow-active-scale));
+  }
+  .service-popup-navigation .service-popup-prev:hover {
+    transform: translateY(-50%) scale(var(--arrow-hover-scale));
+  }
+  .service-popup-navigation .service-popup-next:hover {
+    transform: translateY(-50%) scale(var(--arrow-hover-scale));
+  }
+  .service-popup-navigation .service-popup-prev:active {
+    transform: translateY(-50%) scale(var(--arrow-active-scale));
+  }
+  .service-popup-navigation .service-popup-next:active {
+    transform: translateY(-50%) scale(var(--arrow-active-scale));
+  }
+}
+
+@media (min-width: 601px) and (max-width: 900px) {
+  .service-popup-navigation {
+    left: -90px;
+    right: -90px;
+  }
+  .service-popup-navigation .service-popup-prev {
+    left: 0;
+  }
+  .service-popup-navigation .service-popup-next {
+    right: 0;
+  }
+  .service-popup-arrow {
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    min-height: 56px;
   }
 }
 
@@ -1908,14 +2026,13 @@ section { scroll-margin-top: 0; }
   transform: scale(1);
 }
 
-/* Крестик закрытия — вне окна, над окном справа, рядом с окном */
+/* Крестик закрытия — привязан над правым верхним углом контейнера */
 .service-popup-close {
   position: absolute;
   right: 0;
-  bottom: 100%;
-  margin-bottom: 4px;
-  width: 36px;
-  height: 36px;
+  top: -48px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.25);
   background: rgba(20, 20, 22, 0.95);
@@ -2055,10 +2172,10 @@ section { scroll-margin-top: 0; }
   transform: scale(1.1);
 }
 
-/* Навигационные стрелки внизу popup */
+/* Навигационные стрелки под окном попапа */
 .service-popup-navigation {
   flex-shrink: 0;
-  margin-top: 16px;
+  margin-top: 20px;
   display: flex;
   gap: 32px;
   align-items: center;
@@ -3919,7 +4036,7 @@ input::placeholder, textarea::placeholder {
 .video-modal {
   position: fixed;
   inset: 0;
-  z-index: 10000;
+  z-index: 100002;
   display: flex;
   align-items: center;
   justify-content: center;
