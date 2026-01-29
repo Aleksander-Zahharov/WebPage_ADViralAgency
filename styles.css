@@ -4531,3 +4531,259 @@ input::placeholder, textarea::placeholder {
   }
 }
 
+/* Мобильная версия: при тапе воспроизводить hover-эффект (активация и деактивация) */
+@media (hover: none), (max-width: 768px) {
+  .btn-primary.hover-tap-active {
+    background: linear-gradient(135deg, #7a21db, #c096f9);
+  }
+  .btn-ghost.hover-tap-active {
+    background-color: rgba(255,255,255,.10);
+    border-color: rgba(255,255,255,.28);
+  }
+  .header-nav a.hover-tap-active {
+    opacity: 1;
+  }
+  .header-nav a:not(.btn).hover-tap-active::after {
+    transform: scaleX(1);
+  }
+  .header-nav a[href="#contact"].btn.hover-tap-active,
+  .header-nav a[href="#contact"].btn-primary.hover-tap-active {
+    background: linear-gradient(135deg, #7a21db, #c096f9);
+    -webkit-background-clip: text;
+    background-clip: text;
+    border: none;
+  }
+  .lang-switcher__toggle.hover-tap-active {
+    border-color: rgba(255,255,255,.26);
+    box-shadow: none;
+  }
+  .lang-switcher__option.hover-tap-active {
+    background: transparent;
+    color: #ffffff;
+    transform: translateX(-2px);
+  }
+  .hero .btn-primary.hover-tap-active {
+    background: linear-gradient(135deg, rgba(123, 33, 219, 0.5), rgba(191, 150, 249, 0.5));
+    border-color: rgba(255,255,255,.28);
+    box-shadow: none;
+  }
+  .contact-form .btn.full.btn-primary.hover-tap-active,
+  .contact-form .btn-primary.full.hover-tap-active {
+    background: linear-gradient(135deg, rgba(123, 33, 219, 0.5), rgba(191, 150, 249, 0.5));
+    border-color: rgba(255,255,255,.28);
+  }
+  .media.hover-tap-active img {
+    transform: scale(1.05);
+  }
+  .media-tilted-frame.hover-tap-active {
+    z-index: 1;
+  }
+  .media-tilted-frame:nth-child(1).hover-tap-active,
+  .media-tilted-frame:nth-child(2).hover-tap-active,
+  .media-tilted-frame:nth-child(3).hover-tap-active {
+    transform: skew(-8deg, 0deg);
+  }
+  .media-tilted-frame.hover-tap-active img {
+    transform: skew(8deg, 0deg) scale(1.28);
+  }
+  #services .cards .card.hover-tap-active:not(.wave-active),
+  #services .cards .card:nth-child(-n+3).hover-tap-active:not(.wave-active),
+  #services .cards .card:nth-child(n+7).hover-tap-active:not(.wave-active) {
+    transform: skew(-8deg, 0deg) scale(1.02);
+  }
+  #services .cards .card:nth-child(-n+3).hover-tap-active:not(.wave-active) {
+    transform: skew(-8deg, 0deg) translateX(22px) scale(1.02);
+  }
+  #services .cards .card:nth-child(n+7).hover-tap-active:not(.wave-active) {
+    transform: skew(-8deg, 0deg) translateX(-22px) scale(1.02);
+  }
+  .card.hover-tap-active:not(.wave-active) {
+    box-shadow: 0 0 12px var(--service-border-color, rgba(255, 255, 255, 0.15));
+    border-color: var(--service-border-color, var(--card-border));
+    transform: scale(1.02);
+  }
+  .cards .card.hover-tap-active h3 {
+    max-height: 0;
+    opacity: 0;
+    margin: 0;
+    overflow: hidden;
+    visibility: hidden;
+    transition: max-height .18s ease, opacity .18s ease, margin .18s ease, visibility 0s linear .18s;
+  }
+  .cards .card.hover-tap-active p {
+    max-height: 120px;
+    opacity: 1;
+    margin-top: 0;
+    visibility: visible;
+    transition: max-height .18s ease, opacity .18s ease, margin-top .18s ease, visibility 0s 0s;
+  }
+  .ig-arrow.hover-tap-active {
+    transform: translateY(-50%) translateY(40px) scale(var(--arrow-hover-scale));
+  }
+  #works .works-vertical-row .ig-arrow.hover-tap-active {
+    transform: translateY(-50%) scale(var(--arrow-hover-scale));
+  }
+  .container-horizontal .ig-arrow.hover-tap-active,
+  #works .ig-arrow-horizontal.hover-tap-active {
+    transform: translateY(-50%) scale(var(--arrow-hover-scale));
+  }
+  .ig-item.hover-tap-active {
+    transform: skew(-8deg, 0deg) scale(1.05);
+    z-index: 1;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+  }
+  .ig-item.hover-tap-active video {
+    transform: skew(8deg, 0deg) scale(1.35);
+  }
+  .ig-item-horizontal.hover-tap-active {
+    transform: skew(-8deg, 0deg) scale(1.05);
+  }
+  .ig-item-horizontal.hover-tap-active video {
+    transform: skew(8deg, 0deg) scale(1.35);
+  }
+  .client-item.hover-tap-active {
+    transform: scale(1.05);
+    transition-duration: 0s;
+  }
+  .client-item.hover-tap-active .client-logo {
+    opacity: 1;
+  }
+  .services-dropdown-trigger.hover-tap-active {
+    border-color: rgba(255,255,255,.24);
+    background: rgba(255,255,255,.07);
+  }
+  .services-dropdown-option.hover-tap-active,
+  .services-dropdown-option.selected.hover-tap-active {
+    box-shadow: inset 0 0 0 1px var(--option-hover-border);
+  }
+  .services-dropdown-option.hover-tap-active img,
+  .services-dropdown-option.selected.hover-tap-active img {
+    transform: scale(1.111) rotate(8deg);
+  }
+  .services-dropdown-option[data-value="analysis"].hover-tap-active { --option-hover-border: #6a11cb; }
+  .services-dropdown-option[data-value="strategy"].hover-tap-active { --option-hover-border: #8b5cf6; }
+  .services-dropdown-option[data-value="ads"].hover-tap-active { --option-hover-border: #b086f9; }
+  .services-dropdown-option[data-value="content"].hover-tap-active { --option-hover-border: #22c55e; }
+  .services-dropdown-option[data-value="social"].hover-tap-active { --option-hover-border: #65d94f; }
+  .services-dropdown-option[data-value="community"].hover-tap-active { --option-hover-border: #a3e635; }
+  .services-dropdown-option[data-value="video"].hover-tap-active { --option-hover-border: #b91c1c; }
+  .services-dropdown-option[data-value="design"].hover-tap-active { --option-hover-border: #dc2626; }
+  .services-dropdown-option[data-value="web"].hover-tap-active { --option-hover-border: #fb923c; }
+  .pkg.hover-tap-active .pkg-body,
+  .pkg input:checked + .pkg-body.hover-tap-active {
+    box-shadow: 0 0 20px rgba(138, 88, 255, 0.5);
+    transform: translateY(-2px);
+  }
+  .footer-left .author-email-link.hover-tap-active {
+    color: #fff;
+  }
+  .footer-left .author-email-link.hover-tap-active::after {
+    transform: scaleX(1);
+  }
+  .footer-center a.hover-tap-active {
+    color: #fff;
+  }
+  .footer-center a.hover-tap-active::after {
+    transform: scaleX(1);
+  }
+  .footer-right a.hover-tap-active {
+    color: #fff;
+  }
+  .footer-right a.hover-tap-active::after {
+    transform: scaleX(1);
+  }
+  .footer-right .social-icon.hover-tap-active {
+    opacity: 1;
+  }
+  .site-footer .footer-social a.hover-tap-active {
+    color: #fff;
+  }
+  .scroll-to-top.hover-tap-active {
+    background-color: rgba(255,255,255,.10);
+    border-color: rgba(255,255,255,.28);
+    transform: translateY(0) scale(1.1);
+  }
+  /* Волна: при тапе показывать hover-состояние карточек/клиентов/работ */
+  #services .cards .card[data-wave-ready="true"].hover-tap-active,
+  #services .cards .card[data-wave-ready="true"]:nth-child(-n+3).hover-tap-active,
+  #services .cards .card[data-wave-ready="true"]:nth-child(n+7).hover-tap-active {
+    animation: none;
+    transform: skew(-8deg, 0deg) scale(1.02);
+  }
+  #services .cards .card[data-wave-ready="true"]:nth-child(-n+3).hover-tap-active {
+    transform: skew(-8deg, 0deg) translateX(22px) scale(1.02);
+  }
+  #services .cards .card[data-wave-ready="true"]:nth-child(n+7).hover-tap-active {
+    transform: skew(-8deg, 0deg) translateX(-22px) scale(1.02);
+  }
+  #partners .client-item[data-wave-ready="true"].hover-tap-active {
+    animation: none !important;
+    transform: scale(1.05) !important;
+    transition-duration: 0s !important;
+  }
+  #works .ig-item[data-wave-ready="true"].hover-tap-active:not(.ig-item-horizontal),
+  #works .ig-item-horizontal[data-wave-ready="true"].hover-tap-active {
+    animation: none;
+    transform: skew(-8deg, 0deg) scale(1.05);
+  }
+  /* Попапы и модалки: hover при тапе */
+  .service-popup-close.hover-tap-active {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.1);
+  }
+  .service-popup-video-play.hover-tap-active {
+    background: rgba(255,255,255,.25);
+    transform: scale(1.05);
+  }
+  .service-popup-video-fullscreen.hover-tap-active {
+    background: rgba(0,0,0,.8);
+    transform: scale(1.1);
+  }
+  .service-popup-arrow.hover-tap-active {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: scale(var(--arrow-hover-scale));
+  }
+  .cards .card.hover-tap-active h3 {
+    max-height: 0;
+    opacity: 0;
+    margin: 0;
+    overflow: hidden;
+    visibility: hidden;
+    transition: max-height .18s ease, opacity .18s ease, margin .18s ease, visibility 0s linear .18s;
+  }
+  .cards .card.hover-tap-active p {
+    max-height: 120px;
+    opacity: 1;
+    margin-top: 0;
+    visibility: visible;
+    transition: max-height .18s ease, opacity .18s ease, margin-top .18s ease, visibility 0s 0s;
+  }
+  .services-dropdown-selected .service-tag-icon.hover-tap-active::after {
+    opacity: 1;
+  }
+  .services-dropdown-selected .service-tag-icon.hover-tap-active {
+    background: rgba(0,0,0,0.7);
+    transform: scale(1) rotate(0deg);
+  }
+  .services-dropdown-selected .service-tag-icon.hover-tap-active img {
+    filter: var(--tag-icon-filter) brightness(0.35);
+  }
+  section#contact .services-dropdown-selected .service-tag-icon.hover-tap-active img {
+    filter: var(--tag-icon-filter) brightness(0.35);
+  }
+  .modal-arrow.hover-tap-active {
+    transform: translateY(-50%) scale(var(--arrow-hover-scale));
+  }
+  @media (max-width: 600px) {
+    .modal-arrow.hover-tap-active {
+      transform: scale(var(--arrow-hover-scale));
+    }
+  }
+  .video-modal-close.hover-tap-active {
+    border-color: rgba(255, 255, 255, 0.6);
+    background: rgba(30, 30, 32, 0.9);
+    transform: scale(1.1);
+  }
+}
+

@@ -2804,4 +2804,31 @@ document.addEventListener("DOMContentLoaded", () => {
       if (ok) showCopyNotification();
     });
   }
+
+  /* Мобильная версия: при тапе воспроизводить hover-эффект (активация и деактивация) */
+  const hoverNone = window.matchMedia("(hover: none)");
+  const narrowViewport = window.matchMedia("(max-width: 768px)");
+  const HOVER_TAP_DURATION_MS = 550;
+
+  function shouldApplyHoverTap() {
+    return hoverNone.matches || narrowViewport.matches;
+  }
+
+  function applyHoverTap(e) {
+    if (!shouldApplyHoverTap()) return;
+    if (e.type === "click" && hoverNone.matches) return;
+    const added = [];
+    let el = e.target;
+    while (el && el !== document.body) {
+      el.classList.add("hover-tap-active");
+      added.push(el);
+      el = el.parentElement;
+    }
+    setTimeout(() => {
+      added.forEach((node) => node.classList.remove("hover-tap-active"));
+    }, HOVER_TAP_DURATION_MS);
+  }
+
+  document.addEventListener("click", applyHoverTap, { passive: true });
+  document.addEventListener("touchend", applyHoverTap, { passive: true });
 });
