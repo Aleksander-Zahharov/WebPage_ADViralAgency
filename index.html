@@ -633,7 +633,7 @@
       <button class="video-modal-close" aria-label="Close video player" type="button">×</button>
       <button class="modal-arrow modal-arrow-left" id="modal-prev-btn" aria-label="Previous video" type="button">‹</button>
       <button class="modal-arrow modal-arrow-right" id="modal-next-btn" aria-label="Next video" type="button">›</button>
-      <div class="video-modal-content">
+      <div class="video-modal-content AdviralPlayer" id="adviral-player">
         <div class="video-seek-indicator" id="video-seek-indicator"></div>
         <video id="modal-video-player" class="modal-video-player" playsinline>
           <source id="modal-video-source" src="" type="video/mp4" />
@@ -659,11 +659,10 @@
           </div>
         </div>
       <div class="service-popup-video-block">
-        <div class="service-popup-video-placeholder" aria-hidden="true">
-          <button type="button" class="service-popup-video-play" aria-label="Play video">▶</button>
+        <div class="service-popup-video-placeholder" aria-hidden="true" role="button" tabindex="0" aria-label="Play video in fullscreen">
+          <span class="service-popup-video-play" aria-hidden="true">▶</span>
         </div>
-        <video class="service-popup-video" playsinline controls style="display:none;" preload="metadata"></video>
-        <button type="button" class="service-popup-video-fullscreen" aria-label="Expand to fullscreen" style="display:none;">⛶</button>
+        <video class="service-popup-video" playsinline style="display:none;" preload="metadata"></video>
       </div>
       </div>
       <div class="service-popup-navigation">

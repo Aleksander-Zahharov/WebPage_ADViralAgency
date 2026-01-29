@@ -2486,7 +2486,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const servicePopupVideoPlaceholder = servicePopup?.querySelector('.service-popup-video-placeholder');
   const servicePopupVideoPlay = servicePopup?.querySelector('.service-popup-video-play');
   const servicePopupVideoEl = servicePopup?.querySelector('.service-popup-video');
-  const servicePopupVideoFullscreen = servicePopup?.querySelector('.service-popup-video-fullscreen');
   
   let currentServiceIndex = -1;
   const SERVICE_POPUP_PLACEHOLDER_VIDEO = "assets/videos/Horizontal/LAMBO5.mp4";
@@ -2526,14 +2525,21 @@ document.addEventListener("DOMContentLoaded", () => {
     resetServicePopupVideo();
   }
 
+  let servicePopupPlyr = null;
+
   function resetServicePopupVideo() {
-    if (!servicePopupVideoEl || !servicePopupVideoPlaceholder || !servicePopupVideoPlay || !servicePopupVideoFullscreen) return;
+    if (!servicePopupVideoEl || !servicePopupVideoPlaceholder || !servicePopupVideoPlay) return;
+    if (servicePopupPlyr) {
+      try { servicePopupPlyr.destroy(); } catch (_) {}
+      servicePopupPlyr = null;
+    }
     servicePopupVideoEl.pause();
     servicePopupVideoEl.src = "";
     servicePopupVideoEl.style.display = "none";
+    const plyrContainer = servicePopupVideoEl.closest && servicePopupVideoEl.closest(".plyr");
+    if (plyrContainer) plyrContainer.style.display = "none";
     servicePopupVideoPlaceholder.style.display = "flex";
     servicePopupVideoPlay.style.display = "flex";
-    servicePopupVideoFullscreen.style.display = "none";
   }
 
   function closeServicePopup() {
@@ -2584,31 +2590,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Видео в попапе: Плей и «Полный экран» открывают плеер поверх окна на весь экран; при закрытии — возврат к попапу с играющим видео
-  function openPopupVideoFullscreen(src) {
-    if (src) doc.dispatchEvent(new CustomEvent("open-video-modal", { detail: { src } }));
+  // Клик по плейсхолдеру видео в попапе — открыть AdviralPlayer (модалку) с плейсхолдер-видео
+  function openAdviralPlayerWithPlaceholder() {
+    doc.dispatchEvent(new CustomEvent("open-video-modal", { detail: { src: SERVICE_POPUP_PLACEHOLDER_VIDEO } }));
   }
-  if (servicePopupVideoPlay && servicePopupVideoEl && servicePopupVideoPlaceholder && servicePopupVideoFullscreen) {
-    servicePopupVideoPlay.addEventListener("click", () => {
-      const card = currentServiceIndex >= 0 && cards[currentServiceIndex] ? cards[currentServiceIndex] : null;
-      const src = (card && card.dataset.serviceVideo) ? card.dataset.serviceVideo : SERVICE_POPUP_PLACEHOLDER_VIDEO;
-      openPopupVideoFullscreen(src);
+
+  if (servicePopupVideoPlaceholder) {
+    servicePopupVideoPlaceholder.addEventListener("click", (e) => {
+      e.preventDefault();
+      openAdviralPlayerWithPlaceholder();
     });
-    servicePopupVideoFullscreen.addEventListener("click", () => {
-      const src = servicePopupVideoEl.src || SERVICE_POPUP_PLACEHOLDER_VIDEO;
-      openPopupVideoFullscreen(src);
+    servicePopupVideoPlaceholder.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openAdviralPlayerWithPlaceholder();
+      }
     });
   }
-  doc.addEventListener("video-modal-closed", (e) => {
-    const src = e.detail?.src;
-    if (!src || !servicePopup?.classList.contains("active") || !servicePopupVideoEl || !servicePopupVideoPlaceholder || !servicePopupVideoPlay || !servicePopupVideoFullscreen) return;
-    servicePopupVideoEl.src = src;
-    servicePopupVideoEl.style.display = "block";
-    servicePopupVideoPlaceholder.style.display = "none";
-    servicePopupVideoPlay.style.display = "none";
-    servicePopupVideoFullscreen.style.display = "flex";
-    servicePopupVideoEl.play().catch(() => {});
-  });
 
   cards.forEach((card) => {
     card.addEventListener('click', () => {
@@ -2842,6 +2840,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }, HOVER_TAP_DURATION_MS);
   }
 
+  /* Только по клику (не по touchend), чтобы на мобильных не было эффектов при зажатии */
   document.addEventListener("click", applyHoverTap, { passive: true });
-  document.addEventListener("touchend", applyHoverTap, { passive: true });
 });
