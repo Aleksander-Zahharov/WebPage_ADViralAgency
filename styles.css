@@ -1415,19 +1415,37 @@ section { scroll-margin-top: 0; }
     transform: skew(-8deg, 0deg) translateX(-22px) scale(0.98) !important;
   }
 
-  /* Волна в Наши клиенты — масштаб как при хавере (1.05) */
-  #partners .client-item[data-wave-ready="true"] {
+  /* Волна в Наши клиенты — только у элементов без .wave-done (после окончания волны или после hover класс ставится, волна больше не перезапускается при уходе мыши) */
+  #partners .client-item[data-wave-ready="true"]:not(.wave-done) {
     --wave-scale: 1.05;
     animation: press-bounce 1s cubic-bezier(0.33, 1, 0.68, 1) 1 both;
     animation-delay: var(--wave-delay, 0.2s);
     animation-play-state: paused;
     will-change: transform;
+    transition: transform 0.25s ease;
   }
-  #partners.in-view .client-item[data-wave-ready="true"] { animation-play-state: running; }
+  #partners.in-view .client-item[data-wave-ready="true"]:not(.wave-done) {
+    animation-play-state: running;
+  }
+  /* После волны или после первого hover: только transform, при уходе мыши — плавный возврат до конца, без перезапуска волны */
+  #partners .client-item[data-wave-ready="true"].wave-done {
+    animation: none !important;
+    transform: scale(1);
+    transition: transform 0.25s ease;
+  }
+  /* При наведении волна отменяется, плавный переход к scale(1.05) */
   #partners .client-item[data-wave-ready="true"]:hover,
-  #partners .client-item[data-wave-ready="true"]:focus-within { animation: none !important; transform: scale(1.05) !important; transition-duration: 0s !important; }
+  #partners .client-item[data-wave-ready="true"]:focus-within {
+    animation: none !important;
+    transform: scale(1.05) !important;
+    transition: transform 0.25s ease;
+  }
   #partners .client-item[data-wave-ready="true"]:active,
-  #partners .client-item[data-wave-ready="true"]:hover:active { animation: none; transform: scale(0.98); }
+  #partners .client-item[data-wave-ready="true"]:hover:active {
+    animation: none !important;
+    transform: scale(0.98) !important;
+    transition: transform 0.25s ease;
+  }
 
   /* Волна в Наши работы — сверху справа налево вниз, scale как при хавере (1.05), сохраняем skew */
   #works .ig-item[data-wave-ready="true"]:not(.ig-item-horizontal) {
@@ -1826,13 +1844,21 @@ section { scroll-margin-top: 0; }
 
 /* Мобильная версия попапа */
 @media (max-width: 600px) {
-  .service-popup-container {
+  .service-popup-wrapper {
     width: 85%;
+    max-width: 400px;
+    margin: 0 auto;
+    align-items: center;
+  }
+
+  .service-popup-container {
+    width: 100%;
     max-height: 85vh;
     padding: 24px 20px 24px;
     overflow-y: auto;
+    box-sizing: border-box;
   }
-  
+
   .service-popup-body {
     flex: 1;
     min-height: 100px;
@@ -2497,7 +2523,8 @@ section { scroll-margin-top: 0; }
   border: none;
   border-radius: 20px;
   text-decoration: none;
-  transition: transform 0.2s ease;
+  /* Плавный переход: при быстром прерывистом наведении анимация всё равно проигрывается от начала до конца */
+  transition: transform 0.25s ease;
   position: relative;
   overflow: hidden;
   width: 180px;
@@ -2510,13 +2537,18 @@ section { scroll-margin-top: 0; }
 
 @media (hover: hover) {
   .client-item:hover {
-    transform: scale(1.05); /* Приближение всего бокса при наведении на 5% */
-    transition-duration: 0s; /* Моментальная реакция без задержки */
+    transform: scale(1.05);
   }
 }
 
 .client-item:active {
-  transform: scale(0.98); /* Эффект вминания при зажатии мышки */
+  transform: scale(0.98);
+}
+
+@media (hover: hover) {
+  .client-item:hover:active {
+    transform: scale(0.98);
+  }
 }
 
 /* Разрешаем логотипам выходить за рамки с обрезкой - заполняют контейнер полностью */
@@ -2558,7 +2590,6 @@ section { scroll-margin-top: 0; }
 @media (hover: hover) {
   .client-item:hover .client-logo {
     opacity: 1;
-    /* Убираем transform у картинки, теперь увеличивается весь контейнер */
   }
 }
 
@@ -2660,19 +2691,6 @@ section { scroll-margin-top: 0; }
     height: 200%;
     border-radius: 0;
   }
-  
-  /* При наведении увеличивается весь бокс на планшетах */
-  .client-item:hover {
-    transform: scale(1.05); /* Приближение всего бокса при наведении на 5% */
-  }
-
-  .client-item:active {
-    transform: scale(0.98); /* Эффект вминания при зажатии мышки */
-  }
-  
-  .client-item:hover .client-logo {
-    /* Убираем transform у картинки, теперь увеличивается весь контейнер */
-  }
 }
 
 @media (max-width: 600px) {
@@ -2724,19 +2742,6 @@ section { scroll-margin-top: 0; }
     width: 200%;
     height: 200%;
     border-radius: 0;
-  }
-  
-  /* При наведении увеличивается весь бокс на мобильных */
-  .client-item:hover {
-    transform: scale(1.05); /* Приближение всего бокса при наведении на 5% */
-  }
-
-  .client-item:active {
-    transform: scale(0.98); /* Эффект вминания при зажатии мышки */
-  }
-  
-  .client-item:hover .client-logo {
-    /* Убираем transform у картинки, теперь увеличивается весь контейнер */
   }
 }
 
@@ -4719,7 +4724,6 @@ input::placeholder, textarea::placeholder {
   #partners .client-item[data-wave-ready="true"].hover-tap-active {
     animation: none !important;
     transform: scale(1.05) !important;
-    transition-duration: 0s !important;
   }
   #works .ig-item[data-wave-ready="true"].hover-tap-active:not(.ig-item-horizontal),
   #works .ig-item-horizontal[data-wave-ready="true"].hover-tap-active {

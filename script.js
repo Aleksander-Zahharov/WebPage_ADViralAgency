@@ -1093,6 +1093,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const delaySec = baseDelay + waveIndex * stepDelay;
       el.dataset.waveReady = 'true';
       el.style.setProperty('--wave-delay', `${delaySec.toFixed(2)}s`);
+
+      const markWaveDone = () => el.classList.add('wave-done');
+      el.addEventListener('animationend', (e) => {
+        if (e.animationName === 'press-bounce') markWaveDone();
+      }, { once: true });
+      el.addEventListener('mouseenter', markWaveDone, { once: true });
     });
   };
 
