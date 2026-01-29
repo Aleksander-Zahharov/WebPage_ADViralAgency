@@ -3050,6 +3050,16 @@ section { scroll-margin-top: 0; }
 .services-dropdown-option[data-value="web"] img {
   filter: brightness(0) saturate(100%) invert(60%) sepia(95%) saturate(2000%) hue-rotate(-15deg) brightness(1.1) contrast(1.05); /* #fb923c */
 }
+/* Контакты: затемнение иконок до того же оттенка, что в секции Услуги */
+section#contact .services-dropdown-option[data-value="analysis"] img { filter: brightness(0) saturate(100%) invert(30%) sepia(95%) saturate(2000%) hue-rotate(240deg) brightness(0.65) contrast(1.1); }
+section#contact .services-dropdown-option[data-value="strategy"] img { filter: brightness(0) saturate(100%) invert(52%) sepia(90%) saturate(1800%) hue-rotate(250deg) brightness(0.75) contrast(1.05); }
+section#contact .services-dropdown-option[data-value="ads"] img { filter: brightness(0) saturate(100%) invert(42%) sepia(95%) saturate(2000%) hue-rotate(250deg) brightness(0.68) contrast(1.1); }
+section#contact .services-dropdown-option[data-value="content"] img { filter: brightness(0) saturate(100%) invert(60%) sepia(90%) saturate(2000%) hue-rotate(100deg) brightness(0.72) contrast(1.1); }
+section#contact .services-dropdown-option[data-value="social"] img { filter: brightness(0) saturate(100%) invert(63%) sepia(93%) saturate(2000%) hue-rotate(72deg) brightness(0.82) contrast(1.08); }
+section#contact .services-dropdown-option[data-value="community"] img { filter: brightness(0) saturate(100%) invert(65%) sepia(95%) saturate(2000%) hue-rotate(75deg) brightness(0.88) contrast(1.05); }
+section#contact .services-dropdown-option[data-value="video"] img { filter: brightness(0) saturate(100%) invert(25%) sepia(95%) saturate(2000%) hue-rotate(350deg) brightness(0.68) contrast(1.1); }
+section#contact .services-dropdown-option[data-value="design"] img { filter: brightness(0) saturate(100%) invert(25%) sepia(95%) saturate(2000%) hue-rotate(350deg) brightness(0.68) contrast(1.1); }
+section#contact .services-dropdown-option[data-value="web"] img { filter: brightness(0) saturate(100%) invert(60%) sepia(95%) saturate(2000%) hue-rotate(-15deg) brightness(0.88) contrast(1.05); }
 .services-dropdown-selected {
   display: flex;
   flex-wrap: wrap;
@@ -3058,6 +3068,7 @@ section { scroll-margin-top: 0; }
   min-width: 0;
 }
 .services-dropdown-selected .service-tag-icon {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -3068,54 +3079,67 @@ section { scroll-margin-top: 0; }
   border-radius: 8px;
   background: rgba(255,255,255,.08);
   cursor: pointer;
-  transition: background .15s ease, transform .15s ease;
+  transform: scale(1.111) rotate(8deg);
+  transition: background .15s ease, transform .35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+/* Белый крестик поверх тега при наведении */
+.services-dropdown-selected .service-tag-icon::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("assets/images/icons/Icon_cross.png") center / 14px 14px no-repeat;
+  filter: brightness(0) invert(1);
+  opacity: 0;
+  transition: opacity .2s ease;
+  pointer-events: none;
+}
+.services-dropdown-selected .service-tag-icon:hover::after {
+  opacity: 1;
 }
 .services-dropdown-selected .service-tag-icon:hover {
-  background: rgba(255,255,255,.18);
+  background: rgba(0,0,0,0.7);
+  transform: scale(1) rotate(0deg);
 }
 .services-dropdown-selected .service-tag-icon:active {
-  transform: scale(0.92);
+  transform: scale(0.92) rotate(0deg);
+}
+.services-dropdown-selected .service-tag-icon:active::after {
+  opacity: 1;
 }
 .services-dropdown-selected .service-tag-icon img {
   width: 20px;
   height: 20px;
   object-fit: contain;
-  transform: scale(1.111) rotate(8deg);
-  transition: transform .35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: filter .2s ease;
 }
 .services-dropdown-selected .service-tag-icon:hover img {
-  transform: scale(1) rotate(0deg);
-}
-.services-dropdown-selected .service-tag-icon:active img {
-  transform: scale(0.95) rotate(0deg);
+  filter: var(--tag-icon-filter) brightness(0.35);
 }
 /* Цвет иконок в триггере — как в пунктах меню */
-.services-dropdown-selected .service-tag-icon[data-value="analysis"] img {
-  filter: brightness(0) saturate(100%) invert(30%) sepia(95%) saturate(2000%) hue-rotate(240deg) brightness(0.8) contrast(1.1);
+.services-dropdown-selected .service-tag-icon[data-value="analysis"] { --tag-icon-filter: brightness(0) saturate(100%) invert(30%) sepia(95%) saturate(2000%) hue-rotate(240deg) brightness(0.8) contrast(1.1); }
+.services-dropdown-selected .service-tag-icon[data-value="analysis"] img { filter: var(--tag-icon-filter); }
+.services-dropdown-selected .service-tag-icon[data-value="strategy"] { --tag-icon-filter: brightness(0) saturate(100%) invert(52%) sepia(90%) saturate(1800%) hue-rotate(250deg) brightness(0.95) contrast(1.05); }
+.services-dropdown-selected .service-tag-icon[data-value="strategy"] img { filter: var(--tag-icon-filter); }
+.services-dropdown-selected .service-tag-icon[data-value="ads"] { --tag-icon-filter: brightness(0) saturate(100%) invert(42%) sepia(95%) saturate(2000%) hue-rotate(250deg) brightness(0.85) contrast(1.1); }
+.services-dropdown-selected .service-tag-icon[data-value="ads"] img { filter: var(--tag-icon-filter); }
+.services-dropdown-selected .service-tag-icon[data-value="content"] { --tag-icon-filter: brightness(0) saturate(100%) invert(60%) sepia(90%) saturate(2000%) hue-rotate(100deg) brightness(0.9) contrast(1.1); }
+.services-dropdown-selected .service-tag-icon[data-value="content"] img { filter: var(--tag-icon-filter); }
+.services-dropdown-selected .service-tag-icon[data-value="social"] { --tag-icon-filter: brightness(0) saturate(100%) invert(63%) sepia(93%) saturate(2000%) hue-rotate(72deg) brightness(1.05) contrast(1.08); }
+.services-dropdown-selected .service-tag-icon[data-value="social"] img { filter: var(--tag-icon-filter); }
+.services-dropdown-selected .service-tag-icon[data-value="community"] { --tag-icon-filter: brightness(0) saturate(100%) invert(65%) sepia(95%) saturate(2000%) hue-rotate(75deg) brightness(1.1) contrast(1.05); }
+.services-dropdown-selected .service-tag-icon[data-value="community"] img { filter: var(--tag-icon-filter); }
+.services-dropdown-selected .service-tag-icon[data-value="video"] { --tag-icon-filter: brightness(0) saturate(100%) invert(25%) sepia(95%) saturate(2000%) hue-rotate(350deg) brightness(0.85) contrast(1.1); }
+.services-dropdown-selected .service-tag-icon[data-value="video"] img { filter: var(--tag-icon-filter); }
+.services-dropdown-selected .service-tag-icon[data-value="design"] { --tag-icon-filter: brightness(0) saturate(100%) invert(25%) sepia(95%) saturate(2000%) hue-rotate(350deg) brightness(0.85) contrast(1.1); }
+.services-dropdown-selected .service-tag-icon[data-value="design"] img { filter: var(--tag-icon-filter); }
+.services-dropdown-selected .service-tag-icon[data-value="web"] { --tag-icon-filter: brightness(0) saturate(100%) invert(60%) sepia(95%) saturate(2000%) hue-rotate(-15deg) brightness(1.1) contrast(1.05); }
+.services-dropdown-selected .service-tag-icon[data-value="web"] img { filter: var(--tag-icon-filter); }
+/* Контакты: затемнение иконок в триггере до того же оттенка, что в Услуги */
+section#contact .services-dropdown-selected .service-tag-icon img {
+  filter: var(--tag-icon-filter) brightness(0.82);
 }
-.services-dropdown-selected .service-tag-icon[data-value="strategy"] img {
-  filter: brightness(0) saturate(100%) invert(52%) sepia(90%) saturate(1800%) hue-rotate(250deg) brightness(0.95) contrast(1.05);
-}
-.services-dropdown-selected .service-tag-icon[data-value="ads"] img {
-  filter: brightness(0) saturate(100%) invert(42%) sepia(95%) saturate(2000%) hue-rotate(250deg) brightness(0.85) contrast(1.1);
-}
-.services-dropdown-selected .service-tag-icon[data-value="content"] img {
-  filter: brightness(0) saturate(100%) invert(60%) sepia(90%) saturate(2000%) hue-rotate(100deg) brightness(0.9) contrast(1.1);
-}
-.services-dropdown-selected .service-tag-icon[data-value="social"] img {
-  filter: brightness(0) saturate(100%) invert(63%) sepia(93%) saturate(2000%) hue-rotate(72deg) brightness(1.05) contrast(1.08);
-}
-.services-dropdown-selected .service-tag-icon[data-value="community"] img {
-  filter: brightness(0) saturate(100%) invert(65%) sepia(95%) saturate(2000%) hue-rotate(75deg) brightness(1.1) contrast(1.05);
-}
-.services-dropdown-selected .service-tag-icon[data-value="video"] img {
-  filter: brightness(0) saturate(100%) invert(25%) sepia(95%) saturate(2000%) hue-rotate(350deg) brightness(0.85) contrast(1.1);
-}
-.services-dropdown-selected .service-tag-icon[data-value="design"] img {
-  filter: brightness(0) saturate(100%) invert(25%) sepia(95%) saturate(2000%) hue-rotate(350deg) brightness(0.85) contrast(1.1);
-}
-.services-dropdown-selected .service-tag-icon[data-value="web"] img {
-  filter: brightness(0) saturate(100%) invert(60%) sepia(95%) saturate(2000%) hue-rotate(-15deg) brightness(1.1) contrast(1.05);
+section#contact .services-dropdown-selected .service-tag-icon:hover img {
+  filter: var(--tag-icon-filter) brightness(0.35);
 }
 
 @media (max-width: 640px) {
