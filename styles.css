@@ -4317,11 +4317,55 @@ input::placeholder, textarea::placeholder {
   box-sizing: border-box !important;
 }
 
-/* Тайм — верхний ряд (над прогресс-баром и над .plyr__controls) */
-.video-modal-content .plyr__time--current,
-.video-modal-content .plyr__time--duration {
+/* Общий блок для текущего времени и длительности (обёртка из JS) */
+.video-modal-content .plyr__time-group {
   position: absolute !important;
-  bottom: calc(100% + 26px) !important; /* над контейнером прогресса (26px) */
+  bottom: calc(100% + 26px) !important;
+  left: 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5em !important;
+  margin: 0 0 8px 0 !important;
+  z-index: 2 !important;
+}
+
+/* Фиксированная ширина «окна» для времени: не прыгает при смене цифр, хватает для 99:59 */
+.video-modal-content .plyr__time-group .plyr__time--current,
+.video-modal-content .plyr__time-group .plyr__time--duration {
+  position: relative !important;
+  bottom: auto !important;
+  left: auto !important;
+  top: auto !important;
+  margin: 0 !important;
+  min-width: 2.8em !important;
+  width: 2.8em !important;
+  flex-shrink: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Разделитель "/" между текущим временем и длительностью — равные отступы за счёт gap */
+.video-modal-content .plyr__time-separator {
+  color: inherit !important;
+  font-size: inherit !important;
+  margin: 0 !important;
+  padding: 0 0.25em !important;
+  flex-shrink: 0 !important;
+}
+
+/* "/" удалён по запросу */
+.video-modal-content .plyr__time--current::after {
+  content: "" !important;
+}
+
+.video-modal-content .plyr__time--duration::before {
+  content: "" !important;
+}
+
+/* Тайм вне обёртки (до выполнения JS) — позиция над прогресс-баром */
+.video-modal-content .plyr__controls > .plyr__time--current,
+.video-modal-content .plyr__controls > .plyr__time--duration {
+  position: absolute !important;
+  bottom: calc(100% + 26px) !important;
   margin: 0 0 8px 0 !important;
   top: auto !important;
   left: 12px !important;
@@ -4329,23 +4373,8 @@ input::placeholder, textarea::placeholder {
   z-index: 2 !important;
 }
 
-.video-modal-content .plyr__time--current {
-  left: 12px !important;
-}
-
-/* пробел в конце текущего времени */
-.video-modal-content .plyr__time--current::after {
-  content: " " !important;
-}
-
-.video-modal-content .plyr__time--duration {
-  left: 72px !important; /* отступ от текущего времени: "00:05" и " / 01:00" не слипаются */
-}
-
-/* разделитель между текущим временем и длительностью: " / " */
-.video-modal-content .plyr__time--duration::before {
-  content: " / " !important;
-  margin-right: 0 !important;
+.video-modal-content .plyr__controls > .plyr__time--duration {
+  left: 72px !important;
 }
 
 /* Прогресс-бар (seek + buffer) — над .plyr__controls, под таймом: общий ряд между таймом и кнопками */

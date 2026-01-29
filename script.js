@@ -1880,6 +1880,24 @@ document.addEventListener("DOMContentLoaded", () => {
         player.on("ready", () => {
           // console.log("Plyr ready");
           
+          // Обёртка для текущего времени и длительности в один общий блок
+          const content = modalPlayer.closest(".video-modal-content");
+          const controls = content?.querySelector(".plyr__controls");
+          const timeCurrent = content?.querySelector(".plyr__time--current");
+          const timeDuration = content?.querySelector(".plyr__time--duration");
+          if (controls && timeCurrent && timeDuration && !content.querySelector(".plyr__time-group")) {
+            const timeGroup = doc.createElement("div");
+            timeGroup.className = "plyr__time-group";
+            const separator = doc.createElement("span");
+            separator.className = "plyr__time-separator";
+            separator.setAttribute("aria-hidden", "true");
+            separator.textContent = "/";
+            controls.insertBefore(timeGroup, timeCurrent);
+            timeGroup.appendChild(timeCurrent);
+            timeGroup.appendChild(separator);
+            timeGroup.appendChild(timeDuration);
+          }
+          
           // Добавляем поддержку жестов на мобильных устройствах
           if (window.innerWidth <= 768) {
             setupMobileGestures();
