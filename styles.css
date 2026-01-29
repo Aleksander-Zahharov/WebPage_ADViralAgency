@@ -2979,7 +2979,7 @@ section { scroll-margin-top: 0; }
   cursor: pointer;
   border-radius: 12px;
   border-bottom: 1px solid rgba(255,255,255,.06);
-  transition: background .15s ease;
+  transition: background .15s ease, box-shadow .2s ease;
 }
 .services-dropdown-option > span {
   white-space: nowrap;
@@ -2991,17 +2991,37 @@ section { scroll-margin-top: 0; }
   border-bottom: none;
 }
 .services-dropdown-option:hover {
-  background: rgba(255,255,255,.08);
+  box-shadow: inset 0 0 0 1px var(--option-hover-border);
 }
 .services-dropdown-option.selected {
-  background: rgba(106, 17, 203, 0.25);
+  background: rgba(255,255,255,.08);
+}
+.services-dropdown-option.selected img {
+  transform: scale(1.111) rotate(8deg);
 }
 .services-dropdown-option img {
   flex-shrink: 0;
   width: 24px;
   height: 24px;
   object-fit: contain;
+  transition: transform .35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
+.services-dropdown-option:hover img {
+  transform: scale(1.111) rotate(8deg);
+}
+.services-dropdown-option.selected:hover img {
+  transform: scale(1.111) rotate(8deg);
+}
+/* Цвет границы при наведении = цвет иконки пункта */
+.services-dropdown-option[data-value="analysis"]:hover { --option-hover-border: #6a11cb; }
+.services-dropdown-option[data-value="strategy"]:hover { --option-hover-border: #8b5cf6; }
+.services-dropdown-option[data-value="ads"]:hover { --option-hover-border: #b086f9; }
+.services-dropdown-option[data-value="content"]:hover { --option-hover-border: #22c55e; }
+.services-dropdown-option[data-value="social"]:hover { --option-hover-border: #65d94f; }
+.services-dropdown-option[data-value="community"]:hover { --option-hover-border: #a3e635; }
+.services-dropdown-option[data-value="video"]:hover { --option-hover-border: #b91c1c; }
+.services-dropdown-option[data-value="design"]:hover { --option-hover-border: #dc2626; }
+.services-dropdown-option[data-value="web"]:hover { --option-hover-border: #fb923c; }
 /* Цвет и яркость иконок в дропдауне — как в карточках услуг (.cards .card[data-service-icon]::after) */
 .services-dropdown-option[data-value="analysis"] img {
   filter: brightness(0) saturate(100%) invert(30%) sepia(95%) saturate(2000%) hue-rotate(240deg) brightness(0.8) contrast(1.1); /* #6a11cb */
@@ -3048,15 +3068,26 @@ section { scroll-margin-top: 0; }
   border-radius: 8px;
   background: rgba(255,255,255,.08);
   cursor: pointer;
-  transition: background .15s ease;
+  transition: background .15s ease, transform .15s ease;
 }
 .services-dropdown-selected .service-tag-icon:hover {
   background: rgba(255,255,255,.18);
+}
+.services-dropdown-selected .service-tag-icon:active {
+  transform: scale(0.92);
 }
 .services-dropdown-selected .service-tag-icon img {
   width: 20px;
   height: 20px;
   object-fit: contain;
+  transform: scale(1.111) rotate(8deg);
+  transition: transform .35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.services-dropdown-selected .service-tag-icon:hover img {
+  transform: scale(1) rotate(0deg);
+}
+.services-dropdown-selected .service-tag-icon:active img {
+  transform: scale(0.95) rotate(0deg);
 }
 /* Цвет иконок в триггере — как в пунктах меню */
 .services-dropdown-selected .service-tag-icon[data-value="analysis"] img {
