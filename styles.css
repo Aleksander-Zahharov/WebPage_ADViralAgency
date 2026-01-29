@@ -42,7 +42,9 @@
   --radius-sm: 10px;
 
   --container: 1160px;
+  /* Единый шаг сетки: используйте для padding внешних блоков и margin внутренних элементов */
   --gap: 24px;
+  --spacing: var(--gap);
   --z-hero: 1;
   --z-overlay: 2;
   --z-header: 10;
@@ -1423,7 +1425,7 @@ section { scroll-margin-top: 0; }
   }
   #partners.in-view .client-item[data-wave-ready="true"] { animation-play-state: running; }
   #partners .client-item[data-wave-ready="true"]:hover,
-  #partners .client-item[data-wave-ready="true"]:focus-within { animation: none; transform: scale(1.05); }
+  #partners .client-item[data-wave-ready="true"]:focus-within { animation: none !important; transform: scale(1.05) !important; transition-duration: 0s !important; }
   #partners .client-item[data-wave-ready="true"]:active,
   #partners .client-item[data-wave-ready="true"]:hover:active { animation: none; transform: scale(0.98); }
 
@@ -1767,7 +1769,7 @@ section { scroll-margin-top: 0; }
 .service-popup {
   position: fixed;
   inset: 0;
-  z-index: 9999;
+  z-index: 10000;
   display: none;
   align-items: center;
   justify-content: center;
@@ -2495,7 +2497,7 @@ section { scroll-margin-top: 0; }
   border: none;
   border-radius: 20px;
   text-decoration: none;
-  transition: all 0.25s ease;
+  transition: transform 0.2s ease;
   position: relative;
   overflow: hidden;
   width: 180px;
@@ -2509,6 +2511,7 @@ section { scroll-margin-top: 0; }
 @media (hover: hover) {
   .client-item:hover {
     transform: scale(1.05); /* Приближение всего бокса при наведении на 5% */
+    transition-duration: 0s; /* Моментальная реакция без задержки */
   }
 }
 
@@ -3540,7 +3543,7 @@ input::placeholder, textarea::placeholder {
   background: rgba(10,10,11,.5);
   backdrop-filter: blur(var(--blur));
   color: var(--muted);
-  padding: 40px 0;
+  padding: 16px 0;
   font-family: var(--secondary-font);
   z-index: 10;
   pointer-events: auto;
@@ -3549,7 +3552,7 @@ input::placeholder, textarea::placeholder {
 .footer-inner {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
-  align-items: center;
+  align-items: start;
   gap: 20px;
 }
 
@@ -3748,7 +3751,7 @@ input::placeholder, textarea::placeholder {
 
 @media (max-width: 700px) {
   .site-footer {
-    padding: 36px 0 calc(36px + env(safe-area-inset-bottom));
+    padding: 0 0 calc(48px + env(safe-area-inset-bottom));
   }
 
   .footer-inner {
@@ -3756,6 +3759,8 @@ input::placeholder, textarea::placeholder {
     text-align: center;
     gap: 16px;
     padding: 0 var(--gap);
+    margin-top: 16px;
+    margin-bottom: 24px;
   }
 
   .footer-left {
@@ -3776,12 +3781,12 @@ input::placeholder, textarea::placeholder {
   }
 }
 
-/* Кнопка «Вверх»: ниже всех попапов и оверлеев, чтобы модалки перекрывали её */
+/* Кнопка «Вверх»: над футером (z-index 50), но под попапами (10000) */
 .scroll-to-top {
   position: fixed;
   bottom: 24px;
   right: 24px;
-  z-index: 5;
+  z-index: 50;
   width: 56px;
   height: 56px;
   border-radius: 50%;
@@ -3909,7 +3914,7 @@ input::placeholder, textarea::placeholder {
 .video-modal {
   position: fixed;
   inset: 0;
-  z-index: 9999;
+  z-index: 10000;
   display: flex;
   align-items: center;
   justify-content: center;
