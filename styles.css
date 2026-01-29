@@ -1265,11 +1265,11 @@ section { scroll-margin-top: 0; }
   40%  { transform: skew(-8deg, 0deg) translateX(22px) translateY(-3px) scale(var(--wave-scale, 1.02)); }
   100% { transform: skew(-8deg, 0deg) translateX(22px) translateY(0) scale(1); }
 }
-/* Наши клиенты: первый ряд, сдвиг вправо (10px) — меньше чем у Услуг для выравнивания */
+/* Наши клиенты: первый ряд, сдвиг вправо (2px) — меньше чем у Услуг для выравнивания */
 @keyframes press-bounce-skew-v-r1-partners {
-  0%   { transform: skew(-8deg, 0deg) translateX(10px) translateY(0) scale(1); }
-  40%  { transform: skew(-8deg, 0deg) translateX(10px) translateY(-3px) scale(var(--wave-scale, 1.02)); }
-  100% { transform: skew(-8deg, 0deg) translateX(10px) translateY(0) scale(1); }
+  0%   { transform: skew(-8deg, 0deg) translateX(2px) translateY(0) scale(1); }
+  40%  { transform: skew(-8deg, 0deg) translateX(2px) translateY(-3px) scale(var(--wave-scale, 1.02)); }
+  100% { transform: skew(-8deg, 0deg) translateX(2px) translateY(0) scale(1); }
 }
 /* Услуги: последний ряд, сдвиг влево (-22px) */
 @keyframes press-bounce-skew-v-r3 {
@@ -1446,7 +1446,7 @@ section { scroll-margin-top: 0; }
     transition: transform 0.25s ease;
   }
   #partners .client-item[data-wave-ready="true"].wave-done:nth-child(-n+5) {
-    transform: skew(-8deg, 0deg) translateX(10px);
+    transform: skew(-8deg, 0deg) translateX(2px);
   }
   #partners .client-item[data-wave-ready="true"].wave-done:nth-child(n+6) {
     transform: skew(-8deg, 0deg) translateX(-22px);
@@ -1460,7 +1460,7 @@ section { scroll-margin-top: 0; }
   }
   #partners .client-item[data-wave-ready="true"]:nth-child(-n+5):hover,
   #partners .client-item[data-wave-ready="true"]:nth-child(-n+5):focus-within {
-    transform: skew(-8deg, 0deg) translateX(10px) scale(1.02) !important;
+    transform: skew(-8deg, 0deg) translateX(2px) scale(1.02) !important;
   }
   #partners .client-item[data-wave-ready="true"]:nth-child(n+6):hover,
   #partners .client-item[data-wave-ready="true"]:nth-child(n+6):focus-within {
@@ -1474,7 +1474,7 @@ section { scroll-margin-top: 0; }
   }
   #partners .client-item[data-wave-ready="true"]:nth-child(-n+5):active,
   #partners .client-item[data-wave-ready="true"]:nth-child(-n+5):hover:active {
-    transform: skew(-8deg, 0deg) translateX(10px) scale(0.98) !important;
+    transform: skew(-8deg, 0deg) translateX(2px) scale(0.98) !important;
   }
   #partners .client-item[data-wave-ready="true"]:nth-child(n+6):active,
   #partners .client-item[data-wave-ready="true"]:nth-child(n+6):hover:active {
@@ -2642,7 +2642,8 @@ section { scroll-margin-top: 0; }
   }
 
   .ig-item {
-    width: clamp(160px, 48vw, 220px);
+    width: calc(139px * 9 / 16);
+    height: 139px;
   }
 }
 
@@ -2658,8 +2659,8 @@ section { scroll-margin-top: 0; }
 .ig-item {
   position: relative;
   flex: 0 0 auto;
-  width: clamp(129.6px, 15.84vw, 172.8px); /* Уменьшено на 10% от предыдущего размера (всего на 28%) */
-  aspect-ratio: 9 / 16;
+  width: calc(139px * 9 / 16); /* как высота горизонтальной ленты (139px), портрет 9:16 */
+  height: 139px;
   border-radius: 0; /* Убираем закругление для острых углов */
   overflow: hidden;
   scroll-snap-align: center; /* карточки прилипают центру */
@@ -2694,10 +2695,10 @@ section { scroll-margin-top: 0; }
   }
 }
 
-/* Горизонтальные видео — наклон в другую сторону относительно вертикальной ленты (skew -8deg как у вертикальной) */
+/* Горизонтальные видео — та же высота 139px и зазор 18px, как у вертикальной ленты */
 .ig-item-horizontal {
-  aspect-ratio: 16 / 9;
-  width: clamp(172.8px, 21.6vw, 230.4px);
+  width: calc(139px * 16 / 9);
+  height: 139px;
   transform: skew(-8deg, 0deg);
 }
 @media (hover: hover) {
@@ -2730,7 +2731,15 @@ section { scroll-margin-top: 0; }
 .ig-strip.no-snap { scroll-snap-type: none; }
 
 /* =========================
-  Клиенты: сетка 2×5 в стиле карточек Услуги
+  Клиенты: сетка 5×2 в стиле карточек Услуги (skew, рамка, 16:9)
+
+  БЫЛО ДО ИЗМЕНЕНИЙ (квадратные карточки с закруглёнными углами):
+  — Разметка: .clients-grid с вложенными .client-pair (в каждой паре 2 .client-item).
+  — Сетка: grid-template-columns: repeat(5, 1fr); gap: 24px; 5 колонок, по 2 карточки в столбце.
+  — Карточка .client-item: width/height 180px, min/max 180px, квадрат; border-radius: 20px;
+    background: transparent; border: none; padding: 24px.
+  — Без skew, без translateX, без рамки. Hover: scale(1.05), active: scale(0.98).
+  — Логотип .client-logo: transform: scale(1.44) без skew; у BFM/Estee/ERR/Dodo свои scale.
 ========================= */
 .clients-grid {
   display: grid;
@@ -2748,7 +2757,7 @@ section { scroll-margin-top: 0; }
   max-width: none;
 }
 
-/* Карточки клиентов в стиле секции Услуги: skew -8°, первый ряд +22px, последний -22px. Сетка 5×2 */
+/* Карточки клиентов в стиле секции Услуги: skew -8°, первый ряд +2px, последний -22px. Сетка 5×2, соотношение 16:9 */
 #partners .client-item {
   display: flex;
   align-items: center;
@@ -2762,13 +2771,17 @@ section { scroll-margin-top: 0; }
   position: relative;
   overflow: hidden;
   width: 100%;
-  min-height: 160px;
-  aspect-ratio: 1;
+  min-width: 0;
+  max-width: none;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  aspect-ratio: 16 / 9;
   transform: skew(-8deg, 0deg);
 }
 
 #partners .client-item:nth-child(-n+5) {
-  transform: skew(-8deg, 0deg) translateX(10px);
+  transform: skew(-8deg, 0deg) translateX(2px);
 }
 
 #partners .client-item:nth-child(n+6) {
@@ -2781,7 +2794,7 @@ section { scroll-margin-top: 0; }
     transform: skew(-8deg, 0deg) scale(1.02);
   }
   #partners .client-item:nth-child(-n+5):hover {
-    transform: skew(-8deg, 0deg) translateX(10px) scale(1.02);
+    transform: skew(-8deg, 0deg) translateX(2px) scale(1.02);
   }
   #partners .client-item:nth-child(n+6):hover {
     transform: skew(-8deg, 0deg) translateX(-22px) scale(1.02);
@@ -2794,7 +2807,7 @@ section { scroll-margin-top: 0; }
 }
 #partners .client-item:nth-child(-n+5):active,
 #partners .client-item:nth-child(-n+5):hover:active {
-  transform: skew(-8deg, 0deg) translateX(10px) scale(0.98) !important;
+  transform: skew(-8deg, 0deg) translateX(2px) scale(0.98) !important;
 }
 #partners .client-item:nth-child(n+6):active,
 #partners .client-item:nth-child(n+6):hover:active {
@@ -2925,7 +2938,7 @@ section { scroll-margin-top: 0; }
 
   #partners .client-item {
     padding: 16px;
-    min-height: 140px;
+    min-height: 0;
   }
 
   .client-logo {
@@ -2968,7 +2981,7 @@ section { scroll-margin-top: 0; }
 
   #partners .client-item {
     padding: 12px;
-    min-height: 120px;
+    min-height: 0;
   }
 
   #partners .client-item .client-logo,
