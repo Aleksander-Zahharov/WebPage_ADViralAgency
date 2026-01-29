@@ -1265,6 +1265,12 @@ section { scroll-margin-top: 0; }
   40%  { transform: skew(-8deg, 0deg) translateX(22px) translateY(-3px) scale(var(--wave-scale, 1.02)); }
   100% { transform: skew(-8deg, 0deg) translateX(22px) translateY(0) scale(1); }
 }
+/* Наши клиенты: первый ряд, сдвиг вправо (10px) — меньше чем у Услуг для выравнивания */
+@keyframes press-bounce-skew-v-r1-partners {
+  0%   { transform: skew(-8deg, 0deg) translateX(10px) translateY(0) scale(1); }
+  40%  { transform: skew(-8deg, 0deg) translateX(10px) translateY(-3px) scale(var(--wave-scale, 1.02)); }
+  100% { transform: skew(-8deg, 0deg) translateX(10px) translateY(0) scale(1); }
+}
 /* Услуги: последний ряд, сдвиг влево (-22px) */
 @keyframes press-bounce-skew-v-r3 {
   0%   { transform: skew(-8deg, 0deg) translateX(-22px) translateY(0) scale(1); }
@@ -1415,36 +1421,64 @@ section { scroll-margin-top: 0; }
     transform: skew(-8deg, 0deg) translateX(-22px) scale(0.98) !important;
   }
 
-  /* Волна в Наши клиенты — только у элементов без .wave-done (после окончания волны или после hover класс ставится, волна больше не перезапускается при уходе мыши) */
+  /* Волна в Наши клиенты — в стиле Услуг: skew -8°, первый ряд +22px, последний -22px */
   #partners .client-item[data-wave-ready="true"]:not(.wave-done) {
-    --wave-scale: 1.05;
-    animation: press-bounce 1s cubic-bezier(0.33, 1, 0.68, 1) 1 both;
+    --wave-scale: 1.02;
+    animation: press-bounce-skew-v 1s cubic-bezier(0.33, 1, 0.68, 1) 1 both;
     animation-delay: var(--wave-delay, 0.2s);
     animation-play-state: paused;
     will-change: transform;
     transition: transform 0.25s ease;
   }
+  #partners .client-item[data-wave-ready="true"]:not(.wave-done):nth-child(-n+5) {
+    animation-name: press-bounce-skew-v-r1-partners;
+  }
+  #partners .client-item[data-wave-ready="true"]:not(.wave-done):nth-child(n+6) {
+    animation-name: press-bounce-skew-v-r3;
+  }
   #partners.in-view .client-item[data-wave-ready="true"]:not(.wave-done) {
     animation-play-state: running;
   }
-  /* После волны или после первого hover: только transform, при уходе мыши — плавный возврат до конца, без перезапуска волны */
+  /* После волны или после первого hover */
   #partners .client-item[data-wave-ready="true"].wave-done {
     animation: none !important;
-    transform: scale(1);
+    transform: skew(-8deg, 0deg);
     transition: transform 0.25s ease;
   }
-  /* При наведении волна отменяется, плавный переход к scale(1.05) */
+  #partners .client-item[data-wave-ready="true"].wave-done:nth-child(-n+5) {
+    transform: skew(-8deg, 0deg) translateX(10px);
+  }
+  #partners .client-item[data-wave-ready="true"].wave-done:nth-child(n+6) {
+    transform: skew(-8deg, 0deg) translateX(-22px);
+  }
+  /* При наведении волна отменяется, scale(1.02) с сохранением skew и сдвигов */
   #partners .client-item[data-wave-ready="true"]:hover,
   #partners .client-item[data-wave-ready="true"]:focus-within {
     animation: none !important;
-    transform: scale(1.05) !important;
+    transform: skew(-8deg, 0deg) scale(1.02) !important;
     transition: transform 0.25s ease;
+  }
+  #partners .client-item[data-wave-ready="true"]:nth-child(-n+5):hover,
+  #partners .client-item[data-wave-ready="true"]:nth-child(-n+5):focus-within {
+    transform: skew(-8deg, 0deg) translateX(10px) scale(1.02) !important;
+  }
+  #partners .client-item[data-wave-ready="true"]:nth-child(n+6):hover,
+  #partners .client-item[data-wave-ready="true"]:nth-child(n+6):focus-within {
+    transform: skew(-8deg, 0deg) translateX(-22px) scale(1.02) !important;
   }
   #partners .client-item[data-wave-ready="true"]:active,
   #partners .client-item[data-wave-ready="true"]:hover:active {
     animation: none !important;
-    transform: scale(0.98) !important;
+    transform: skew(-8deg, 0deg) scale(0.98) !important;
     transition: transform 0.25s ease;
+  }
+  #partners .client-item[data-wave-ready="true"]:nth-child(-n+5):active,
+  #partners .client-item[data-wave-ready="true"]:nth-child(-n+5):hover:active {
+    transform: skew(-8deg, 0deg) translateX(10px) scale(0.98) !important;
+  }
+  #partners .client-item[data-wave-ready="true"]:nth-child(n+6):active,
+  #partners .client-item[data-wave-ready="true"]:nth-child(n+6):hover:active {
+    transform: skew(-8deg, 0deg) translateX(-22px) scale(0.98) !important;
   }
 
   /* Волна в Наши работы — сверху справа налево вниз, scale как при хавере (1.05), сохраняем skew */
@@ -2696,45 +2730,83 @@ section { scroll-margin-top: 0; }
 .ig-strip.no-snap { scroll-snap-type: none; }
 
 /* =========================
-  Клиенты: сетка с названиями
+  Клиенты: сетка 2×5 в стиле карточек Услуги
 ========================= */
 .clients-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-rows: repeat(2, auto);
+  gap: 20px;
   margin-top: 32px;
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+  box-sizing: border-box;
 }
 
-/* Наши клиенты: пары в боксах, по ширине, край пар = край хедера */
 #partners .clients-grid {
   width: 100%;
   max-width: none;
-  margin-left: 0;
-  margin-right: 0;
 }
 
-#partners .client-pair {
+/* Карточки клиентов в стиле секции Услуги: skew -8°, первый ряд +22px, последний -22px. Сетка 5×2 */
+#partners .client-item {
   display: flex;
-  flex-direction: column;
-  gap: 24px;
   align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 0;
+  text-decoration: none;
+  transition: box-shadow 0.25s ease, transform 0.2s ease, border-color 0.25s ease;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  min-height: 160px;
+  aspect-ratio: 1;
+  transform: skew(-8deg, 0deg);
 }
 
-#partners .client-pair .client-item {
-  flex: 0 0 auto;
+#partners .client-item:nth-child(-n+5) {
+  transform: skew(-8deg, 0deg) translateX(10px);
 }
 
-/* Правый край крайней правой пары совпадает с концом надписи «Наши клиенты» */
-#partners .client-pair:last-child {
-  align-items: flex-end;
-}
-#partners .client-pair:first-child {
-  align-items: flex-start;
+#partners .client-item:nth-child(n+6) {
+  transform: skew(-8deg, 0deg) translateX(-22px);
 }
 
+@media (hover: hover) {
+  #partners .client-item:hover {
+    border-color: var(--service-border-color, var(--card-border));
+    transform: skew(-8deg, 0deg) scale(1.02);
+  }
+  #partners .client-item:nth-child(-n+5):hover {
+    transform: skew(-8deg, 0deg) translateX(10px) scale(1.02);
+  }
+  #partners .client-item:nth-child(n+6):hover {
+    transform: skew(-8deg, 0deg) translateX(-22px) scale(1.02);
+  }
+}
+
+#partners .client-item:active,
+#partners .client-item:hover:active {
+  transform: skew(-8deg, 0deg) scale(0.98) !important;
+}
+#partners .client-item:nth-child(-n+5):active,
+#partners .client-item:nth-child(-n+5):hover:active {
+  transform: skew(-8deg, 0deg) translateX(10px) scale(0.98) !important;
+}
+#partners .client-item:nth-child(n+6):active,
+#partners .client-item:nth-child(n+6):hover:active {
+  transform: skew(-8deg, 0deg) translateX(-22px) scale(0.98) !important;
+}
+
+/* Подсветка границы при наведении (как у карточек Услуги) */
+#partners .client-item {
+  --service-border-color: rgba(255, 255, 255, 0.22);
+}
+
+/* Базовые стили для .client-item вне секции partners (если появятся) */
 .client-item {
   display: flex;
   align-items: center;
@@ -2744,7 +2816,6 @@ section { scroll-margin-top: 0; }
   border: none;
   border-radius: 20px;
   text-decoration: none;
-  /* Плавный переход: при быстром прерывистом наведении анимация всё равно проигрывается от начала до конца */
   transition: transform 0.25s ease;
   position: relative;
   overflow: hidden;
@@ -2788,6 +2859,27 @@ section { scroll-margin-top: 0; }
   transform: scale(1.44); /* Увеличиваем все логотипы на 20% (1.2 * 1.2 = 1.44), чтобы они заполняли бокс и обрезались */
 }
 
+/* В секции Наши клиенты — контр-наклон логотипа под skew карточки, картинки чуть крупнее */
+#partners .client-item .client-logo {
+  transform: skew(8deg, 0deg) scale(1.52);
+}
+
+#partners .client-item[data-client="eeste"] .client-logo {
+  transform: skew(8deg, 0deg) scale(1.53);
+}
+
+#partners .client-item[data-client="bfm"] .client-logo {
+  transform: skew(8deg, 0deg) scale(1.37);
+}
+
+#partners .client-item[data-client="err"] .client-logo {
+  transform: skew(8deg, 0deg) scale(1.52);
+}
+
+#partners .client-item[data-client="dodo"] .client-logo {
+  transform: skew(8deg, 0deg) scale(1.46);
+}
+
 /* Estee увеличен чуть больше */
 .client-item[data-client="eeste"] .client-logo {
   transform: scale(1.45); /* Estee увеличен еще чуть больше */
@@ -2826,87 +2918,40 @@ section { scroll-margin-top: 0; }
 
 @media (max-width: 768px) {
   .clients-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 180px);
-    grid-template-rows: repeat(2, 180px);
-    grid-auto-flow: column;
-    overflow-x: auto;
-    overflow-y: hidden;
     gap: 16px;
-    max-width: 100%;
-    padding-bottom: 8px;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+    padding-left: 16px;
+    padding-right: 16px;
   }
 
-  /* Наши клиенты с парами: одна строка из 5 колонок-пар, пара — столбик из 2 элементов */
-  #partners .clients-grid {
-    grid-template-rows: auto;
-    grid-auto-flow: row;
+  #partners .client-item {
+    padding: 16px;
+    min-height: 140px;
   }
-  #partners .client-pair {
-    scroll-snap-align: start;
-    min-width: 180px;
-  }
-  
-  .clients-grid::-webkit-scrollbar {
-    height: 6px;
-  }
-  
-  .clients-grid::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  
-  .clients-grid::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-  }
-  
-  .clients-grid::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.3);
-  }
-  
-  .client-item {
-    width: 180px;
-    height: 180px;
-    min-width: 180px;
-    min-height: 180px;
-    max-width: 180px;
-    max-height: 180px;
-    padding: 20px;
-    scroll-snap-align: start;
-  }
-  
+
   .client-logo {
     max-width: none;
     max-height: none;
-    border-radius: 0; /* Убираем закругление у картинки */
-    transform: scale(1.44); /* Увеличиваем все логотипы на планшетах на 20% (1.2 * 1.2 = 1.44) */
+    border-radius: 0;
+    transform: scale(1.44);
   }
-  
-  /* Estee увеличен на планшетах */
-  .client-item[data-client="eeste"] .client-logo {
-    transform: scale(1.45); /* Estee увеличен еще чуть больше */
+
+  #partners .client-item .client-logo {
+    transform: skew(8deg, 0deg) scale(1.52);
   }
-  
-  /* BFM - уменьшен на планшетах */
-  .client-item[data-client="bfm"] .client-logo {
-    transform: scale(1.3); /* Немного меньше остальных */
+
+  #partners .client-item[data-client="eeste"] .client-logo {
+    transform: skew(8deg, 0deg) scale(1.53);
   }
-  
-  /* ERR увеличен до стандартного размера на планшетах */
-  .client-item[data-client="err"] .client-logo {
-    transform: scale(1.44); /* ERR увеличен до стандартного размера */
+  #partners .client-item[data-client="bfm"] .client-logo {
+    transform: skew(8deg, 0deg) scale(1.37);
   }
-  
-  /* Dodo Pizza - немного увеличен на планшетах */
-  .client-item[data-client="dodo"] .client-logo {
-    transform: scale(1.38); /* Dodo Pizza немного больше */
+  #partners .client-item[data-client="err"] .client-logo {
+    transform: skew(8deg, 0deg) scale(1.52);
   }
-  
-  /* BFM увеличен в два раза на планшетах */
+  #partners .client-item[data-client="dodo"] .client-logo {
+    transform: skew(8deg, 0deg) scale(1.46);
+  }
+
   .client-item[data-client="bfm"] .client-logo {
     width: 200%;
     height: 200%;
@@ -2916,53 +2961,31 @@ section { scroll-margin-top: 0; }
 
 @media (max-width: 600px) {
   .clients-grid {
-    grid-template-columns: repeat(5, 180px);
-    grid-template-rows: repeat(2, 180px);
     gap: 12px;
+    padding-left: 12px;
+    padding-right: 12px;
   }
-  
-  .client-item {
-    width: 180px;
-    height: 180px;
-    min-width: 180px;
-    min-height: 180px;
-    max-width: 180px;
-    max-height: 180px;
-    padding: 16px;
+
+  #partners .client-item {
+    padding: 12px;
+    min-height: 120px;
   }
-  
+
+  #partners .client-item .client-logo,
   .client-logo {
-    max-width: none;
-    max-height: none;
-    border-radius: 0; /* Убираем закругление у картинки */
-    transform: scale(1.44); /* Увеличиваем все логотипы на мобильных на 20% (1.2 * 1.2 = 1.44) */
+    transform: skew(8deg, 0deg) scale(1.52);
   }
-  
-  /* Estee увеличен на мобильных */
-  .client-item[data-client="eeste"] .client-logo {
-    transform: scale(1.45); /* Estee увеличен еще чуть больше */
+  #partners .client-item[data-client="eeste"] .client-logo {
+    transform: skew(8deg, 0deg) scale(1.53);
   }
-  
-  /* BFM - уменьшен на мобильных */
-  .client-item[data-client="bfm"] .client-logo {
-    transform: scale(1.3); /* Немного меньше остальных */
+  #partners .client-item[data-client="bfm"] .client-logo {
+    transform: skew(8deg, 0deg) scale(1.37);
   }
-  
-  /* ERR увеличен до стандартного размера на мобильных */
-  .client-item[data-client="err"] .client-logo {
-    transform: scale(1.44); /* ERR увеличен до стандартного размера */
+  #partners .client-item[data-client="err"] .client-logo {
+    transform: skew(8deg, 0deg) scale(1.52);
   }
-  
-  /* Dodo Pizza - немного увеличен на мобильных */
-  .client-item[data-client="dodo"] .client-logo {
-    transform: scale(1.38); /* Dodo Pizza немного больше */
-  }
-  
-  /* BFM увеличен в два раза на мобильных */
-  .client-item[data-client="bfm"] .client-logo {
-    width: 200%;
-    height: 200%;
-    border-radius: 0;
+  #partners .client-item[data-client="dodo"] .client-logo {
+    transform: skew(8deg, 0deg) scale(1.46);
   }
 }
 
