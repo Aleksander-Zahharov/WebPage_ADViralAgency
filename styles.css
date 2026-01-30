@@ -232,6 +232,7 @@
 [data-theme="light"] #services .cards .card:hover,
 [data-theme="light"] #services .cards .card:focus-within,
 [data-theme="light"] #services .cards .card.icon-animating {
+  background: rgba(0,0,0,0.02); /* сохраняем светло-серый фон при наведении */
   border-width: 1px;
   border-color: var(--service-border-color, var(--card-border));
 }
