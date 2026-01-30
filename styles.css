@@ -1802,32 +1802,32 @@ section { scroll-margin-top: 0; }
   /* После волны или после первого hover — transition для плавного возврата при снятии .hover-scale-on */
   #partners .client-item[data-wave-ready="true"].wave-done {
     animation: none !important;
-    transform: skew(-8deg, 0deg);
+    transform: skew(-8deg, 0deg) translateZ(0);
     transition: transform 0.25s ease-in-out;
   }
   #partners .client-item[data-wave-ready="true"].wave-done:nth-child(-n+5) {
-    transform: skew(-8deg, 0deg) translateX(2px);
+    transform: skew(-8deg, 0deg) translateX(2px) translateZ(0);
   }
   #partners .client-item[data-wave-ready="true"].wave-done:nth-child(n+6) {
-    transform: skew(-8deg, 0deg) translateX(-22px);
+    transform: skew(-8deg, 0deg) translateX(-22px) translateZ(0);
   }
   /* При наведении волна отменяется; .hover-scale-on — доигрывание анимации до конца (как у горизонтальной ленты) */
   #partners .client-item[data-wave-ready="true"]:hover,
   #partners .client-item[data-wave-ready="true"]:focus-within,
   #partners .client-item[data-wave-ready="true"].hover-scale-on {
     animation: none !important;
-    transform: skew(-8deg, 0deg) scale(1.08) !important;
+    transform: skew(-8deg, 0deg) scale(1.08) translateZ(0) !important;
     transition: transform 0.25s ease-in-out;
   }
   #partners .client-item[data-wave-ready="true"]:nth-child(-n+5):hover,
   #partners .client-item[data-wave-ready="true"]:nth-child(-n+5):focus-within,
   #partners .client-item[data-wave-ready="true"]:nth-child(-n+5).hover-scale-on {
-    transform: skew(-8deg, 0deg) translateX(2px) scale(1.08) !important;
+    transform: skew(-8deg, 0deg) translateX(2px) scale(1.08) translateZ(0) !important;
   }
   #partners .client-item[data-wave-ready="true"]:nth-child(n+6):hover,
   #partners .client-item[data-wave-ready="true"]:nth-child(n+6):focus-within,
   #partners .client-item[data-wave-ready="true"]:nth-child(n+6).hover-scale-on {
-    transform: skew(-8deg, 0deg) translateX(-22px) scale(1.08) !important;
+    transform: skew(-8deg, 0deg) translateX(-22px) scale(1.08) translateZ(0) !important;
   }
   #partners .client-item[data-wave-ready="true"]:active,
   #partners .client-item[data-wave-ready="true"]:hover:active {
@@ -3481,45 +3481,46 @@ section { scroll-margin-top: 0; }
   max-width: none;
   max-height: none;
   aspect-ratio: 16 / 9;
-  transform: skew(-8deg, 0deg);
+  transform: skew(-8deg, 0deg) translateZ(0);
   box-sizing: border-box;
+  will-change: transform; /* слой с самого начала — анимация без подлагивания при первой загрузке */
 }
 
 #partners .client-item:nth-child(-n+5) {
-  transform: skew(-8deg, 0deg) translateX(2px);
+  transform: skew(-8deg, 0deg) translateX(2px) translateZ(0);
 }
 
 #partners .client-item:nth-child(n+6) {
-  transform: skew(-8deg, 0deg) translateX(-22px);
+  transform: skew(-8deg, 0deg) translateX(-22px) translateZ(0);
 }
 
 @media (hover: hover) {
   #partners .client-item:hover,
   #partners .client-item.hover-scale-on {
     border-color: var(--service-border-color, var(--card-border));
-    transform: skew(-8deg, 0deg) scale(1.08);
+    transform: skew(-8deg, 0deg) scale(1.08) translateZ(0);
   }
   #partners .client-item:nth-child(-n+5):hover,
   #partners .client-item:nth-child(-n+5).hover-scale-on {
-    transform: skew(-8deg, 0deg) translateX(2px) scale(1.08);
+    transform: skew(-8deg, 0deg) translateX(2px) scale(1.08) translateZ(0);
   }
   #partners .client-item:nth-child(n+6):hover,
   #partners .client-item:nth-child(n+6).hover-scale-on {
-    transform: skew(-8deg, 0deg) translateX(-22px) scale(1.08);
+    transform: skew(-8deg, 0deg) translateX(-22px) scale(1.08) translateZ(0);
   }
 }
 
 #partners .client-item:active,
 #partners .client-item:hover:active {
-  transform: skew(-8deg, 0deg) scale(0.98) !important;
+  transform: skew(-8deg, 0deg) scale(0.98) translateZ(0) !important;
 }
 #partners .client-item:nth-child(-n+5):active,
 #partners .client-item:nth-child(-n+5):hover:active {
-  transform: skew(-8deg, 0deg) translateX(2px) scale(0.98) !important;
+  transform: skew(-8deg, 0deg) translateX(2px) scale(0.98) translateZ(0) !important;
 }
 #partners .client-item:nth-child(n+6):active,
 #partners .client-item:nth-child(n+6):hover:active {
-  transform: skew(-8deg, 0deg) translateX(-22px) scale(0.98) !important;
+  transform: skew(-8deg, 0deg) translateX(-22px) scale(0.98) translateZ(0) !important;
 }
 
 /* Подсветка границы при наведении (как у карточек Услуги) */
@@ -3580,65 +3581,71 @@ section { scroll-margin-top: 0; }
   transform: scale(1.44); /* Увеличиваем все логотипы на 20% (1.2 * 1.2 = 1.44), чтобы они заполняли бокс и обрезались */
 }
 
-/* В секции Наши клиенты — контр-наклон логотипа под skew карточки, картинки чуть крупнее */
+/* В секции Наши клиенты — картинка логотипа на всю высоту и ширину рамки; масштаб иконок уменьшен внутри рамок */
 #partners .client-item .client-logo {
-  transform: skew(8deg, 0deg) scale(1.52);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: skew(8deg, 0deg) scale(1.34);
+  object-fit: cover;
 }
 
 #partners .client-item[data-client="eeste"] .client-logo {
-  transform: skew(8deg, 0deg) scale(2.125); /* Estee — +25% */
+  transform: skew(8deg, 0deg) scale(1.94);
 }
 
 #partners .client-item[data-client="bfm"] .client-logo {
-  transform: skew(8deg, 0deg) translateY(6px) scale(2); /* BFM — +25%, чуть вниз */
+  transform: skew(8deg, 0deg) translateY(14px) scale(2.5);
 }
 
 #partners .client-item[data-client="err"] .client-logo {
-  transform: skew(8deg, 0deg) scale(1.36); /* ERR — уменьшен сильнее */
+  transform: skew(8deg, 0deg) scale(1.10);
 }
 
 #partners .client-item[data-client="dodo"] .client-logo {
-  transform: skew(8deg, 0deg) scale(1.34); /* Dodo — уменьшен сильнее */
+  transform: skew(8deg, 0deg) scale(1.13);
 }
 
 #partners .client-item[data-client="stockmann"] .client-logo {
-  transform: skew(8deg, 0deg) scale(1.36); /* Stockmann — уменьшен сильнее */
+  transform: skew(8deg, 0deg) scale(1.14);
 }
 
 #partners .client-item[data-client="moto24"] .client-logo {
-  transform: skew(8deg, 0deg) scale(1.36); /* Moto24 — уменьшен сильнее */
+  transform: skew(8deg, 0deg) scale(1.14);
 }
 
 #partners .client-item[data-client="expert"] .client-logo {
-  transform: skew(8deg, 0deg) scale(1.36); /* Expert Autokool — уменьшен сильнее */
+  transform: skew(8deg, 0deg) scale(1.14);
 }
 
 #partners .client-item[data-client="roses"] .client-logo {
-  transform: skew(8deg, 0deg) scale(1.36); /* Roses — уменьшен сильнее */
+  transform: skew(8deg, 0deg) scale(1.14);
 }
 
 #partners .client-item[data-client="kaitsevagi"] .client-logo {
-  transform: skew(8deg, 0deg) scale(1.36); /* Kaitsevägi — уменьшен сильнее */
+  transform: skew(8deg, 0deg) scale(1.14);
 }
 
-/* Estee — +25% (базовые стили вне #partners) */
+/* Estee — увеличен (базовые стили вне #partners) */
 .client-item[data-client="eeste"] .client-logo {
-  transform: scale(1.975);
+  transform: scale(2.05);
 }
 
-/* BFM — +25%, чуть вниз */
+/* BFM — увеличен, чуть вниз */
 .client-item[data-client="bfm"] .client-logo {
-  transform: translateY(6px) scale(1.925);
+  transform: translateY(8px) scale(2);
 }
 
-/* ERR — уменьшен сильнее */
+/* ERR — высота как у карточки (базовые стили вне #partners) */
 .client-item[data-client="err"] .client-logo {
-  transform: scale(1.32);
+  transform: scale(1.44);
 }
 
-/* Dodo Pizza — уменьшен сильнее */
+/* Dodo Pizza — чуть уменьшен */
 .client-item[data-client="dodo"] .client-logo {
-  transform: scale(1.28);
+  transform: scale(1.24);
 }
 
 @media (hover: hover) {
