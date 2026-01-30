@@ -222,11 +222,18 @@
 [data-theme="light"] .lang-switcher__option.is-active {
   color: #1d1d1f;
 }
-/* Карточки услуг в светлой теме — ещё более светло-серый фон */
+/* Карточки услуг в светлой теме — ещё более светло-серый фон, без границы в обычном состоянии */
 [data-theme="light"] #services .cards .card {
   background: rgba(0,0,0,0.02);
-  border-color: rgba(0,0,0,0.06);
+  border-width: 0;
+  border-color: transparent;
   -webkit-font-smoothing: subpixel-antialiased;
+}
+[data-theme="light"] #services .cards .card:hover,
+[data-theme="light"] #services .cards .card:focus-within,
+[data-theme="light"] #services .cards .card.icon-animating {
+  border-width: 1px;
+  border-color: var(--service-border-color, var(--card-border));
 }
 /* Услуги: текст карточек такой же чёрный, как заголовок секции (без «мыльного» оттенка) */
 [data-theme="light"] #services h2,
@@ -1607,16 +1614,11 @@ section { scroll-margin-top: 0; }
   100% { transform: skew(8deg, 0deg) translateY(0) scale(1); }
 }
 
-/* Анимация загорания границы и цветной подсветки вокруг карточки */
+/* Анимация загорания границы и цветной подсветки вокруг карточки (один плавный переход без промежуточного кадра) */
 @keyframes border-glow {
   0% {
     border-color: var(--card-border);
     box-shadow: none;
-  }
-  50% {
-    border-color: var(--service-border-color, var(--card-border));
-    box-shadow: 0 0 12px var(--service-border-color, transparent),
-                0 0 28px var(--service-border-color, transparent);
   }
   100% {
     border-color: var(--service-border-color, var(--card-border));
@@ -1978,7 +1980,7 @@ section { scroll-margin-top: 0; }
   -webkit-mask: radial-gradient(25rem 25rem at var(--x) var(--y), #000 1%, transparent 50%);
   opacity: var(--opacity, 0);
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.48s ease-in-out; /* синхронно с border-glow — одно загорание */
   z-index: -1; /* подсветка лежит под контентом */
 }
 
@@ -6147,4 +6149,3 @@ input::placeholder, textarea::placeholder {
     transition: none !important;
   }
 }
-

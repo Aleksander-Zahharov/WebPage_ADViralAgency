@@ -2678,13 +2678,20 @@ document.addEventListener("DOMContentLoaded", () => {
       openServicePopup(card);
     });
 
+    const rect0 = () => card.getBoundingClientRect();
     const updateSpotlight = createRafThrottle((clientX, clientY) => {
-      const rect = card.getBoundingClientRect();
+      const rect = rect0();
       card.style.setProperty('--x', `${clientX - rect.left}px`);
       card.style.setProperty('--y', `${clientY - rect.top}px`);
       card.style.setProperty('--opacity', 1);
     });
 
+    card.addEventListener('mouseenter', () => {
+      const rect = rect0();
+      card.style.setProperty('--x', `${rect.width / 2}px`);
+      card.style.setProperty('--y', `${rect.height / 2}px`);
+      card.style.setProperty('--opacity', 1);
+    });
     card.addEventListener('mousemove', (event) => updateSpotlight(event.clientX, event.clientY));
     card.addEventListener('mouseleave', () => {
       card.style.setProperty('--opacity', 0);
