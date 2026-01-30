@@ -476,9 +476,21 @@
 [data-theme="light"] section#contact textarea:focus {
   background: rgba(255, 255, 255, 0.98);
 }
+[data-theme="light"] section#contact input,
+[data-theme="light"] section#contact textarea {
+  color: rgba(255, 255, 255, 0.9); /* без фокуса — светлым (и плейсхолдер, и введённое) */
+}
+[data-theme="light"] section#contact input:focus,
+[data-theme="light"] section#contact textarea:focus {
+  color: #1d1d1f; /* при фокусе — тёмным, чтобы то что пишет юзер было читаемо */
+}
+/* Фоновый текст в контактах (светлая тема) — тот же оттенок, что у .services-dropdown-placeholder */
+[data-theme="light"] section#contact .services-dropdown-placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
 [data-theme="light"] section#contact input::placeholder,
 [data-theme="light"] section#contact textarea::placeholder {
-  color: rgba(0, 0, 0, 0.45);
+  color: rgba(255, 255, 255, 0.55);
 }
 [data-theme="light"] .btn-primary.hover-tap-active {
   background: linear-gradient(135deg, #c2410c, #fb923c);
