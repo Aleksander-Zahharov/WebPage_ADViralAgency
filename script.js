@@ -392,7 +392,7 @@ const translations = {
     footer: {
       copy: "© 2026 ADViral Agency",
       authorLabel: "Made by",
-      authorCredits: "Made by the coolest, most beautiful, wonderful, smart, creative, resourceful, fearless and modest person — Alexander Zakharov",
+      authorCredits: "Made by the coolest, most beautiful, wonderful, smart, creative, resourceful, fearless and modest person — Alexander Zahharov",
       authorCreditsAria: "Credits",
       email: "info@adviral.agency",
       social: {

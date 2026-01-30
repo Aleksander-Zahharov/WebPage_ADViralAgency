@@ -3586,11 +3586,11 @@ section { scroll-margin-top: 0; }
 }
 
 #partners .client-item[data-client="eeste"] .client-logo {
-  transform: skew(8deg, 0deg) scale(1.70); /* Estee — увеличен сильнее */
+  transform: skew(8deg, 0deg) scale(2.125); /* Estee — +25% */
 }
 
 #partners .client-item[data-client="bfm"] .client-logo {
-  transform: skew(8deg, 0deg) scale(1.60); /* BFM — увеличен сильнее */
+  transform: skew(8deg, 0deg) translateY(6px) scale(2); /* BFM — +25%, чуть вниз */
 }
 
 #partners .client-item[data-client="err"] .client-logo {
@@ -3621,14 +3621,14 @@ section { scroll-margin-top: 0; }
   transform: skew(8deg, 0deg) scale(1.36); /* Kaitsevägi — уменьшен сильнее */
 }
 
-/* Estee — увеличен сильнее (базовые стили вне #partners) */
+/* Estee — +25% (базовые стили вне #partners) */
 .client-item[data-client="eeste"] .client-logo {
-  transform: scale(1.58);
+  transform: scale(1.975);
 }
 
-/* BFM — увеличен сильнее */
+/* BFM — +25%, чуть вниз */
 .client-item[data-client="bfm"] .client-logo {
-  transform: scale(1.54);
+  transform: translateY(6px) scale(1.925);
 }
 
 /* ERR — уменьшен сильнее */
