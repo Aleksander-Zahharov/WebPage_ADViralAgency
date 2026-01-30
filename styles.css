@@ -808,6 +808,11 @@ section { scroll-margin-top: 0; }
   text-align: left;
 }
 
+/* Секция Наши клиенты: без лишнего пространства снизу */
+#partners .container {
+  min-height: 0; /* не растягивать по flex/grid */
+}
+
 /* Хедеры и параграфы карточек Услуги начинаются слева */
 #services .card h3,
 #services .card p {
@@ -2743,10 +2748,11 @@ section { scroll-margin-top: 0; }
   — Логотип .client-logo: transform: scale(1.44) без skew; у BFM/Estee/ERR/Dodo свои scale.
 ========================= */
 
-/* Обёртка для масштабирования: занимает 100% ширины, высота по aspect-ratio 308/1360. overflow: visible — карточки (skew/translate) не обрезаются по краям */
+/* Обёртка для масштабирования: занимает 100% ширины, высота по aspect-ratio 308/1360. max-height убирает лишнее пространство снизу на широких экранах */
 .clients-grid-scale-wrapper {
   width: 100%;
   aspect-ratio: 308 / 1360;
+  max-height: 420px; /* ограничение высоты — убрать лишнее пространство снизу на широких экранах */
   position: relative;
   overflow: visible;
   container-type: inline-size;
