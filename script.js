@@ -225,7 +225,7 @@ const translations = {
     footer: {
       copy: "© 2026 ADViral Agency",
       authorLabel: "Made by",
-      authorCredits: "Сделано самым классным, красивым, замечательным, умным, креативным, находчивым, бесстрашным и скромным человеком — Александром Захаровым",
+      authorCredits: "Сделано самым классным, красивым, замечательным, умным, креативным, находчивым, бесстрашным, талантливым, легендарным, харизматичным, проницательным, великолепным, блестящим, виртуозным, амбициозным, прогрессивным, неповторимым, атлетичным, эрудированным, дальновидным, безупречным, искрометным, галантным, целеустремленным, вдохновляющим, энергичным, оригинальным, выдающимся, эффектным, мудрым, надежным, решительным, многогранным, тактичным, искусным, благородным, уникальным, феноменальным, эстетичным, неутомимым, аттрактивным, авторитетным, непревзойденным, изобретательным, хайповым, незаменимым, жизнерадостным, глубоким, статным и скромным человеком — Александром Захаровым 🕶️",
       authorCreditsAria: "О создателе",
       email: "info@adviral.agency",
       social: {
@@ -392,7 +392,7 @@ const translations = {
     footer: {
       copy: "© 2026 ADViral Agency",
       authorLabel: "Made by",
-      authorCredits: "Made by the coolest, most beautiful, wonderful, smart, creative, resourceful, fearless and modest person — Alexander Zahharov",
+      authorCredits: "Made by the coolest, most beautiful, wonderful, smart, creative, resourceful, fearless, talented, legendary, charismatic, insightful, magnificent, brilliant, virtuoso, ambitious, progressive, one-of-a-kind, athletic, erudite, visionary, impeccable, sparkling, gallant, determined, inspiring, energetic, original, outstanding, striking, wise, reliable, decisive, multifaceted, tactful, skillful, noble, unique, phenomenal, aesthetic, tireless, attractive, authoritative, unsurpassed, inventive, hype, irreplaceable, cheerful, profound, stately and modest person — Alexander Zahharov 🕶️",
       authorCreditsAria: "Credits",
       email: "info@adviral.agency",
       social: {
@@ -559,7 +559,7 @@ const translations = {
     footer: {
       copy: "© 2026 ADViral Agency",
       authorLabel: "Made by",
-      authorCredits: "Tehtud kõige lahedama, ilusama, imelise, targa, loova, leidlike, kartmatu ja tagasihoidliku inimese poolt — Aleksandr Zahharov",
+      authorCredits: "Tehtud kõige lahedama, ilusama, imelise, targa, loova, leidlike, kartmatu, andeka, legendaarse, karismaatilise, terava, suurepärase, hiilgava, virtuoosse, ambitsioonika, progressiivse, ainulaadse, atleetilise, erudiitse, kaugemalevaatava, veatu, sädelava, galantse, sihikindla, inspireeriva, energilise, originaalse, silmapaistva, mõjuka, usaldusväärse, otsustusvõimelise, mitmekülgse, taktilise, osava, väärika, unikaalse, fenomenalse, esteetilise, väsimatu, atraktiivse, autoriteetse, ületamatu, leidliku, trendika, asendamatu, rõõmsameelse, sügava, statuursa ja tagasihoidliku inimese poolt — Aleksandr Zahharov 🕶️",
       authorCreditsAria: "Krediidid",
       email: "info@adviral.agency",
       social: {

@@ -2359,14 +2359,14 @@ section { scroll-margin-top: 0; }
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: 420px;
+  max-width: min(90vw, 720px);
 }
 .author-popup-container {
   position: relative;
   background: var(--bg-2);
   border: 1px solid var(--card-border);
   border-radius: 20px;
-  padding: 28px 24px 24px;
+  padding: 32px 28px 28px;
   box-sizing: border-box;
 }
 .author-popup-close {
@@ -2393,10 +2393,12 @@ section { scroll-margin-top: 0; }
 }
 .author-popup-text {
   margin: 0;
-  padding-right: 36px;
+  padding-right: 40px;
   font-family: var(--secondary-font);
   font-size: 15px;
-  line-height: 1.5;
+  line-height: 1.55;
+  max-height: 70vh;
+  overflow-y: auto;
   color: var(--text);
 }
 .footer-author-colon {
