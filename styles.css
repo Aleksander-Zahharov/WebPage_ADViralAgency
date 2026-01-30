@@ -142,13 +142,24 @@
   background: linear-gradient(180deg, rgba(255,255,255,.25), rgba(255,255,255,.35));
 }
 [data-theme="light"] .hero-content h1,
+[data-theme="light"] .hero-content p,
 [data-theme="light"] .hero-content .muted {
+  color: #fff;
+}
+/* Все параграфы в светлой теме — цвет как у заголовка «Кто мы» (кроме hero подзаголовка, он белый выше) */
+[data-theme="light"] p {
   color: #1d1d1f;
 }
 [data-theme="light"] .hero .btn-primary {
   color: #fff;
 }
+/* Все стрелки в светлой теме — чёрные */
 [data-theme="light"] .scroll-to-top span {
+  filter: brightness(0) saturate(100%);
+}
+[data-theme="light"] #works .ig-arrow::before,
+[data-theme="light"] .modal-arrow::before,
+[data-theme="light"] .service-popup-arrow::before {
   filter: brightness(0) saturate(100%);
 }
 [data-theme="light"] .scroll-to-top.hover-tap-active {
@@ -192,6 +203,45 @@
 [data-theme="light"] .lang-switcher__option.is-active {
   color: #1d1d1f;
 }
+/* Карточки услуг в светлой теме — ещё более светло-серый фон */
+[data-theme="light"] #services .cards .card {
+  background: rgba(0,0,0,0.03);
+  border-color: rgba(0,0,0,0.08);
+}
+/* Услуги и «Кто мы» — заголовки и текст чёрные в светлой теме */
+[data-theme="light"] #services h2,
+[data-theme="light"] #services .section-sub,
+[data-theme="light"] #services .cards .card h3,
+[data-theme="light"] #services .cards .card p {
+  color: #1d1d1f;
+}
+[data-theme="light"] #about h2,
+[data-theme="light"] #about .content p,
+[data-theme="light"] #about .text-scroll p {
+  color: #1d1d1f;
+}
+/* Контакты: заголовок белый, панель выбора услуг — светлая/белая */
+[data-theme="light"] #contact .contact-content h2 {
+  color: #fff;
+}
+[data-theme="light"] .services-dropdown-panel {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+[data-theme="light"] .services-dropdown-panel .services-dropdown-option,
+[data-theme="light"] .services-dropdown-panel .services-dropdown-option > span {
+  color: #1d1d1f;
+}
+[data-theme="light"] .services-dropdown-option {
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+[data-theme="light"] .services-dropdown-option.selected {
+  background: rgba(0, 0, 0, 0.06);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.15);
+}
 
 @media (max-width: 820px) {
   [data-theme="light"] .header-nav {
@@ -201,6 +251,76 @@
   [data-theme="light"] .header-nav a {
     color: #1d1d1f;
   }
+  [data-theme="light"].menu-open body::before {
+    background: rgba(255, 255, 255, 0.4);
+  }
+  [data-theme="light"] .services-dropdown-panel:not([hidden])::before {
+    background: rgba(255, 255, 255, 0.5);
+  }
+}
+
+/* Светлая тема: затемнения → засветления (hero уже выше, остальные оверлеи) */
+[data-theme="light"] .media::after {
+  background: linear-gradient(180deg, transparent 60%, rgba(255,255,255,.35));
+}
+[data-theme="light"] .contact-overlay {
+  background: linear-gradient(180deg, rgba(255,255,255,.45), rgba(255,255,255,.5));
+}
+[data-theme="light"] .service-popup-overlay {
+  background: rgba(255, 255, 255, 0.75);
+}
+/* Попап услуги в светлой теме — светлый контейнер, крестик и текст */
+[data-theme="light"] .service-popup-container {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+[data-theme="light"] .service-popup-close {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(0, 0, 0, 0.2);
+  color: #1d1d1f;
+}
+[data-theme="light"] .service-popup-close:hover {
+  background: #fff;
+  border-color: rgba(0, 0, 0, 0.35);
+}
+[data-theme="light"] .service-popup-title {
+  color: #1d1d1f;
+}
+[data-theme="light"] .service-popup-text {
+  color: var(--muted);
+}
+[data-theme="light"] .service-popup-video-block {
+  background: rgba(0, 0, 0, 0.08);
+}
+[data-theme="light"] .service-popup-video-placeholder {
+  background: rgba(0, 0, 0, 0.12);
+}
+[data-theme="light"] .service-popup-video-play {
+  border-color: rgba(0, 0, 0, 0.25);
+  background: rgba(255, 255, 255, 0.9);
+  color: #1d1d1f;
+}
+[data-theme="light"] .service-popup-video-play:hover {
+  background: #fff;
+  border-color: rgba(0, 0, 0, 0.35);
+}
+
+[data-theme="light"] .video-modal-overlay {
+  background: rgba(255, 255, 255, 0.65);
+}
+[data-theme="light"] .video-modal-content {
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+/* Крестик закрытия видеоплеера в светлой теме — светлый стиль */
+[data-theme="light"] .video-modal-close {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(0, 0, 0, 0.2);
+  color: #1d1d1f;
+}
+[data-theme="light"] .video-modal-close:hover {
+  background: #fff;
+  border-color: rgba(0, 0, 0, 0.35);
 }
 
 @media (min-width: 1600px) {
