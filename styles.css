@@ -1816,18 +1816,18 @@ section { scroll-margin-top: 0; }
   #partners .client-item[data-wave-ready="true"]:focus-within,
   #partners .client-item[data-wave-ready="true"].hover-scale-on {
     animation: none !important;
-    transform: skew(-8deg, 0deg) scale(1.02) !important;
+    transform: skew(-8deg, 0deg) scale(1.08) !important;
     transition: transform 0.25s ease-in-out;
   }
   #partners .client-item[data-wave-ready="true"]:nth-child(-n+5):hover,
   #partners .client-item[data-wave-ready="true"]:nth-child(-n+5):focus-within,
   #partners .client-item[data-wave-ready="true"]:nth-child(-n+5).hover-scale-on {
-    transform: skew(-8deg, 0deg) translateX(2px) scale(1.02) !important;
+    transform: skew(-8deg, 0deg) translateX(2px) scale(1.08) !important;
   }
   #partners .client-item[data-wave-ready="true"]:nth-child(n+6):hover,
   #partners .client-item[data-wave-ready="true"]:nth-child(n+6):focus-within,
   #partners .client-item[data-wave-ready="true"]:nth-child(n+6).hover-scale-on {
-    transform: skew(-8deg, 0deg) translateX(-22px) scale(1.02) !important;
+    transform: skew(-8deg, 0deg) translateX(-22px) scale(1.08) !important;
   }
   #partners .client-item[data-wave-ready="true"]:active,
   #partners .client-item[data-wave-ready="true"]:hover:active {
@@ -3497,15 +3497,15 @@ section { scroll-margin-top: 0; }
   #partners .client-item:hover,
   #partners .client-item.hover-scale-on {
     border-color: var(--service-border-color, var(--card-border));
-    transform: skew(-8deg, 0deg) scale(1.02);
+    transform: skew(-8deg, 0deg) scale(1.08);
   }
   #partners .client-item:nth-child(-n+5):hover,
   #partners .client-item:nth-child(-n+5).hover-scale-on {
-    transform: skew(-8deg, 0deg) translateX(2px) scale(1.02);
+    transform: skew(-8deg, 0deg) translateX(2px) scale(1.08);
   }
   #partners .client-item:nth-child(n+6):hover,
   #partners .client-item:nth-child(n+6).hover-scale-on {
-    transform: skew(-8deg, 0deg) translateX(-22px) scale(1.02);
+    transform: skew(-8deg, 0deg) translateX(-22px) scale(1.08);
   }
 }
 
@@ -5980,8 +5980,17 @@ input::placeholder, textarea::placeholder {
     transform: skew(8deg, 0deg) scale(1.4);
   }
   .client-item.hover-tap-active {
-    transform: scale(1.05);
+    transform: scale(1.08);
     transition-duration: 0s;
+  }
+  #partners .client-item.hover-tap-active {
+    transform: skew(-8deg, 0deg) scale(1.08);
+  }
+  #partners .client-item:nth-child(-n+5).hover-tap-active {
+    transform: skew(-8deg, 0deg) translateX(2px) scale(1.08);
+  }
+  #partners .client-item:nth-child(n+6).hover-tap-active {
+    transform: skew(-8deg, 0deg) translateX(-22px) scale(1.08);
   }
   .client-item.hover-tap-active .client-logo {
     opacity: 1;
@@ -6056,7 +6065,13 @@ input::placeholder, textarea::placeholder {
   }
   #partners .client-item[data-wave-ready="true"].hover-tap-active {
     animation: none !important;
-    transform: scale(1.05) !important;
+    transform: skew(-8deg, 0deg) scale(1.08) !important;
+  }
+  #partners .client-item[data-wave-ready="true"]:nth-child(-n+5).hover-tap-active {
+    transform: skew(-8deg, 0deg) translateX(2px) scale(1.08) !important;
+  }
+  #partners .client-item[data-wave-ready="true"]:nth-child(n+6).hover-tap-active {
+    transform: skew(-8deg, 0deg) translateX(-22px) scale(1.08) !important;
   }
   #works .ig-item[data-wave-ready="true"].hover-tap-active:not(.ig-item-horizontal),
   #works .ig-item-horizontal[data-wave-ready="true"].hover-tap-active {
