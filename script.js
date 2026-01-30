@@ -2467,6 +2467,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const startGlowAnimation = () => {
       if (card.classList.contains('wave-active')) return; /* во время волны границы цветные не активируем */
+      card.classList.add('card-scale-on');
       card.style.animation = 'none';
       void card.offsetWidth;
       card.style.animation = 'border-glow 0.48s ease-in-out forwards';
@@ -2486,11 +2487,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const remaining = Math.max(0, 480 - elapsed);
 
         setTimeout(() => {
+          card.classList.remove('card-scale-on');
           card.style.animation = 'none';
           void card.offsetWidth;
           card.style.animation = 'border-glow-out 0.24s ease-in-out forwards';
         }, remaining);
       } else {
+        card.classList.remove('card-scale-on');
         card.style.animation = 'none';
         void card.offsetWidth;
         card.style.animation = 'border-glow-out 0.24s ease-in-out forwards';

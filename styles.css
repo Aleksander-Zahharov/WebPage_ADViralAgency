@@ -228,6 +228,9 @@
   border-width: 0;
   border-color: transparent;
   -webkit-font-smoothing: subpixel-antialiased;
+  transition: background 0.48s ease-in-out, transform 0.24s ease-in-out, box-shadow 0.24s ease-in-out;
+}
+[data-theme="light"] #services .cards .card.card-scale-on {
   transition: background 0.48s ease-in-out, transform 0.48s ease-in-out, box-shadow 0.24s ease-in-out;
 }
 [data-theme="light"] #services .cards .card:hover,
@@ -1512,7 +1515,18 @@ section { scroll-margin-top: 0; }
 #services .cards .card {
   border-radius: 0;
   transform: skew(-8deg, 0deg); /* наклон границ как в media-tilted */
-  transition: transform 0.48s ease-in-out, box-shadow 0.24s ease-in-out; /* синхронно с загоранием/потуханием границ */
+  transition: transform 0.24s ease-in-out, box-shadow 0.24s ease-in-out; /* потухание scale/свечения — 0.24s; загорание через .card-scale-on — 0.48s */
+}
+/* Класс .card-scale-on добавляется/снимается из JS в такт с загоранием границы: увеличение доигрывается до конца (0.48s), затем снятие за 0.24s */
+#services .cards .card.card-scale-on {
+  transition: transform 0.48s ease-in-out, box-shadow 0.24s ease-in-out;
+  transform: skew(-8deg, 0deg) scale(1.02);
+}
+#services .cards .card.card-scale-on:nth-child(-n+3) {
+  transform: skew(-8deg, 0deg) translateX(22px) scale(1.02);
+}
+#services .cards .card.card-scale-on:nth-child(n+7) {
+  transform: skew(-8deg, 0deg) translateX(-22px) scale(1.02);
 }
 
 /* Тёмная тема: границы карточек услуг только при hover/focus/анимации; во время волны — без цветной границы */
