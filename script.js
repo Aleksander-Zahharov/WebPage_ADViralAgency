@@ -2466,6 +2466,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let animationStartTime = null;
 
     const startGlowAnimation = () => {
+      if (card.classList.contains('wave-active')) return; /* во время волны границы цветные не активируем */
       card.style.animation = 'none';
       void card.offsetWidth;
       card.style.animation = 'border-glow 0.48s ease-in-out forwards';
