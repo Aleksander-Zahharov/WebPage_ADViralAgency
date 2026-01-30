@@ -224,7 +224,9 @@ const translations = {
     },
     footer: {
       copy: "© 2026 ADViral Agency",
-      authorLabel: "Made by: ",
+      authorLabel: "Made by",
+      authorCredits: "Сделано самым классным, красивым, замечательным, умным, креативным, находчивым, бесстрашным и скромным человеком — Александром Захаровым",
+      authorCreditsAria: "О создателе",
       email: "info@adviral.agency",
       social: {
         instagram: "",
@@ -389,7 +391,9 @@ const translations = {
     },
     footer: {
       copy: "© 2026 ADViral Agency",
-      authorLabel: "Made by: ",
+      authorLabel: "Made by",
+      authorCredits: "Made by the coolest, most beautiful, wonderful, smart, creative, resourceful, fearless and modest person — Alexander Zakharov",
+      authorCreditsAria: "Credits",
       email: "info@adviral.agency",
       social: {
         instagram: "",
@@ -554,7 +558,9 @@ const translations = {
     },
     footer: {
       copy: "© 2026 ADViral Agency",
-      authorLabel: "Made by: ",
+      authorLabel: "Made by",
+      authorCredits: "Tehtud kõige lahedama, ilusama, imelise, targa, loova, leidlike, kartmatu ja tagasihoidliku inimese poolt — Aleksandr Zahharov",
+      authorCreditsAria: "Krediidid",
       email: "info@adviral.agency",
       social: {
         instagram: "",
@@ -1125,6 +1131,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const delaySec = baseDelay + waveIndex * stepDelay;
       el.dataset.waveReady = 'true';
       el.style.setProperty('--wave-delay', `${delaySec.toFixed(2)}s`);
+
+      const markWaveDone = () => el.classList.add('wave-done');
+      el.addEventListener('animationend', (e) => {
+        if (e.animationName === 'press-bounce-skew-v' || e.animationName === 'press-bounce-skew-v-r1' || e.animationName === 'press-bounce-skew-v-r3') markWaveDone();
+      }, { once: true });
+      el.addEventListener('mouseenter', markWaveDone, { once: true });
     });
   };
 
@@ -2830,6 +2842,38 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         doc.body.removeChild(textArea);
       }
+    });
+  }
+
+  // Попап «Сделано Александром Захаровым» по клику на «:» в футере
+  const authorPopup = doc.getElementById("author-popup");
+  const authorColon = doc.querySelector(".footer-author-colon");
+  if (authorPopup && authorColon) {
+    const overlay = authorPopup.querySelector(".author-popup-overlay");
+    const closeBtn = authorPopup.querySelector(".author-popup-close");
+    const openPopup = () => {
+      authorPopup.hidden = false;
+      closeBtn.focus();
+      doc.body.style.overflow = "hidden";
+    };
+    const closePopup = () => {
+      authorPopup.hidden = true;
+      doc.body.style.overflow = "";
+    };
+    authorColon.addEventListener("click", (e) => {
+      e.preventDefault();
+      openPopup();
+    });
+    authorColon.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openPopup();
+      }
+    });
+    if (overlay) overlay.addEventListener("click", closePopup);
+    if (closeBtn) closeBtn.addEventListener("click", closePopup);
+    doc.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && authorPopup && !authorPopup.hidden) closePopup();
     });
   }
 

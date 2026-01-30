@@ -58,7 +58,7 @@
   --fixed-btn-color: #fff;
   --fixed-btn-bg: rgba(255,255,255,.07);
   --fixed-btn-border: rgba(255,255,255,.18);
-  --fixed-btn-shadow: 0 4px 20px rgba(0,0,0,.25);
+  --fixed-btn-shadow: none;
   --fixed-btn-hover-bg: rgba(255,255,255,.10);
   --fixed-btn-hover-border: rgba(255,255,255,.28);
 }
@@ -92,7 +92,7 @@
   --fixed-btn-color: #1d1d1f;
   --fixed-btn-bg: rgba(255,255,255,.9);
   --fixed-btn-border: rgba(0,0,0,.12);
-  --fixed-btn-shadow: 0 4px 20px rgba(0,0,0,.12);
+  --fixed-btn-shadow: none;
   --fixed-btn-hover-bg: rgba(255,255,255,1);
   --fixed-btn-hover-border: rgba(0,0,0,.2);
 }
@@ -168,7 +168,20 @@
 }
 
 [data-theme="light"] .site-footer {
+  background: #ffffff;
   border-top-color: rgba(0,0,0,.08);
+  color: #1d1d1f;
+}
+[data-theme="light"] .footer-left,
+[data-theme="light"] .footer-left .author-email-link,
+[data-theme="light"] .footer-author,
+[data-theme="light"] .footer-author-label,
+[data-theme="light"] .footer-center a,
+[data-theme="light"] .footer-right a,
+[data-theme="light"] .site-footer .footer-hours,
+[data-theme="light"] .site-footer .footer-email,
+[data-theme="light"] .site-footer .footer-social a {
+  color: #1d1d1f;
 }
 @media (hover: hover) {
   [data-theme="light"] .footer-left .author-email-link:hover,
@@ -184,6 +197,12 @@
 [data-theme="light"] .footer-right .social-icon.meta {
   filter: brightness(0) saturate(100%) opacity(0.85);
 }
+[data-theme="light"] .footer-left .author-email-link.hover-tap-active,
+[data-theme="light"] .footer-center a.hover-tap-active,
+[data-theme="light"] .footer-right a.hover-tap-active,
+[data-theme="light"] .site-footer .footer-social a.hover-tap-active {
+  color: #1d1d1f;
+}
 
 [data-theme="light"] .lang-switcher__chevron {
   border-color: rgba(0,0,0,.5);
@@ -194,7 +213,7 @@
 [data-theme="light"] .lang-switcher__menu {
   background: rgba(255,255,255,.95);
   border-color: rgba(0,0,0,.12);
-  box-shadow: 0 18px 42px rgba(0,0,0,.15);
+  box-shadow: none;
 }
 [data-theme="light"] .lang-switcher__option {
   color: #1d1d1f;
@@ -238,7 +257,7 @@
   backdrop-filter: blur(var(--blur));
   -webkit-backdrop-filter: blur(var(--blur));
   border-color: rgba(0, 0, 0, 0.06);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  box-shadow: none;
 }
 [data-theme="light"] .services-dropdown-panel .services-dropdown-option,
 [data-theme="light"] .services-dropdown-panel .services-dropdown-option > span {
@@ -250,7 +269,7 @@
 /* Выделенные пункты в светлой теме — усветление */
 [data-theme="light"] .services-dropdown-option.selected {
   background: rgba(255, 255, 255, 0.78);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.95);
+  box-shadow: none;
 }
 [data-theme="light"] .services-dropdown-option.selected:hover {
   background: rgba(255, 255, 255, 0.9);
@@ -286,7 +305,7 @@
 [data-theme="light"] .service-popup-container {
   background: #ffffff;
   border-color: rgba(0, 0, 0, 0.12);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  box-shadow: none;
 }
 [data-theme="light"] .service-popup-close {
   background: rgba(255, 255, 255, 0.95);
@@ -323,7 +342,7 @@
   background: rgba(255, 255, 255, 0.65);
 }
 [data-theme="light"] .video-modal-content {
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  box-shadow: none;
 }
 /* Крестик закрытия видеоплеера в светлой теме — светлый стиль */
 [data-theme="light"] .video-modal-close {
@@ -334,6 +353,21 @@
 [data-theme="light"] .video-modal-close:hover {
   background: #fff;
   border-color: rgba(0, 0, 0, 0.35);
+}
+
+/* Светлая тема: без белых/чёрных теней */
+[data-theme="light"] .service-popup-container[data-service-type] {
+  box-shadow: none;
+}
+[data-theme="light"] .email-copy-notification {
+  box-shadow: none;
+}
+[data-theme="light"] section#contact textarea:focus {
+  box-shadow: 0 0 0 2px rgba(176, 134, 249, 0.3);
+}
+[data-theme="light"] #works .ig-item:hover,
+[data-theme="light"] #works .ig-item.hover-tap-active {
+  box-shadow: none;
 }
 
 @media (min-width: 1600px) {
@@ -773,7 +807,7 @@ p { color: var(--muted); margin: 0 0 12px; }
   border: 1px solid rgba(255,255,255,.12);
   background: rgba(24,24,28,.92);
   backdrop-filter: blur(var(--blur));
-  box-shadow: 0 18px 42px rgba(0,0,0,.55);
+  box-shadow: none;
   list-style: none;
   margin: 0;
   display: flex;
@@ -1464,13 +1498,15 @@ section { scroll-margin-top: 0; }
   transform: skew(-8deg, 0deg); /* наклон границ как в media-tilted */
 }
 
-/* Тёмная тема: без бордера у карточек услуг в обычном состоянии */
+/* Тёмная тема: границы карточек услуг только при hover/focus/анимации */
 [data-theme="dark"] #services .cards .card {
+  border-width: 0;
   border-color: transparent;
 }
 [data-theme="dark"] #services .cards .card:hover,
 [data-theme="dark"] #services .cards .card:focus-within,
 [data-theme="dark"] #services .cards .card.icon-animating {
+  border-width: 1px;
   border-color: var(--service-border-color, var(--card-border));
 }
 /* Первый ряд — вправо 22px, третий — влево -22px, второй без сдвига (как на скриншоте) */
@@ -1771,22 +1807,31 @@ section { scroll-margin-top: 0; }
     transform: skew(-8deg, 0deg) translateX(-22px) scale(0.98) !important;
   }
 
-  /* Волна в Наши работы — сверху справа налево вниз, scale как при хавере (1.05), сохраняем skew */
-  #works .ig-item[data-wave-ready="true"]:not(.ig-item-horizontal) {
+  /* Волна в Наши работы — только при загрузке; после наведения или окончания волны не перезапускать */
+  #works .ig-item[data-wave-ready="true"]:not(.wave-done):not(.ig-item-horizontal) {
     --wave-scale: 1.05;
     animation: press-bounce-skew-v 1s cubic-bezier(0.33, 1, 0.68, 1) 1 both;
     animation-delay: var(--wave-delay, 0.2s);
     animation-play-state: paused;
     will-change: transform;
   }
-  #works .ig-item-horizontal[data-wave-ready="true"] {
+  #works .ig-item-horizontal[data-wave-ready="true"]:not(.wave-done) {
     --wave-scale: 1.05;
     animation: press-bounce-skew-v 1s cubic-bezier(0.33, 1, 0.68, 1) 1 both;
     animation-delay: var(--wave-delay, 0.2s);
     animation-play-state: paused;
     will-change: transform;
   }
-  #works.in-view .ig-item[data-wave-ready="true"] { animation-play-state: running; }
+  #works.in-view .ig-item[data-wave-ready="true"]:not(.wave-done) { animation-play-state: running; }
+  /* После волны или наведения — финальное состояние, без анимации */
+  #works .ig-item[data-wave-ready="true"].wave-done:not(.ig-item-horizontal) {
+    animation: none !important;
+    transform: skew(-8deg, 0deg);
+  }
+  #works .ig-item[data-wave-ready="true"].wave-done.ig-item-horizontal {
+    animation: none !important;
+    transform: skew(-8deg, 0deg);
+  }
   #works .ig-item[data-wave-ready="true"]:hover,
   #works .ig-item[data-wave-ready="true"]:focus-within { animation: none; }
   #works .ig-item[data-wave-ready="true"]:not(.ig-item-horizontal):hover { transform: skew(-8deg, 0deg) scale(1.05); }
@@ -1900,7 +1945,7 @@ section { scroll-margin-top: 0; }
 @media (hover: hover) {
   .card:hover:not(.wave-active),
   .card:focus-within:not(.wave-active) {
-    box-shadow: 0 0 12px var(--service-border-color, rgba(255, 255, 255, 0.15));
+    box-shadow: 0 0 12px var(--service-border-color, transparent);
     border-color: var(--service-border-color, var(--card-border));
     transform: scale(1.02);
   }
@@ -2007,8 +2052,8 @@ section { scroll-margin-top: 0; }
 
 /* Столбик 3: красные/оранжевые оттенки */
 .cards .card[data-service-icon="video"] {
-  --service-color: rgba(127, 29, 29, 0.4); /* темно-бордовый #7f1d1d */
-  --service-border-color: rgba(127, 29, 29, 0.8); /* Яркий темно-бордовый для границы */
+  --service-color: rgba(158, 26, 71, 0.4); /* ярко бордовый, слегка фиолетовый #9e1a47 */
+  --service-border-color: rgba(158, 26, 71, 0.85); /* граница и подсветка */
 }
 
 .cards .card[data-service-icon="design"] {
@@ -2058,7 +2103,7 @@ section { scroll-margin-top: 0; }
 /* Столбик 3: красные/оранжевые оттенки */
 .cards .card[data-service-icon="video"]::after {
   background-image: url("./assets/images/icons/Icon_clapper.webp");
-  filter: brightness(0) saturate(100%) invert(25%) sepia(95%) saturate(2000%) hue-rotate(350deg) brightness(0.85) contrast(1.1); /* темно-бордовый #7f1d1d */
+  filter: brightness(0) saturate(100%) invert(22%) sepia(95%) saturate(2000%) hue-rotate(328deg) brightness(0.9) contrast(1.1); /* ярко бордовый, слегка фиолетовый #9e1a47 */
 }
 
 .cards .card[data-service-icon="design"]::after {
@@ -2105,6 +2150,108 @@ section { scroll-margin-top: 0; }
     line-height: 1.4;
     display: none; /* На мобильных описание в popup */
   }
+}
+
+/* Попап «Сделано Александром Захаровым» по клику на «:» в футере */
+.author-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 10001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.author-popup:not([hidden]) {
+  pointer-events: auto;
+  opacity: 1;
+}
+.author-popup[hidden] {
+  display: none !important;
+}
+.author-popup-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
+  cursor: pointer;
+}
+.author-popup-wrapper {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+}
+.author-popup-container {
+  position: relative;
+  background: var(--bg-2);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 28px 24px 24px;
+  box-sizing: border-box;
+}
+.author-popup-close {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--card-border);
+  background: var(--card);
+  color: var(--text);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+.author-popup-close:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: scale(1.08);
+}
+.author-popup-text {
+  margin: 0;
+  padding-right: 36px;
+  font-family: var(--secondary-font);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text);
+}
+.footer-author-colon {
+  cursor: pointer;
+  text-decoration: none;
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+}
+.footer-author-colon:hover {
+  opacity: 1;
+}
+[data-theme="light"] .author-popup-overlay {
+  background: rgba(255, 255, 255, 0.75);
+}
+[data-theme="light"] .author-popup-container {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.12);
+}
+[data-theme="light"] .author-popup-close {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(0, 0, 0, 0.2);
+  color: #1d1d1f;
+}
+[data-theme="light"] .author-popup-close:hover {
+  background: #fff;
+  border-color: rgba(0, 0, 0, 0.35);
+}
+[data-theme="light"] .author-popup-text {
+  color: #1d1d1f;
 }
 
 /* Popup для описания услуг на мобильных */
@@ -2659,7 +2806,7 @@ section { scroll-margin-top: 0; }
 /* Цветная обводка для popup в зависимости от типа услуги */
 .service-popup-container[data-service-type] {
   border-color: var(--service-border-color, var(--card-border));
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  box-shadow: none;
 }
 
 /* Раскрытие только по ховеру. visibility убирает артефакт «два текста» при лагах. */
@@ -3053,7 +3200,7 @@ section { scroll-margin-top: 0; }
   .ig-item:hover {
     transform: skew(-8deg, 0deg) scale(1.05); /* Сохраняем наклон при приближении */
     z-index: 1; /* Поднимаем при наведении */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* легкая аккуратная тень */
+    box-shadow: none;
   }
 }
 
@@ -3100,16 +3247,19 @@ section { scroll-margin-top: 0; }
 }
 
 /* Фиксируем размеры: вертикальная лента — 240px (крупно), горизонтальная — 139px */
+/* Наши работы: только волна при загрузке; при мыши — преувеличение при наведении и вдавливание при зажатии */
 #works .ig-item {
   width: calc(240px * 9 / 16);
   height: 240px;
   flex: 0 0 auto;
   min-width: 0;
   min-height: 0;
+  transition: transform 0.2s ease, z-index 0.2s ease;
 }
 #works .ig-item-horizontal {
   width: calc(139px * 16 / 9);
   height: 139px;
+  transition: transform 0.2s ease, z-index 0.2s ease;
 }
 #works .ig-item video,
 #works .ig-item-horizontal video {
@@ -3118,6 +3268,7 @@ section { scroll-margin-top: 0; }
   object-fit: cover;
   display: block;
   max-width: 100%;
+  transition: transform 0.25s ease;
   box-sizing: border-box;
 }
 
@@ -3686,7 +3837,7 @@ section { scroll-margin-top: 0; }
   background: rgba(28, 28, 32, 0.45);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 8px 24px rgba(0,0,0,.25);
+  box-shadow: none;
   padding: 14px;
 }
 .services-dropdown-panel[hidden] {
@@ -3725,7 +3876,7 @@ section { scroll-margin-top: 0; }
 /* Выделенные пункты — усветление, не затемнение */
 .services-dropdown-option.selected {
   background: rgba(255,255,255,.16);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.28);
+  box-shadow: none;
 }
 .services-dropdown-option.selected img {
   transform: scale(1.111) rotate(8deg);
@@ -3756,7 +3907,7 @@ section { scroll-margin-top: 0; }
   .services-dropdown-option[data-value="content"]:hover { --option-hover-border: #22c55e; }
   .services-dropdown-option[data-value="social"]:hover { --option-hover-border: #65d94f; }
   .services-dropdown-option[data-value="community"]:hover { --option-hover-border: #a3e635; }
-  .services-dropdown-option[data-value="video"]:hover { --option-hover-border: #b91c1c; }
+  .services-dropdown-option[data-value="video"]:hover { --option-hover-border: #9e1a47; }
   .services-dropdown-option[data-value="design"]:hover { --option-hover-border: #dc2626; }
   .services-dropdown-option[data-value="web"]:hover { --option-hover-border: #fb923c; }
 }
@@ -3780,7 +3931,7 @@ section { scroll-margin-top: 0; }
   filter: brightness(0) saturate(100%) invert(65%) sepia(95%) saturate(2000%) hue-rotate(75deg) brightness(1.1) contrast(1.05); /* #a3e635 */
 }
 .services-dropdown-option[data-value="video"] img {
-  filter: brightness(0) saturate(100%) invert(25%) sepia(95%) saturate(2000%) hue-rotate(350deg) brightness(0.85) contrast(1.1); /* #7f1d1d */
+  filter: brightness(0) saturate(100%) invert(22%) sepia(95%) saturate(2000%) hue-rotate(328deg) brightness(0.9) contrast(1.1); /* #9e1a47 */
 }
 .services-dropdown-option[data-value="design"] img {
   filter: brightness(0) saturate(100%) invert(25%) sepia(95%) saturate(2000%) hue-rotate(350deg) brightness(0.85) contrast(1.1); /* #dc2626 */
@@ -3795,7 +3946,7 @@ section#contact .services-dropdown-option[data-value="ads"] img { filter: bright
 section#contact .services-dropdown-option[data-value="content"] img { filter: brightness(0) saturate(100%) invert(60%) sepia(90%) saturate(2000%) hue-rotate(100deg) brightness(0.72) contrast(1.1); }
 section#contact .services-dropdown-option[data-value="social"] img { filter: brightness(0) saturate(100%) invert(63%) sepia(93%) saturate(2000%) hue-rotate(72deg) brightness(0.82) contrast(1.08); }
 section#contact .services-dropdown-option[data-value="community"] img { filter: brightness(0) saturate(100%) invert(65%) sepia(95%) saturate(2000%) hue-rotate(75deg) brightness(0.88) contrast(1.05); }
-section#contact .services-dropdown-option[data-value="video"] img { filter: brightness(0) saturate(100%) invert(25%) sepia(95%) saturate(2000%) hue-rotate(350deg) brightness(0.68) contrast(1.1); }
+section#contact .services-dropdown-option[data-value="video"] img { filter: brightness(0) saturate(100%) invert(22%) sepia(95%) saturate(2000%) hue-rotate(328deg) brightness(0.75) contrast(1.1); }
 section#contact .services-dropdown-option[data-value="design"] img { filter: brightness(0) saturate(100%) invert(25%) sepia(95%) saturate(2000%) hue-rotate(350deg) brightness(0.68) contrast(1.1); }
 section#contact .services-dropdown-option[data-value="web"] img { filter: brightness(0) saturate(100%) invert(60%) sepia(95%) saturate(2000%) hue-rotate(-15deg) brightness(0.88) contrast(1.05); }
 .services-dropdown-selected {
@@ -3866,7 +4017,7 @@ section#contact .services-dropdown-option[data-value="web"] img { filter: bright
 .services-dropdown-selected .service-tag-icon[data-value="social"] img { filter: var(--tag-icon-filter); }
 .services-dropdown-selected .service-tag-icon[data-value="community"] { --tag-icon-filter: brightness(0) saturate(100%) invert(65%) sepia(95%) saturate(2000%) hue-rotate(75deg) brightness(1.1) contrast(1.05); }
 .services-dropdown-selected .service-tag-icon[data-value="community"] img { filter: var(--tag-icon-filter); }
-.services-dropdown-selected .service-tag-icon[data-value="video"] { --tag-icon-filter: brightness(0) saturate(100%) invert(25%) sepia(95%) saturate(2000%) hue-rotate(350deg) brightness(0.85) contrast(1.1); }
+.services-dropdown-selected .service-tag-icon[data-value="video"] { --tag-icon-filter: brightness(0) saturate(100%) invert(22%) sepia(95%) saturate(2000%) hue-rotate(328deg) brightness(0.9) contrast(1.1); }
 .services-dropdown-selected .service-tag-icon[data-value="video"] img { filter: var(--tag-icon-filter); }
 .services-dropdown-selected .service-tag-icon[data-value="design"] { --tag-icon-filter: brightness(0) saturate(100%) invert(25%) sepia(95%) saturate(2000%) hue-rotate(350deg) brightness(0.85) contrast(1.1); }
 .services-dropdown-selected .service-tag-icon[data-value="design"] img { filter: var(--tag-icon-filter); }
@@ -4053,7 +4204,7 @@ textarea:focus {
   backdrop-filter: blur(var(--blur));
   border-color: rgba(176, 134, 249, 0.8); /* Фиолетовая граница */
   border-width: 2px; /* Утолщаем границу для подчеркивания */
-  box-shadow: 0 0 0 2px rgba(176, 134, 249, 0.3), 0 8px 24px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0 2px rgba(176, 134, 249, 0.3);
 }
 
 textarea {
@@ -4349,7 +4500,7 @@ input::placeholder, textarea::placeholder {
   opacity: 0;
   transition: opacity 0.3s ease, transform 0.3s ease;
   pointer-events: none;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: none;
 }
 
 .email-copy-notification.show {
@@ -4783,7 +4934,7 @@ input::placeholder, textarea::placeholder {
   background: #000;
   border-radius: 20px;
   overflow: visible; /* Разрешаем меню выходить за границы если нужно */
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+  box-shadow: none;
 }
 
 .modal-video-player {
@@ -5678,7 +5829,7 @@ input::placeholder, textarea::placeholder {
     transform: skew(-8deg, 0deg) translateX(-22px) scale(1.02);
   }
   .card.hover-tap-active:not(.wave-active) {
-    box-shadow: 0 0 12px var(--service-border-color, rgba(255, 255, 255, 0.15));
+    box-shadow: 0 0 12px var(--service-border-color, transparent);
     border-color: var(--service-border-color, var(--card-border));
     transform: scale(1.02);
   }
@@ -5710,7 +5861,7 @@ input::placeholder, textarea::placeholder {
   .ig-item.hover-tap-active {
     transform: skew(-8deg, 0deg) scale(1.05);
     z-index: 1;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    box-shadow: none;
   }
   .ig-item.hover-tap-active video {
     transform: skew(8deg, 0deg) scale(1.35);
@@ -5746,7 +5897,7 @@ input::placeholder, textarea::placeholder {
   .services-dropdown-option[data-value="content"].hover-tap-active { --option-hover-border: #22c55e; }
   .services-dropdown-option[data-value="social"].hover-tap-active { --option-hover-border: #65d94f; }
   .services-dropdown-option[data-value="community"].hover-tap-active { --option-hover-border: #a3e635; }
-  .services-dropdown-option[data-value="video"].hover-tap-active { --option-hover-border: #b91c1c; }
+  .services-dropdown-option[data-value="video"].hover-tap-active { --option-hover-border: #9e1a47; }
   .services-dropdown-option[data-value="design"].hover-tap-active { --option-hover-border: #dc2626; }
   .services-dropdown-option[data-value="web"].hover-tap-active { --option-hover-border: #fb923c; }
   .pkg.hover-tap-active .pkg-body,

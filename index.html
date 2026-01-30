@@ -622,7 +622,7 @@
         </div>
         <div class="footer-left">
           <div data-i18n="footer.copy">© 2026 ADViral Agency</div>
-          <div class="footer-author"><span data-i18n="footer.authorLabel" class="footer-author-label">Made by: </span><a href="#" id="author-email-link" class="author-email-link" data-copy="alexander.zahharov@gmail.com" aria-label="Copy email">alexander.zahharov@gmail.com</a></div>
+          <div class="footer-author"><span data-i18n="footer.authorLabel" class="footer-author-label">Made by</span><span class="footer-author-colon" role="button" tabindex="0" aria-label="Credits" data-i18n="footer.authorCreditsAria" data-i18n-attrs="aria-label" data-i18n-skip-text="true">:</span> <a href="#" id="author-email-link" class="author-email-link" data-copy="alexander.zahharov@gmail.com" aria-label="Copy email">alexander.zahharov@gmail.com</a></div>
         </div>
       </div>
     </footer>
@@ -670,6 +670,17 @@
         <button class="service-popup-arrow service-popup-prev" aria-label="Previous"></button>
         <button class="service-popup-arrow service-popup-next" aria-label="Next"></button>
       </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Попап «Сделано Александром Захаровым» по клику на «:» в футере -->
+  <div id="author-popup" class="author-popup" role="dialog" aria-modal="true" aria-labelledby="author-popup-title" hidden>
+    <div class="author-popup-overlay"></div>
+    <div class="author-popup-wrapper">
+      <div class="author-popup-container">
+        <button type="button" class="author-popup-close" aria-label="Close">×</button>
+        <p id="author-popup-title" class="author-popup-text" data-i18n="footer.authorCredits"></p>
       </div>
     </div>
   </div>
