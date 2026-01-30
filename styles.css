@@ -80,6 +80,8 @@
   Светлая тема
 ========================= */
 [data-theme="light"] {
+  --primary-1: #c2410c; /* тёмный оранжевый (вместо фиолетового) */
+  --primary-2: #fb923c; /* светлый оранжевый */
   --bg-page: #f5f5f7;
   --bg-1: #ffffff;
   --bg-2: #ebebed;
@@ -98,11 +100,11 @@
 }
 
 [data-theme="light"] ::selection {
-  background-color: rgba(106, 17, 203, 0.2);
+  background-color: rgba(194, 65, 12, 0.2);
   color: #1d1d1f;
 }
 [data-theme="light"] ::-moz-selection {
-  background-color: rgba(106, 17, 203, 0.2);
+  background-color: rgba(194, 65, 12, 0.2);
   color: #1d1d1f;
 }
 
@@ -382,7 +384,114 @@
   box-shadow: none;
 }
 [data-theme="light"] section#contact textarea:focus {
-  box-shadow: 0 0 0 2px rgba(176, 134, 249, 0.3);
+  box-shadow: 0 0 0 2px rgba(251, 146, 60, 0.3);
+}
+[data-theme="light"] section#contact input:focus,
+[data-theme="light"] section#contact textarea:focus {
+  border-color: rgba(251, 146, 60, 0.8);
+  box-shadow: 0 0 0 2px rgba(251, 146, 60, 0.3);
+}
+[data-theme="light"] .services-dropdown-trigger:focus-visible {
+  border-color: rgba(251, 146, 60, 0.8);
+  box-shadow: 0 0 0 2px rgba(251, 146, 60, 0.3);
+}
+[data-theme="light"] .services-dropdown-trigger[aria-expanded="true"] {
+  border-color: rgba(251, 146, 60, 0.8);
+}
+[data-theme="light"] .services-dropdown-option[data-value="analysis"]:hover,
+[data-theme="light"] .services-dropdown-option[data-value="analysis"].hover-tap-active { --option-hover-border: #c2410c; }
+[data-theme="light"] .services-dropdown-option[data-value="strategy"]:hover,
+[data-theme="light"] .services-dropdown-option[data-value="strategy"].hover-tap-active { --option-hover-border: #ea580c; }
+[data-theme="light"] .services-dropdown-option[data-value="ads"]:hover,
+[data-theme="light"] .services-dropdown-option[data-value="ads"].hover-tap-active { --option-hover-border: #fb923c; }
+[data-theme="light"] .services-dropdown-option[data-value="analysis"] img {
+  filter: brightness(0) saturate(100%) invert(28%) sepia(95%) saturate(2000%) hue-rotate(20deg) brightness(0.9) contrast(1.1);
+}
+[data-theme="light"] .services-dropdown-option[data-value="strategy"] img {
+  filter: brightness(0) saturate(100%) invert(38%) sepia(95%) saturate(1800%) hue-rotate(25deg) brightness(0.9) contrast(1.05);
+}
+[data-theme="light"] .services-dropdown-option[data-value="ads"] img {
+  filter: brightness(0) saturate(100%) invert(55%) sepia(90%) saturate(1500%) hue-rotate(25deg) brightness(0.95) contrast(1.05);
+}
+[data-theme="light"] .pkg.hover-tap-active .pkg-body,
+[data-theme="light"] .pkg input:checked + .pkg-body.hover-tap-active {
+  box-shadow: 0 0 20px rgba(251, 146, 60, 0.5);
+}
+[data-theme="light"] .pkg .pkg-body:hover,
+[data-theme="light"] .pkg input:checked + .pkg-body:hover {
+  box-shadow: 0 0 20px rgba(251, 146, 60, 0.5);
+}
+[data-theme="light"] .service-popup-video-block .plyr__control:hover {
+  background: rgba(251, 146, 60, 0.2) !important;
+}
+[data-theme="light"] .video-modal-content .plyr__control--overlaid:hover,
+[data-theme="light"] .video-modal-content .plyr__control--overlaid:active,
+[data-theme="light"] .video-modal-content .plyr__control--overlaid:focus-visible {
+  background: rgba(251, 146, 60, 0.2) !important;
+  border-color: rgba(251, 146, 60, 0.4) !important;
+}
+[data-theme="light"] .video-modal-content .plyr__control:hover {
+  background: rgba(251, 146, 60, 0.2) !important;
+}
+[data-theme="light"] .video-modal-content .plyr__progress input[type=range]::-moz-range-thumb {
+  background: #ea580c !important;
+}
+[data-theme="light"] .video-modal-content .plyr__progress input[type=range]::-webkit-slider-thumb {
+  background: #ea580c !important;
+}
+[data-theme="light"] .video-modal-content .plyr__progress input[type=range] {
+  color: #ea580c !important;
+}
+/* Кнопки .btn-primary в светлой теме — оранжевый градиент */
+[data-theme="light"] .btn-primary:hover {
+  background: linear-gradient(135deg, #c2410c, #fb923c);
+}
+[data-theme="light"] .btn-primary:focus-visible {
+  box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.32), 0 8px 24px rgba(251, 146, 60, 0.35);
+}
+[data-theme="light"] .hero .btn-primary {
+  background: linear-gradient(135deg, rgba(194, 65, 12, 0.5), rgba(251, 146, 60, 0.5));
+}
+[data-theme="light"] .hero .btn-primary:hover {
+  background: linear-gradient(135deg, rgba(234, 88, 12, 0.5), rgba(251, 146, 60, 0.5));
+}
+[data-theme="light"] .hero .btn-primary:focus-visible {
+  box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.25);
+}
+[data-theme="light"] .contact-form .btn.full.btn-primary,
+[data-theme="light"] .contact-form .btn-primary.full {
+  background: linear-gradient(135deg, rgba(194, 65, 12, 0.5), rgba(251, 146, 60, 0.5));
+}
+[data-theme="light"] .contact-form .btn.full.btn-primary:hover,
+[data-theme="light"] .contact-form .btn-primary.full:hover {
+  background: linear-gradient(135deg, rgba(234, 88, 12, 0.5), rgba(251, 146, 60, 0.5));
+}
+[data-theme="light"] .contact-form .btn.full.btn-primary:focus-visible,
+[data-theme="light"] .contact-form .btn-primary.full:focus-visible {
+  box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.25), 0 8px 24px rgba(251, 146, 60, 0.28);
+}
+/* Светлый фон полей контактов при выделении в светлой теме */
+[data-theme="light"] section#contact input[type="text"]:focus,
+[data-theme="light"] section#contact input[type="email"]:focus,
+[data-theme="light"] section#contact textarea:focus {
+  background: rgba(255, 255, 255, 0.98);
+}
+[data-theme="light"] section#contact input::placeholder,
+[data-theme="light"] section#contact textarea::placeholder {
+  color: rgba(0, 0, 0, 0.45);
+}
+[data-theme="light"] .btn-primary.hover-tap-active {
+  background: linear-gradient(135deg, #c2410c, #fb923c);
+}
+[data-theme="light"] .header-nav a[href="#contact"].btn-primary.hover-tap-active {
+  background: linear-gradient(135deg, #c2410c, #fb923c);
+}
+[data-theme="light"] .hero .btn-primary.hover-tap-active {
+  background: linear-gradient(135deg, rgba(194, 65, 12, 0.5), rgba(251, 146, 60, 0.5));
+}
+[data-theme="light"] .contact-form .btn.full.btn-primary.hover-tap-active,
+[data-theme="light"] .contact-form .btn-primary.full.hover-tap-active {
+  background: linear-gradient(135deg, rgba(194, 65, 12, 0.5), rgba(251, 146, 60, 0.5));
 }
 [data-theme="light"] #works .ig-item:hover,
 [data-theme="light"] #works .ig-item.hover-tap-active {
