@@ -2016,6 +2016,11 @@ section { scroll-margin-top: 0; }
 #services .cards .card.icon-animating-out::after {
   animation: icon-hover-out-skew 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
+/* Состояние «горит» без перезапуска анимации при быстром повторном наведении */
+#services .cards .card.icon-held::after {
+  animation: none;
+  transform: translateY(-50%) skew(8deg, 0deg) scale(1.111) rotate(8deg);
+}
 
 /* Цвета для каждой услуги - по столбикам: фиолетовый, зеленый, красный/оранжевый */
 /* Столбик 1: фиолетовые оттенки */

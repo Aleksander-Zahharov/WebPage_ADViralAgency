@@ -2452,83 +2452,137 @@ document.addEventListener("DOMContentLoaded", () => {
   const cardsContainer = servicesSection ? servicesSection.querySelector('.cards') : doc.querySelector('.cards');
   const cards = cardsContainer ? Array.from(cardsContainer.querySelectorAll('.card')) : [];
 
-  // Гарантируем полное проигрывание анимации границы при наведении
+  // Граница при наведении: при быстром повторном наведении не перезапускать анимацию, держать состояние «горит»
   cards.forEach((card) => {
-    let animationStartTime = null;
+    let glowStartTime = null;
+    let fadeOutTimeoutId = null;
+    let fadeOutRunning = false;
+
+    const setGlowFinalState = () => {
+      card.style.animation = 'none';
+      card.style.borderColor = 'var(--service-border-color, var(--card-border))';
+      card.style.boxShadow = '0 0 18px var(--service-border-color, transparent), 0 0 40px var(--service-border-color, transparent)';
+    };
 
     const startGlowAnimation = () => {
+      if (fadeOutTimeoutId !== null) {
+        clearTimeout(fadeOutTimeoutId);
+        fadeOutTimeoutId = null;
+      }
+      if (fadeOutRunning) {
+        card.dataset.cancelFadeOut = '1';
+        card.style.animation = 'none';
+        setGlowFinalState();
+        fadeOutRunning = false;
+        return;
+      }
+      if (glowStartTime !== null) {
+        return;
+      }
       card.style.animation = 'none';
       void card.offsetWidth;
       card.style.animation = 'border-glow 0.8s ease-in-out forwards';
-      animationStartTime = performance.now();
-
-      const handleAnimationEnd = () => {
-        animationStartTime = null;
-        card.removeEventListener('animationend', handleAnimationEnd);
-      };
-      
-      card.addEventListener('animationend', handleAnimationEnd, { once: true });
+      glowStartTime = performance.now();
+      card.addEventListener('animationend', function handleGlowEnd(e) {
+        if (e.animationName !== 'border-glow') return;
+        card.removeEventListener('animationend', handleGlowEnd);
+        glowStartTime = null;
+      }, { once: true });
     };
-    
+
     const startFadeOutAnimation = () => {
-      // Если анимация загорания еще идет, ждем её завершения
-      if (animationStartTime) {
-        const elapsed = performance.now() - animationStartTime;
+      if (glowStartTime !== null) {
+        const elapsed = performance.now() - glowStartTime;
         const remaining = Math.max(0, 800 - elapsed);
-        
-        setTimeout(() => {
+        fadeOutTimeoutId = setTimeout(() => {
+          fadeOutTimeoutId = null;
           card.style.animation = 'none';
           void card.offsetWidth;
           card.style.animation = 'border-glow-out 0.4s ease-in-out forwards';
+          fadeOutRunning = true;
+          card.addEventListener('animationend', function handleOutEnd(e) {
+            if (e.animationName !== 'border-glow-out') return;
+            card.removeEventListener('animationend', handleOutEnd);
+            if (card.dataset.cancelFadeOut === '1') {
+              card.removeAttribute('data-cancel-fade-out');
+              return;
+            }
+            card.style.borderColor = '';
+            card.style.boxShadow = '';
+            fadeOutRunning = false;
+          }, { once: true });
         }, remaining);
-      } else {
-        // Сразу запускаем анимацию потухания
-        card.style.animation = 'none';
-        void card.offsetWidth;
-        card.style.animation = 'border-glow-out 0.4s ease-in-out forwards';
+        return;
       }
+      if (fadeOutRunning) return;
+      card.style.animation = 'none';
+      void card.offsetWidth;
+      card.style.animation = 'border-glow-out 0.4s ease-in-out forwards';
+      fadeOutRunning = true;
+      card.addEventListener('animationend', function handleOutEnd(e) {
+        if (e.animationName !== 'border-glow-out') return;
+        card.removeEventListener('animationend', handleOutEnd);
+        if (card.dataset.cancelFadeOut === '1') {
+          card.removeAttribute('data-cancel-fade-out');
+          fadeOutRunning = false;
+          return;
+        }
+        card.style.borderColor = '';
+        card.style.boxShadow = '';
+        fadeOutRunning = false;
+      }, { once: true });
     };
-    
+
     card.addEventListener('mouseenter', startGlowAnimation);
     card.addEventListener('mouseleave', startFadeOutAnimation);
     card.addEventListener('focus', startGlowAnimation);
     card.addEventListener('blur', startFadeOutAnimation);
   });
 
-  // Гарантируем полное проигрывание анимации иконки при наведении
+  // Иконка при наведении: при быстром повторном наведении не перезапускать анимацию, держать состояние «горит»
   cards.forEach((card) => {
-    let iconAnimationStartTime = null;
-    
+    let iconAnimating = false;
+    let iconOutTimeoutId = null;
+
     const startIconAnimation = () => {
-      // Удаляем все классы анимации
-      card.classList.remove('icon-animating', 'icon-animating-out');
-      void card.offsetWidth; // Принудительная перерисовка
-      
-      // Запускаем анимацию иконки
+      if (iconOutTimeoutId !== null) {
+        clearTimeout(iconOutTimeoutId);
+        iconOutTimeoutId = null;
+      }
+      if (card.classList.contains('icon-animating-out')) {
+        card.classList.remove('icon-animating-out');
+        card.classList.add('icon-held');
+        return;
+      }
+      if (iconAnimating || card.classList.contains('icon-held')) return;
+      card.classList.remove('icon-animating', 'icon-animating-out', 'icon-held');
+      void card.offsetWidth;
       card.classList.add('icon-animating');
-      iconAnimationStartTime = performance.now();
+      iconAnimating = true;
+      card.addEventListener('animationend', function handleIconEnd(e) {
+        if (e.animationName !== 'icon-hover-skew' && e.animationName !== 'icon-hover-skew-r2' && e.animationName !== 'icon-hover') return;
+        card.removeEventListener('animationend', handleIconEnd);
+        iconAnimating = false;
+      }, { once: true });
     };
-    
+
     const stopIconAnimation = () => {
-      // Если анимация еще идет, ждем её завершения
-      if (iconAnimationStartTime) {
-        const elapsed = performance.now() - iconAnimationStartTime;
-        const remaining = Math.max(0, 600 - elapsed);
-        
-        setTimeout(() => {
-          card.classList.remove('icon-animating', 'icon-animating-out');
+      if (iconAnimating) {
+        const remaining = 600;
+        iconOutTimeoutId = setTimeout(() => {
+          iconOutTimeoutId = null;
+          iconAnimating = false;
+          card.classList.remove('icon-animating', 'icon-held');
           void card.offsetWidth;
           card.classList.add('icon-animating-out');
-          iconAnimationStartTime = null;
         }, remaining);
-      } else {
-        // Сразу запускаем анимацию возврата
-        card.classList.remove('icon-animating', 'icon-animating-out');
-        void card.offsetWidth;
-        card.classList.add('icon-animating-out');
+        return;
       }
+      card.classList.remove('icon-animating', 'icon-held');
+      void card.offsetWidth;
+      card.classList.add('icon-animating-out');
     };
-    
+
     card.addEventListener('mouseenter', startIconAnimation);
     card.addEventListener('mouseleave', stopIconAnimation);
     card.addEventListener('focus', startIconAnimation);
