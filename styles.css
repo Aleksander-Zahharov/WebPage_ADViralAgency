@@ -1533,10 +1533,12 @@ section { scroll-margin-top: 0; }
 [data-theme="dark"] #services .cards .card {
   border-width: 0;
   border-color: transparent;
+  transition: background 0.25s ease-in-out, transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
 }
 [data-theme="dark"] #services .cards .card:hover,
 [data-theme="dark"] #services .cards .card:focus-within,
 [data-theme="dark"] #services .cards .card.icon-animating:not(.wave-active) {
+  background: #000; /* при наведении — идеально чёрный фон */
   border-width: 1px;
   border-color: var(--service-border-color, var(--card-border));
 }
