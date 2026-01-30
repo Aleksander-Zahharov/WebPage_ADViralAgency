@@ -3586,39 +3586,59 @@ section { scroll-margin-top: 0; }
 }
 
 #partners .client-item[data-client="eeste"] .client-logo {
-  transform: skew(8deg, 0deg) scale(1.53);
+  transform: skew(8deg, 0deg) scale(1.70); /* Estee — увеличен сильнее */
 }
 
 #partners .client-item[data-client="bfm"] .client-logo {
-  transform: skew(8deg, 0deg) scale(1.37);
+  transform: skew(8deg, 0deg) scale(1.60); /* BFM — увеличен сильнее */
 }
 
 #partners .client-item[data-client="err"] .client-logo {
-  transform: skew(8deg, 0deg) scale(1.52);
+  transform: skew(8deg, 0deg) scale(1.36); /* ERR — уменьшен сильнее */
 }
 
 #partners .client-item[data-client="dodo"] .client-logo {
-  transform: skew(8deg, 0deg) scale(1.46);
+  transform: skew(8deg, 0deg) scale(1.34); /* Dodo — уменьшен сильнее */
 }
 
-/* Estee увеличен чуть больше */
+#partners .client-item[data-client="stockmann"] .client-logo {
+  transform: skew(8deg, 0deg) scale(1.36); /* Stockmann — уменьшен сильнее */
+}
+
+#partners .client-item[data-client="moto24"] .client-logo {
+  transform: skew(8deg, 0deg) scale(1.36); /* Moto24 — уменьшен сильнее */
+}
+
+#partners .client-item[data-client="expert"] .client-logo {
+  transform: skew(8deg, 0deg) scale(1.36); /* Expert Autokool — уменьшен сильнее */
+}
+
+#partners .client-item[data-client="roses"] .client-logo {
+  transform: skew(8deg, 0deg) scale(1.36); /* Roses — уменьшен сильнее */
+}
+
+#partners .client-item[data-client="kaitsevagi"] .client-logo {
+  transform: skew(8deg, 0deg) scale(1.36); /* Kaitsevägi — уменьшен сильнее */
+}
+
+/* Estee — увеличен сильнее (базовые стили вне #partners) */
 .client-item[data-client="eeste"] .client-logo {
-  transform: scale(1.45); /* Estee увеличен еще чуть больше */
+  transform: scale(1.58);
 }
 
-/* BFM - уменьшен чуть-чуть */
+/* BFM — увеличен сильнее */
 .client-item[data-client="bfm"] .client-logo {
-  transform: scale(1.3); /* Немного меньше остальных */
+  transform: scale(1.54);
 }
 
-/* ERR увеличен до стандартного размера, чтобы заполнял рамки */
+/* ERR — уменьшен сильнее */
 .client-item[data-client="err"] .client-logo {
-  transform: scale(1.44); /* ERR увеличен до стандартного размера */
+  transform: scale(1.32);
 }
 
-/* Dodo Pizza - немного увеличен */
+/* Dodo Pizza — уменьшен сильнее */
 .client-item[data-client="dodo"] .client-logo {
-  transform: scale(1.38); /* Dodo Pizza немного больше */
+  transform: scale(1.28);
 }
 
 @media (hover: hover) {
