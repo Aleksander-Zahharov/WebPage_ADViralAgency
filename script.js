@@ -1070,7 +1070,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (card.matches(':hover')) return;
         card.classList.remove('icon-animating');
         card.classList.add('icon-animating-out');
-        setTimeout(() => card.classList.remove('icon-animating-out'), 400);
+        setTimeout(() => card.classList.remove('icon-animating-out'), 240);
       }, shrinkStartMs);
       const tEnd = setTimeout(() => {
         card.classList.remove('wave-active');
@@ -1287,10 +1287,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // Обрабатываем все ленты (вертикальные и горизонтальные)
   const igSliders = doc.querySelectorAll(".ig-slider");
   const igStrips = doc.querySelectorAll(".ig-strip");
-  
+  /** Элемент, у которого меняется scrollLeft (лента или обёртка .ig-strip-scroll для горизонтальной) */
+  function getScrollContainer(strip) {
+    return strip && (strip.closest(".ig-strip-scroll") || strip);
+  }
   // Для обратной совместимости оставляем старые переменные для первой ленты
   const igSlider = igSliders[0];
   const igStrip = igStrips[0];
+  const igStripScroll = getScrollContainer(igStrip);
 
   function getScrollStep() {
     if (!igStrip) return 320;
@@ -1327,8 +1331,8 @@ document.addEventListener("DOMContentLoaded", () => {
       last = now;
       rem += dir * speedPxPerSec * dt;
       const step = rem > 0 ? Math.floor(rem) : Math.ceil(rem);
-      if (step) {
-        igStrip.scrollLeft += step;
+      if (step && igStripScroll) {
+        igStripScroll.scrollLeft += step;
         rem -= step;
       }
       assignId(requestAnimationFrame(frame));
@@ -1348,14 +1352,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function startContinuousScroll(dir, speed) {
-    if (!igStrip) return;
+    if (!igStripScroll) return;
     igStrip.classList.add("no-snap");
     let lastTime = performance.now();
 
     function scrollFrame(now) {
       const deltaTime = (now - lastTime) / 1000;
       lastTime = now;
-      igStrip.scrollLeft += dir * speed * deltaTime;
+      igStripScroll.scrollLeft += dir * speed * deltaTime;
       hoverRafId = requestAnimationFrame(scrollFrame);
     }
 
@@ -1371,13 +1375,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function startPressScroll(dir, speed) {
-    if (!igStrip) return;
+    if (!igStripScroll) return;
     let lastTime = performance.now();
 
     function scrollFrame(now) {
       const deltaTime = (now - lastTime) / 1000;
       lastTime = now;
-      igStrip.scrollLeft += dir * speed * deltaTime * 2;
+      igStripScroll.scrollLeft += dir * speed * deltaTime * 2;
       pressRafId = requestAnimationFrame(scrollFrame);
     }
 
@@ -1392,13 +1396,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function startHoverScroll(dir, speed) {
-    if (!igStrip) return;
+    if (!igStripScroll) return;
     let lastTime = performance.now();
 
     function scrollFrame(now) {
       const deltaTime = (now - lastTime) / 1000;
       lastTime = now;
-      igStrip.scrollLeft += dir * speed * deltaTime * 0.5;
+      igStripScroll.scrollLeft += dir * speed * deltaTime * 0.5;
       hoverRafId = requestAnimationFrame(scrollFrame);
     }
 
@@ -1420,18 +1424,19 @@ document.addEventListener("DOMContentLoaded", () => {
     // Находим соответствующую ленту для этой стрелки
     const slider = btn.closest(".ig-slider");
     const strip = slider?.querySelector(".ig-strip");
+    const scrollEl = strip ? getScrollContainer(strip) : null;
     
     let pressStartTime = 0;
     let pressRafId = null;
     let hoverRafId = null;
 
     function startPressScrollForStrip(dir, speed) {
-      if (!strip) return;
+      if (!scrollEl) return;
       let lastTime = performance.now();
       function scrollFrame(now) {
         const deltaTime = (now - lastTime) / 1000;
         lastTime = now;
-        strip.scrollLeft += dir * speed * deltaTime * 2;
+        scrollEl.scrollLeft += dir * speed * deltaTime * 2;
         pressRafId = requestAnimationFrame(scrollFrame);
       }
       pressRafId = requestAnimationFrame(scrollFrame);
@@ -1445,12 +1450,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function startHoverScrollForStrip(dir, speed) {
-      if (!strip) return;
+      if (!scrollEl) return;
       let lastTime = performance.now();
       function scrollFrame(now) {
         const deltaTime = (now - lastTime) / 1000;
         lastTime = now;
-        strip.scrollLeft += dir * speed * deltaTime * 0.5;
+        scrollEl.scrollLeft += dir * speed * deltaTime * 0.5;
         hoverRafId = requestAnimationFrame(scrollFrame);
       }
       hoverRafId = requestAnimationFrame(scrollFrame);
@@ -1528,10 +1533,11 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
+    const scrollElForStrip = strip ? getScrollContainer(strip) : null;
     function scrollStripBy(direction) {
-      if (!strip) return;
-      const scrollAmount = strip.offsetWidth / 2;
-      strip.scrollBy({ left: direction * scrollAmount, behavior: "smooth" });
+      if (!scrollElForStrip) return;
+      const scrollAmount = scrollElForStrip.offsetWidth / 2;
+      scrollElForStrip.scrollBy({ left: direction * scrollAmount, behavior: "smooth" });
     }
 
     // Добавляем обработчики клика для стрелок
@@ -1558,9 +1564,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const nextArrow = igSlider.querySelector(".ig-arrow.next");
 
     function scrollStripBy(direction) {
-      if (!igStrip) return;
-      const scrollAmount = igStrip.offsetWidth / 2;
-      igStrip.scrollBy({ left: direction * scrollAmount, behavior: "smooth" });
+      if (!igStripScroll) return;
+      const scrollAmount = igStripScroll.offsetWidth / 2;
+      igStripScroll.scrollBy({ left: direction * scrollAmount, behavior: "smooth" });
     }
 
     prevArrow?.addEventListener("click", () => scrollStripBy(-1));
@@ -1569,6 +1575,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Обрабатываем drag для всех лент
   igStrips.forEach((strip) => {
+    const scrollEl = getScrollContainer(strip);
     let isDragging = false;
     let dragStartX = 0;
     let dragStartScroll = 0;
@@ -1576,13 +1583,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const stopDrag = (evt) => {
       if (!isDragging) return;
       isDragging = false;
-      delete strip.dataset.dragging;
+      const el = scrollEl || strip;
+      delete el.dataset.dragging;
       if (evt?.pointerId !== undefined) {
-        strip.releasePointerCapture?.(evt.pointerId);
+        el.releasePointerCapture?.(evt.pointerId);
       }
     };
 
-    strip.addEventListener("pointerdown", (evt) => {
+    const target = scrollEl || strip;
+    target.addEventListener("pointerdown", (evt) => {
       // Пропускаем клики на видео элементы - они обрабатываются отдельно
       const item = evt.target.closest(".ig-item");
       if (item && item.hasAttribute("data-video")) {
@@ -1592,20 +1601,20 @@ document.addEventListener("DOMContentLoaded", () => {
       // Обычный drag для прокрутки
       isDragging = true;
       dragStartX = evt.clientX;
-      dragStartScroll = strip.scrollLeft;
-      strip.dataset.dragging = "true";
-      strip.setPointerCapture?.(evt.pointerId);
+      dragStartScroll = scrollEl.scrollLeft;
+      target.dataset.dragging = "true";
+      target.setPointerCapture?.(evt.pointerId);
     });
 
-    strip.addEventListener("pointermove", (evt) => {
+    target.addEventListener("pointermove", (evt) => {
       if (!isDragging) return;
       const delta = evt.clientX - dragStartX;
-      strip.scrollLeft = dragStartScroll - delta;
+      scrollEl.scrollLeft = dragStartScroll - delta;
     });
 
-    strip.addEventListener("pointerup", stopDrag);
-    strip.addEventListener("pointerleave", stopDrag);
-    strip.addEventListener("lostpointercapture", stopDrag);
+    target.addEventListener("pointerup", stopDrag);
+    target.addEventListener("pointerleave", stopDrag);
+    target.addEventListener("lostpointercapture", stopDrag);
   });
 
   // Оптимизированная загрузка и автоплей видео для всех лент
@@ -2452,85 +2461,39 @@ document.addEventListener("DOMContentLoaded", () => {
   const cardsContainer = servicesSection ? servicesSection.querySelector('.cards') : doc.querySelector('.cards');
   const cards = cardsContainer ? Array.from(cardsContainer.querySelectorAll('.card')) : [];
 
-  // Граница при наведении: при быстром повторном наведении не перезапускать анимацию, держать состояние «горит»
+  // Гарантируем полное проигрывание анимации границы при наведении
   cards.forEach((card) => {
-    let glowStartTime = null;
-    let fadeOutTimeoutId = null;
-    let fadeOutRunning = false;
-
-    const setGlowFinalState = () => {
-      card.style.animation = 'none';
-      card.style.borderColor = 'var(--service-border-color, var(--card-border))';
-      card.style.boxShadow = '0 0 18px var(--service-border-color, transparent), 0 0 40px var(--service-border-color, transparent)';
-    };
+    let animationStartTime = null;
 
     const startGlowAnimation = () => {
-      if (fadeOutTimeoutId !== null) {
-        clearTimeout(fadeOutTimeoutId);
-        fadeOutTimeoutId = null;
-      }
-      if (fadeOutRunning) {
-        card.dataset.cancelFadeOut = '1';
-        card.style.animation = 'none';
-        setGlowFinalState();
-        fadeOutRunning = false;
-        return;
-      }
-      if (glowStartTime !== null) {
-        return;
-      }
       card.style.animation = 'none';
       void card.offsetWidth;
-      card.style.animation = 'border-glow 0.8s ease-in-out forwards';
-      glowStartTime = performance.now();
-      card.addEventListener('animationend', function handleGlowEnd(e) {
-        if (e.animationName !== 'border-glow') return;
-        card.removeEventListener('animationend', handleGlowEnd);
-        glowStartTime = null;
-      }, { once: true });
+      card.style.animation = 'border-glow 0.48s ease-in-out forwards';
+      animationStartTime = performance.now();
+
+      const handleAnimationEnd = () => {
+        animationStartTime = null;
+        card.removeEventListener('animationend', handleAnimationEnd);
+      };
+
+      card.addEventListener('animationend', handleAnimationEnd, { once: true });
     };
 
     const startFadeOutAnimation = () => {
-      if (glowStartTime !== null) {
-        const elapsed = performance.now() - glowStartTime;
-        const remaining = Math.max(0, 800 - elapsed);
-        fadeOutTimeoutId = setTimeout(() => {
-          fadeOutTimeoutId = null;
+      if (animationStartTime) {
+        const elapsed = performance.now() - animationStartTime;
+        const remaining = Math.max(0, 480 - elapsed);
+
+        setTimeout(() => {
           card.style.animation = 'none';
           void card.offsetWidth;
-          card.style.animation = 'border-glow-out 0.4s ease-in-out forwards';
-          fadeOutRunning = true;
-          card.addEventListener('animationend', function handleOutEnd(e) {
-            if (e.animationName !== 'border-glow-out') return;
-            card.removeEventListener('animationend', handleOutEnd);
-            if (card.dataset.cancelFadeOut === '1') {
-              card.removeAttribute('data-cancel-fade-out');
-              return;
-            }
-            card.style.borderColor = '';
-            card.style.boxShadow = '';
-            fadeOutRunning = false;
-          }, { once: true });
+          card.style.animation = 'border-glow-out 0.24s ease-in-out forwards';
         }, remaining);
-        return;
+      } else {
+        card.style.animation = 'none';
+        void card.offsetWidth;
+        card.style.animation = 'border-glow-out 0.24s ease-in-out forwards';
       }
-      if (fadeOutRunning) return;
-      card.style.animation = 'none';
-      void card.offsetWidth;
-      card.style.animation = 'border-glow-out 0.4s ease-in-out forwards';
-      fadeOutRunning = true;
-      card.addEventListener('animationend', function handleOutEnd(e) {
-        if (e.animationName !== 'border-glow-out') return;
-        card.removeEventListener('animationend', handleOutEnd);
-        if (card.dataset.cancelFadeOut === '1') {
-          card.removeAttribute('data-cancel-fade-out');
-          fadeOutRunning = false;
-          return;
-        }
-        card.style.borderColor = '';
-        card.style.boxShadow = '';
-        fadeOutRunning = false;
-      }, { once: true });
     };
 
     card.addEventListener('mouseenter', startGlowAnimation);
@@ -2539,48 +2502,33 @@ document.addEventListener("DOMContentLoaded", () => {
     card.addEventListener('blur', startFadeOutAnimation);
   });
 
-  // Иконка при наведении: при быстром повторном наведении не перезапускать анимацию, держать состояние «горит»
+  // Гарантируем полное проигрывание анимации иконки при наведении
   cards.forEach((card) => {
-    let iconAnimating = false;
-    let iconOutTimeoutId = null;
+    let iconAnimationStartTime = null;
 
     const startIconAnimation = () => {
-      if (iconOutTimeoutId !== null) {
-        clearTimeout(iconOutTimeoutId);
-        iconOutTimeoutId = null;
-      }
-      if (card.classList.contains('icon-animating-out')) {
-        card.classList.remove('icon-animating-out');
-        card.classList.add('icon-held');
-        return;
-      }
-      if (iconAnimating || card.classList.contains('icon-held')) return;
-      card.classList.remove('icon-animating', 'icon-animating-out', 'icon-held');
+      card.classList.remove('icon-animating', 'icon-animating-out');
       void card.offsetWidth;
       card.classList.add('icon-animating');
-      iconAnimating = true;
-      card.addEventListener('animationend', function handleIconEnd(e) {
-        if (e.animationName !== 'icon-hover-skew' && e.animationName !== 'icon-hover-skew-r2' && e.animationName !== 'icon-hover') return;
-        card.removeEventListener('animationend', handleIconEnd);
-        iconAnimating = false;
-      }, { once: true });
+      iconAnimationStartTime = performance.now();
     };
 
     const stopIconAnimation = () => {
-      if (iconAnimating) {
-        const remaining = 600;
-        iconOutTimeoutId = setTimeout(() => {
-          iconOutTimeoutId = null;
-          iconAnimating = false;
-          card.classList.remove('icon-animating', 'icon-held');
+      if (iconAnimationStartTime) {
+        const elapsed = performance.now() - iconAnimationStartTime;
+        const remaining = Math.max(0, 360 - elapsed);
+
+        setTimeout(() => {
+          card.classList.remove('icon-animating', 'icon-animating-out');
           void card.offsetWidth;
           card.classList.add('icon-animating-out');
+          iconAnimationStartTime = null;
         }, remaining);
-        return;
+      } else {
+        card.classList.remove('icon-animating', 'icon-animating-out');
+        void card.offsetWidth;
+        card.classList.add('icon-animating-out');
       }
-      card.classList.remove('icon-animating', 'icon-held');
-      void card.offsetWidth;
-      card.classList.add('icon-animating-out');
     };
 
     card.addEventListener('mouseenter', startIconAnimation);
