@@ -1622,8 +1622,8 @@ section { scroll-margin-top: 0; }
   }
   100% {
     border-color: var(--service-border-color, var(--card-border));
-    box-shadow: 0 0 18px var(--service-border-color, transparent),
-                0 0 40px var(--service-border-color, transparent);
+    box-shadow: 0 0 10px var(--service-border-color, transparent),
+                0 0 24px var(--service-border-color, transparent);
   }
 }
 
@@ -1631,8 +1631,8 @@ section { scroll-margin-top: 0; }
 @keyframes border-glow-out {
   0% {
     border-color: var(--service-border-color, var(--card-border));
-    box-shadow: 0 0 18px var(--service-border-color, transparent),
-                0 0 40px var(--service-border-color, transparent);
+    box-shadow: 0 0 10px var(--service-border-color, transparent),
+                0 0 24px var(--service-border-color, transparent);
   }
   100% {
     border-color: var(--card-border);
