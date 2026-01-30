@@ -3684,7 +3684,7 @@ section { scroll-margin-top: 0; }
 /* Убираем глобальное затемнение при фокусе - эффект применяется только к полю */
 .contact-section:has(input:focus, textarea:focus) .contact-overlay,
 .contact-section.has-focus .contact-overlay {
-  /* Эффект отключен - используется индивидуальный overlay для каждого поля */
+  opacity: 1; /* без глобального затемнения — индивидуальный overlay у поля */
 }
 
 /* Поле «Коротко опишите задачу» — высота чуть увеличена */
@@ -3716,7 +3716,7 @@ section { scroll-margin-top: 0; }
 }
 
 .contact-right-column {
-  /* Пустая правая колонка */
+  min-height: 0; /* пустая правая колонка */
 }
 
 @media (max-width: 900px) {
