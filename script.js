@@ -2461,42 +2461,106 @@ document.addEventListener("DOMContentLoaded", () => {
   const cardsContainer = servicesSection ? servicesSection.querySelector('.cards') : doc.querySelector('.cards');
   const cards = cardsContainer ? Array.from(cardsContainer.querySelectorAll('.card')) : [];
 
-  // Гарантируем полное проигрывание анимации границы при наведении
+  // Гарантируем полное проигрывание анимации границы при наведении; при повторном наведении анимация продолжается с текущего момента до полного загорания
+  const GLOW_MS = 250;
   cards.forEach((card) => {
     let animationStartTime = null;
+    let glowDurationMs = GLOW_MS; /* длительность текущей фазы загорания (может быть короче при продолжении с середины) */
+    let phase = null; /* 'in' | 'out' | null */
+    let phaseStartTime = null;
+    let fadeOutTimeoutId = null;
 
     const startGlowAnimation = () => {
-      if (card.classList.contains('wave-active')) return; /* во время волны границы цветные не активируем */
+      if (card.classList.contains('wave-active')) return;
+      clearTimeout(fadeOutTimeoutId);
+      fadeOutTimeoutId = null;
+
+      let currentGlow = 0;
+      const now = performance.now();
+      if (phase === 'in' && phaseStartTime != null) {
+        const elapsed = (now - phaseStartTime) / GLOW_MS;
+        currentGlow = Math.min(1, elapsed);
+      } else if (phase === 'out' && phaseStartTime != null) {
+        const elapsed = (now - phaseStartTime) / GLOW_MS;
+        currentGlow = 1 - Math.min(1, elapsed);
+      }
+
       card.classList.add('card-scale-on');
       card.style.animation = 'none';
       void card.offsetWidth;
-      card.style.animation = 'border-glow 0.25s ease-in-out forwards';
-      animationStartTime = performance.now();
 
-      const handleAnimationEnd = () => {
-        animationStartTime = null;
+      if (currentGlow >= 1) {
+        card.style.animation = 'border-glow 0.001s ease-in-out forwards';
+        glowDurationMs = 1;
+        phase = 'in';
+        phaseStartTime = now;
+        animationStartTime = now;
+        card.addEventListener('animationend', function handleEnd(e) {
+          if (e.animationName === 'border-glow') {
+            phase = null;
+            phaseStartTime = null;
+            animationStartTime = null;
+          }
+          card.removeEventListener('animationend', handleEnd);
+        }, { once: true });
+        return;
+      } else {
+        const durationS = (GLOW_MS / 1000) * (1 - currentGlow);
+        const delayS = -(GLOW_MS / 1000) * currentGlow;
+        glowDurationMs = GLOW_MS * (1 - currentGlow);
+        card.style.animation = `border-glow ${durationS}s ease-in-out ${delayS}s forwards`;
+        phase = 'in';
+        phaseStartTime = now;
+      }
+      animationStartTime = now;
+
+      const handleAnimationEnd = (e) => {
+        if (e.animationName === 'border-glow') {
+          phase = null;
+          phaseStartTime = null;
+          animationStartTime = null;
+        }
         card.removeEventListener('animationend', handleAnimationEnd);
       };
-
       card.addEventListener('animationend', handleAnimationEnd, { once: true });
     };
 
     const startFadeOutAnimation = () => {
-      if (animationStartTime) {
+      if (animationStartTime != null) {
         const elapsed = performance.now() - animationStartTime;
-        const remaining = Math.max(0, 250 - elapsed);
+        const remaining = Math.max(0, glowDurationMs - elapsed);
 
-        setTimeout(() => {
+        fadeOutTimeoutId = setTimeout(() => {
+          fadeOutTimeoutId = null;
           card.classList.remove('card-scale-on');
           card.style.animation = 'none';
           void card.offsetWidth;
           card.style.animation = 'border-glow-out 0.25s ease-in-out forwards';
+          phase = 'out';
+          phaseStartTime = performance.now();
+          animationStartTime = null;
+
+          const handleFadeOutEnd = (e) => {
+            if (e.animationName === 'border-glow-out') phase = null;
+            phaseStartTime = null;
+            card.removeEventListener('animationend', handleFadeOutEnd);
+          };
+          card.addEventListener('animationend', handleFadeOutEnd, { once: true });
         }, remaining);
       } else {
         card.classList.remove('card-scale-on');
         card.style.animation = 'none';
         void card.offsetWidth;
         card.style.animation = 'border-glow-out 0.25s ease-in-out forwards';
+        phase = 'out';
+        phaseStartTime = performance.now();
+
+        const handleFadeOutEnd = (e) => {
+          if (e.animationName === 'border-glow-out') phase = null;
+          phaseStartTime = null;
+          card.removeEventListener('animationend', handleFadeOutEnd);
+        };
+        card.addEventListener('animationend', handleFadeOutEnd, { once: true });
       }
     };
 
