@@ -1070,7 +1070,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (card.matches(':hover')) return;
         card.classList.remove('icon-animating');
         card.classList.add('icon-animating-out');
-        setTimeout(() => card.classList.remove('icon-animating-out'), 240);
+        setTimeout(() => card.classList.remove('icon-animating-out'), 250);
       }, shrinkStartMs);
       const tEnd = setTimeout(() => {
         card.classList.remove('wave-active');
@@ -2470,7 +2470,7 @@ document.addEventListener("DOMContentLoaded", () => {
       card.classList.add('card-scale-on');
       card.style.animation = 'none';
       void card.offsetWidth;
-      card.style.animation = 'border-glow 0.48s ease-in-out forwards';
+      card.style.animation = 'border-glow 0.25s ease-in-out forwards';
       animationStartTime = performance.now();
 
       const handleAnimationEnd = () => {
@@ -2484,19 +2484,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const startFadeOutAnimation = () => {
       if (animationStartTime) {
         const elapsed = performance.now() - animationStartTime;
-        const remaining = Math.max(0, 480 - elapsed);
+        const remaining = Math.max(0, 250 - elapsed);
 
         setTimeout(() => {
           card.classList.remove('card-scale-on');
           card.style.animation = 'none';
           void card.offsetWidth;
-          card.style.animation = 'border-glow-out 0.24s ease-in-out forwards';
+          card.style.animation = 'border-glow-out 0.25s ease-in-out forwards';
         }, remaining);
       } else {
         card.classList.remove('card-scale-on');
         card.style.animation = 'none';
         void card.offsetWidth;
-        card.style.animation = 'border-glow-out 0.24s ease-in-out forwards';
+        card.style.animation = 'border-glow-out 0.25s ease-in-out forwards';
       }
     };
 
@@ -2520,7 +2520,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const stopIconAnimation = () => {
       if (iconAnimationStartTime) {
         const elapsed = performance.now() - iconAnimationStartTime;
-        const remaining = Math.max(0, 480 - elapsed); /* 0.48s — синхронно с border-glow */
+        const remaining = Math.max(0, 250 - elapsed); /* 0.25s — синхронно с border-glow */
 
         setTimeout(() => {
           card.classList.remove('icon-animating', 'icon-animating-out');

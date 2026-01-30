@@ -228,10 +228,10 @@
   border-width: 0;
   border-color: transparent;
   -webkit-font-smoothing: subpixel-antialiased;
-  transition: background 0.48s ease-in-out, transform 0.24s ease-in-out, box-shadow 0.24s ease-in-out;
+  transition: background 0.25s ease-in-out, transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
 }
 [data-theme="light"] #services .cards .card.card-scale-on {
-  transition: background 0.48s ease-in-out, transform 0.48s ease-in-out, box-shadow 0.24s ease-in-out;
+  transition: background 0.25s ease-in-out, transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
 }
 [data-theme="light"] #services .cards .card:hover,
 [data-theme="light"] #services .cards .card:focus-within,
@@ -1515,11 +1515,11 @@ section { scroll-margin-top: 0; }
 #services .cards .card {
   border-radius: 0;
   transform: skew(-8deg, 0deg); /* наклон границ как в media-tilted */
-  transition: transform 0.24s ease-in-out, box-shadow 0.24s ease-in-out; /* потухание scale/свечения — 0.24s; загорание через .card-scale-on — 0.48s */
+  transition: transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out; /* загорание/потухание — 0.25s (250ms) */
 }
-/* Класс .card-scale-on добавляется/снимается из JS в такт с загоранием границы: увеличение доигрывается до конца (0.48s), затем снятие за 0.24s */
+/* Класс .card-scale-on добавляется/снимается из JS в такт с загоранием границы: увеличение доигрывается до конца (0.25s), затем снятие за 0.25s */
 #services .cards .card.card-scale-on {
-  transition: transform 0.48s ease-in-out, box-shadow 0.24s ease-in-out;
+  transition: transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
   transform: skew(-8deg, 0deg) scale(1.02);
 }
 #services .cards .card.card-scale-on:nth-child(-n+3) {
@@ -2010,7 +2010,7 @@ section { scroll-margin-top: 0; }
   -webkit-mask: radial-gradient(25rem 25rem at var(--x) var(--y), #000 1%, transparent 50%);
   opacity: var(--opacity, 0);
   pointer-events: none;
-  transition: opacity 0.48s ease-in-out; /* синхронно с border-glow — одно загорание */
+  transition: opacity 0.25s ease-in-out; /* синхронно с border-glow — 250ms */
   z-index: -1; /* подсветка лежит под контентом */
 }
 
@@ -2043,21 +2043,21 @@ section { scroll-margin-top: 0; }
   transition: none; /* Отключаем transition для управления через animation */
 }
 
-/* Применяем анимацию иконки через классы — синхронно с загоранием/потуханием границы (0.48s / 0.24s) */
+/* Применяем анимацию иконки через классы — синхронно с загоранием/потуханием границы (250ms) */
 .cards .card.icon-animating::after {
-  animation: icon-hover 0.48s ease-in-out forwards;
+  animation: icon-hover 0.25s ease-in-out forwards;
 }
 
 .cards .card.icon-animating-out::after {
-  animation: icon-hover-out 0.24s ease-in-out forwards;
+  animation: icon-hover-out 0.25s ease-in-out forwards;
 }
 
 /* В секции услуг иконка учитывает skew карточки */
 #services .cards .card.icon-animating::after {
-  animation: icon-hover-skew 0.48s ease-in-out forwards;
+  animation: icon-hover-skew 0.25s ease-in-out forwards;
 }
 #services .cards .card.icon-animating-out::after {
-  animation: icon-hover-out-skew 0.24s ease-in-out forwards;
+  animation: icon-hover-out-skew 0.25s ease-in-out forwards;
 }
 
 /* Цвета для каждой услуги - по столбикам: фиолетовый, зеленый, красный/оранжевый */
