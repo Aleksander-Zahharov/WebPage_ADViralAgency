@@ -2516,7 +2516,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const stopIconAnimation = () => {
       if (iconAnimationStartTime) {
         const elapsed = performance.now() - iconAnimationStartTime;
-        const remaining = Math.max(0, 360 - elapsed);
+        const remaining = Math.max(0, 480 - elapsed); /* 0.48s — синхронно с border-glow */
 
         setTimeout(() => {
           card.classList.remove('icon-animating', 'icon-animating-out');

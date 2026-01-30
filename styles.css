@@ -222,9 +222,15 @@
 [data-theme="light"] .lang-switcher__option.is-active {
   color: #1d1d1f;
 }
-/* Карточки услуг в светлой теме — ещё более светло-серый фон, без границы в обычном состоянии */
+/* Карточки услуг в светлой теме — ещё более светло-серый фон, без границы в обычном состоянии; фон не меняется при наведении */
+[data-theme="light"] #services .cards .card,
+[data-theme="light"] #services .cards .card:hover,
+[data-theme="light"] #services .cards .card:focus-within,
+[data-theme="light"] #services .cards .card.icon-animating,
+[data-theme="light"] #services .cards .card.icon-animating-out {
+  background: rgba(0,0,0,0.02) !important;
+}
 [data-theme="light"] #services .cards .card {
-  background: rgba(0,0,0,0.02);
   border-width: 0;
   border-color: transparent;
   -webkit-font-smoothing: subpixel-antialiased;
@@ -232,7 +238,6 @@
 [data-theme="light"] #services .cards .card:hover,
 [data-theme="light"] #services .cards .card:focus-within,
 [data-theme="light"] #services .cards .card.icon-animating {
-  background: rgba(0,0,0,0.02); /* сохраняем светло-серый фон при наведении */
   border-width: 1px;
   border-color: var(--service-border-color, var(--card-border));
 }
@@ -2014,21 +2019,21 @@ section { scroll-margin-top: 0; }
   transition: none; /* Отключаем transition для управления через animation */
 }
 
-/* Применяем анимацию иконки через классы (ещё +20% быстрее — 0.36s / 0.24s) */
+/* Применяем анимацию иконки через классы — синхронно с загоранием/потуханием границы (0.48s / 0.24s) */
 .cards .card.icon-animating::after {
-  animation: icon-hover 0.36s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation: icon-hover 0.48s ease-in-out forwards;
 }
 
 .cards .card.icon-animating-out::after {
-  animation: icon-hover-out 0.24s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation: icon-hover-out 0.24s ease-in-out forwards;
 }
 
 /* В секции услуг иконка учитывает skew карточки */
 #services .cards .card.icon-animating::after {
-  animation: icon-hover-skew 0.36s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation: icon-hover-skew 0.48s ease-in-out forwards;
 }
 #services .cards .card.icon-animating-out::after {
-  animation: icon-hover-out-skew 0.24s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation: icon-hover-out-skew 0.24s ease-in-out forwards;
 }
 
 /* Цвета для каждой услуги - по столбикам: фиолетовый, зеленый, красный/оранжевый */
