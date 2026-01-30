@@ -3117,6 +3117,7 @@ section { scroll-margin-top: 0; }
   align-items: stretch;
   justify-content: center;
   overflow: visible;
+  min-height: 158px;
 }
 #works .container-horizontal .ig-arrow {
   align-self: center;
@@ -3134,11 +3135,8 @@ section { scroll-margin-top: 0; }
   min-height: 0;
 }
 #works .container-horizontal .ig-strip {
-  padding-top: 6px;
-  padding-bottom: 12px;
-  padding-left: 20px;
-  padding-right: 20px;
-  min-height: 0;
+  padding: 0;
+  min-height: 155px;
   align-self: stretch;
   align-items: center;
   box-sizing: border-box;
