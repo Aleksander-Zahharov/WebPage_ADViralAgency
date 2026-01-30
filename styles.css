@@ -2731,7 +2731,8 @@ section { scroll-margin-top: 0; }
 .ig-strip.no-snap { scroll-snap-type: none; }
 
 /* =========================
-  Клиенты: сетка 5×2 в стиле карточек Услуги (skew, рамка, 16:9)
+  Клиенты: фиксированный размер секции (1360×308), масштаб уменьшается при сужении,
+  чтобы визуально ничего не смещалось — только размер. Сетка 5×2, skew, рамка, 16:9.
 
   БЫЛО ДО ИЗМЕНЕНИЙ (квадратные карточки с закруглёнными углами):
   — Разметка: .clients-grid с вложенными .client-pair (в каждой паре 2 .client-item).
@@ -2741,6 +2742,25 @@ section { scroll-margin-top: 0; }
   — Без skew, без translateX, без рамки. Hover: scale(1.05), active: scale(0.98).
   — Логотип .client-logo: transform: scale(1.44) без skew; у BFM/Estee/ERR/Dodo свои scale.
 ========================= */
+
+/* Обёртка для масштабирования: занимает 100% ширины, высота по aspect-ratio 308/1360. overflow: visible — карточки (skew/translate) не обрезаются по краям */
+.clients-grid-scale-wrapper {
+  width: 100%;
+  aspect-ratio: 308 / 1360;
+  position: relative;
+  overflow: visible;
+  container-type: inline-size;
+  margin-top: 32px;
+}
+
+/* Внутренняя обёртка: на мобильной задаёт ширину прокручиваемой области (1360×2/3). overflow: visible — элементы могут выходить за края */
+.clients-grid-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
 .clients-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -2752,12 +2772,26 @@ section { scroll-margin-top: 0; }
   box-sizing: border-box;
 }
 
+/* Секция клиентов: фиксированная сетка 1360×308, масштаб = min(1, 100cqw/1360) от левого верхнего угла. overflow: visible — карточки не обрезаются по краям дива */
 #partners .clients-grid {
-  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1360px;
+  height: 308px;
+  margin: 0;
+  padding: 20px;
+  grid-template-columns: repeat(5, 256px);
+  grid-template-rows: repeat(2, 144px);
+  gap: 20px;
+  box-sizing: border-box;
+  transform: scale(min(1, 100cqw / 1360px));
+  transform-origin: left top;
   max-width: none;
+  overflow: visible;
 }
 
-/* Карточки клиентов в стиле секции Услуги: skew -8°, первый ряд +2px, последний -22px. Сетка 5×2, соотношение 16:9 */
+/* Карточки клиентов: ячейка 256×144 (16:9), skew -8°, первый ряд +2px, последний -22px */
 #partners .client-item {
   display: flex;
   align-items: center;
@@ -2771,13 +2805,14 @@ section { scroll-margin-top: 0; }
   position: relative;
   overflow: hidden;
   width: 100%;
+  height: 100%;
   min-width: 0;
-  max-width: none;
-  height: auto;
   min-height: 0;
+  max-width: none;
   max-height: none;
   aspect-ratio: 16 / 9;
   transform: skew(-8deg, 0deg);
+  box-sizing: border-box;
 }
 
 #partners .client-item:nth-child(-n+5) {
@@ -2936,39 +2971,40 @@ section { scroll-margin-top: 0; }
     padding-right: 16px;
   }
 
-  #partners .client-item {
-    padding: 16px;
-    min-height: 0;
+  /* Мобильная секция клиентов: фиксированный масштаб 66.67% (2/3), горизонтальная прокрутка влево‑вправо */
+  #partners .clients-grid-scale-wrapper {
+    aspect-ratio: auto;
+    height: calc(308px * 2 / 3); /* высота секции при scale(2/3) */
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  }
+  #partners .clients-grid-scale-wrapper::-webkit-scrollbar {
+    height: 6px;
+  }
+  #partners .clients-grid-scale-wrapper::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  #partners .clients-grid-scale-wrapper::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+  }
+  #partners .clients-grid-scale-wrapper::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
   }
 
-  .client-logo {
-    max-width: none;
-    max-height: none;
-    border-radius: 0;
-    transform: scale(1.44);
+  /* Ширина прокручиваемой области = визуальная ширина секции (1360×2/3) */
+  #partners .clients-grid-inner {
+    width: calc(1360px * 2 / 3);
+    height: calc(308px * 2 / 3);
+    min-width: calc(1360px * 2 / 3);
   }
 
-  #partners .client-item .client-logo {
-    transform: skew(8deg, 0deg) scale(1.52);
-  }
-
-  #partners .client-item[data-client="eeste"] .client-logo {
-    transform: skew(8deg, 0deg) scale(1.53);
-  }
-  #partners .client-item[data-client="bfm"] .client-logo {
-    transform: skew(8deg, 0deg) scale(1.37);
-  }
-  #partners .client-item[data-client="err"] .client-logo {
-    transform: skew(8deg, 0deg) scale(1.52);
-  }
-  #partners .client-item[data-client="dodo"] .client-logo {
-    transform: skew(8deg, 0deg) scale(1.46);
-  }
-
-  .client-item[data-client="bfm"] .client-logo {
-    width: 200%;
-    height: 200%;
-    border-radius: 0;
+  #partners .clients-grid {
+    transform: scale(0.6667);
+    transform-origin: left top;
   }
 }
 
@@ -2977,28 +3013,6 @@ section { scroll-margin-top: 0; }
     gap: 12px;
     padding-left: 12px;
     padding-right: 12px;
-  }
-
-  #partners .client-item {
-    padding: 12px;
-    min-height: 0;
-  }
-
-  #partners .client-item .client-logo,
-  .client-logo {
-    transform: skew(8deg, 0deg) scale(1.52);
-  }
-  #partners .client-item[data-client="eeste"] .client-logo {
-    transform: skew(8deg, 0deg) scale(1.53);
-  }
-  #partners .client-item[data-client="bfm"] .client-logo {
-    transform: skew(8deg, 0deg) scale(1.37);
-  }
-  #partners .client-item[data-client="err"] .client-logo {
-    transform: skew(8deg, 0deg) scale(1.52);
-  }
-  #partners .client-item[data-client="dodo"] .client-logo {
-    transform: skew(8deg, 0deg) scale(1.46);
   }
 }
 
