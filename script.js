@@ -1147,6 +1147,55 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }, { passive: true });
 
+  // Переключатель темы: светлая/тёмная, сохранение в localStorage
+  (function initThemeToggle() {
+    const THEME_STORAGE_KEY = "adviral-theme";
+    const root = doc.documentElement;
+
+    function getStoredTheme() {
+      try {
+        const stored = localStorage.getItem(THEME_STORAGE_KEY);
+        if (stored === "light" || stored === "dark") return stored;
+      } catch (_) {}
+      return null;
+    }
+
+    function applyTheme(theme) {
+      root.setAttribute("data-theme", theme);
+      const btn = doc.getElementById("theme-toggle");
+      if (btn) {
+        btn.setAttribute("aria-label", theme === "dark" ? "Switch to light theme" : "Switch to dark theme");
+      }
+    }
+
+    function initTheme() {
+      const stored = getStoredTheme();
+      if (stored) {
+        applyTheme(stored);
+        return;
+      }
+      if (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) {
+        applyTheme("light");
+      } else {
+        applyTheme("dark");
+      }
+    }
+
+    initTheme();
+
+    const themeBtn = doc.getElementById("theme-toggle");
+    if (themeBtn) {
+      themeBtn.addEventListener("click", function () {
+        const current = root.getAttribute("data-theme") || "dark";
+        const next = current === "dark" ? "light" : "dark";
+        applyTheme(next);
+        try {
+          localStorage.setItem(THEME_STORAGE_KEY, next);
+        } catch (_) {}
+      });
+    }
+  })();
+
   // Кнопка «Вверх»: показывается после прокрутки мимо героя, по клику — скролл в самый верх
   (function initScrollToTop() {
     const scrollToTopBtn = doc.getElementById('scroll-to-top');

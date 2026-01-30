@@ -1,9 +1,12 @@
 <!doctype html>
 <!-- Комментарий для теста -->
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script>
+      (function(){try{var t=localStorage.getItem("adviral-theme");if(t==="light"||t==="dark"){document.documentElement.setAttribute("data-theme",t);return;}if(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches){document.documentElement.setAttribute("data-theme","light");}else{document.documentElement.setAttribute("data-theme","dark");}}catch(e){document.documentElement.setAttribute("data-theme","dark");})();
+    </script>
   <title data-i18n="meta.title">ADViral Agency — Social Media, Video Production, and Performance Marketing</title>
     <meta
       name="description"
@@ -237,6 +240,8 @@
       <div class="container">
         <h2 data-i18n="works.title">Our work</h2>
         <p class="section-sub reveal reveal-left" data-i18n="works.subtitle">Video cases. Click to open in player.</p>
+        <div class="feeds-vert-horis-wrapper">
+          <div class="FeedsVertHoris">
         <div class="works-vertical-row">
           <button class="ig-arrow prev" aria-label="Previous" type="button">‹</button>
           <div class="ig-slider reveal reveal-left">
@@ -435,6 +440,8 @@
             </div>
           </div>
           <button class="ig-arrow next ig-arrow-horizontal" aria-label="Next" type="button">›</button>
+        </div>
+          </div>
         </div>
       </div>
     </section>
@@ -667,8 +674,14 @@
     </div>
   </div>
 
-  <!-- Кнопка «Вверх»: круглая в стиле ghost, стрелка как у ig-arrow next, повёрнута на -90deg -->
-  <a href="#" class="scroll-to-top" id="scroll-to-top" aria-label="Back to top" title=""><span aria-hidden="true">›</span></a>
+  <!-- Фиксированный блок: переключатель темы (сверху) и кнопка «Вверх» (снизу) -->
+  <div class="fixed-actions" aria-label="Fixed actions">
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch to light theme" title="Switch theme">
+      <span class="theme-toggle-icon theme-toggle-icon--sun" aria-hidden="true"></span>
+      <span class="theme-toggle-icon theme-toggle-icon--moon" aria-hidden="true"></span>
+    </button>
+    <a href="#" class="scroll-to-top" id="scroll-to-top" aria-label="Back to top" title=""><span aria-hidden="true">›</span></a>
+  </div>
 
     <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
     <script src="./script.js" defer></script>

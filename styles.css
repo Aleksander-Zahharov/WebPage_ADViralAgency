@@ -54,6 +54,13 @@
   /* Общая анимация стрелок: увеличение при hover, вдавливание при active */
   --arrow-hover-scale: 1.2;
   --arrow-active-scale: 0.85;
+  /* Кнопки fixed-actions (тема + вверх) */
+  --fixed-btn-color: #fff;
+  --fixed-btn-bg: rgba(255,255,255,.07);
+  --fixed-btn-border: rgba(255,255,255,.18);
+  --fixed-btn-shadow: 0 4px 20px rgba(0,0,0,.25);
+  --fixed-btn-hover-bg: rgba(255,255,255,.10);
+  --fixed-btn-hover-border: rgba(255,255,255,.28);
 }
 
 @media (max-width: 768px) {
@@ -66,6 +73,133 @@
 @media (max-width: 480px) {
   :root {
     --gap: 14px;
+  }
+}
+
+/* =========================
+  Светлая тема
+========================= */
+[data-theme="light"] {
+  --bg-page: #f5f5f7;
+  --bg-1: #ffffff;
+  --bg-2: #ebebed;
+  --text: #1d1d1f;
+  --muted: #6e6e73;
+  --card: rgba(0,0,0,0.06);
+  --card-border: rgba(0,0,0,0.12);
+  --card-border-solid: #d2d2d7;
+  --selection-bg: var(--primary-1);
+  --fixed-btn-color: #1d1d1f;
+  --fixed-btn-bg: rgba(255,255,255,.9);
+  --fixed-btn-border: rgba(0,0,0,.12);
+  --fixed-btn-shadow: 0 4px 20px rgba(0,0,0,.12);
+  --fixed-btn-hover-bg: rgba(255,255,255,1);
+  --fixed-btn-hover-border: rgba(0,0,0,.2);
+}
+
+[data-theme="light"] ::selection {
+  background-color: rgba(106, 17, 203, 0.2);
+  color: #1d1d1f;
+}
+[data-theme="light"] ::-moz-selection {
+  background-color: rgba(106, 17, 203, 0.2);
+  color: #1d1d1f;
+}
+
+[data-theme="light"] .site-header {
+  background: rgba(255,255,255,.85);
+  border-bottom-color: rgba(0,0,0,.08);
+}
+[data-theme="light"] .header-nav a,
+[data-theme="light"] .menu-toggle,
+[data-theme="light"] .lang-switcher__toggle {
+  color: #1d1d1f;
+}
+[data-theme="light"] .header-nav a.active {
+  color: #1d1d1f;
+  font-weight: 700;
+}
+[data-theme="light"] .menu-toggle {
+  border-color: rgba(0,0,0,.14);
+}
+[data-theme="light"] .menu-toggle__bar {
+  background: #1d1d1f;
+}
+[data-theme="light"] .lang-switcher__toggle {
+  border-color: rgba(0,0,0,.14);
+  color: #1d1d1f;
+}
+[data-theme="light"] .btn-ghost {
+  color: #1d1d1f;
+  background-color: rgba(0,0,0,.06);
+  border-color: rgba(0,0,0,.14);
+}
+[data-theme="light"] .btn-ghost:hover {
+  background-color: rgba(0,0,0,.10);
+  border-color: rgba(0,0,0,.22);
+}
+[data-theme="light"] .hero-overlay {
+  background: linear-gradient(180deg, rgba(255,255,255,.25), rgba(255,255,255,.35));
+}
+[data-theme="light"] .hero-content h1,
+[data-theme="light"] .hero-content .muted {
+  color: #1d1d1f;
+}
+[data-theme="light"] .hero .btn-primary {
+  color: #fff;
+}
+[data-theme="light"] .scroll-to-top span {
+  filter: brightness(0) saturate(100%);
+}
+[data-theme="light"] .scroll-to-top.hover-tap-active {
+  background-color: var(--fixed-btn-hover-bg);
+  border-color: var(--fixed-btn-hover-border);
+}
+
+[data-theme="light"] .site-footer {
+  border-top-color: rgba(0,0,0,.08);
+}
+@media (hover: hover) {
+  [data-theme="light"] .footer-left .author-email-link:hover,
+  [data-theme="light"] .footer-center a:hover,
+  [data-theme="light"] .footer-right a:hover {
+    color: #1d1d1f;
+  }
+}
+[data-theme="light"] .footer-right .social-icon {
+  filter: brightness(0) saturate(100%);
+  opacity: 0.75;
+}
+[data-theme="light"] .footer-right .social-icon.meta {
+  filter: brightness(0) saturate(100%) opacity(0.85);
+}
+
+[data-theme="light"] .lang-switcher__chevron {
+  border-color: rgba(0,0,0,.5);
+}
+[data-theme="light"] .lang-switcher[data-open="true"] .lang-switcher__chevron {
+  border-color: #1d1d1f;
+}
+[data-theme="light"] .lang-switcher__menu {
+  background: rgba(255,255,255,.95);
+  border-color: rgba(0,0,0,.12);
+  box-shadow: 0 18px 42px rgba(0,0,0,.15);
+}
+[data-theme="light"] .lang-switcher__option {
+  color: #1d1d1f;
+}
+[data-theme="light"] .lang-switcher__option:hover,
+[data-theme="light"] .lang-switcher__option.is-active {
+  color: #1d1d1f;
+}
+
+@media (max-width: 820px) {
+  [data-theme="light"] .header-nav {
+    background: rgba(255,255,255,.9);
+    border-top-color: rgba(0,0,0,.08);
+  }
+  [data-theme="light"] .header-nav a {
+    color: #1d1d1f;
   }
 }
 
@@ -2418,6 +2552,88 @@ section { scroll-margin-top: 0; }
   overflow: visible;
 }
 
+/* Обёртка лент: фиксированный размер 1360×547, масштаб при сужении экрана */
+.feeds-vert-horis-wrapper {
+  width: 100%;
+  aspect-ratio: 547 / 1360;
+  max-height: min(547px, 57vw);
+  position: relative;
+  overflow: visible; /* стрелки и hover не обрезать */
+  container-type: inline-size;
+  margin-top: 24px;
+}
+.FeedsVertHoris {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1360px;
+  height: 547px;
+  transform-origin: left top;
+  transform: scale(min(1, 100cqw / 1360px));
+  overflow: visible;
+}
+/* Одинаковая видимая зона для обеих лент: ширина контента между стрелками */
+.FeedsVertHoris .ig-slider {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.FeedsVertHoris .works-vertical-row .ig-slider {
+  overflow: visible;
+}
+.FeedsVertHoris .container-horizontal .ig-slider {
+  overflow: hidden; /* горизонтальная лента не выходит за край */
+}
+.FeedsVertHoris .ig-strip {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Мобильная версия: без даунскейла, ленты прокручиваются горизонтально, масштаб 50% */
+@media (max-width: 768px) {
+  .feeds-vert-horis-wrapper {
+    aspect-ratio: auto;
+    max-height: none;
+    height: auto;
+    container-type: normal;
+    overflow-x: hidden;
+    overflow-y: visible;
+    display: flex;
+    justify-content: center;
+  }
+  .FeedsVertHoris {
+    position: relative;
+    width: calc(100% / 0.7);
+    max-width: calc(100vw / 0.7);
+    height: auto;
+    transform: scale(0.7);
+    transform-origin: top center;
+    /* убираем пустое пространство под масштабированным контентом (30% высоты при scale 0.7) */
+    margin-bottom: -30vw;
+  }
+  .FeedsVertHoris .ig-slider {
+    max-width: 100%;
+    overflow: visible;
+  }
+  .FeedsVertHoris .container-horizontal .ig-slider {
+    overflow: visible;
+  }
+  .FeedsVertHoris .ig-strip {
+    max-width: 100%;
+    margin: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: var(--gap);
+  }
+  .FeedsVertHoris .ig-strip .ig-item {
+    scroll-snap-align: center;
+  }
+  /* меньше нижний отступ секции работ на мобильных после сжатия лент */
+  #works.section {
+    padding-bottom: clamp(24px, 4vw, 40px);
+  }
+}
+
 @media (max-width: 1024px) {
   .ig-slider {
     max-width: 100%;
@@ -2577,6 +2793,14 @@ section { scroll-margin-top: 0; }
   padding-bottom: 9px;  /* нижняя граница ленты идёт до линии пересечения с горизонтальной */
   padding-left: 56px;   /* внутренний отступ слева */
 }
+/* Вертикальная лента — карточки +50%: 360px по высоте */
+#works .works-vertical-row .ig-item {
+  width: calc(360px * 9 / 16);
+  height: 360px;
+  flex: 0 0 auto;
+  min-width: 0;
+  min-height: 0;
+}
 #works .container-horizontal {
   margin-top: 0; /* границы соприкасаются, без наложения */
   position: relative;
@@ -2647,8 +2871,8 @@ section { scroll-margin-top: 0; }
   }
 
   .ig-item {
-    width: calc(139px * 9 / 16);
-    height: 139px;
+    width: calc(240px * 9 / 16);
+    height: 240px;
   }
 }
 
@@ -2664,8 +2888,8 @@ section { scroll-margin-top: 0; }
 .ig-item {
   position: relative;
   flex: 0 0 auto;
-  width: calc(139px * 9 / 16); /* как высота горизонтальной ленты (139px), портрет 9:16 */
-  height: 139px;
+  width: calc(240px * 9 / 16); /* портрет 9:16, высота ленты 240px */
+  height: 240px;
   border-radius: 0; /* Убираем закругление для острых углов */
   overflow: hidden;
   scroll-snap-align: center; /* карточки прилипают центру */
@@ -2723,6 +2947,40 @@ section { scroll-margin-top: 0; }
     transform: skew(8deg, 0deg) scale(1.35);
   }
 }
+
+/* Фиксируем размеры: вертикальная лента — 240px (крупно), горизонтальная — 139px */
+#works .ig-item {
+  width: calc(240px * 9 / 16);
+  height: 240px;
+  flex: 0 0 auto;
+  min-width: 0;
+  min-height: 0;
+}
+#works .ig-item-horizontal {
+  width: calc(139px * 16 / 9);
+  height: 139px;
+}
+#works .ig-item video,
+#works .ig-item-horizontal video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  #works .ig-item {
+    width: calc(240px * 9 / 16);
+    height: 240px;
+  }
+  #works .ig-item-horizontal {
+    width: calc(139px * 16 / 9);
+    height: 139px;
+  }
+}
+
 /* Убраны подписи и иконка плей с видео в ленте */
 .ig-item .play {
   display: none;
@@ -4063,24 +4321,37 @@ input::placeholder, textarea::placeholder {
   }
 }
 
-/* Кнопка «Вверх»: над футером (z-index 50), но под попапами (10000) */
-.scroll-to-top {
+/* Фиксированный блок: переключатель темы (сверху) и кнопка «Вверх» (снизу) */
+.fixed-actions {
   position: fixed;
   bottom: 24px;
   right: 24px;
   z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+.fixed-actions .scroll-to-top {
+  position: static;
+  bottom: auto;
+  right: auto;
+}
+
+/* Кнопка «Вверх»: над футером (z-index 50), но под попапами (10000) */
+.scroll-to-top {
   width: 56px;
   height: 56px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: var(--fixed-btn-color);
   text-decoration: none;
-  background-color: rgba(255,255,255,.07);
-  border: 1px solid rgba(255,255,255,.18);
+  background-color: var(--fixed-btn-bg);
+  border: 1px solid var(--fixed-btn-border);
   backdrop-filter: blur(var(--blur));
-  box-shadow: 0 4px 20px rgba(0,0,0,.25);
+  box-shadow: var(--fixed-btn-shadow);
   opacity: 0;
   visibility: hidden;
   transform: translateY(8px);
@@ -4111,8 +4382,8 @@ input::placeholder, textarea::placeholder {
   transform: translateY(0);
 }
 .scroll-to-top:hover {
-  background-color: rgba(255,255,255,.10);
-  border-color: rgba(255,255,255,.28);
+  background-color: var(--fixed-btn-hover-bg);
+  border-color: var(--fixed-btn-hover-border);
   transform: translateY(0) scale(1.1);
 }
 .scroll-to-top:active {
@@ -4123,16 +4394,89 @@ input::placeholder, textarea::placeholder {
   outline: none;
 }
 
+/* Кнопка переключения темы: круглая, над scroll-to-top */
+.theme-toggle {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 1px solid var(--fixed-btn-border);
+  background-color: var(--fixed-btn-bg);
+  backdrop-filter: blur(var(--blur));
+  box-shadow: var(--fixed-btn-shadow);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color .2s ease, border-color .2s ease, transform .2s ease;
+}
+.theme-toggle:hover {
+  background-color: var(--fixed-btn-hover-bg);
+  border-color: var(--fixed-btn-hover-border);
+  transform: scale(1.1);
+}
+.theme-toggle:active {
+  transform: scale(0.95);
+}
+.theme-toggle:focus-visible {
+  box-shadow: 0 0 0 3px rgba(138,88,255,.25);
+  outline: none;
+}
+.theme-toggle-icon {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 24px;
+  height: 24px;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease;
+}
+/* Тёмная тема: показываем солнце (переход на светлую) */
+[data-theme="dark"] .theme-toggle-icon--sun {
+  opacity: 1;
+  filter: brightness(0) invert(1);
+}
+[data-theme="dark"] .theme-toggle-icon--moon {
+  opacity: 0;
+}
+/* Светлая тема: показываем луну (переход на тёмную) */
+[data-theme="light"] .theme-toggle-icon--sun {
+  opacity: 0;
+}
+[data-theme="light"] .theme-toggle-icon--moon {
+  opacity: 1;
+  filter: brightness(0) saturate(100%);
+}
+.theme-toggle-icon--sun {
+  background-image: url("./assets/images/icons/Icon_sun.png");
+}
+.theme-toggle-icon--moon {
+  background-image: url("./assets/images/icons/icon_moon.png");
+}
+
 @media (max-width: 600px) {
-  .scroll-to-top {
-    width: 48px;
-    height: 48px;
+  .fixed-actions {
     bottom: 16px;
     right: 16px;
+    gap: 10px;
+  }
+  .scroll-to-top,
+  .theme-toggle {
+    width: 48px;
+    height: 48px;
   }
   .scroll-to-top span {
     width: 18px;
     height: 18px;
+  }
+  .theme-toggle-icon {
+    width: 20px;
+    height: 20px;
   }
 }
 
