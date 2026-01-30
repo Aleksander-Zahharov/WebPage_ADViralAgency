@@ -2987,6 +2987,42 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  /* Клиенты и Работы: анимация увеличения/уменьшения доигрывается до конца при уходе курсора */
+  (function initHoverScaleCompletion() {
+    const hoverCapable = window.matchMedia("(hover: hover)");
+    if (!hoverCapable.matches) return;
+    const HOVER_SCALE_UP_MS = 250;
+
+    function setupHoverScaleCompletion(selector) {
+      document.querySelectorAll(selector).forEach((el) => {
+        let enterTime = 0;
+        let leaveTimeoutId = null;
+
+        el.addEventListener("mouseenter", () => {
+          if (leaveTimeoutId != null) {
+            clearTimeout(leaveTimeoutId);
+            leaveTimeoutId = null;
+          }
+          enterTime = performance.now();
+          el.classList.add("hover-scale-on");
+        });
+
+        el.addEventListener("mouseleave", () => {
+          const elapsed = performance.now() - enterTime;
+          const remaining = Math.max(0, HOVER_SCALE_UP_MS - elapsed);
+          leaveTimeoutId = setTimeout(() => {
+            leaveTimeoutId = null;
+            el.classList.remove("hover-scale-on");
+          }, remaining);
+        });
+      });
+    }
+
+    setupHoverScaleCompletion("#partners .client-item");
+    setupHoverScaleCompletion("#works .ig-item");
+    setupHoverScaleCompletion("#works .ig-item-horizontal");
+  })();
+
   /* Мобильная версия: при тапе воспроизводить hover-эффект (активация и деактивация) */
   const hoverNone = window.matchMedia("(hover: none)");
   const narrowViewport = window.matchMedia("(max-width: 768px)");

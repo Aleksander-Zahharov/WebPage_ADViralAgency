@@ -1799,11 +1799,11 @@ section { scroll-margin-top: 0; }
   #partners.in-view .client-item[data-wave-ready="true"]:not(.wave-done) {
     animation-play-state: running;
   }
-  /* После волны или после первого hover */
+  /* После волны или после первого hover — transition для плавного возврата при снятии .hover-scale-on */
   #partners .client-item[data-wave-ready="true"].wave-done {
     animation: none !important;
     transform: skew(-8deg, 0deg);
-    transition: transform 0.25s ease;
+    transition: transform 0.25s ease-in-out;
   }
   #partners .client-item[data-wave-ready="true"].wave-done:nth-child(-n+5) {
     transform: skew(-8deg, 0deg) translateX(2px);
@@ -1811,20 +1811,23 @@ section { scroll-margin-top: 0; }
   #partners .client-item[data-wave-ready="true"].wave-done:nth-child(n+6) {
     transform: skew(-8deg, 0deg) translateX(-22px);
   }
-  /* При наведении волна отменяется, scale(1.05) и scale(0.98) при зажатии — как у ленты вертикальных видео */
+  /* При наведении волна отменяется; .hover-scale-on — доигрывание анимации до конца (как у горизонтальной ленты) */
   #partners .client-item[data-wave-ready="true"]:hover,
-  #partners .client-item[data-wave-ready="true"]:focus-within {
+  #partners .client-item[data-wave-ready="true"]:focus-within,
+  #partners .client-item[data-wave-ready="true"].hover-scale-on {
     animation: none !important;
-    transform: skew(-8deg, 0deg) scale(1.05) !important;
-    transition: transform 0.25s ease;
+    transform: skew(-8deg, 0deg) scale(1.02) !important;
+    transition: transform 0.25s ease-in-out;
   }
   #partners .client-item[data-wave-ready="true"]:nth-child(-n+5):hover,
-  #partners .client-item[data-wave-ready="true"]:nth-child(-n+5):focus-within {
-    transform: skew(-8deg, 0deg) translateX(2px) scale(1.05) !important;
+  #partners .client-item[data-wave-ready="true"]:nth-child(-n+5):focus-within,
+  #partners .client-item[data-wave-ready="true"]:nth-child(-n+5).hover-scale-on {
+    transform: skew(-8deg, 0deg) translateX(2px) scale(1.02) !important;
   }
   #partners .client-item[data-wave-ready="true"]:nth-child(n+6):hover,
-  #partners .client-item[data-wave-ready="true"]:nth-child(n+6):focus-within {
-    transform: skew(-8deg, 0deg) translateX(-22px) scale(1.05) !important;
+  #partners .client-item[data-wave-ready="true"]:nth-child(n+6):focus-within,
+  #partners .client-item[data-wave-ready="true"]:nth-child(n+6).hover-scale-on {
+    transform: skew(-8deg, 0deg) translateX(-22px) scale(1.02) !important;
   }
   #partners .client-item[data-wave-ready="true"]:active,
   #partners .client-item[data-wave-ready="true"]:hover:active {
@@ -1868,17 +1871,22 @@ section { scroll-margin-top: 0; }
   }
   #works .ig-item[data-wave-ready="true"]:hover,
   #works .ig-item[data-wave-ready="true"]:focus-within { animation: none; }
-  #works .ig-item[data-wave-ready="true"]:not(.ig-item-horizontal):hover { transform: skew(-8deg, 0deg) scale(1.05); z-index: 1; box-shadow: none; }
-  /* Горизонтальная лента: приподнимание при hover как при волне — тот же scale(1.05) и z-index */
+  #works .ig-item[data-wave-ready="true"]:not(.ig-item-horizontal):hover,
+  #works .ig-item[data-wave-ready="true"]:not(.ig-item-horizontal).hover-scale-on { transform: skew(-8deg, 0deg) scale(1.08); z-index: 1; box-shadow: none; }
+  /* Горизонтальная лента: увеличенный масштаб при hover */
   #works .ig-item-horizontal[data-wave-ready="true"]:hover,
-  #works .ig-item-horizontal[data-wave-ready="true"]:focus-within { transform: skew(-8deg, 0deg) scale(1.05); z-index: 1; }
+  #works .ig-item-horizontal[data-wave-ready="true"]:focus-within,
+  #works .ig-item-horizontal[data-wave-ready="true"].hover-scale-on { transform: skew(-8deg, 0deg) scale(1.08); z-index: 1; }
   #works .ig-item-horizontal[data-wave-ready="true"]:hover video,
-  #works .ig-item-horizontal[data-wave-ready="true"]:focus-within video { transform: skew(8deg, 0deg) scale(1.35); }
-  /* После волны (.wave-done) правило покоя сильнее по специфичности — явно перебиваем hover/active для .wave-done */
+  #works .ig-item-horizontal[data-wave-ready="true"]:focus-within video,
+  #works .ig-item-horizontal[data-wave-ready="true"].hover-scale-on video { transform: skew(8deg, 0deg) scale(1.4); }
+  /* После волны (.wave-done) */
   #works .ig-item-horizontal[data-wave-ready="true"].wave-done:hover,
-  #works .ig-item-horizontal[data-wave-ready="true"].wave-done:focus-within { transform: skew(-8deg, 0deg) scale(1.05); z-index: 1; }
+  #works .ig-item-horizontal[data-wave-ready="true"].wave-done:focus-within,
+  #works .ig-item-horizontal[data-wave-ready="true"].wave-done.hover-scale-on { transform: skew(-8deg, 0deg) scale(1.08); z-index: 1; }
   #works .ig-item-horizontal[data-wave-ready="true"].wave-done:hover video,
-  #works .ig-item-horizontal[data-wave-ready="true"].wave-done:focus-within video { transform: skew(8deg, 0deg) scale(1.35); }
+  #works .ig-item-horizontal[data-wave-ready="true"].wave-done:focus-within video,
+  #works .ig-item-horizontal[data-wave-ready="true"].wave-done.hover-scale-on video { transform: skew(8deg, 0deg) scale(1.4); }
   #works .ig-item-horizontal[data-wave-ready="true"].wave-done:active,
   #works .ig-item-horizontal[data-wave-ready="true"].wave-done:hover:active { transform: skew(-8deg, 0deg) scale(0.98); }
   #works .ig-item[data-wave-ready="true"]:active { animation: none; }
@@ -3281,13 +3289,18 @@ section { scroll-margin-top: 0; }
   background: var(--card); /* Используем тот же фон, что и в секции "Кто мы" */
   border: none; /* Убираем рамку */
   transform: skew(-8deg, 0deg); /* Наклон рамки как в секции "Кто мы" */
-  transition: transform .2s ease, z-index .2s ease;
+  transition: transform 0.25s ease-in-out, z-index 0.25s ease-in-out;
 }
 @media (hover: hover) {
-  .ig-item:hover {
-    transform: skew(-8deg, 0deg) scale(1.05); /* Сохраняем наклон при приближении */
-    z-index: 1; /* Поднимаем при наведении */
+  .ig-item:hover,
+  .ig-item.hover-scale-on {
+    transform: skew(-8deg, 0deg) scale(1.08); /* Увеличенный масштаб при наведении */
+    z-index: 1;
     box-shadow: none;
+  }
+  .ig-item:hover video,
+  .ig-item.hover-scale-on video {
+    transform: skew(8deg, 0deg) scale(1.4);
   }
 }
 
@@ -3299,14 +3312,9 @@ section { scroll-margin-top: 0; }
   height: 100%;
   object-fit: cover;
   display: block;
-  transform: skew(8deg, 0deg) scale(1.25); /* Компенсируем наклон и приближаем видео, чтобы не было пустых углов */
-  transition: transform 0.5s cubic-bezier(.2,.6,.2,1);
+  transform: skew(8deg, 0deg) scale(1.25); /* Компенсируем наклон и приближаем видео */
+  transition: transform 0.25s ease;
   transform-origin: center center;
-}
-@media (hover: hover) {
-  .ig-item:hover video {
-    transform: skew(8deg, 0deg) scale(1.35); /* Увеличиваем приближение при наведении */
-  }
 }
 
 /* Горизонтальные видео — та же высота 139px и зазор 18px, как у вертикальной ленты.
@@ -3315,13 +3323,26 @@ section { scroll-margin-top: 0; }
   width: calc(139px * 16 / 9);
   height: 139px;
   transform: skew(-8deg, 0deg);
+  transition: transform 0.25s ease-in-out, z-index 0.25s ease-in-out;
 }
 
-.ig-item-horizontal:active {
-  transform: skew(-8deg, 0deg) scale(0.98); /* Эффект вминания при зажатии мышки */
+@media (hover: hover) {
+  .ig-item-horizontal:hover,
+  .ig-item-horizontal.hover-scale-on {
+    transform: skew(-8deg, 0deg) scale(1.08);
+    z-index: 1;
+  }
+  .ig-item-horizontal:hover video,
+  .ig-item-horizontal.hover-scale-on video {
+    transform: skew(8deg, 0deg) scale(1.4);
+  }
+  .ig-item-horizontal:active {
+    transform: skew(-8deg, 0deg) scale(0.98);
+  }
 }
 .ig-item-horizontal video {
   transform: skew(8deg, 0deg) scale(1.25); /* компенсация под рамку */
+  transition: transform 0.25s ease;
 }
 
 /* Фиксируем размеры: вертикальная лента — 240px (крупно), горизонтальная — 139px */
@@ -3332,12 +3353,17 @@ section { scroll-margin-top: 0; }
   flex: 0 0 auto;
   min-width: 0;
   min-height: 0;
-  transition: transform 0.2s ease, z-index 0.2s ease;
+  transition: transform 0.25s ease-in-out, z-index 0.25s ease-in-out;
 }
 #works .ig-item-horizontal {
   width: calc(139px * 16 / 9);
   height: 139px;
-  transition: transform 0.2s ease, z-index 0.2s ease;
+  transition: transform 0.25s ease-in-out, z-index 0.25s ease-in-out;
+}
+/* Класс .hover-scale-on: доигрывание анимации увеличения/уменьшения до конца при уходе курсора */
+#works .ig-item.hover-scale-on,
+#works .ig-item-horizontal.hover-scale-on {
+  z-index: 1;
 }
 #works .ig-item video,
 #works .ig-item-horizontal video {
@@ -3445,7 +3471,7 @@ section { scroll-margin-top: 0; }
   border: 1px solid var(--card-border);
   border-radius: 0;
   text-decoration: none;
-  transition: box-shadow 0.25s ease, transform 0.2s ease, border-color 0.25s ease;
+  transition: box-shadow 0.25s ease, transform 0.25s ease-in-out, border-color 0.25s ease;
   position: relative;
   overflow: hidden;
   width: 100%;
@@ -3468,14 +3494,17 @@ section { scroll-margin-top: 0; }
 }
 
 @media (hover: hover) {
-  #partners .client-item:hover {
+  #partners .client-item:hover,
+  #partners .client-item.hover-scale-on {
     border-color: var(--service-border-color, var(--card-border));
     transform: skew(-8deg, 0deg) scale(1.02);
   }
-  #partners .client-item:nth-child(-n+5):hover {
+  #partners .client-item:nth-child(-n+5):hover,
+  #partners .client-item:nth-child(-n+5).hover-scale-on {
     transform: skew(-8deg, 0deg) translateX(2px) scale(1.02);
   }
-  #partners .client-item:nth-child(n+6):hover {
+  #partners .client-item:nth-child(n+6):hover,
+  #partners .client-item:nth-child(n+6).hover-scale-on {
     transform: skew(-8deg, 0deg) translateX(-22px) scale(1.02);
   }
 }
@@ -5937,18 +5966,18 @@ input::placeholder, textarea::placeholder {
     transform: translateY(-50%) scale(var(--arrow-hover-scale));
   }
   .ig-item.hover-tap-active {
-    transform: skew(-8deg, 0deg) scale(1.05);
+    transform: skew(-8deg, 0deg) scale(1.08);
     z-index: 1;
     box-shadow: none;
   }
   .ig-item.hover-tap-active video {
-    transform: skew(8deg, 0deg) scale(1.35);
+    transform: skew(8deg, 0deg) scale(1.4);
   }
   .ig-item-horizontal.hover-tap-active {
-    transform: skew(-8deg, 0deg) scale(1.05);
+    transform: skew(-8deg, 0deg) scale(1.08);
   }
   .ig-item-horizontal.hover-tap-active video {
-    transform: skew(8deg, 0deg) scale(1.35);
+    transform: skew(8deg, 0deg) scale(1.4);
   }
   .client-item.hover-tap-active {
     transform: scale(1.05);
@@ -6032,7 +6061,7 @@ input::placeholder, textarea::placeholder {
   #works .ig-item[data-wave-ready="true"].hover-tap-active:not(.ig-item-horizontal),
   #works .ig-item-horizontal[data-wave-ready="true"].hover-tap-active {
     animation: none;
-    transform: skew(-8deg, 0deg) scale(1.05);
+    transform: skew(-8deg, 0deg) scale(1.08);
   }
   /* Попапы и модалки: hover при тапе */
   .service-popup-close.hover-tap-active {
