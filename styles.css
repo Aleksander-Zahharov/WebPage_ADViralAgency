@@ -1238,9 +1238,9 @@ section { scroll-margin-top: 0; }
   }
 }
 
-/* Секция услуг: на всю ширину экрана, процентный отступ от краёв */
+/* Секция услуг: процентный отступ от краёв; макс. ширина как у остальных секций (на экстра-широких не растягивается) */
 #services .container {
-  max-width: 100%;
+  max-width: calc(var(--container) + 2 * var(--gap));
   padding-left: 3.5%;
   padding-right: 3.5%;
 }
@@ -1648,11 +1648,11 @@ section { scroll-margin-top: 0; }
   height: min(420px, 52vh);
   align-items: stretch;
 }
-/* Десктоп: дополнительные отступы слева и справа у блока с карточками */
+/* Десктоп: увеличенные отступы слева и справа у блока с карточками */
 @media (min-width: 901px) {
   #services .cards {
-    margin-left: 48px;
-    margin-right: 48px;
+    margin-left: 72px;
+    margin-right: 72px;
   }
 }
 #services .cards .card {
