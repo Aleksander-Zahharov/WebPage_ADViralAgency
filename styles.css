@@ -2064,68 +2064,90 @@ section { scroll-margin-top: 0; }
 #services .services-cards-scalable {
   display: block;
 }
-/* При ширине 900px и уже (до мобильной): первый ряд — чуть влево (-2px), третий — вправо (+2px) */
+/*
+  Планшет (601–900px): визуально как на десктопе.
+  Почему так сделано:
+  1) Сужаем блок карточек (padding-left/right 28px) — освобождаем место по краям.
+  2) Первый ряд сдвигаем вправо (+22px), третий влево (-22px) — те же величины, что на десктопе.
+  3) Второй ряд без сдвига — получается «ёлочка»: края рядов под наклоном совпадают, карточки не стоят столбиком друг под другом.
+*/
 @media (max-width: 900px) and (min-width: 601px) {
-  #services .cards .card:nth-child(-n+3) {
-    transform: skew(-8deg, 0deg) translateX(-2px);
+  #services .cards {
+    padding-left: 28px;
+    padding-right: 28px;
   }
+  /* Первый ряд — сдвиг вправо */
+  #services .cards .card:nth-child(-n+3) {
+    transform: skew(-8deg, 0deg) translateX(22px);
+  }
+  /* Третий ряд — сдвиг влево */
   #services .cards .card:nth-child(n+7) {
-    transform: skew(-8deg, 0deg) translateX(2px);
+    transform: skew(-8deg, 0deg) translateX(-22px);
   }
   #services .cards .card.card-scale-on:nth-child(-n+3) {
-    transform: skew(-8deg, 0deg) translateX(-2px);
+    transform: skew(-8deg, 0deg) translateX(22px);
   }
   #services .cards .card.card-scale-on:nth-child(n+7) {
-    transform: skew(-8deg, 0deg) translateX(2px);
+    transform: skew(-8deg, 0deg) translateX(-22px);
   }
   #services .cards .card:nth-child(-n+3):hover:not(.wave-active),
   #services .cards .card:nth-child(-n+3):focus-within:not(.wave-active) {
-    transform: skew(-8deg, 0deg) translateX(-2px);
+    transform: skew(-8deg, 0deg) translateX(22px);
   }
   #services .cards .card:nth-child(n+7):hover:not(.wave-active),
   #services .cards .card:nth-child(n+7):focus-within:not(.wave-active) {
-    transform: skew(-8deg, 0deg) translateX(2px);
+    transform: skew(-8deg, 0deg) translateX(-22px);
   }
   #services .cards .card:nth-child(-n+3):active,
   #services .cards .card:nth-child(-n+3):hover:active,
   #services .cards .card:nth-child(-n+3):focus-within:active {
-    transform: skew(-8deg, 0deg) translateX(-2px) scale(0.98) !important;
+    transform: skew(-8deg, 0deg) translateX(22px) scale(0.98) !important;
   }
   #services .cards .card:nth-child(n+7):active,
   #services .cards .card:nth-child(n+7):hover:active,
   #services .cards .card:nth-child(n+7):focus-within:active {
-    transform: skew(-8deg, 0deg) translateX(2px) scale(0.98) !important;
+    transform: skew(-8deg, 0deg) translateX(-22px) scale(0.98) !important;
   }
   #services .cards .card:nth-child(-n+3).hover-tap-active:not(.wave-active) {
-    transform: skew(-8deg, 0deg) translateX(-2px);
+    transform: skew(-8deg, 0deg) translateX(22px);
   }
   #services .cards .card:nth-child(n+7).hover-tap-active:not(.wave-active) {
-    transform: skew(-8deg, 0deg) translateX(2px);
+    transform: skew(-8deg, 0deg) translateX(-22px);
   }
   #services .cards .card[data-wave-ready="true"]:nth-child(-n+3):hover,
   #services .cards .card[data-wave-ready="true"]:nth-child(-n+3):focus-within {
-    transform: skew(-8deg, 0deg) translateX(-2px);
+    transform: skew(-8deg, 0deg) translateX(22px);
   }
   #services .cards .card[data-wave-ready="true"]:nth-child(n+7):hover,
   #services .cards .card[data-wave-ready="true"]:nth-child(n+7):focus-within {
-    transform: skew(-8deg, 0deg) translateX(2px);
+    transform: skew(-8deg, 0deg) translateX(-22px);
   }
   #services .cards .card[data-wave-ready="true"]:nth-child(-n+3):active,
   #services .cards .card[data-wave-ready="true"]:nth-child(-n+3):hover:active,
   #services .cards .card[data-wave-ready="true"]:nth-child(-n+3):focus-within:active {
-    transform: skew(-8deg, 0deg) translateX(-2px) scale(0.98) !important;
+    transform: skew(-8deg, 0deg) translateX(22px) scale(0.98) !important;
   }
   #services .cards .card[data-wave-ready="true"]:nth-child(n+7):active,
   #services .cards .card[data-wave-ready="true"]:nth-child(n+7):hover:active,
   #services .cards .card[data-wave-ready="true"]:nth-child(n+7):focus-within:active {
-    transform: skew(-8deg, 0deg) translateX(2px) scale(0.98) !important;
+    transform: skew(-8deg, 0deg) translateX(-22px) scale(0.98) !important;
   }
-  /* Волна: первый ряд влево (-2px), третий вправо (+2px) */
+  /* Волна на планшете: первый ряд +22px, третий -22px */
   #services .cards .card[data-wave-ready="true"]:nth-child(-n+3) {
     animation-name: press-bounce-skew-v-r1-left;
   }
   #services .cards .card[data-wave-ready="true"]:nth-child(n+7) {
     animation-name: press-bounce-skew-v-r3-right;
+  }
+  @keyframes press-bounce-skew-v-r1-left {
+    0%   { transform: skew(-8deg, 0deg) translateX(22px) translateY(0) scale(1); }
+    40%  { transform: skew(-8deg, 0deg) translateX(22px) translateY(-3px) scale(var(--wave-scale, 1.02)); }
+    100% { transform: skew(-8deg, 0deg) translateX(22px) translateY(0) scale(1); }
+  }
+  @keyframes press-bounce-skew-v-r3-right {
+    0%   { transform: skew(-8deg, 0deg) translateX(-22px) translateY(0) scale(1); }
+    40%  { transform: skew(-8deg, 0deg) translateX(-22px) translateY(-3px) scale(var(--wave-scale, 1.02)); }
+    100% { transform: skew(-8deg, 0deg) translateX(-22px) translateY(0) scale(1); }
   }
   /* Фиксированный размер иконок на планшете — одинаковый у всех карточек */
   #services .cards .card::after {
