@@ -580,15 +580,15 @@ const translations = {
 // Развёрнутые тексты для попапа услуг (по языкам и data-service-icon)
 const servicePopupLongText = {
   ru: {
-    analysis: '<p>Мы начинаем продвижение с глубокого анализа, чтобы каждое действие опиралось на данные, а не на догадки.</p><p><strong>Что входит:</strong></p><ul><li>Анализ текущего позиционирования бренда и его восприятия аудиторией</li><li>Исследование рынка и конкурентной среды</li><li>Определение целевой аудитории, её потребностей, болей и мотивации</li><li>Анализ продуктовой линейки: сильные и слабые стороны, точки роста</li><li>Формирование ключевых УТП и коммуникационных сообщений</li></ul><p><strong>Результат:</strong></p><p>Чёткое понимание, <em>что, кому и как продавать</em>, а также основа для эффективной стратегии продвижения.</p>',
+    analysis: '<p>Мы начинаем продвижение с глубокого анализа, чтобы каждое действие опиралось на данные, а не на догадки.</p><p><strong>Что мы делаем:</strong></p><ul><li>Анализ текущего позиционирования бренда и его восприятия аудиторией</li><li>Исследование рынка и конкурентной среды</li><li>Определение целевой аудитории, её потребностей, болей и мотивации</li><li>Анализ продуктовой линейки: сильные и слабые стороны, точки роста</li><li>Формирование ключевых УТП и коммуникационных сообщений</li></ul><p><strong>Результат:</strong></p><p>Чёткое понимание, <em>что, кому и как продавать</em>, а также основа для эффективной стратегии продвижения.</p>',
     content: '<p>Контент — ключевой инструмент привлечения и удержания внимания в digital-среде.</p><p><strong>Что мы делаем:</strong></p><ul><li>Разработка концепции и сценариев под цели бренда</li><li>Фото- и видеосъёмка для социальных сетей, рекламы и сайта</li><li>Создание имиджевого, продуктового и lifestyle-контента</li><li>Адаптация контента под разные платформы (форматы, длительность, подача)</li></ul><p><strong>Результат:</strong></p><p>Визуально сильный контент, который формирует доверие, повышает вовлечённость и стимулирует продажи.</p>',
-    video: '<p>Для брендов, которым важно выделяться и выглядеть технологично и премиально.</p><p><strong>Что входит:</strong></p><ul><li>Профессиональная видеосъёмка с использованием студийного и выездного оборудования</li><li>Рекламные и презентационные видеоролики</li><li>Motion-дизайн и анимация</li><li>3D-визуализация продуктов, логотипов и сцен</li><li>Интеграция 3D-графики в видео и рекламные материалы</li></ul><p><strong>Результат:</strong></p><p>Эффектный визуал, который усиливает бренд и повышает конверсию рекламных кампаний.</p>',
+    video: '<p>Для брендов, которым важно выделяться и выглядеть технологично и премиально.</p><p><strong>Что мы делаем:</strong></p><ul><li>Профессиональная видеосъёмка с использованием студийного и выездного оборудования</li><li>Рекламные и презентационные видеоролики</li><li>Motion-дизайн и анимация</li><li>3D-визуализация продуктов, логотипов и сцен</li><li>Интеграция 3D-графики в видео и рекламные материалы</li></ul><p><strong>Результат:</strong></p><p>Эффектный визуал, который усиливает бренд и повышает конверсию рекламных кампаний.</p>',
     strategy: '<p>Мы выстраиваем системный подход к росту бренда, а не разрозненные действия.</p><p><strong>Что мы делаем:</strong></p><ul><li>Определение целей и KPI продвижения</li><li>Подбор эффективных digital-каналов</li><li>Формирование контент- и рекламной стратегии</li><li>Планирование этапов роста и масштабирования</li><li>Контроль реализации и корректировка стратегии по данным аналитики</li></ul><p><strong>Результат:</strong></p><p>Понятный и измеримый путь развития бренда с прогнозируемым результатом.</p>',
-    social: '<p>Социальные сети — это диалог с аудиторией и постоянное присутствие бренда в её жизни.</p><p><strong>Что входит:</strong></p><ul><li>Разработка SMM-стратегии и контент-плана</li><li>Создание и публикация контента</li><li>Визуальное и текстовое оформление аккаунтов</li><li>Работа с комментариями и сообщениями</li><li>Анализ статистики и оптимизация контента</li></ul><p><strong>Результат:</strong></p><p>Активные аккаунты с живой аудиторией, рост узнаваемости и лояльности к бренду.</p>',
+    social: '<p>Социальные сети — это диалог с аудиторией и постоянное присутствие бренда в её жизни.</p><p><strong>Что мы делаем:</strong></p><ul><li>Разработка SMM-стратегии и контент-плана</li><li>Создание и публикация контента</li><li>Визуальное и текстовое оформление аккаунтов</li><li>Работа с комментариями и сообщениями</li><li>Анализ статистики и оптимизация контента</li></ul><p><strong>Результат:</strong></p><p>Активные аккаунты с живой аудиторией, рост узнаваемости и лояльности к бренду.</p>',
     design: '<p>Дизайн — это не только эстетика, но и инструмент продаж.</p><p><strong>Что мы делаем:</strong></p><ul><li>Разработка фирменного стиля и айдентики</li><li>Дизайн рекламных материалов и креатива</li><li>UI/UX-дизайн сайтов и лендингов</li><li>Адаптивный дизайн под все устройства</li></ul><p><strong>Результат:</strong></p><p>Визуально целостный и удобный дизайн, усиливающий бренд и пользовательский опыт.</p>',
-    ads: '<p>Мы настраиваем рекламу так, чтобы она работала на результат, а не «сливала бюджет».</p><p><strong>Что входит:</strong></p><ul><li>Анализ и выбор рекламных каналов</li><li>Настройка таргетированной и контекстной рекламы</li><li>Создание рекламных креативов и текстов</li><li>A/B-тестирование и оптимизация</li><li>Постоянный контроль и аналитика эффективности</li></ul><p><strong>Результат:</strong></p><p>Стабильный поток целевых заявок и рост продаж при оптимальных затратах.</p>',
+    ads: '<p>Мы настраиваем рекламу так, чтобы она работала на результат, а не «сливала бюджет».</p><p><strong>Что мы делаем:</strong></p><ul><li>Анализ и выбор рекламных каналов</li><li>Настройка таргетированной и контекстной рекламы</li><li>Создание рекламных креативов и текстов</li><li>A/B-тестирование и оптимизация</li><li>Постоянный контроль и аналитика эффективности</li></ul><p><strong>Результат:</strong></p><p>Стабильный поток целевых заявок и рост продаж при оптимальных затратах.</p>',
     community: '<p>Работа с сообществами усиливает доверие и формирует лояльное окружение вокруг бренда.</p><p><strong>Что мы делаем:</strong></p><ul><li>Поиск и подбор релевантных сообществ</li><li>Нативное продвижение бренда</li><li>Работа с лидерами мнений и администраторами</li><li>Организация активности и вовлечения аудитории</li><li>Мониторинг репутации бренда</li></ul><p><strong>Результат:</strong></p><p>Органический рост узнаваемости и положительный имидж бренда.</p>',
-    web: '<p>Технологическая основа для масштабирования бизнеса.</p><p><strong>Что входит:</strong></p><ul><li>Разработка корпоративных сайтов и лендингов</li><li>Создание интернет-магазинов</li><li>Индивидуальные веб-сервисы и платформы</li><li>Интеграция с CRM, аналитикой и сторонними сервисами</li><li>Техническая поддержка и развитие проектов</li></ul><p><strong>Результат:</strong></p><p>Надёжные, быстрые и удобные digital-продукты, которые поддерживают рост бизнеса.</p>',
+    web: '<p>Технологическая основа для масштабирования бизнеса.</p><p><strong>Что мы делаем:</strong></p><ul><li>Разработка корпоративных сайтов и лендингов</li><li>Создание интернет-магазинов</li><li>Индивидуальные веб-сервисы и платформы</li><li>Интеграция с CRM, аналитикой и сторонними сервисами</li><li>Техническая поддержка и развитие проектов</li></ul><p><strong>Результат:</strong></p><p>Надёжные, быстрые и удобные digital-продукты, которые поддерживают рост бизнеса.</p>',
   },
   en: {
     analysis: '<p>We start every project with in-depth research to ensure that all marketing decisions are data-driven and effective.</p><p><strong>What\'s included:</strong></p><ul><li>Analysis of brand positioning and audience perception</li><li>Market and competitor research</li><li>Identification of target audiences, their needs and pain points</li><li>Evaluation of the product line and growth opportunities</li><li>Development of clear value propositions and key messages</li></ul><p><strong>Result:</strong></p><p>A solid strategic foundation that defines <em>what to promote, to whom, and how</em>.</p>',
@@ -2659,7 +2659,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const servicePopupOverlay = servicePopup?.querySelector('.service-popup-overlay');
   const servicePopupPrev = servicePopup?.querySelector('.service-popup-prev');
   const servicePopupNext = servicePopup?.querySelector('.service-popup-next');
-  const servicePopupInlineVideoEl = servicePopup?.querySelector('.service-popup-inline-video-el');
+  let servicePopupInlineVideoEl = servicePopup?.querySelector('.service-popup-inline-video-el');
   const servicePopupInlineVideoPlaceholder = servicePopup?.querySelector('.service-popup-inline-video-placeholder');
   
   let currentServiceIndex = -1;
@@ -2736,33 +2736,48 @@ document.addEventListener("DOMContentLoaded", () => {
   function loadAndPlayServicePopupVideo() {
     if (!servicePopupInlineVideoEl || servicePopupVideoLoaded) return;
     videoLoadManager.pauseFeedLoading();
-    servicePopupInlineVideoEl.src = SERVICE_POPUP_MAIN_VIDEO;
-    servicePopupInlineVideoEl.preload = "auto";
-    servicePopupInlineVideoEl.load();
-    if (!servicePopupPlyr && typeof Plyr !== "undefined") {
-      initServicePopupPlyr();
-    }
-    function onReady() {
-      hideServicePopupPlaceholder();
-      if (servicePopupPlyr) {
-        servicePopupPlyr.play().catch(() => {});
-      } else {
-        servicePopupInlineVideoEl.play().catch(() => {});
-      }
-    }
+    /* При смене попапа: уничтожаем Plyr и сбрасываем видео, чтобы повторная загрузка сработала */
     if (servicePopupPlyr) {
-      servicePopupPlyr.once("ready", onReady);
-      if (servicePopupInlineVideoEl.readyState >= 2) onReady();
-    } else {
-      servicePopupInlineVideoEl.addEventListener("loadeddata", onReady, { once: true });
-      if (servicePopupInlineVideoEl.readyState >= 2) onReady();
+      try { servicePopupPlyr.destroy(); } catch (_) {}
+      servicePopupPlyr = null;
     }
+    const videoEl = servicePopup?.querySelector(".service-popup-inline-video-el") || servicePopupInlineVideoEl;
+    if (!videoEl) return;
+    videoEl.pause();
+    videoEl.removeAttribute("src");
+    videoEl.load();
+    /* Установка src в следующем тике, чтобы браузер успел обработать сброс (иначе при повторном открытии попапа видео не грузится) */
+    requestAnimationFrame(() => {
+      if (servicePopupVideoLoaded) return;
+      videoEl.src = SERVICE_POPUP_MAIN_VIDEO;
+      videoEl.preload = "auto";
+      videoEl.load();
+      if (!servicePopupPlyr && typeof Plyr !== "undefined") {
+        initServicePopupPlyr(videoEl);
+      }
+      function onReady() {
+        hideServicePopupPlaceholder();
+        if (servicePopupPlyr) {
+          servicePopupPlyr.play().catch(() => {});
+        } else {
+          videoEl.play().catch(() => {});
+        }
+      }
+      if (servicePopupPlyr) {
+        servicePopupPlyr.once("ready", onReady);
+        if (videoEl.readyState >= 2) onReady();
+      } else {
+        videoEl.addEventListener("loadeddata", onReady, { once: true });
+        if (videoEl.readyState >= 2) onReady();
+      }
+    });
   }
 
-  function initServicePopupPlyr() {
-    if (!servicePopupInlineVideoEl || servicePopupPlyr) return;
+  function initServicePopupPlyr(videoElement) {
+    const el = videoElement || servicePopup?.querySelector(".service-popup-inline-video-el") || servicePopupInlineVideoEl;
+    if (!el || servicePopupPlyr) return;
     if (typeof Plyr === "undefined") {
-      servicePopupInlineVideoEl.controls = true;
+      el.controls = true;
       return;
     }
     try {
@@ -2779,7 +2794,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "fullscreen"
       ];
       const isMobile = window.innerWidth <= 768;
-      servicePopupPlyr = new Plyr(servicePopupInlineVideoEl, {
+      servicePopupPlyr = new Plyr(el, {
         controls,
         settings: ["quality", "speed"],
         speed: { selected: 1, options: [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2] },
@@ -2791,7 +2806,7 @@ document.addEventListener("DOMContentLoaded", () => {
         volume: isMobile ? 1 : 0.5
       });
     } catch (err) {
-      servicePopupInlineVideoEl.controls = true;
+      el.controls = true;
     }
   }
 
@@ -2800,12 +2815,23 @@ document.addEventListener("DOMContentLoaded", () => {
       try { servicePopupPlyr.destroy(); } catch (_) {}
       servicePopupPlyr = null;
     }
-    if (!servicePopupInlineVideoEl) return;
-    servicePopupInlineVideoEl.pause();
-    servicePopupInlineVideoEl.removeAttribute('src');
-    servicePopupInlineVideoEl.preload = "none";
-    servicePopupInlineVideoEl.load();
-    servicePopupInlineVideoEl.controls = false;
+    const videoEl = servicePopup?.querySelector(".service-popup-inline-video-el");
+    if (!videoEl) return;
+    videoEl.pause();
+    videoEl.removeAttribute("src");
+    videoEl.load();
+    videoEl.controls = false;
+    /* После Plyr.destroy() старый <video> может оставаться в некорректном состоянии — подменяем на новый элемент, чтобы при следующем клике по плейсхолдеру загрузка и Plyr работали */
+    const parent = videoEl.parentElement;
+    if (parent) {
+      const fresh = doc.createElement("video");
+      fresh.className = "service-popup-inline-video-el";
+      fresh.setAttribute("playsinline", "");
+      fresh.setAttribute("preload", "none");
+      fresh.setAttribute("aria-label", "Example video");
+      parent.replaceChild(fresh, videoEl);
+      servicePopupInlineVideoEl = fresh;
+    }
     videoLoadManager.resumeFeedVideos();
   }
 

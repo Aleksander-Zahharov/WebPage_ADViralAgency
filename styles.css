@@ -340,6 +340,10 @@
 [data-theme="light"] .service-popup-text-content {
   color: var(--muted);
 }
+[data-theme="light"] .service-popup-text-content p,
+[data-theme="light"] .service-popup-text-content li {
+  color: var(--muted);
+}
 [data-theme="light"] .service-popup-inline-video {
   background: rgba(0, 0, 0, 0.08);
 }
@@ -418,25 +422,33 @@
 [data-theme="light"] .pkg input:checked + .pkg-body:hover {
   box-shadow: 0 0 20px rgba(251, 146, 60, 0.5);
 }
+/* Плеер в светлой теме остаётся таким же — фиолетовые элементы не перекрашиваем в оранжевый */
 [data-theme="light"] .video-modal-content .plyr__control--overlaid:hover,
 [data-theme="light"] .video-modal-content .plyr__control--overlaid:active,
-[data-theme="light"] .video-modal-content .plyr__control--overlaid:focus-visible {
-  background: rgba(251, 146, 60, 0.2) !important;
-  border-color: rgba(251, 146, 60, 0.4) !important;
+[data-theme="light"] .video-modal-content .plyr__control--overlaid:focus-visible,
+[data-theme="light"] .AdviralPlayer .plyr__control--overlaid:hover,
+[data-theme="light"] .AdviralPlayer .plyr__control--overlaid:active,
+[data-theme="light"] .AdviralPlayer .plyr__control--overlaid:focus-visible {
+  background: rgba(139, 92, 246, 0.2) !important;
+  border-color: rgba(139, 92, 246, 0.4) !important;
 }
-[data-theme="light"] .video-modal-content .plyr__control:hover {
-  background: rgba(251, 146, 60, 0.2) !important;
+[data-theme="light"] .video-modal-content .plyr__control:hover,
+[data-theme="light"] .AdviralPlayer .plyr__control:hover {
+  background: rgba(139, 92, 246, 0.2) !important;
 }
-[data-theme="light"] .video-modal-content .plyr__progress input[type=range]::-moz-range-thumb {
-  background: #ea580c !important;
+[data-theme="light"] .video-modal-content .plyr__progress input[type=range]::-moz-range-thumb,
+[data-theme="light"] .AdviralPlayer .plyr__progress input[type=range]::-moz-range-thumb {
+  background: #8B5CF6 !important;
 }
-[data-theme="light"] .video-modal-content .plyr__progress input[type=range]::-webkit-slider-thumb {
-  background: #ea580c !important;
+[data-theme="light"] .video-modal-content .plyr__progress input[type=range]::-webkit-slider-thumb,
+[data-theme="light"] .AdviralPlayer .plyr__progress input[type=range]::-webkit-slider-thumb {
+  background: #8B5CF6 !important;
 }
-[data-theme="light"] .video-modal-content .plyr__progress input[type=range] {
-  color: #ea580c !important;
+[data-theme="light"] .video-modal-content .plyr__progress input[type=range],
+[data-theme="light"] .AdviralPlayer .plyr__progress input[type=range] {
+  color: #8B5CF6 !important;
 }
-/* Пройденный путь прогресс-бара в светлой теме — всегда фиолетовый (не оранжевый) */
+/* Пройденный путь прогресс-бара в светлой теме — фиолетовый (как в тёмной) */
 [data-theme="light"] .video-modal-content .plyr__progress input[type=range]::-webkit-slider-runnable-track,
 [data-theme="light"] .AdviralPlayer .plyr__progress input[type=range]::-webkit-slider-runnable-track {
   background: linear-gradient(to right, #8B5CF6 0%, #8B5CF6 var(--value, 0%), rgba(255, 255, 255, 0.2) var(--value, 0%), rgba(255, 255, 255, 0.2) 100%) !important;
@@ -2670,10 +2682,10 @@ section { scroll-margin-top: 0; }
   .service-popup-container {
     width: 900px;
     max-width: 900px;
-    height: min(900px, 92vh);
-    max-height: 92vh;
-    min-height: 560px;
-    padding: 48px 48px 56px;
+    height: min(960px, 94vh);
+    max-height: 94vh;
+    min-height: 600px;
+    padding: 48px 48px 0;
     overflow: hidden;
     box-sizing: border-box;
     display: flex;
@@ -2696,20 +2708,25 @@ section { scroll-margin-top: 0; }
     width: 900px;
     position: relative;
   }
-  /* 1-я строка: блок с заголовком и текстом (не сжимается, строго друг под другом) */
+  /* body, content и text-block растягиваются до нижней границы контейнера */
   .service-popup-body {
-    flex: 0 0 auto;
+    flex: 1 1 auto;
+    min-height: 0;
     display: flex;
     flex-direction: column;
   }
   .service-popup-content {
-    flex: 0 0 auto;
+    flex: 1 1 auto;
+    min-height: 0;
     display: flex;
     flex-direction: column;
   }
   .service-popup-text-block {
-    flex: 0 0 auto;
+    flex: 1 1 auto;
+    min-height: 0;
     position: relative;
+    display: flex;
+    flex-direction: column;
   }
   /* Стрелки: фиксированная позиция как у modal-arrow (left/right -112px, top 50%) */
   .service-popup-navigation {
@@ -2807,9 +2824,9 @@ section { scroll-margin-top: 0; }
   .service-popup-container {
     width: min(900px, 94vw);
     max-width: min(900px, 94vw);
-    height: min(860px, 92vh);
-    max-height: 92vh;
-    min-height: 520px;
+    height: min(920px, 94vh);
+    max-height: 94vh;
+    min-height: 560px;
     overflow-y: auto;
     overflow-x: hidden;
   }
@@ -2885,8 +2902,8 @@ section { scroll-margin-top: 0; }
   .service-popup-icon {
     position: absolute;
     left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    top: 24px;
+    transform: translate(-50%, 0);
   }
   
   .service-popup-title {
@@ -2894,7 +2911,8 @@ section { scroll-margin-top: 0; }
   }
   
   .service-popup-text {
-    flex: 1;
+    flex: 1 1 auto;
+    min-height: 0;
     margin: 0;
   }
   .service-popup-text-content {
@@ -2962,12 +2980,13 @@ section { scroll-margin-top: 0; }
   margin: 0;
 }
 
-/* Иконка услуги ровно по центру блока .service-popup-text (в 2 раза крупнее) */
+/* Иконка услуги: фиксированное расстояние от нижней границы заголовка (h3.service-popup-title).
+   Блок .service-popup-text идёт сразу под заголовком, поэтому top в px задаёт отступ от низа хедера. */
 .service-popup-icon {
   position: absolute;
   left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  top: 24px;
+  transform: translate(-50%, 0);
   width: 128px;
   height: 128px;
   background-size: contain;
@@ -2998,6 +3017,9 @@ section { scroll-margin-top: 0; }
 .service-popup-text-content p {
   margin: 0 0 0.75em;
   text-align: left;
+}
+.service-popup-text-content p:first-child {
+  min-height: 3em; /* минимум 2 строки при line-height 1.5 */
 }
 .service-popup-text-content p:last-child {
   margin-bottom: 0;
@@ -5351,6 +5373,13 @@ input::placeholder, textarea::placeholder {
   ADViralPlayer — единый дизайн плеера (модалка «Наши работы» и попап «Услуги»).
   Контейнер с классом .AdviralPlayer или .video-modal-content получает эти стили.
   Пройденный путь прогресс-бара — фиолетовый (#8B5CF6).
+
+  Как починили прогресс-бар (пройденный путь слева от ползунка):
+  1) В светлой теме переопределяли только трек и -moz-range-progress на фиолетовый,
+     т.к. общий color: #ea580c для input перекрашивал заливку в оранжевый.
+  2) WebKit: градиент трека использует var(--value, 0%) — Plyr задаёт --value уже
+     с процентом ("50%"), поэтому в градиенте нужен именно 0%, а не 0)% (иначе 50%%).
+  3) В светлой теме плеер оставлен полностью фиолетовым (без оранжевых элементов).
 ========================= */
 .video-modal-content,
 .AdviralPlayer {
