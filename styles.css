@@ -1911,10 +1911,10 @@ section { scroll-margin-top: 0; }
     will-change: transform;
     transition: transform 0.25s ease;
   }
-  #partners .client-item[data-wave-ready="true"]:not(.wave-done):nth-child(-n+5) {
+  #partners .client-pair .client-item[data-wave-ready="true"]:not(.wave-done):first-child {
     animation-name: press-bounce-skew-v-r1-partners;
   }
-  #partners .client-item[data-wave-ready="true"]:not(.wave-done):nth-child(n+6) {
+  #partners .client-pair .client-item[data-wave-ready="true"]:not(.wave-done):last-child {
     animation-name: press-bounce-skew-v-r3;
   }
   #partners.in-view .client-item[data-wave-ready="true"]:not(.wave-done) {
@@ -1926,10 +1926,10 @@ section { scroll-margin-top: 0; }
     transform: skew(-8deg, 0deg) translateZ(0);
     transition: transform 0.25s ease-in-out;
   }
-  #partners .client-item[data-wave-ready="true"].wave-done:nth-child(-n+5) {
+  #partners .client-pair .client-item[data-wave-ready="true"].wave-done:first-child {
     transform: skew(-8deg, 0deg) translateX(2px) translateZ(0);
   }
-  #partners .client-item[data-wave-ready="true"].wave-done:nth-child(n+6) {
+  #partners .client-pair .client-item[data-wave-ready="true"].wave-done:last-child {
     transform: skew(-8deg, 0deg) translateX(-22px) translateZ(0);
   }
   /* При наведении волна отменяется (без изменения transform — только остановка анимации) */
@@ -1937,16 +1937,18 @@ section { scroll-margin-top: 0; }
   #partners .client-item[data-wave-ready="true"]:focus-within {
     animation: none !important;
   }
-  /* Масштаб только по классу .hover-scale-on (JS mouseenter) — после волны первый hover даёт плавную анимацию */
+  /* Масштаб при наведении задаётся только классом .hover-scale-on (добавляется JS по mouseenter), а не псевдоклассом :hover.
+     Так после пробега волны первый hover по каждому элементу даёт плавную анимацию: «начальное» состояние transition
+     всегда — статичный transform (.wave-done), а не слой анимации, от которого браузер мог бы взять неправильный «from». */
   #partners .client-item[data-wave-ready="true"].hover-scale-on {
     animation: none !important;
     transform: skew(-8deg, 0deg) scale(1.08) translateZ(0) !important;
     transition: transform 0.25s ease-in-out;
   }
-  #partners .client-item[data-wave-ready="true"]:nth-child(-n+5).hover-scale-on {
+  #partners .client-pair .client-item[data-wave-ready="true"]:first-child.hover-scale-on {
     transform: skew(-8deg, 0deg) translateX(2px) scale(1.08) translateZ(0) !important;
   }
-  #partners .client-item[data-wave-ready="true"]:nth-child(n+6).hover-scale-on {
+  #partners .client-pair .client-item[data-wave-ready="true"]:last-child.hover-scale-on {
     transform: skew(-8deg, 0deg) translateX(-22px) scale(1.08) translateZ(0) !important;
   }
   #partners .client-item[data-wave-ready="true"]:active,
@@ -1955,12 +1957,12 @@ section { scroll-margin-top: 0; }
     transform: skew(-8deg, 0deg) scale(0.98) !important;
     transition: transform 0.25s ease;
   }
-  #partners .client-item[data-wave-ready="true"]:nth-child(-n+5):active,
-  #partners .client-item[data-wave-ready="true"]:nth-child(-n+5):hover:active {
+  #partners .client-pair .client-item[data-wave-ready="true"]:first-child:active,
+  #partners .client-pair .client-item[data-wave-ready="true"]:first-child:hover:active {
     transform: skew(-8deg, 0deg) translateX(2px) scale(0.98) !important;
   }
-  #partners .client-item[data-wave-ready="true"]:nth-child(n+6):active,
-  #partners .client-item[data-wave-ready="true"]:nth-child(n+6):hover:active {
+  #partners .client-pair .client-item[data-wave-ready="true"]:last-child:active,
+  #partners .client-pair .client-item[data-wave-ready="true"]:last-child:hover:active {
     transform: skew(-8deg, 0deg) translateX(-22px) scale(0.98) !important;
   }
 
@@ -3534,6 +3536,55 @@ section { scroll-margin-top: 0; }
   — Логотип .client-logo: transform: scale(1.44) без skew; у BFM/Estee/ERR/Dodo свои scale.
 ========================= */
 
+/* Обёртка ленты клиентов: стрелки по оси X как у #works (left/right -40px), по Y — по центру высоты ленты. Скрыты по умолчанию; для режима ленты на десктопе добавить на #partners класс .clients-strip-mode и показать стрелки. */
+#partners .clients-strip-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+#partners .clients-strip-row .clients-grid-scale-wrapper {
+  flex: 1;
+  min-width: 0;
+}
+#partners .clients-strip-row .clients-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: -40px;
+  width: 64px;
+  height: 64px;
+  font-size: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+#partners .clients-strip-row .clients-arrow.next {
+  left: auto;
+  right: -40px;
+}
+#partners .clients-strip-row .clients-arrow::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 22px;
+  height: 22px;
+  margin: -11px 0 0 -11px;
+  background-image: url("./assets/images/icons/icon_arrow.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: brightness(0) invert(1);
+}
+#partners .clients-strip-row .clients-arrow.next::before {
+  transform: rotate(90deg);
+}
+#partners .clients-strip-row .clients-arrow.prev::before {
+  transform: rotate(-90deg);
+}
+/* Включение стрелок и режима ленты на десктопе при добавлении класса: #partners.clients-strip-mode .clients-arrow { visibility: visible; pointer-events: auto; } и при необходимости overflow-x: auto у обёртки. */
+
 /* Обёртка для масштабирования: занимает 100% ширины, высота по aspect-ratio 308/1360. max-height убирает лишнее пространство снизу на широких экранах */
 .clients-grid-scale-wrapper {
   width: 100%;
@@ -3564,7 +3615,7 @@ section { scroll-margin-top: 0; }
   box-sizing: border-box;
 }
 
-/* Секция клиентов: фиксированная сетка 1360×308, масштаб = min(1, 100cqw/1360) от левого верхнего угла. overflow: visible — карточки не обрезаются по краям дива */
+/* Секция клиентов: на десктопе — сетка из пар (столбиков по 2 элемента); на моб — лента из тех же пар. Фиксированный размер 1360×308, масштаб от левого верхнего угла. */
 #partners .clients-grid {
   position: absolute;
   left: 0;
@@ -3574,13 +3625,28 @@ section { scroll-margin-top: 0; }
   margin: 0;
   padding: 20px;
   grid-template-columns: repeat(5, 256px);
-  grid-template-rows: repeat(2, 144px);
+  grid-template-rows: 308px;
   gap: 20px;
   box-sizing: border-box;
   transform: scale(min(1, 100cqw / 1360px));
   transform-origin: left top;
   max-width: none;
   overflow: visible;
+}
+
+/* Пара клиентов = столбик из двух карточек (на моб лента собирается из этих пар; при увеличении числа клиентов десктоп может перейти в режим ленты со стрелками) */
+#partners .client-pair {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 256px;
+  height: 308px;
+  min-width: 0;
+  min-height: 0;
+}
+#partners .client-pair .client-item {
+  flex: 0 0 144px;
+  min-height: 144px;
 }
 
 /* Карточки клиентов: ячейка 256×144 (16:9), skew -8°, первый ряд +2px, последний -22px */
@@ -3608,11 +3674,12 @@ section { scroll-margin-top: 0; }
   will-change: transform; /* слой с самого начала — анимация без подлагивания при первой загрузке */
 }
 
-#partners .client-item:nth-child(-n+5) {
+/* Первый элемент в паре = верхний ряд (сдвиг +2px); второй = нижний ряд (-22px) */
+#partners .client-pair .client-item:first-child {
   transform: skew(-8deg, 0deg) translateX(2px) translateZ(0);
 }
 
-#partners .client-item:nth-child(n+6) {
+#partners .client-pair .client-item:last-child {
   transform: skew(-8deg, 0deg) translateX(-22px) translateZ(0);
 }
 
@@ -3625,10 +3692,10 @@ section { scroll-margin-top: 0; }
     border-color: var(--service-border-color, var(--card-border));
     transform: skew(-8deg, 0deg) scale(1.08) translateZ(0);
   }
-  #partners .client-item:nth-child(-n+5).hover-scale-on {
+  #partners .client-pair .client-item:first-child.hover-scale-on {
     transform: skew(-8deg, 0deg) translateX(2px) scale(1.08) translateZ(0);
   }
-  #partners .client-item:nth-child(n+6).hover-scale-on {
+  #partners .client-pair .client-item:last-child.hover-scale-on {
     transform: skew(-8deg, 0deg) translateX(-22px) scale(1.08) translateZ(0);
   }
 }
@@ -3637,12 +3704,12 @@ section { scroll-margin-top: 0; }
 #partners .client-item:hover:active {
   transform: skew(-8deg, 0deg) scale(0.98) translateZ(0) !important;
 }
-#partners .client-item:nth-child(-n+5):active,
-#partners .client-item:nth-child(-n+5):hover:active {
+#partners .client-pair .client-item:first-child:active,
+#partners .client-pair .client-item:first-child:hover:active {
   transform: skew(-8deg, 0deg) translateX(2px) scale(0.98) translateZ(0) !important;
 }
-#partners .client-item:nth-child(n+6):active,
-#partners .client-item:nth-child(n+6):hover:active {
+#partners .client-pair .client-item:last-child:active,
+#partners .client-pair .client-item:last-child:hover:active {
   transform: skew(-8deg, 0deg) translateX(-22px) scale(0.98) translateZ(0) !important;
 }
 
@@ -6138,10 +6205,10 @@ input::placeholder, textarea::placeholder {
   #partners .client-item.hover-tap-active {
     transform: skew(-8deg, 0deg) scale(1.08);
   }
-  #partners .client-item:nth-child(-n+5).hover-tap-active {
+  #partners .client-pair .client-item:first-child.hover-tap-active {
     transform: skew(-8deg, 0deg) translateX(2px) scale(1.08);
   }
-  #partners .client-item:nth-child(n+6).hover-tap-active {
+  #partners .client-pair .client-item:last-child.hover-tap-active {
     transform: skew(-8deg, 0deg) translateX(-22px) scale(1.08);
   }
   .client-item.hover-tap-active .client-logo {
@@ -6219,10 +6286,10 @@ input::placeholder, textarea::placeholder {
     animation: none !important;
     transform: skew(-8deg, 0deg) scale(1.08) !important;
   }
-  #partners .client-item[data-wave-ready="true"]:nth-child(-n+5).hover-tap-active {
+  #partners .client-pair .client-item[data-wave-ready="true"]:first-child.hover-tap-active {
     transform: skew(-8deg, 0deg) translateX(2px) scale(1.08) !important;
   }
-  #partners .client-item[data-wave-ready="true"]:nth-child(n+6).hover-tap-active {
+  #partners .client-pair .client-item[data-wave-ready="true"]:last-child.hover-tap-active {
     transform: skew(-8deg, 0deg) translateX(-22px) scale(1.08) !important;
   }
   #works .ig-item[data-wave-ready="true"].hover-tap-active:not(.ig-item-horizontal),
