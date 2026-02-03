@@ -1103,7 +1103,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const markWaveDone = () => el.classList.add('wave-done');
       el.addEventListener('animationend', (e) => {
-        if (e.animationName === 'press-bounce') markWaveDone();
+        if (e.animationName === 'press-bounce') el.classList.add('wave-done');
       }, { once: true });
       el.addEventListener('mouseenter', markWaveDone, { once: true });
     });

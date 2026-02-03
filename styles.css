@@ -1932,21 +1932,20 @@ section { scroll-margin-top: 0; }
   #partners .client-item[data-wave-ready="true"].wave-done:nth-child(n+6) {
     transform: skew(-8deg, 0deg) translateX(-22px) translateZ(0);
   }
-  /* При наведении волна отменяется; .hover-scale-on — доигрывание анимации до конца (как у горизонтальной ленты) */
+  /* При наведении волна отменяется (без изменения transform — только остановка анимации) */
   #partners .client-item[data-wave-ready="true"]:hover,
-  #partners .client-item[data-wave-ready="true"]:focus-within,
+  #partners .client-item[data-wave-ready="true"]:focus-within {
+    animation: none !important;
+  }
+  /* Масштаб только по классу .hover-scale-on (JS mouseenter) — после волны первый hover даёт плавную анимацию */
   #partners .client-item[data-wave-ready="true"].hover-scale-on {
     animation: none !important;
     transform: skew(-8deg, 0deg) scale(1.08) translateZ(0) !important;
     transition: transform 0.25s ease-in-out;
   }
-  #partners .client-item[data-wave-ready="true"]:nth-child(-n+5):hover,
-  #partners .client-item[data-wave-ready="true"]:nth-child(-n+5):focus-within,
   #partners .client-item[data-wave-ready="true"]:nth-child(-n+5).hover-scale-on {
     transform: skew(-8deg, 0deg) translateX(2px) scale(1.08) translateZ(0) !important;
   }
-  #partners .client-item[data-wave-ready="true"]:nth-child(n+6):hover,
-  #partners .client-item[data-wave-ready="true"]:nth-child(n+6):focus-within,
   #partners .client-item[data-wave-ready="true"]:nth-child(n+6).hover-scale-on {
     transform: skew(-8deg, 0deg) translateX(-22px) scale(1.08) translateZ(0) !important;
   }
@@ -3618,16 +3617,17 @@ section { scroll-margin-top: 0; }
 }
 
 @media (hover: hover) {
-  #partners .client-item:hover,
+  #partners .client-item:hover {
+    border-color: var(--service-border-color, var(--card-border));
+  }
+  /* Масштаб только по классу .hover-scale-on (JS) — плавная анимация после волны */
   #partners .client-item.hover-scale-on {
     border-color: var(--service-border-color, var(--card-border));
     transform: skew(-8deg, 0deg) scale(1.08) translateZ(0);
   }
-  #partners .client-item:nth-child(-n+5):hover,
   #partners .client-item:nth-child(-n+5).hover-scale-on {
     transform: skew(-8deg, 0deg) translateX(2px) scale(1.08) translateZ(0);
   }
-  #partners .client-item:nth-child(n+6):hover,
   #partners .client-item:nth-child(n+6).hover-scale-on {
     transform: skew(-8deg, 0deg) translateX(-22px) scale(1.08) translateZ(0);
   }
@@ -3794,10 +3794,12 @@ section { scroll-margin-top: 0; }
     padding-right: 16px;
   }
 
-  /* Мобильная секция клиентов: фиксированный масштаб 66.67% (2/3), горизонтальная прокрутка влево‑вправо */
+  /* Мобильная секция клиентов: фиксированный масштаб 66.67% (2/3), горизонтальная прокрутка влево‑вправо, отступ слева */
   #partners .clients-grid-scale-wrapper {
+    padding-left: 16px;
+    box-sizing: border-box;
     aspect-ratio: auto;
-    height: calc(308px * 2 / 3); /* высота секции при scale(2/3) */
+    height: calc(308px * 2 / 3 + 26px); /* высота секции при scale(2/3) + запас снизу, чтобы низ ленты (skew) не обрезался */
     overflow-x: auto;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
