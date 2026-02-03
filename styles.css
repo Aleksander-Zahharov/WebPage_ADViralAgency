@@ -1256,11 +1256,11 @@ section { scroll-margin-top: 0; }
   }
 }
 
-/* Секция услуг: процентный отступ от краёв; макс. ширина как у остальных секций (на экстра-широких не растягивается) */
+/* Секция услуг: отступы от краёв чуть меньше — карточки шире на десктопе */
 #services .container {
   max-width: calc(var(--container) + 2 * var(--gap));
-  padding-left: 3.5%;
-  padding-right: 3.5%;
+  padding-left: 2.25%;
+  padding-right: 2.25%;
 }
 #services.section {
   padding-top: calc(var(--header-h) + 12px);
@@ -1669,11 +1669,11 @@ section { scroll-margin-top: 0; }
   height: min(420px, 52vh);
   align-items: stretch;
 }
-/* Десктоп: увеличенные отступы слева и справа у блока с карточками */
+/* Десктоп: отступы слева и справа у блока с карточками (чуть меньше — карточки шире) */
 @media (min-width: 901px) {
   #services .cards {
-    margin-left: 72px;
-    margin-right: 72px;
+    margin-left: 48px;
+    margin-right: 48px;
   }
 }
 #services .cards .card {
@@ -3291,6 +3291,18 @@ section { scroll-margin-top: 0; }
   container-type: inline-size;
   margin-top: 24px;
 }
+
+/* Планшет: увеличиваем высоту блока лент и контейнера, чтобы секция «Наши работы» была видна целиком */
+@media (min-width: 769px) and (max-width: 1024px) {
+  #works .container {
+    min-height: 520px;
+  }
+  .feeds-vert-horis-wrapper {
+    min-height: 460px;
+    max-height: min(620px, 65vw);
+    aspect-ratio: 580 / 1360;
+  }
+}
 .FeedsVertHoris {
   position: absolute;
   left: 0;
@@ -3400,12 +3412,16 @@ section { scroll-margin-top: 0; }
 }
 
 @media (max-width: 768px) {
-  #works > div {
-    overflow: hidden; /* прячем лишнее пространство ленты на мобильных */
-  }
   /* Стрелки лент не показываем в мобильной версии */
   #works .ig-arrow {
     display: none !important;
+  }
+}
+
+/* Только на маленьких экранах прячем лишнее пространство под лентой; на планшете лента видна на полную высоту */
+@media (max-width: 480px) {
+  #works > div {
+    overflow: hidden;
   }
 }
 
@@ -4255,7 +4271,8 @@ section { scroll-margin-top: 0; }
   min-height: 0; /* пустая правая колонка */
 }
 
-@media (max-width: 900px) {
+/* Одноколоночная форма только на мобильной; на планшете — две колонки: форма слева, справа место под дропдаун «Интересующие услуги» */
+@media (max-width: 600px) {
   .contact-section-grid {
     grid-template-columns: 1fr;
     gap: 16px;
@@ -4407,9 +4424,11 @@ section { scroll-margin-top: 0; }
   left: calc(100% + 8px);
   top: 0;
   bottom: 0;
-  width: 520px;
-  min-width: 420px;
-  max-width: min(560px, calc(100vw - 24px));
+  /* Ширина не больше половины экрана, подстраивается под viewport */
+  width: min(520px, 50vw) !important;
+  max-width: 50vw !important;
+  min-width: min(260px, calc(50vw - 24px));
+  box-sizing: border-box;
   z-index: 20;
   overflow-y: auto;
   border: 1px solid rgba(255,255,255,.1);
@@ -4423,6 +4442,32 @@ section { scroll-margin-top: 0; }
 .services-dropdown-panel[hidden] {
   display: none !important;
 }
+
+/* В секции контактов панель «Интересующие услуги» не шире половины экрана */
+section#contact .services-dropdown-panel {
+  width: min(520px, 50vw) !important;
+  max-width: 50vw !important;
+}
+
+/* Планшет: панель дропдауна не больше половины экрана, ограничена по высоте, список прокручивается */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .services-dropdown-panel {
+    max-height: 70vh;
+    width: min(520px, 50vw) !important;
+    max-width: 50vw !important;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .services-dropdown-options-scroll {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
 /* Заголовок попапа «Выберите услуги» — скрыт на десктопе */
 .services-dropdown-popup-title {
   display: none;
@@ -4438,15 +4483,16 @@ section { scroll-margin-top: 0; }
   gap: 10px;
   padding: 10px 12px;
   margin-bottom: 2px;
+  min-height: 71px;
   cursor: pointer;
   border-radius: 12px;
   border-bottom: 1px solid rgba(255,255,255,.06);
   transition: background .15s ease, box-shadow .2s ease;
 }
 .services-dropdown-option > span {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
   min-width: 0;
 }
 .services-dropdown-option:last-child {
@@ -4641,15 +4687,17 @@ section#contact .services-dropdown-selected .service-tag-icon:hover img {
     color: #fff;
     flex-shrink: 0;
   }
-  /* Полноэкранный попап: строго в границах экрана */
-  .services-dropdown-panel {
+  /* Полноэкранный попап: на всю ширину и высоту экрана */
+  .services-dropdown-panel,
+  section#contact .services-dropdown-panel {
     position: fixed;
     left: 0;
     top: 0;
     right: 0;
     bottom: 0;
-    width: 100%;
-    max-width: 100vw;
+    width: 100% !important;
+    max-width: 100vw !important;
+    min-width: 100%;
     max-height: 100dvh;
     margin: 0;
     padding: 0;

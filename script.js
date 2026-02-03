@@ -1974,6 +1974,18 @@ document.addEventListener("DOMContentLoaded", () => {
         player.on("error", (event) => {
           console.error("Plyr error:", event.detail);
         });
+
+        // Клик по области плеера в любом месте — пауза, повторный клик — воспроизведение
+        const modalContent = modalPlayer.closest(".video-modal-content");
+        if (modalContent && !modalContent.hasAttribute("data-adviral-click-bound")) {
+          modalContent.setAttribute("data-adviral-click-bound", "1");
+          modalContent.addEventListener("click", (e) => {
+            if (e.target.closest(".plyr__controls") || e.target.closest(".video-modal-close") || e.target.closest(".modal-arrow")) return;
+            e.preventDefault();
+            e.stopPropagation();
+            if (player) player.togglePlay();
+          });
+        }
         
         // Проверяем, что Plyr правильно инициализировался
         player.on("ready", () => {
@@ -2805,6 +2817,17 @@ document.addEventListener("DOMContentLoaded", () => {
         ratio: null,
         volume: isMobile ? 1 : 0.5
       });
+      // Клик по области плеера в любом месте — пауза / воспроизведение
+      const popupPlayerWrap = el.closest(".AdviralPlayer");
+      if (popupPlayerWrap && !popupPlayerWrap.hasAttribute("data-adviral-click-bound")) {
+        popupPlayerWrap.setAttribute("data-adviral-click-bound", "1");
+        popupPlayerWrap.addEventListener("click", (e) => {
+          if (e.target.closest(".plyr__controls") || e.target.closest(".service-popup-close") || e.target.closest(".service-popup-arrow")) return;
+          e.preventDefault();
+          e.stopPropagation();
+          if (servicePopupPlyr) servicePopupPlyr.togglePlay();
+        });
+      }
     } catch (err) {
       el.controls = true;
     }
