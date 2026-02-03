@@ -3029,7 +3029,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* Мобильная версия: при тапе воспроизводить hover-эффект (активация и деактивация) */
   const hoverNone = window.matchMedia("(hover: none)");
-  const narrowViewport = window.matchMedia("(max-width: 768px)");
+  const narrowViewport = window.matchMedia("(max-width: 1024px)"); /* планшет и мобильная — тап вместо ховера */
   const HOVER_TAP_DURATION_MS = 550;
 
   function shouldApplyHoverTap() {

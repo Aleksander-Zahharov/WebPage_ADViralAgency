@@ -224,13 +224,12 @@
 [data-theme="light"] .lang-switcher__option.is-active {
   color: #1d1d1f;
 }
-/* Карточки услуг в светлой теме — светло-серый фон по умолчанию, при наведении фон белый */
+/* Карточки услуг в светлой теме — светло-серый фон по умолчанию, при наведении фон белый; граница 1px всегда — при ховере меняется только цвет */
 [data-theme="light"] #services .cards .card {
   background: rgba(0,0,0,0.02);
-  border-width: 0;
-  border-color: transparent;
+  border: 1px solid transparent;
   -webkit-font-smoothing: subpixel-antialiased;
-  transition: background 0.25s ease-in-out, transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
+  transition: background 0.25s ease-in-out, transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out, border-color 0.25s ease-in-out;
 }
 [data-theme="light"] #services .cards .card.card-scale-on {
   transition: background 0.25s ease-in-out, transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
@@ -239,13 +238,11 @@
 [data-theme="light"] #services .cards .card:focus-within,
 [data-theme="light"] #services .cards .card.icon-animating:not(.wave-active) {
   background: #fff;
-  border-width: 1px;
   border-color: var(--service-border-color, var(--card-border));
 }
 [data-theme="light"] #services .cards .card.wave-active,
 [data-theme="light"] #services .cards .card.icon-animating.wave-active {
   background: rgba(0,0,0,0.02);
-  border-width: 1px;
   border-color: var(--card-border);
   box-shadow: none;
 }
@@ -1241,12 +1238,26 @@ section { scroll-margin-top: 0; }
   }
 }
 
-/* Услуги и Наши клиенты: хедер и параграф начинаются слева (инверсировано) */
+/* Секция услуг: на всю ширину экрана, процентный отступ от краёв */
+#services .container {
+  max-width: 100%;
+  padding-left: 3.5%;
+  padding-right: 3.5%;
+}
+#services.section {
+  padding-top: calc(var(--header-h) + 12px);
+  padding-bottom: clamp(24px, 4vw, 48px);
+}
+
+/* Услуги: хедер и параграф слева */
 #services h2,
-#services .section-sub,
+#services .section-sub {
+  text-align: left;
+}
+/* Наши клиенты: хедер и параграф справа */
 #partners h2,
 #partners .section-sub {
-  text-align: left;
+  text-align: right;
 }
 
 /* Секция Наши клиенты: без лишнего пространства снизу */
@@ -1626,41 +1637,52 @@ section { scroll-margin-top: 0; }
   — волна: r1/r3 как сейчас, у второго ряда animation-name: press-bounce-skew-v-r2 (skew 8deg, translateX 22px)
   — иконка: у второго ряда icon-hover-skew-r2 / icon-hover-out-skew-r2 с skew(-8deg)
 */
-/* Секция услуг: все карточки наклонены в одну сторону (skew -8°), первый ряд вправо 22px, третий влево -22px */
+/* Секция услуг: все карточки наклонены в одну сторону (skew -8°), первый ряд вправо 22px, третий влево -22px; сетка на всю ширину; все ряды одной высоты */
 #services .cards {
-  gap: 20px; /* как в media-tilted-group */
-  padding-left: 20px;
-  padding-right: 20px;
+  gap: 12px;
+  padding-left: 0;
+  padding-right: 0;
   box-sizing: border-box;
+  grid-template-rows: repeat(3, 1fr);
+  min-height: 320px;
+  height: min(420px, 52vh);
+  align-items: stretch;
+}
+/* Десктоп: дополнительные отступы слева и справа у блока с карточками */
+@media (min-width: 901px) {
+  #services .cards {
+    margin-left: 48px;
+    margin-right: 48px;
+  }
 }
 #services .cards .card {
   border-radius: 0;
   transform: skew(-8deg, 0deg); /* наклон границ как в media-tilted */
   transition: transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out; /* загорание/потухание — 0.25s (250ms) */
+  min-height: 0; /* чтобы карточка могла сжиматься в grid и показывать overflow */
+  overflow-y: auto; /* при длинном тексте — прокрутка внутри карточки */
 }
-/* Класс .card-scale-on добавляется/снимается из JS в такт с загоранием границы: увеличение доигрывается до конца (0.25s), затем снятие за 0.25s */
+/* Класс .card-scale-on добавляется/снимается из JS в такт с загоранием границы; размер карточки не меняется (без scale), только подсветка */
 #services .cards .card.card-scale-on {
   transition: transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
-  transform: skew(-8deg, 0deg) scale(1.02);
+  transform: skew(-8deg, 0deg);
 }
 #services .cards .card.card-scale-on:nth-child(-n+3) {
-  transform: skew(-8deg, 0deg) translateX(22px) scale(1.02);
+  transform: skew(-8deg, 0deg) translateX(22px);
 }
 #services .cards .card.card-scale-on:nth-child(n+7) {
-  transform: skew(-8deg, 0deg) translateX(-22px) scale(1.02);
+  transform: skew(-8deg, 0deg) translateX(-22px);
 }
 
 /* Тёмная тема: границы карточек услуг только при hover/focus/анимации; во время волны — без цветной границы */
 [data-theme="dark"] #services .cards .card {
-  border-width: 0;
-  border-color: transparent;
-  transition: background 0.25s ease-in-out, transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
+  border: 1px solid transparent; /* фиксированная граница — при ховере меняется только цвет, ширина не прыгает */
+  transition: background 0.25s ease-in-out, transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out, border-color 0.25s ease-in-out;
 }
 [data-theme="dark"] #services .cards .card:hover,
 [data-theme="dark"] #services .cards .card:focus-within,
 [data-theme="dark"] #services .cards .card.icon-animating:not(.wave-active) {
   background: #000; /* при наведении — идеально чёрный фон */
-  border-width: 1px;
   border-color: var(--service-border-color, var(--card-border));
 }
 [data-theme="dark"] #services .cards .card.wave-active,
@@ -1684,18 +1706,19 @@ section { scroll-margin-top: 0; }
 #services .cards .card::after {
   transform: translateY(-50%) skew(8deg, 0deg);
 }
-@media (hover: hover) {
+/* Ховер только на десктопе (есть курсор); на планшете/мобильном — только по тапу (.hover-tap-active) */
+@media (hover: hover) and (min-width: 1025px) {
   #services .cards .card:hover:not(.wave-active),
   #services .cards .card:focus-within:not(.wave-active) {
-    transform: skew(-8deg, 0deg) scale(1.02);
+    transform: skew(-8deg, 0deg); /* без scale — размер карточки не меняется */
   }
   #services .cards .card:nth-child(-n+3):hover:not(.wave-active),
   #services .cards .card:nth-child(-n+3):focus-within:not(.wave-active) {
-    transform: skew(-8deg, 0deg) translateX(22px) scale(1.02);
+    transform: skew(-8deg, 0deg) translateX(22px);
   }
   #services .cards .card:nth-child(n+7):hover:not(.wave-active),
   #services .cards .card:nth-child(n+7):focus-within:not(.wave-active) {
-    transform: skew(-8deg, 0deg) translateX(-22px) scale(1.02);
+    transform: skew(-8deg, 0deg) translateX(-22px);
   }
 }
 /* Вдавливание на -2% от исходного размера при зажатии */
@@ -1754,6 +1777,17 @@ section { scroll-margin-top: 0; }
   0%   { transform: skew(-8deg, 0deg) translateX(-22px) translateY(0) scale(1); }
   40%  { transform: skew(-8deg, 0deg) translateX(-22px) translateY(-3px) scale(var(--wave-scale, 1.02)); }
   100% { transform: skew(-8deg, 0deg) translateX(-22px) translateY(0) scale(1); }
+}
+/* Услуги: при ширине ≤900px — первый ряд чуть влево (-2px), третий чуть вправо (+2px); для волны */
+@keyframes press-bounce-skew-v-r1-left {
+  0%   { transform: skew(-8deg, 0deg) translateX(-2px) translateY(0) scale(1); }
+  40%  { transform: skew(-8deg, 0deg) translateX(-2px) translateY(-3px) scale(var(--wave-scale, 1.02)); }
+  100% { transform: skew(-8deg, 0deg) translateX(-2px) translateY(0) scale(1); }
+}
+@keyframes press-bounce-skew-v-r3-right {
+  0%   { transform: skew(-8deg, 0deg) translateX(2px) translateY(0) scale(1); }
+  40%  { transform: skew(-8deg, 0deg) translateX(2px) translateY(-3px) scale(var(--wave-scale, 1.02)); }
+  100% { transform: skew(-8deg, 0deg) translateX(2px) translateY(0) scale(1); }
 }
 /* Услуги: второй ряд */
 @keyframes press-bounce-skew-v-r2 {
@@ -1866,22 +1900,26 @@ section { scroll-margin-top: 0; }
     animation-play-state: running;
   }
 
-  /* Хавер приоритетнее волны: под курсором — наклон и сдвиг ряда сохраняются */
+  /* Хавер только на десктопе: под курсором — наклон и сдвиг ряда, без изменения размера карточки */
+}
+@media (hover: hover) and (min-width: 1025px) and (prefers-reduced-motion: no-preference) {
   #services .cards .card[data-wave-ready="true"]:hover,
   #services .cards .card[data-wave-ready="true"]:focus-within {
     animation: none;
-    transform: skew(-8deg, 0deg) scale(1.02);
+    transform: skew(-8deg, 0deg);
   }
   #services .cards .card[data-wave-ready="true"]:nth-child(-n+3):hover,
   #services .cards .card[data-wave-ready="true"]:nth-child(-n+3):focus-within {
     animation: none;
-    transform: skew(-8deg, 0deg) translateX(22px) scale(1.02);
+    transform: skew(-8deg, 0deg) translateX(22px);
   }
   #services .cards .card[data-wave-ready="true"]:nth-child(n+7):hover,
   #services .cards .card[data-wave-ready="true"]:nth-child(n+7):focus-within {
     animation: none;
-    transform: skew(-8deg, 0deg) translateX(-22px) scale(1.02);
+    transform: skew(-8deg, 0deg) translateX(-22px);
   }
+}
+@media (prefers-reduced-motion: no-preference) {
   /* Вдавливание на -2% при зажатии (перебивает волну и hover) */
   #services .cards .card[data-wave-ready="true"]:active,
   #services .cards .card[data-wave-ready="true"]:hover:active,
@@ -2019,6 +2057,92 @@ section { scroll-margin-top: 0; }
 }
 @media (max-width: 900px) {
   .cards { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  /* Секция услуг: до мобильной версии всегда 3×3, без перехода в 2 колонки */
+  #services .cards { grid-template-columns: repeat(3, minmax(0,1fr)); }
+}
+/* Планшет: масштабирование только блока карточек (h2 не трогаем); опорная ширина 940px */
+#services .services-cards-scalable {
+  display: block;
+}
+/* При ширине 900px и уже (до мобильной): первый ряд — чуть влево (-2px), третий — вправо (+2px) */
+@media (max-width: 900px) and (min-width: 601px) {
+  #services .cards .card:nth-child(-n+3) {
+    transform: skew(-8deg, 0deg) translateX(-2px);
+  }
+  #services .cards .card:nth-child(n+7) {
+    transform: skew(-8deg, 0deg) translateX(2px);
+  }
+  #services .cards .card.card-scale-on:nth-child(-n+3) {
+    transform: skew(-8deg, 0deg) translateX(-2px);
+  }
+  #services .cards .card.card-scale-on:nth-child(n+7) {
+    transform: skew(-8deg, 0deg) translateX(2px);
+  }
+  #services .cards .card:nth-child(-n+3):hover:not(.wave-active),
+  #services .cards .card:nth-child(-n+3):focus-within:not(.wave-active) {
+    transform: skew(-8deg, 0deg) translateX(-2px);
+  }
+  #services .cards .card:nth-child(n+7):hover:not(.wave-active),
+  #services .cards .card:nth-child(n+7):focus-within:not(.wave-active) {
+    transform: skew(-8deg, 0deg) translateX(2px);
+  }
+  #services .cards .card:nth-child(-n+3):active,
+  #services .cards .card:nth-child(-n+3):hover:active,
+  #services .cards .card:nth-child(-n+3):focus-within:active {
+    transform: skew(-8deg, 0deg) translateX(-2px) scale(0.98) !important;
+  }
+  #services .cards .card:nth-child(n+7):active,
+  #services .cards .card:nth-child(n+7):hover:active,
+  #services .cards .card:nth-child(n+7):focus-within:active {
+    transform: skew(-8deg, 0deg) translateX(2px) scale(0.98) !important;
+  }
+  #services .cards .card:nth-child(-n+3).hover-tap-active:not(.wave-active) {
+    transform: skew(-8deg, 0deg) translateX(-2px);
+  }
+  #services .cards .card:nth-child(n+7).hover-tap-active:not(.wave-active) {
+    transform: skew(-8deg, 0deg) translateX(2px);
+  }
+  #services .cards .card[data-wave-ready="true"]:nth-child(-n+3):hover,
+  #services .cards .card[data-wave-ready="true"]:nth-child(-n+3):focus-within {
+    transform: skew(-8deg, 0deg) translateX(-2px);
+  }
+  #services .cards .card[data-wave-ready="true"]:nth-child(n+7):hover,
+  #services .cards .card[data-wave-ready="true"]:nth-child(n+7):focus-within {
+    transform: skew(-8deg, 0deg) translateX(2px);
+  }
+  #services .cards .card[data-wave-ready="true"]:nth-child(-n+3):active,
+  #services .cards .card[data-wave-ready="true"]:nth-child(-n+3):hover:active,
+  #services .cards .card[data-wave-ready="true"]:nth-child(-n+3):focus-within:active {
+    transform: skew(-8deg, 0deg) translateX(-2px) scale(0.98) !important;
+  }
+  #services .cards .card[data-wave-ready="true"]:nth-child(n+7):active,
+  #services .cards .card[data-wave-ready="true"]:nth-child(n+7):hover:active,
+  #services .cards .card[data-wave-ready="true"]:nth-child(n+7):focus-within:active {
+    transform: skew(-8deg, 0deg) translateX(2px) scale(0.98) !important;
+  }
+  /* Волна: первый ряд влево (-2px), третий вправо (+2px) */
+  #services .cards .card[data-wave-ready="true"]:nth-child(-n+3) {
+    animation-name: press-bounce-skew-v-r1-left;
+  }
+  #services .cards .card[data-wave-ready="true"]:nth-child(n+7) {
+    animation-name: press-bounce-skew-v-r3-right;
+  }
+  /* Фиксированный размер иконок на планшете — одинаковый у всех карточек */
+  #services .cards .card::after {
+    width: 72px !important;
+    height: 72px !important;
+    min-width: 72px;
+    min-height: 72px;
+    max-width: 72px;
+    max-height: 72px;
+  }
+}
+@media (max-width: 601px) {
+  #services .services-cards-scalable {
+    width: auto;
+    max-width: none;
+    transform: none;
+  }
 }
 @media (max-width: 600px) {
   .cards {
@@ -2026,9 +2150,12 @@ section { scroll-margin-top: 0; }
     align-items: stretch; /* на мобилке карточки держим одной высоты */
     gap: 12px; /* уменьшаем отступы на мобильных */
   }
-  /* Услуги: одна карта на всю ширину, одинаковые отступы у всех элементов и рядов */
+  /* Услуги: одна карта на всю ширину, одинаковые отступы у всех элементов и рядов; высота по контенту */
   #services .cards {
     grid-template-columns: 1fr;
+    grid-template-rows: unset;
+    height: auto;
+    min-height: 0;
     padding-left: var(--gap);
     padding-right: var(--gap);
     justify-items: stretch;
@@ -2049,7 +2176,7 @@ section { scroll-margin-top: 0; }
   #services .cards .card:nth-child(-n+3):focus-within:not(.wave-active),
   #services .cards .card:nth-child(n+7):hover:not(.wave-active),
   #services .cards .card:nth-child(n+7):focus-within:not(.wave-active) {
-    transform: skew(-8deg, 0deg) scale(1.02);
+    transform: skew(-8deg, 0deg); /* без scale — размер карточки не меняется */
   }
   #services .cards .card:active,
   #services .cards .card:nth-child(-n+3):active,
@@ -2063,12 +2190,16 @@ section { scroll-margin-top: 0; }
     padding: 16px; /* уменьшаем padding на мобильных */
   }
 
-  /* Увеличиваем размер иконок на мобильных - 64px для всех, привязываем к правой стороне */
+  /* Фиксированный размер иконок на мобильных — 64px для всех карточек одинаково */
   .cards .card::after {
-    width: 64px !important; /* !important чтобы переопределить специфичные правила */
+    width: 64px !important;
     height: 64px !important;
+    min-width: 64px !important;
+    min-height: 64px !important;
+    max-width: 64px !important;
+    max-height: 64px !important;
     right: 14px;
-    transform: translateY(-50%); /* Центрируем только по вертикали */
+    transform: translateY(-50%);
     opacity: 0.25;
   }
 
@@ -2091,7 +2222,7 @@ section { scroll-margin-top: 0; }
   #services .cards .card[data-wave-ready="true"]:nth-child(-n+3):focus-within,
   #services .cards .card[data-wave-ready="true"]:nth-child(n+7):focus-within {
     animation: none;
-    transform: skew(-8deg, 0deg) scale(1.02);
+    transform: skew(-8deg, 0deg); /* без scale на мобильной */
   }
   #services .cards .card[data-wave-ready="true"]:active,
   #services .cards .card[data-wave-ready="true"]:nth-child(-n+3):active,
@@ -2157,15 +2288,19 @@ section { scroll-margin-top: 0; }
   z-index: 1; /* контент поверх подсветки */
 }
 
-/* Фоновые иконки для карточек услуг - единый размер */
+/* Фоновые иконки для карточек услуг: фиксированный размер — все иконки одинаковые на всех масштабах */
 .cards .card::after {
   content: '';
   position: absolute;
   right: 18px;
   top: 50%;
   transform: translateY(-50%);
-  width: 99px; /* Уменьшено на 10% (было 110px) */
-  height: 99px; /* Уменьшено на 10% (было 110px) */
+  width: 99px;
+  height: 99px;
+  min-width: 99px;
+  min-height: 99px;
+  max-width: 99px;
+  max-height: 99px;
   opacity: 0.25;
   background-size: contain;
   background-repeat: no-repeat;
@@ -2494,13 +2629,13 @@ section { scroll-margin-top: 0; }
   flex-direction: column;
   box-sizing: border-box;
 }
-/* Десктоп: попап фиксированного размера (параграф + видео 480px), стрелки как у video-modal */
+/* Планшет и десктоп: попап фиксированной ширины, стрелки как у video-modal */
 @media (min-width: 601px) {
   .service-popup-container {
     width: 900px;
     max-width: 900px;
-    min-height: 680px;
-    height: 680px;
+    min-height: 520px;
+    height: 520px;
     padding: 48px 48px 56px;
     overflow-y: auto;
     box-sizing: border-box;
@@ -2512,10 +2647,10 @@ section { scroll-margin-top: 0; }
     width: 900px;
     position: relative;
   }
-  /* Видео в попапе — высота под 480p */
+  /* Видео в попапе — высота чуть меньше 480p на десктопе */
   .service-popup-video-block {
-    height: 480px;
-    max-height: 480px;
+    height: 400px;
+    max-height: 400px;
     aspect-ratio: 16 / 9;
     margin-top: 16px;
   }
@@ -2610,13 +2745,26 @@ section { scroll-margin-top: 0; }
   }
 }
 
+/* Планшет: попап помещается в экран по высоте, прокрутка при необходимости */
 @media (min-width: 601px) and (max-width: 900px) {
   .service-popup-container {
     width: min(900px, 94vw);
     max-width: min(900px, 94vw);
+    max-height: 88vh;
+    height: auto;
+    min-height: 320px;
+    overflow-y: auto;
+  }
+  .service-popup-wrapper {
+    margin: 24px 0;
+    align-items: flex-start;
   }
   .service-popup-inner {
     width: min(900px, 94vw);
+  }
+  .service-popup-video-block {
+    height: min(320px, 35vh);
+    max-height: min(320px, 35vh);
   }
   .service-popup-navigation {
     left: -90px;
@@ -2986,8 +3134,8 @@ section { scroll-margin-top: 0; }
   box-shadow: none;
 }
 
-/* Раскрытие только по ховеру. visibility убирает артефакт «два текста» при лагах. */
-@media (hover: hover) and (pointer: fine) {
+/* Раскрытие текста по ховеру только на десктопе; на планшете/мобильном — по тапу (.hover-tap-active) */
+@media (hover: hover) and (pointer: fine) and (min-width: 1025px) {
   .cards .card:hover h3 {
     max-height: 0;
     opacity: 0;
@@ -6088,8 +6236,8 @@ input::placeholder, textarea::placeholder {
   }
 }
 
-/* Мобильная версия: при тапе воспроизводить hover-эффект (активация и деактивация) */
-@media (hover: none), (max-width: 768px) {
+/* Планшет и мобильная: при тапе воспроизводить hover-эффект (нет курсора — только по нажатию) */
+@media (hover: none), (max-width: 1024px) {
   .btn-primary.hover-tap-active {
     background: linear-gradient(135deg, #7a21db, #c096f9);
   }
@@ -6143,16 +6291,17 @@ input::placeholder, textarea::placeholder {
   .media-tilted-frame.hover-tap-active img {
     transform: skew(8deg, 0deg) scale(1.28);
   }
+  /* Карточки услуг: при тапе — подсветка и раскрытие текста, без изменения размера карточки */
   #services .cards .card.hover-tap-active:not(.wave-active),
   #services .cards .card:nth-child(-n+3).hover-tap-active:not(.wave-active),
   #services .cards .card:nth-child(n+7).hover-tap-active:not(.wave-active) {
-    transform: skew(-8deg, 0deg) scale(1.02);
+    transform: skew(-8deg, 0deg);
   }
   #services .cards .card:nth-child(-n+3).hover-tap-active:not(.wave-active) {
-    transform: skew(-8deg, 0deg) translateX(22px) scale(1.02);
+    transform: skew(-8deg, 0deg) translateX(22px);
   }
   #services .cards .card:nth-child(n+7).hover-tap-active:not(.wave-active) {
-    transform: skew(-8deg, 0deg) translateX(-22px) scale(1.02);
+    transform: skew(-8deg, 0deg) translateX(-22px);
   }
   .card.hover-tap-active:not(.wave-active) {
     box-shadow: 0 0 12px var(--service-border-color, transparent);
@@ -6274,13 +6423,13 @@ input::placeholder, textarea::placeholder {
   #services .cards .card[data-wave-ready="true"]:nth-child(-n+3).hover-tap-active,
   #services .cards .card[data-wave-ready="true"]:nth-child(n+7).hover-tap-active {
     animation: none;
-    transform: skew(-8deg, 0deg) scale(1.02);
+    transform: skew(-8deg, 0deg);
   }
   #services .cards .card[data-wave-ready="true"]:nth-child(-n+3).hover-tap-active {
-    transform: skew(-8deg, 0deg) translateX(22px) scale(1.02);
+    transform: skew(-8deg, 0deg) translateX(22px);
   }
   #services .cards .card[data-wave-ready="true"]:nth-child(n+7).hover-tap-active {
-    transform: skew(-8deg, 0deg) translateX(-22px) scale(1.02);
+    transform: skew(-8deg, 0deg) translateX(-22px);
   }
   #partners .client-item[data-wave-ready="true"].hover-tap-active {
     animation: none !important;
@@ -6402,6 +6551,36 @@ input::placeholder, textarea::placeholder {
   }
   #services .cards .card.hover-tap-active p {
     margin-top: 0.5em;
+  }
+}
+
+/* При ширине 601–900px: первый ряд чуть влево (-5px), третий чуть вправо (+5px) — переопределяем hover-tap и :active */
+@media (max-width: 900px) and (min-width: 601px) {
+  #services .cards .card:nth-child(-n+3).hover-tap-active:not(.wave-active) {
+    transform: skew(-8deg, 0deg) translateX(-5px);
+  }
+  #services .cards .card:nth-child(n+7).hover-tap-active:not(.wave-active) {
+    transform: skew(-8deg, 0deg) translateX(5px);
+  }
+  #services .cards .card[data-wave-ready="true"]:nth-child(-n+3).hover-tap-active {
+    transform: skew(-8deg, 0deg) translateX(-5px);
+  }
+  #services .cards .card[data-wave-ready="true"]:nth-child(n+7).hover-tap-active {
+    transform: skew(-8deg, 0deg) translateX(5px);
+  }
+  #services .cards .card:nth-child(-n+3):active,
+  #services .cards .card:nth-child(-n+3):hover:active,
+  #services .cards .card:nth-child(-n+3):focus-within:active,
+  #services .cards .card[data-wave-ready="true"]:nth-child(-n+3):active {
+    transform: skew(-8deg, 0deg) translateX(-5px) scale(0.98) !important;
+    animation: none !important;
+  }
+  #services .cards .card:nth-child(n+7):active,
+  #services .cards .card:nth-child(n+7):hover:active,
+  #services .cards .card:nth-child(n+7):focus-within:active,
+  #services .cards .card[data-wave-ready="true"]:nth-child(n+7):active {
+    transform: skew(-8deg, 0deg) translateX(5px) scale(0.98) !important;
+    animation: none !important;
   }
 }
 
