@@ -2856,13 +2856,12 @@ section { scroll-margin-top: 0; }
   }
 }
 
-/* Мобильная версия попапа: ширина под экран, смещение вниз чтобы кнопка «Закрыть» помещалась, кнопка закрыть как стрелки */
+/* Мобильная версия попапа: ширина под экран, расположение как до большого сдвига */
 @media (max-width: 600px) {
   .service-popup-wrapper {
     width: 100%;
     max-width: none;
     margin: 0;
-    margin-top: 44px; /* смещаем попап вниз, чтобы сверху помещалась кнопка закрыть */
     padding: 0 12px;
     box-sizing: border-box;
     align-items: center;
@@ -2873,7 +2872,7 @@ section { scroll-margin-top: 0; }
     max-width: none;
   }
 
-  /* Кнопка закрытия — тот же размер и радиус круга, что у кнопок-стрелок (32×32, радиус 16px) */
+  /* Кнопка закрытия — ровно над верхней границей попапа (32px кнопка + 8px зазор) */
   .service-popup-close {
     width: 32px !important;
     height: 32px !important;
@@ -2884,13 +2883,21 @@ section { scroll-margin-top: 0; }
     box-sizing: border-box !important;
     border-radius: 50% !important;
     border-width: 1px !important;
-    top: -30px; /* ещё пониже */
+    top: -40px; /* ровно над границей верхней попапа */
     font-size: 16px;
   }
 
+  /* Стрелки — абсолютно под окном попапа, не в потоке, чтобы не сдвигать попап */
   .service-popup-navigation {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 8px;
     flex-shrink: 0;
-    margin-top: -12px; /* стрелки ещё повыше, ближе к контейнеру */
+    display: flex;
+    justify-content: center;
+    gap: 32px;
   }
 
   .service-popup-container {
@@ -2946,6 +2953,7 @@ section { scroll-margin-top: 0; }
   }
   
 }
+
 
 .service-popup.active .service-popup-container {
   transform: scale(1);
@@ -6734,5 +6742,26 @@ input::placeholder, textarea::placeholder {
     transform: skew(-8deg, 0deg) !important;
     animation: none !important;
     transition: none !important;
+  }
+}
+
+/* Mobile S (320px): в конце файла с !important, чтобы перебить базовые правила */
+@media (max-width: 375px) {
+  #service-popup .service-popup-close {
+    top: -40px !important; /* ровно над верхней границей попапа */
+  }
+  #service-popup .service-popup-navigation {
+    margin-top: 8px !important; /* минимальный зазор под попапом */
+  }
+  #service-popup .service-popup-content {
+    margin-bottom: 56px !important;
+    padding-bottom: 56px !important;
+    min-height: 55vh !important;
+  }
+  #service-popup .service-popup-text-block {
+    padding-bottom: 48px !important;
+  }
+  #service-popup .service-popup-container {
+    padding-bottom: 40px !important;
   }
 }
