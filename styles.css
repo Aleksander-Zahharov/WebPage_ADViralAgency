@@ -1424,29 +1424,31 @@ section { scroll-margin-top: 0; }
   #about .grid-2 {
     display: flex; /* Используем flexbox вместо grid */
     flex-direction: column; /* Вертикальное расположение */
-    gap: 32px; /* Отступ между секциями */
+    gap: 16px; /* меньше отступ между текстом и блоком с фото */
     width: 100%;
     align-items: stretch; /* Растягиваем элементы */
   }
   
-  /* Обёртка: только масштабирование блока 687×420, вид без сдвигов и перестроек */
+  /* Обёртка: высота = высоте масштабированного блока (420×scale); отступы чтобы углы фото не заходили за край экрана */
   #about .media-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     overflow: hidden;
-    padding: 0 var(--gap);
-    height: min(420px, calc(420px * (100vw - 48px) / 687));
+    padding: 0 calc(var(--gap) + 12px); /* отступы от краёв экрана для наклонных углов */
+    height: 370px; /* 420 × 0.88 — соответствует высоте масштабированного .media-tilted-group */
+    margin-top: 4px;
+    margin-bottom: -12px;
   }
   
-  /* Медиа-блок фиксированного размера, масштаб под экран — только scale, без сдвигов */
+  /* Медиа-блок: масштаб чуть уменьшен, чтобы наклонные углы не выходили за экран */
   #about .media-tilted-group {
     width: 687px;
     height: 420px;
     flex-shrink: 0;
     transform-origin: center center;
-    transform: scale(0.92);
+    transform: scale(0.88);
   }
   
   /* Текстовый блок становится адаптивным */
@@ -1468,21 +1470,22 @@ section { scroll-margin-top: 0; }
   }
 }
 
-/* Масштаб секции «Кто мы» под узкие экраны — только scale, вид тот же */
+/* Масштаб секции «Кто мы» под узкие экраны; высота обёртки = 420×scale, углы не заходят за экран */
 @media (max-width: 768px) {
-  #about .media-wrapper { height: min(420px, calc(420px * (100vw - 48px) / 687)); }
-  #about .media-tilted-group { transform: scale(0.78); }
+  #about .media-wrapper { height: 311px; } /* 420 × 0.74 */
+  #about .media-tilted-group { transform: scale(0.74); }
 }
 @media (max-width: 600px) {
-  #about .media-wrapper { height: min(420px, calc(420px * (100vw - 48px) / 687)); }
-  #about .media-tilted-group { transform: scale(0.65); }
+  #about .media-wrapper { height: 260px; } /* 420 × 0.62 */
+  #about .media-tilted-group { transform: scale(0.62); }
 }
 @media (max-width: 480px) {
-  #about .media-wrapper { height: min(420px, calc(420px * (100vw - 48px) / 687)); }
-  #about .media-tilted-group { transform: scale(0.55); }
+  #about .media-wrapper { height: 218px; } /* 420 × 0.52 */
+  #about .media-tilted-group { transform: scale(0.52); }
 }
 @media (max-width: 380px) {
-  #about .media-tilted-group { transform: scale(0.48); }
+  #about .media-wrapper { height: 193px; } /* 420 × 0.46 */
+  #about .media-tilted-group { transform: scale(0.46); }
 }
 
 .media {
