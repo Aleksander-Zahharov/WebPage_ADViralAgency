@@ -1409,8 +1409,8 @@ section { scroll-margin-top: 0; }
   display: contents; /* На десктопе ведет себя как будто её нет */
 }
 
-/* Вертикальное расположение для секции "Кто мы" на мобильных */
-@media (max-width: 900px) {
+/* Вертикальное расположение для секции "Кто мы" на планшете и ноутбуке (фото под текстом) */
+@media (max-width: 1024px) {
   #about {
     overflow-x: visible; /* Разрешаем внутренним элементам управлять прокруткой */
   }
@@ -4429,10 +4429,9 @@ section { scroll-margin-top: 0; }
   left: calc(100% + 8px);
   top: 0;
   bottom: 0;
-  /* Ширина не больше половины экрана, подстраивается под viewport */
-  width: min(520px, 50vw) !important;
-  max-width: 50vw !important;
-  min-width: min(260px, calc(50vw - 24px));
+  width: min(360px, 42vw) !important;
+  max-width: 42vw !important;
+  min-width: min(240px, calc(42vw - 24px));
   box-sizing: border-box;
   z-index: 20;
   overflow-y: auto;
@@ -4442,24 +4441,33 @@ section { scroll-margin-top: 0; }
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   box-shadow: none;
-  padding: 14px;
+  padding: 10px;
 }
 .services-dropdown-panel[hidden] {
   display: none !important;
 }
 
-/* В секции контактов панель «Интересующие услуги» не шире половины экрана */
+/* В секции контактов панель «Интересующие услуги» — уже на планшете */
 section#contact .services-dropdown-panel {
-  width: min(520px, 50vw) !important;
-  max-width: 50vw !important;
+  width: min(360px, 42vw) !important;
+  max-width: 42vw !important;
+}
+
+/* Планшет, ноутбук и десктоп: ширина панели = ширине поля «Интересующие услуги», не выходить за край экрана */
+@media (min-width: 641px) {
+  section#contact .services-dropdown-panel {
+    width: 100% !important;
+    max-width: min(100%, calc(100vw - 2*var(--gap) - 8px)) !important;
+    min-width: 0;
+  }
 }
 
 /* Планшет: панель дропдауна не больше половины экрана, ограничена по высоте, список прокручивается */
 @media (min-width: 641px) and (max-width: 1024px) {
   .services-dropdown-panel {
     max-height: 70vh;
-    width: min(520px, 50vw) !important;
-    max-width: 50vw !important;
+    width: min(360px, 42vw) !important;
+    max-width: 42vw !important;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -4481,14 +4489,19 @@ section#contact .services-dropdown-panel {
 .services-dropdown-popup-footer {
   display: none;
 }
+/* Контейнер списка — все пункты одной высоты (только grid-auto-rows) */
+.services-dropdown-options-scroll {
+  display: grid;
+  grid-auto-rows: minmax(52px, 1fr);
+  gap: 2px;
+}
 .services-dropdown-option {
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
-  margin-bottom: 2px;
-  min-height: 71px;
+  gap: 8px;
+  padding: 8px 10px;
+  margin-bottom: 0;
   cursor: pointer;
   border-radius: 12px;
   border-bottom: 1px solid rgba(255,255,255,.06);
