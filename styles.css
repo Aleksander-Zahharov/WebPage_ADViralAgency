@@ -6745,23 +6745,22 @@ input::placeholder, textarea::placeholder {
   }
 }
 
+/* Пустой элемент внизу попапа — создаёт место для прокрутки после видео */
+.service-popup-spacer {
+  height: 0;
+  flex-shrink: 0;
+}
+
 /* Mobile S (320px): в конце файла с !important, чтобы перебить базовые правила */
 @media (max-width: 375px) {
   #service-popup .service-popup-close {
-    top: -40px !important; /* ровно над верхней границей попапа */
+    top: -40px !important;
   }
   #service-popup .service-popup-navigation {
-    margin-top: 8px !important; /* минимальный зазор под попапом */
+    margin-top: 8px !important;
   }
-  #service-popup .service-popup-content {
-    margin-bottom: 56px !important;
-    padding-bottom: 56px !important;
-    min-height: 55vh !important;
-  }
-  #service-popup .service-popup-text-block {
-    padding-bottom: 48px !important;
-  }
-  #service-popup .service-popup-container {
-    padding-bottom: 40px !important;
+  /* На мобильных даём спейсеру высоту — после видео можно докрутить вниз */
+  #service-popup .service-popup-spacer {
+    height: 1px;
   }
 }
