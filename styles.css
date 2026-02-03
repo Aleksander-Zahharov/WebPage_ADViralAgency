@@ -436,6 +436,15 @@
 [data-theme="light"] .video-modal-content .plyr__progress input[type=range] {
   color: #ea580c !important;
 }
+/* Пройденный путь прогресс-бара в светлой теме — всегда фиолетовый (не оранжевый) */
+[data-theme="light"] .video-modal-content .plyr__progress input[type=range]::-webkit-slider-runnable-track,
+[data-theme="light"] .AdviralPlayer .plyr__progress input[type=range]::-webkit-slider-runnable-track {
+  background: linear-gradient(to right, #8B5CF6 0%, #8B5CF6 var(--value, 0%), rgba(255, 255, 255, 0.2) var(--value, 0%), rgba(255, 255, 255, 0.2) 100%) !important;
+}
+[data-theme="light"] .video-modal-content .plyr__progress input[type=range]::-moz-range-progress,
+[data-theme="light"] .AdviralPlayer .plyr__progress input[type=range]::-moz-range-progress {
+  background: #8B5CF6 !important;
+}
 /* Кнопки .btn-primary в светлой теме — оранжевый градиент */
 [data-theme="light"] .btn-primary:hover {
   background: linear-gradient(135deg, #c2410c, #fb923c);
@@ -2661,9 +2670,9 @@ section { scroll-margin-top: 0; }
   .service-popup-container {
     width: 900px;
     max-width: 900px;
-    height: min(820px, 90vh);
-    max-height: 90vh;
-    min-height: 520px;
+    height: min(900px, 92vh);
+    max-height: 92vh;
+    min-height: 560px;
     padding: 48px 48px 56px;
     overflow: hidden;
     box-sizing: border-box;
@@ -2798,9 +2807,9 @@ section { scroll-margin-top: 0; }
   .service-popup-container {
     width: min(900px, 94vw);
     max-width: min(900px, 94vw);
-    height: min(780px, 90vh);
-    max-height: 90vh;
-    min-height: 480px;
+    height: min(860px, 92vh);
+    max-height: 92vh;
+    min-height: 520px;
     overflow-y: auto;
     overflow-x: hidden;
   }
@@ -5339,8 +5348,15 @@ input::placeholder, textarea::placeholder {
 }
 
 /* =========================
-  AdviralPlayer — модальное окно видеоплеера
+  ADViralPlayer — единый дизайн плеера (модалка «Наши работы» и попап «Услуги»).
+  Контейнер с классом .AdviralPlayer или .video-modal-content получает эти стили.
+  Пройденный путь прогресс-бара — фиолетовый (#8B5CF6).
 ========================= */
+.video-modal-content,
+.AdviralPlayer {
+  --plyr-color-main: #8B5CF6;
+  --plyr-range-fill-background: #8B5CF6;
+}
 .video-modal {
   position: fixed;
   inset: 0;
@@ -5578,7 +5594,8 @@ input::placeholder, textarea::placeholder {
 }
 
 /* Настройка цветов Plyr */
-.video-modal-content .plyr--full-ui input[type=range] {
+.video-modal-content .plyr--full-ui input[type=range],
+.AdviralPlayer .plyr--full-ui input[type=range] {
   color: var(--primary-1) !important; /* Основной фиолетовый для прогресса и громкости */
 }
 
@@ -5739,9 +5756,11 @@ input::placeholder, textarea::placeholder {
   flex: 1 1 auto !important;
 }
 
-/* Seek-инпут: цвет заливки прогресса — фиолетовый */
-.video-modal-content .plyr__progress input[type=range] {
+/* Seek-инпут: полоска слева от ползунка — фиолетовая, справа — серая */
+.video-modal-content .plyr__progress input[type=range],
+.AdviralPlayer .plyr__progress input[type=range] {
   color: #8B5CF6 !important;
+  accent-color: #8B5CF6 !important;
   height: 4px !important;
   margin: 0 !important;
   margin-left: -6.5px !important;
@@ -5757,13 +5776,24 @@ input::placeholder, textarea::placeholder {
   z-index: 2 !important;
 }
 
-.video-modal-content .plyr__progress input[type=range]::-webkit-slider-runnable-track {
-  background: rgba(255, 255, 255, 0.2) !important;
+/* Трек WebKit: пройденный путь (слева от ползунка) — фиолетовый, справа — серая полоска. Plyr задаёт --value на инпуте как "50%" (уже с %). */
+.video-modal-content .plyr__progress input[type=range]::-webkit-slider-runnable-track,
+.AdviralPlayer .plyr__progress input[type=range]::-webkit-slider-runnable-track {
+  background: linear-gradient(to right, #8B5CF6 0%, #8B5CF6 var(--value, 0%), rgba(255, 255, 255, 0.2) var(--value, 0%), rgba(255, 255, 255, 0.2) 100%) !important;
   height: 4px !important;
   border-radius: 2px !important;
 }
 
-.video-modal-content .plyr__progress input[type=range]::-webkit-slider-thumb {
+/* Firefox: полоска слева от ползунка — фиолетовая */
+.video-modal-content .plyr__progress input[type=range]::-moz-range-progress,
+.AdviralPlayer .plyr__progress input[type=range]::-moz-range-progress {
+  background: #8B5CF6 !important;
+  height: 4px !important;
+  border-radius: 2px 0 0 2px !important;
+}
+
+.video-modal-content .plyr__progress input[type=range]::-webkit-slider-thumb,
+.AdviralPlayer .plyr__progress input[type=range]::-webkit-slider-thumb {
   background: #8B5CF6 !important; /* фиолетовый ползунок */
   width: 12px !important;
   height: 12px !important;
@@ -5772,13 +5802,15 @@ input::placeholder, textarea::placeholder {
   border: none !important;
 }
 
-.video-modal-content .plyr__progress input[type=range]::-moz-range-track {
+.video-modal-content .plyr__progress input[type=range]::-moz-range-track,
+.AdviralPlayer .plyr__progress input[type=range]::-moz-range-track {
   background: rgba(255, 255, 255, 0.2) !important;
   height: 4px !important;
   border-radius: 2px !important;
 }
 
-.video-modal-content .plyr__progress input[type=range]::-moz-range-thumb {
+.video-modal-content .plyr__progress input[type=range]::-moz-range-thumb,
+.AdviralPlayer .plyr__progress input[type=range]::-moz-range-thumb {
   background: #8B5CF6 !important; /* фиолетовый ползунок */
   width: 12px !important;
   height: 12px !important;
