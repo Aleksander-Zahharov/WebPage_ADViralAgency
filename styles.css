@@ -3267,10 +3267,10 @@ section { scroll-margin-top: 0; }
   padding-bottom: 9px;  /* нижняя граница ленты идёт до линии пересечения с горизонтальной */
   padding-left: 56px;   /* внутренний отступ слева */
 }
-/* Вертикальная лента — карточки +50%: 360px по высоте */
+/* Вертикальная лента — высота карточек уменьшена (340px), чтобы уравнять с горизонтальной по сумме высот */
 #works .works-vertical-row .ig-item {
-  width: calc(360px * 9 / 16);
-  height: 360px;
+  width: calc(340px * 9 / 16);
+  height: 340px;
   flex: 0 0 auto;
   min-width: 0;
   min-height: 0;
@@ -3282,7 +3282,7 @@ section { scroll-margin-top: 0; }
   align-items: stretch;
   justify-content: center;
   overflow: visible;
-  min-height: 158px;
+  min-height: 178px; /* под высоту горизонтальных карточек 159px + отступы */
   padding-left: 0px;
 }
 #works .container-horizontal .ig-arrow {
@@ -3303,7 +3303,7 @@ section { scroll-margin-top: 0; }
 #works .container-horizontal .ig-strip {
   padding: 0;
   padding-left: 16px;
-  min-height: 155px;
+  min-height: 175px; /* под высоту карточек 159px, чтобы края не обрезались */
   align-self: stretch;
   align-items: center;
   box-sizing: border-box;
@@ -3440,11 +3440,11 @@ section { scroll-margin-top: 0; }
   transform-origin: center center;
 }
 
-/* Горизонтальные видео — та же высота 139px и зазор 18px, как у вертикальной ленты.
+/* Горизонтальные видео — высота увеличена (159px), зазор 18px сохранён.
    Hover/active только через волну (#works .ig-item-horizontal[data-wave-ready="true"]) — см. блок prefers-reduced-motion. */
 .ig-item-horizontal {
-  width: calc(139px * 16 / 9);
-  height: 139px;
+  width: calc(159px * 16 / 9);
+  height: 159px;
   transform: skew(-8deg, 0deg);
   transition: transform 0.25s ease-in-out, z-index 0.25s ease-in-out;
 }
@@ -3468,7 +3468,7 @@ section { scroll-margin-top: 0; }
   transition: transform 0.25s ease;
 }
 
-/* Фиксируем размеры: вертикальная лента — 240px (крупно), горизонтальная — 139px */
+/* Фиксируем размеры: вертикальная лента в #works — 340px, горизонтальная — 159px (сумма высот и зазор между лентами сохранены) */
 /* Наши работы: только волна при загрузке; при мыши — преувеличение при наведении и вдавливание при зажатии */
 #works .ig-item {
   width: calc(240px * 9 / 16);
@@ -3479,8 +3479,8 @@ section { scroll-margin-top: 0; }
   transition: transform 0.25s ease-in-out, z-index 0.25s ease-in-out;
 }
 #works .ig-item-horizontal {
-  width: calc(139px * 16 / 9);
-  height: 139px;
+  width: calc(159px * 16 / 9);
+  height: 159px;
   transition: transform 0.25s ease-in-out, z-index 0.25s ease-in-out;
 }
 /* Класс .hover-scale-on: доигрывание анимации увеличения/уменьшения до конца при уходе курсора */
@@ -3505,8 +3505,8 @@ section { scroll-margin-top: 0; }
     height: 240px;
   }
   #works .ig-item-horizontal {
-    width: calc(139px * 16 / 9);
-    height: 139px;
+    width: calc(159px * 16 / 9);
+    height: 159px;
   }
 }
 

@@ -1617,20 +1617,60 @@ document.addEventListener("DOMContentLoaded", () => {
     target.addEventListener("lostpointercapture", stopDrag);
   });
 
-  // Оптимизированная загрузка и автоплей видео для всех лент
-  // Загружаем видео последовательно в фоновом режиме сразу после загрузки страницы
+  // --- Менеджер загрузки видео ---
+  // Задачи: (1) при открытии плеера — остановить загрузку ленты и отдать приоритет плееру;
+  // (2) при закрытии плеера — вернуть превью в ленту. Полные видео грузятся только при открытии плеера.
+  const videoLoadManager = (function() {
+    function getAllFeedVideos() {
+      return Array.from(doc.querySelectorAll(".ig-strip .ig-item video"));
+    }
+
+    // При открытии модалки: останавливаем загрузку всех видео в ленте (убираем src и load()),
+    // чтобы освободить канал и отдать приоритет плееру.
+    function pauseFeedLoading() {
+      getAllFeedVideos().forEach((video) => {
+        video.pause();
+        const item = video.closest(".ig-item");
+        const source = video.querySelector("source");
+        if (source && (item?.dataset.videoPreview || item?.dataset.video)) {
+          source.removeAttribute("src");
+          video.removeAttribute("src");
+          video.load(); // прерываем загрузку
+        }
+      });
+    }
+
+    // При закрытии модалки: восстанавливаем src превью у карточек ленты (мы их обнулили в pauseFeedLoading).
+    function resumeFeedVideos() {
+      getAllFeedVideos().forEach((video) => {
+        const item = video.closest(".ig-item");
+        const previewSrc = item?.dataset.videoPreview || item?.dataset.video;
+        const source = video.querySelector("source");
+        if (previewSrc && source) {
+          source.src = previewSrc;
+          video.preload = "metadata";
+          video.load();
+        }
+      });
+    }
+
+    return {
+      pauseFeedLoading,
+      resumeFeedVideos,
+    };
+  })();
+
+  // Загрузка только превью в ленте (metadata), полное видео — только при открытии в плеере
   igStrips.forEach((strip) => {
     const igVideos = Array.from(strip.querySelectorAll("video"));
     if (igVideos.length === 0) return;
 
-    // Очередь для последовательной загрузки видео
-    let loadingQueue = [...igVideos]; // Сразу добавляем все видео в очередь
+    let loadingQueue = [...igVideos];
     let isLoading = false;
 
-    // Функция для загрузки следующего видео из очереди
     function loadNextVideo() {
       if (isLoading || loadingQueue.length === 0) return;
-      
+
       const video = loadingQueue.shift();
       if (!video || video.dataset.loaded === "true") {
         loadNextVideo();
@@ -1639,55 +1679,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
       isLoading = true;
       video.dataset.loaded = "true";
-      
-      // Используем превью версию видео для ленты
+
       const item = video.closest(".ig-item");
       const previewSrc = item?.dataset.videoPreview;
       const source = video.querySelector("source");
-      
-      // Если есть превью версия, используем её для ленты
+
       if (previewSrc && source) {
         source.src = previewSrc;
-      } else if (source && !source.src) {
-        // Fallback на обычный источник если превью нет
-        const normalSrc = item?.dataset.video;
-        if (normalSrc) {
-          source.src = normalSrc;
-        }
+      } else if (source && !source.src && item?.dataset.video) {
+        source.src = item.dataset.video;
       }
-      
-      // Загружаем metadata для начала
+
       video.preload = "metadata";
       video.muted = true;
       video.loop = true;
       video.load();
-      
+
       video.addEventListener("loadedmetadata", () => {
         isLoading = false;
-        
-        // После загрузки metadata начинаем подгружать само видео в фоне
-        const loadFullVideo = () => {
-          video.preload = "auto";
-          // Не вызываем load() повторно если не нужно, но для уверенности в фоне:
-          // Если видео уже во viewport, оно должно начать играть
-          const rect = video.getBoundingClientRect();
-          const isVisible = rect.top < window.innerHeight + 200 && rect.bottom > -200;
-          if (isVisible) {
-            video.play().catch(() => {});
-          }
-        };
-        
-        if (window.requestIdleCallback) {
-          requestIdleCallback(loadFullVideo, { timeout: 2000 });
-        } else {
-          setTimeout(loadFullVideo, 200);
-        }
-        
-        // Переходим к следующему видео в очереди
         loadNextVideo();
       }, { once: true });
-      
-      // Таймаут на случай если событие не сработает
+
       setTimeout(() => {
         if (isLoading) {
           isLoading = false;
@@ -1696,47 +1708,34 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 3000);
     }
 
-    // IntersectionObserver для play/pause
-    const videoObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const video = entry.target;
-          
-          if (entry.isIntersecting) {
-            // Если видео вошло в viewport, пробуем запустить
-            // Если оно еще не загружено, оно подхватится очередью или loadNextVideo
-            if (video.readyState >= 2) {
-              video.play().catch(() => {});
-            } else if (video.dataset.loaded === "true") {
-              // Если в процессе загрузки, ставим preload="auto" чтобы ускориться
-              video.preload = "auto";
-            }
-          } else {
-            // Видео не видно - останавливаем
-            video.pause();
-          }
-        });
-      },
-      {
-        threshold: 0.1,
-        rootMargin: "300px"
-      }
-    );
-
-    // Инициализируем видео и начинаем фоновую загрузку
     igVideos.forEach((video) => {
       video.muted = true;
       video.loop = true;
-      videoObserver.observe(video);
     });
 
-    // Запускаем фоновую загрузку через небольшую паузу после DOMContentLoaded
     if (window.requestIdleCallback) {
       requestIdleCallback(() => loadNextVideo(), { timeout: 1000 });
     } else {
       setTimeout(loadNextVideo, 500);
     }
   });
+
+  // Один общий IntersectionObserver для всех превью в лентах: играют только видимые на странице.
+  const allFeedPreviews = Array.from(doc.querySelectorAll(".ig-strip .ig-item video"));
+  const feedPreviewObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const video = entry.target;
+        if (entry.isIntersecting) {
+          if (video.readyState >= 2) video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      });
+    },
+    { threshold: 0.1, rootMargin: "200px" }
+  );
+  allFeedPreviews.forEach((video) => feedPreviewObserver.observe(video));
 
   // Модальное окно видеоплеера с Plyr
   (function setupVideoModal() {
@@ -2037,7 +2036,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (itemElement) {
         currentIndex = videoItems.indexOf(itemElement);
       } else {
-        // Пытаемся найти по src если элемент не передан
         currentIndex = videoItems.findIndex(item => getVideoSource(item) === videoSrc);
       }
 
@@ -2045,8 +2043,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
       currentVideoSrc = videoSrc;
 
-      // Устанавливаем источник видео
+      // Останавливаем загрузку всех видео в ленте — весь трафик отдаём плееру
+      videoLoadManager.pauseFeedLoading();
+
+      // Устанавливаем источник видео и приоритет загрузки
       setupQualitySources(videoSrc);
+      modalPlayer.preload = "auto";
 
       // Инициализируем Plyr при первом открытии
       if (!player && typeof Plyr !== "undefined") {
@@ -2119,6 +2121,8 @@ document.addEventListener("DOMContentLoaded", () => {
       currentVideoSrc = "";
       modal.hidden = true;
       unlockBodyScroll();
+      // Восстанавливаем превью в ленте и при необходимости запускаем фоновый прелоад
+      videoLoadManager.resumeFeedVideos();
       if (srcEmit) {
         doc.dispatchEvent(new CustomEvent("video-modal-closed", { detail: { src: srcEmit } }));
       }
