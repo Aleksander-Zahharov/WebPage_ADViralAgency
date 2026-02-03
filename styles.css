@@ -2727,6 +2727,7 @@ section { scroll-margin-top: 0; }
     position: relative;
     display: flex;
     flex-direction: column;
+    padding-bottom: 32px; /* запас снизу после видео на десктопе/планшете */
   }
   /* Стрелки: фиксированная позиция как у modal-arrow (left/right -112px, top 50%) */
   .service-popup-navigation {
@@ -2855,12 +2856,13 @@ section { scroll-margin-top: 0; }
   }
 }
 
-/* Мобильная версия попапа: ширина под экран, небольшой отступ от краёв */
+/* Мобильная версия попапа: ширина под экран, смещение вниз чтобы кнопка «Закрыть» помещалась, кнопка закрыть как стрелки */
 @media (max-width: 600px) {
   .service-popup-wrapper {
     width: 100%;
     max-width: none;
     margin: 0;
+    margin-top: 44px; /* смещаем попап вниз, чтобы сверху помещалась кнопка закрыть */
     padding: 0 12px;
     box-sizing: border-box;
     align-items: center;
@@ -2869,6 +2871,26 @@ section { scroll-margin-top: 0; }
   .service-popup-inner {
     width: 100%;
     max-width: none;
+  }
+
+  /* Кнопка закрытия — тот же размер и радиус круга, что у кнопок-стрелок (32×32, радиус 16px) */
+  .service-popup-close {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+    max-width: 32px !important;
+    max-height: 32px !important;
+    box-sizing: border-box !important;
+    border-radius: 50% !important;
+    border-width: 1px !important;
+    top: -30px; /* ещё пониже */
+    font-size: 16px;
+  }
+
+  .service-popup-navigation {
+    flex-shrink: 0;
+    margin-top: -12px; /* стрелки ещё повыше, ближе к контейнеру */
   }
 
   .service-popup-container {
@@ -2890,6 +2912,9 @@ section { scroll-margin-top: 0; }
     flex-direction: column;
     flex: 1;
     min-height: 0;
+    margin-bottom: 24px; /* отступ снизу */
+    padding-bottom: 24px; /* падинг снизу */
+    min-height: 50vh; /* увеличиваем высоту дива с контентом */
   }
   
   .service-popup-text-block {
@@ -2897,6 +2922,7 @@ section { scroll-margin-top: 0; }
     flex: 0 1 auto;
     min-height: 0;
     height: auto;
+    padding-bottom: 24px; /* запас снизу после видео на мобильной */
   }
   
   .service-popup-icon {
@@ -2919,9 +2945,6 @@ section { scroll-margin-top: 0; }
     padding-right: 8px;
   }
   
-  .service-popup-navigation {
-    flex-shrink: 0;
-  }
 }
 
 .service-popup.active .service-popup-container {
@@ -2973,6 +2996,7 @@ section { scroll-margin-top: 0; }
   flex: 0 1 auto;
   min-height: 0;
   height: auto;
+  padding-bottom: 24px; /* запас снизу после видео */
 }
 
 .service-popup-text {
@@ -3019,15 +3043,17 @@ section { scroll-margin-top: 0; }
   text-align: left;
 }
 .service-popup-text-content p:first-child {
-  min-height: 3em; /* минимум 2 строки при line-height 1.5 */
+  min-height: 3em; /* минимум 2 строки при line-height 1.5; при большем контенте блок расширяется */
 }
 .service-popup-text-content p:last-child {
   margin-bottom: 0;
+  min-height: 3em; /* минимум 2 строки; при большем контенте блок расширяется */
 }
 .service-popup-text-content ul {
   margin: 0.5em 0 0.75em;
   padding-left: 1.25em;
   text-align: left;
+  min-height: 9em; /* минимум 6 строк; при большем контенте блок расширяется */
 }
 .service-popup-text-content li {
   margin-bottom: 0.35em;
@@ -3057,12 +3083,19 @@ section { scroll-margin-top: 0; }
   .service-popup-text-content ul {
     margin: 0.6em 0 0.9em;
     padding-left: 1.35em;
+    min-height: 9.6em; /* минимум 6 строк на десктопе; при большем контенте расширяется */
   }
   .service-popup-text-content li {
     margin-bottom: 0.45em;
   }
   .service-popup-text-content p {
     margin-bottom: 0.9em;
+  }
+  .service-popup-text-content p:first-child {
+    min-height: 3.2em; /* минимум 2 строки на десктопе; при большем контенте расширяется */
+  }
+  .service-popup-text-content p:last-child {
+    min-height: 3.2em; /* минимум 2 строки на десктопе; при большем контенте расширяется */
   }
 }
 
