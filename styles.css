@@ -2247,6 +2247,10 @@ section { scroll-margin-top: 0; }
   #services .cards .card::after {
     transform: translateY(-50%) skew(8deg, 0deg);
   }
+  /* Заголовки карточек услуг на мобильной крупнее для читаемости */
+  #services .cards .card h3 {
+    font-size: clamp(16px, 4vw, 19px);
+  }
 }
 
 @media (max-width: 600px) and (prefers-reduced-motion: no-preference) {
@@ -3274,11 +3278,11 @@ section { scroll-margin-top: 0; }
   overflow: visible;
 }
 
-/* Обёртка лент: фиксированный размер 1360×547, масштаб при сужении экрана */
+/* Обёртка лент: фиксированный размер 1360×505, масштаб при сужении экрана */
 .feeds-vert-horis-wrapper {
   width: 100%;
-  aspect-ratio: 547 / 1360;
-  max-height: min(547px, 57vw);
+  aspect-ratio: 505 / 1360;
+  max-height: min(505px, 52vw);
   position: relative;
   overflow: visible; /* стрелки и hover не обрезать */
   container-type: inline-size;
@@ -3289,7 +3293,7 @@ section { scroll-margin-top: 0; }
   left: 0;
   top: 0;
   width: 1360px;
-  height: 547px;
+  height: 505px;
   transform-origin: left top;
   transform: scale(min(1, 100cqw / 1360px));
   overflow: visible;
@@ -3314,7 +3318,7 @@ section { scroll-margin-top: 0; }
 @media (max-width: 768px) {
   .feeds-vert-horis-wrapper {
     aspect-ratio: auto;
-    max-height: none;
+    max-height: 65vh; /* уменьшаем общую высоту блока лент на мобильной */
     height: auto;
     container-type: normal;
     overflow-x: hidden;
@@ -6702,6 +6706,137 @@ input::placeholder, textarea::placeholder {
   #services .cards .card[data-wave-ready="true"]:nth-child(n+7):active {
     transform: skew(-8deg, 0deg) translateX(5px) scale(0.98) !important;
     animation: none !important;
+  }
+}
+
+/* Планшет 901–1024px: при зажатии и при касании без клика — без анимаций; только .hover-tap-active (клик) даёт эффект хавера */
+@media (max-width: 1024px) and (min-width: 901px) {
+  #services .cards .card:hover:not(.hover-tap-active),
+  #services .cards .card:nth-child(-n+3):hover:not(.hover-tap-active),
+  #services .cards .card:nth-child(n+7):hover:not(.hover-tap-active),
+  #services .cards .card[data-wave-ready="true"]:hover:not(.hover-tap-active),
+  #services .cards .card[data-wave-ready="true"]:nth-child(-n+3):hover:not(.hover-tap-active),
+  #services .cards .card[data-wave-ready="true"]:nth-child(n+7):hover:not(.hover-tap-active) {
+    transform: skew(-8deg, 0deg);
+  }
+  #services .cards .card:nth-child(-n+3):hover:not(.hover-tap-active),
+  #services .cards .card[data-wave-ready="true"]:nth-child(-n+3):hover:not(.hover-tap-active) {
+    transform: skew(-8deg, 0deg) translateX(22px);
+  }
+  #services .cards .card:nth-child(n+7):hover:not(.hover-tap-active),
+  #services .cards .card[data-wave-ready="true"]:nth-child(n+7):hover:not(.hover-tap-active) {
+    transform: skew(-8deg, 0deg) translateX(-22px);
+  }
+  #services .cards .card:active,
+  #services .cards .card:hover:active,
+  #services .cards .card:focus-within:active,
+  #services .cards .card[data-wave-ready="true"]:active,
+  #services .cards .card[data-wave-ready="true"]:nth-child(-n+3):active,
+  #services .cards .card[data-wave-ready="true"]:nth-child(n+7):active {
+    transform: skew(-8deg, 0deg) !important;
+    animation: none !important;
+  }
+  #services .cards .card:nth-child(-n+3):active,
+  #services .cards .card:nth-child(-n+3):hover:active,
+  #services .cards .card:nth-child(-n+3):focus-within:active,
+  #services .cards .card[data-wave-ready="true"]:nth-child(-n+3):active {
+    transform: skew(-8deg, 0deg) translateX(22px) !important;
+    animation: none !important;
+  }
+  #services .cards .card:nth-child(n+7):active,
+  #services .cards .card:nth-child(n+7):hover:active,
+  #services .cards .card:nth-child(n+7):focus-within:active,
+  #services .cards .card[data-wave-ready="true"]:nth-child(n+7):active {
+    transform: skew(-8deg, 0deg) translateX(-22px) !important;
+    animation: none !important;
+  }
+}
+
+/* Планшет 601–900px: то же — без анимаций при зажатии/касании, только hover по клику (.hover-tap-active); база -5px/+5px */
+@media (max-width: 900px) and (min-width: 601px) {
+  #services .cards .card:hover:not(.hover-tap-active),
+  #services .cards .card:nth-child(-n+3):hover:not(.hover-tap-active),
+  #services .cards .card:nth-child(n+7):hover:not(.hover-tap-active),
+  #services .cards .card[data-wave-ready="true"]:hover:not(.hover-tap-active),
+  #services .cards .card[data-wave-ready="true"]:nth-child(-n+3):hover:not(.hover-tap-active),
+  #services .cards .card[data-wave-ready="true"]:nth-child(n+7):hover:not(.hover-tap-active) {
+    transform: skew(-8deg, 0deg);
+  }
+  #services .cards .card:nth-child(-n+3):hover:not(.hover-tap-active),
+  #services .cards .card[data-wave-ready="true"]:nth-child(-n+3):hover:not(.hover-tap-active) {
+    transform: skew(-8deg, 0deg) translateX(-5px);
+  }
+  #services .cards .card:nth-child(n+7):hover:not(.hover-tap-active),
+  #services .cards .card[data-wave-ready="true"]:nth-child(n+7):hover:not(.hover-tap-active) {
+    transform: skew(-8deg, 0deg) translateX(5px);
+  }
+  #services .cards .card:active,
+  #services .cards .card:hover:active,
+  #services .cards .card:focus-within:active,
+  #services .cards .card[data-wave-ready="true"]:active,
+  #services .cards .card[data-wave-ready="true"]:nth-child(-n+3):active,
+  #services .cards .card[data-wave-ready="true"]:nth-child(n+7):active {
+    transform: skew(-8deg, 0deg) !important;
+    animation: none !important;
+  }
+  #services .cards .card:nth-child(-n+3):active,
+  #services .cards .card:nth-child(-n+3):hover:active,
+  #services .cards .card:nth-child(-n+3):focus-within:active,
+  #services .cards .card[data-wave-ready="true"]:nth-child(-n+3):active {
+    transform: skew(-8deg, 0deg) translateX(-5px) !important;
+    animation: none !important;
+  }
+  #services .cards .card:nth-child(n+7):active,
+  #services .cards .card:nth-child(n+7):hover:active,
+  #services .cards .card:nth-child(n+7):focus-within:active,
+  #services .cards .card[data-wave-ready="true"]:nth-child(n+7):active {
+    transform: skew(-8deg, 0deg) translateX(5px) !important;
+    animation: none !important;
+  }
+}
+
+/* Планшет и мобильная: в секции Наши работы при зажатии/касании без клика — без анимаций; только .hover-scale-on (клик) даёт эффект */
+@media (max-width: 1024px) {
+  #works .ig-item[data-wave-ready="true"]:hover:not(.hover-scale-on),
+  #works .ig-item[data-wave-ready="true"]:focus-within:not(.hover-scale-on),
+  #works .ig-item[data-wave-ready="true"]:not(.ig-item-horizontal):hover:not(.hover-scale-on),
+  #works .ig-item-horizontal[data-wave-ready="true"]:hover:not(.hover-scale-on),
+  #works .ig-item-horizontal[data-wave-ready="true"]:focus-within:not(.hover-scale-on),
+  #works .ig-item[data-wave-ready="true"].wave-done:hover:not(.hover-scale-on),
+  #works .ig-item[data-wave-ready="true"].wave-done:focus-within:not(.hover-scale-on) {
+    transform: skew(-8deg, 0deg);
+  }
+  #works .ig-item[data-wave-ready="true"]:hover:not(.hover-scale-on) video,
+  #works .ig-item[data-wave-ready="true"]:focus-within:not(.hover-scale-on) video,
+  #works .ig-item-horizontal[data-wave-ready="true"]:hover:not(.hover-scale-on) video,
+  #works .ig-item-horizontal[data-wave-ready="true"]:focus-within:not(.hover-scale-on) video {
+    transform: skew(8deg, 0deg);
+  }
+  #works .ig-item[data-wave-ready="true"]:active,
+  #works .ig-item[data-wave-ready="true"]:not(.ig-item-horizontal):active,
+  #works .ig-item[data-wave-ready="true"]:not(.ig-item-horizontal):hover:active,
+  #works .ig-item-horizontal[data-wave-ready="true"]:active,
+  #works .ig-item-horizontal[data-wave-ready="true"]:hover:active,
+  #works .ig-item-horizontal[data-wave-ready="true"].wave-done:active,
+  #works .ig-item-horizontal[data-wave-ready="true"].wave-done:hover:active {
+    transform: skew(-8deg, 0deg) !important;
+  }
+  #works .ig-item[data-wave-ready="true"]:active video,
+  #works .ig-item-horizontal[data-wave-ready="true"]:active video {
+    transform: skew(8deg, 0deg) !important;
+  }
+  /* Меньше пустого пространства над и под секцией Наши работы на планшете */
+  #works.section {
+    padding-top: calc(var(--header-h) + 10px);
+    padding-bottom: clamp(16px, 3vw, 32px);
+  }
+}
+
+@media (max-width: 600px) {
+  /* Ещё меньше отступов у секции Наши работы на мобильной */
+  #works.section {
+    padding-top: calc(var(--header-h) + 8px);
+    padding-bottom: clamp(12px, 2.5vw, 24px);
   }
 }
 
