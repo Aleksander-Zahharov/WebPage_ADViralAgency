@@ -226,7 +226,7 @@
 }
 /* Карточки услуг в светлой теме — светло-серый фон по умолчанию, при наведении фон белый; граница 1px всегда — при ховере меняется только цвет */
 [data-theme="light"] #services .cards .card {
-  background: rgba(0,0,0,0.02);
+  background: rgba(0,0,0,0.05); /* чуть темнее серый по умолчанию (без наведения) */
   border: 1px solid transparent;
   -webkit-font-smoothing: subpixel-antialiased;
   transition: background 0.25s ease-in-out, transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out, border-color 0.25s ease-in-out;
@@ -238,12 +238,12 @@
 [data-theme="light"] #services .cards .card:focus-within,
 [data-theme="light"] #services .cards .card.icon-animating:not(.wave-active) {
   background: #fff;
-  border-color: var(--service-border-color, var(--card-border));
+  border-color: var(--service-border-color, transparent); /* только цветная граница, без светло-серой */
 }
 [data-theme="light"] #services .cards .card.wave-active,
 [data-theme="light"] #services .cards .card.icon-animating.wave-active {
-  background: rgba(0,0,0,0.02);
-  border-color: var(--card-border);
+  background: rgba(0,0,0,0.05); /* тот же серый, что по умолчанию */
+  border-color: transparent; /* без светло-серой границы после ховера/волны */
   box-shadow: none;
 }
 /* Услуги: текст карточек такой же чёрный, как заголовок секции (без «мыльного» оттенка) */
@@ -1683,12 +1683,12 @@ section { scroll-margin-top: 0; }
 [data-theme="dark"] #services .cards .card:focus-within,
 [data-theme="dark"] #services .cards .card.icon-animating:not(.wave-active) {
   background: #000; /* при наведении — идеально чёрный фон */
-  border-color: var(--service-border-color, var(--card-border));
+  border-color: var(--service-border-color, transparent); /* только цветная граница, без светло-серой */
 }
 [data-theme="dark"] #services .cards .card.wave-active,
 [data-theme="dark"] #services .cards .card.wave-active.icon-animating {
   border-width: 1px;
-  border-color: var(--card-border);
+  border-color: transparent; /* без светло-серой границы после ховера/волны */
   box-shadow: none;
 }
 /* Первый ряд — вправо 22px, третий — влево -22px, второй без сдвига (как на скриншоте) */
@@ -1804,11 +1804,11 @@ section { scroll-margin-top: 0; }
 /* Анимация загорания границы и цветной подсветки вокруг карточки (один плавный переход без промежуточного кадра) */
 @keyframes border-glow {
   0% {
-    border-color: var(--card-border);
+    border-color: transparent; /* без светло-серой границы до/после */
     box-shadow: none;
   }
   100% {
-    border-color: var(--service-border-color, var(--card-border));
+    border-color: var(--service-border-color, transparent);
     box-shadow: 0 0 10px var(--service-border-color, transparent),
                 0 0 24px var(--service-border-color, transparent);
   }
@@ -1817,12 +1817,12 @@ section { scroll-margin-top: 0; }
 /* Анимация потухания при уходе курсора */
 @keyframes border-glow-out {
   0% {
-    border-color: var(--service-border-color, var(--card-border));
+    border-color: var(--service-border-color, transparent);
     box-shadow: 0 0 10px var(--service-border-color, transparent),
                 0 0 24px var(--service-border-color, transparent);
   }
   100% {
-    border-color: var(--card-border);
+    border-color: transparent; /* без светло-серой границы после ховера */
     box-shadow: none;
   }
 }
