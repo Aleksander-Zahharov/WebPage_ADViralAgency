@@ -337,21 +337,21 @@
 [data-theme="light"] .service-popup-title {
   color: #1d1d1f;
 }
-[data-theme="light"] .service-popup-text {
+[data-theme="light"] .service-popup-text-content {
   color: var(--muted);
 }
-[data-theme="light"] .service-popup-video-block {
+[data-theme="light"] .service-popup-inline-video {
   background: rgba(0, 0, 0, 0.08);
 }
-[data-theme="light"] .service-popup-video-placeholder {
+[data-theme="light"] .service-popup-inline-video-placeholder {
   background: rgba(0, 0, 0, 0.12);
 }
-[data-theme="light"] .service-popup-video-play {
+[data-theme="light"] .service-popup-inline-video-play-icon {
   border-color: rgba(0, 0, 0, 0.25);
   background: rgba(255, 255, 255, 0.9);
   color: #1d1d1f;
 }
-[data-theme="light"] .service-popup-video-play:hover {
+[data-theme="light"] .service-popup-inline-video-placeholder:hover .service-popup-inline-video-play-icon {
   background: #fff;
   border-color: rgba(0, 0, 0, 0.35);
 }
@@ -417,9 +417,6 @@
 [data-theme="light"] .pkg .pkg-body:hover,
 [data-theme="light"] .pkg input:checked + .pkg-body:hover {
   box-shadow: 0 0 20px rgba(251, 146, 60, 0.5);
-}
-[data-theme="light"] .service-popup-video-block .plyr__control:hover {
-  background: rgba(251, 146, 60, 0.2) !important;
 }
 [data-theme="light"] .video-modal-content .plyr__control--overlaid:hover,
 [data-theme="light"] .video-modal-content .plyr__control--overlaid:active,
@@ -2647,34 +2644,63 @@ section { scroll-margin-top: 0; }
   transition: transform 0.3s ease;
   max-height: 90vh;
   overflow-y: auto;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
 }
-/* Планшет и десктоп: попап фиксированной ширины, стрелки как у video-modal */
+
+/* Обёртка текста и видео: на мобильных просто блок, на десктопе/планшете — один прокручиваемый див */
+.service-popup-scroll {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+/* Планшет и десктоп: попап увеличенной высоты (строго не заходит за края экрана), прокрутка текста и видео в одном диве */
 @media (min-width: 601px) {
   .service-popup-container {
     width: 900px;
     max-width: 900px;
+    height: min(820px, 90vh);
+    max-height: 90vh;
     min-height: 520px;
-    height: 520px;
     padding: 48px 48px 56px;
-    overflow-y: auto;
+    overflow: hidden;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  /* Один прокручиваемый блок: текст + видео вместе */
+  .service-popup-scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
   }
   .service-popup-wrapper {
-    margin: 50px 0;
+    margin: 24px 0;
   }
   .service-popup-inner {
     width: 900px;
     position: relative;
   }
-  /* Видео в попапе — высота чуть меньше 480p на десктопе */
-  .service-popup-video-block {
-    height: 400px;
-    max-height: 400px;
-    aspect-ratio: 16 / 9;
-    margin-top: 16px;
+  /* 1-я строка: блок с заголовком и текстом (не сжимается, строго друг под другом) */
+  .service-popup-body {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .service-popup-content {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .service-popup-text-block {
+    flex: 0 0 auto;
+    position: relative;
   }
   /* Стрелки: фиксированная позиция как у modal-arrow (left/right -112px, top 50%) */
   .service-popup-navigation {
@@ -2767,15 +2793,16 @@ section { scroll-margin-top: 0; }
   }
 }
 
-/* Планшет: попап помещается в экран по высоте, прокрутка при необходимости */
+/* Планшет: увеличенная высота, строго не заходит за края экрана */
 @media (min-width: 601px) and (max-width: 900px) {
   .service-popup-container {
     width: min(900px, 94vw);
     max-width: min(900px, 94vw);
-    max-height: 88vh;
-    height: auto;
-    min-height: 320px;
+    height: min(780px, 90vh);
+    max-height: 90vh;
+    min-height: 480px;
     overflow-y: auto;
+    overflow-x: hidden;
   }
   .service-popup-wrapper {
     margin: 24px 0;
@@ -2783,10 +2810,6 @@ section { scroll-margin-top: 0; }
   }
   .service-popup-inner {
     width: min(900px, 94vw);
-  }
-  .service-popup-video-block {
-    height: min(320px, 35vh);
-    max-height: min(320px, 35vh);
   }
   .service-popup-navigation {
     left: -90px;
@@ -2863,13 +2886,10 @@ section { scroll-margin-top: 0; }
   
   .service-popup-text {
     flex: 1;
-    overflow-y: auto;
     margin: 0;
-    padding-right: 8px;
   }
-  
-  .service-popup-video-block {
-    max-height: 480px;
+  .service-popup-text-content {
+    padding-right: 8px;
   }
   
   .service-popup-navigation {
@@ -2907,7 +2927,7 @@ section { scroll-margin-top: 0; }
   transform: scale(1.1);
 }
 
-/* Блок текста: иконка привязана к центру блока параграфа (.service-popup-text-block) */
+/* Блок текста: иконка по центру именно блока .service-popup-text */
 .service-popup-body {
   display: flex;
   flex-direction: column;
@@ -2927,14 +2947,20 @@ section { scroll-margin-top: 0; }
   min-height: 0;
   height: auto;
 }
-/* Иконка услуги ровно по центру параграфа */
+
+.service-popup-text {
+  position: relative;
+  margin: 0;
+}
+
+/* Иконка услуги ровно по центру блока .service-popup-text (в 2 раза крупнее) */
 .service-popup-icon {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 64px;
-  height: 64px;
+  width: 128px;
+  height: 128px;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -2951,7 +2977,7 @@ section { scroll-margin-top: 0; }
   text-align: center;
 }
 
-.service-popup-text {
+.service-popup-text-content {
   font-size: 14px;
   line-height: 1.5;
   color: var(--muted);
@@ -2959,31 +2985,98 @@ section { scroll-margin-top: 0; }
   text-align: center;
 }
 
-/* Блок видео внизу popup: 640px по ширине, 16:9, по центру бокса */
-.service-popup-video-block {
+/* Развёрнутый текст в попапе: параграфы, списки, выделения */
+.service-popup-text-content p {
+  margin: 0 0 0.75em;
+  text-align: left;
+}
+.service-popup-text-content p:last-child {
+  margin-bottom: 0;
+}
+.service-popup-text-content ul {
+  margin: 0.5em 0 0.75em;
+  padding-left: 1.25em;
+  text-align: left;
+}
+.service-popup-text-content li {
+  margin-bottom: 0.35em;
+}
+.service-popup-text-content strong {
+  color: inherit;
+  font-weight: 600;
+}
+.service-popup-text-content em {
+  font-style: italic;
+}
+
+/* Десктоп: текст попапа как в параграфах и хедерах сайта — крупнее и читаемее */
+@media (min-width: 901px) {
+  .service-popup-title {
+    font-size: clamp(22px, 2.2vw, 26px);
+    line-height: 1.35;
+    margin-bottom: 16px;
+  }
+  .service-popup-text-content,
+  .service-popup-text-content p,
+  .service-popup-text-content ul,
+  .service-popup-text-content li {
+    font-size: 18px;
+    line-height: 1.6;
+  }
+  .service-popup-text-content ul {
+    margin: 0.6em 0 0.9em;
+    padding-left: 1.35em;
+  }
+  .service-popup-text-content li {
+    margin-bottom: 0.45em;
+  }
+  .service-popup-text-content p {
+    margin-bottom: 0.9em;
+  }
+}
+
+/* Инлайн-видео под текстом в попапе: тот же AdviralPlayer, что в «Наши работы» (класс video-modal-content) */
+.service-popup-inline-video {
   flex-shrink: 0;
-  position: relative;
-  width: 640px;
-  max-width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 9;
-  max-height: none;
-  background: rgba(0,0,0,.4);
+  width: 100%;
+  max-width: 640px;
+  margin: 20px auto 0;
   border-radius: 12px;
   overflow: hidden;
-  margin: 12px auto 0;
+  background: rgba(0,0,0,.4);
+  position: relative;
+  aspect-ratio: 16 / 9;
 }
-.service-popup-video-placeholder {
+.service-popup-inline-video.video-modal-content {
+  max-width: 640px;
+  width: 100%;
+  padding-bottom: 0;
+}
+.service-popup-inline-video-el {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  background: #000;
+}
+
+/* Плейсхолдер: видео загружается только по клику */
+.service-popup-inline-video-placeholder {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   background: rgba(0,0,0,.5);
-  font-size: 48px;
   cursor: pointer;
+  z-index: 2;
+  transition: background 0.2s ease;
 }
-.service-popup-video-play {
+.service-popup-inline-video-placeholder:hover {
+  background: rgba(0,0,0,.35);
+}
+.service-popup-inline-video-play-icon {
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -2992,105 +3085,17 @@ section { scroll-margin-top: 0; }
   color: #fff;
   font-size: 18px;
   line-height: 1;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   padding-left: 4px;
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease;
 }
-.service-popup-video-play:hover {
+.service-popup-inline-video-placeholder:hover .service-popup-inline-video-play-icon {
   background: rgba(255,255,255,.25);
   transform: scale(1.05);
 }
-.service-popup-video {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  background: #000;
-}
-.service-popup-video-fullscreen {
-  position: absolute;
-  bottom: 8px;
-  right: 8px;
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  border: 1px solid rgba(255,255,255,.3);
-  background: rgba(0,0,0,.6);
-  color: #fff;
-  font-size: 16px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2;
-  transition: all 0.2s ease;
-}
-.service-popup-video-fullscreen:hover {
-  background: rgba(0,0,0,.8);
-  transform: scale(1.1);
-}
-
-/* Plyr в попапе услуг — уменьшенная адаптивная версия фиолетового плеера */
-.service-popup-video-block .plyr {
-  position: relative !important;
-  width: 100% !important;
-  height: 100% !important;
-  border-radius: 12px !important;
-  background: #000 !important;
-  overflow: hidden;
-}
-.service-popup-video-block .plyr__video-wrapper {
-  position: absolute !important;
-  inset: 0 !important;
-  border-radius: 12px !important;
-}
-.service-popup-video-block .plyr video {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: contain !important;
-}
-.service-popup-video-block .plyr--full-ui input[type=range] {
-  color: var(--primary-1) !important;
-}
-.service-popup-video-block .plyr__progress input[type=range]::-webkit-slider-thumb,
-.service-popup-video-block .plyr__progress input[type=range]::-moz-range-thumb {
-  background: #8B5CF6 !important;
-  width: 10px !important;
-  height: 10px !important;
-  border-radius: 50% !important;
-  border: none !important;
-}
-.service-popup-video-block .plyr__progress input[type=range]::-webkit-slider-runnable-track,
-.service-popup-video-block .plyr__progress input[type=range]::-moz-range-track {
-  background: rgba(255, 255, 255, 0.2) !important;
-  height: 4px !important;
-  border-radius: 2px !important;
-}
-.service-popup-video-block .plyr__control {
-  color: #fff !important;
-  padding: 4px 6px !important;
-}
-.service-popup-video-block .plyr__control:hover {
-  background: rgba(176, 134, 249, 0.2) !important;
-}
-.service-popup-video-block .plyr__controls {
-  background: rgba(28, 28, 30, 0.85) !important;
-  padding: 2px 4px !important;
-  border-radius: 0 0 12px 12px !important;
-  font-size: 12px !important;
-}
-.service-popup-video-block .plyr__time,
-.service-popup-video-block .plyr__menu__container {
-  font-size: 11px !important;
-}
-.service-popup-video-block .plyr__menu__container {
-  background: rgba(20, 20, 22, 0.95) !important;
-  border-radius: 12px !important;
-  color: #fff !important;
-}
-.service-popup-video-block .plyr__badge {
+.service-popup-inline-video-placeholder[hidden] {
   display: none !important;
 }
 
@@ -6471,14 +6476,6 @@ input::placeholder, textarea::placeholder {
   /* Попапы и модалки: hover при тапе */
   .service-popup-close.hover-tap-active {
     background: rgba(255, 255, 255, 0.1);
-    transform: scale(1.1);
-  }
-  .service-popup-video-play.hover-tap-active {
-    background: rgba(255,255,255,.25);
-    transform: scale(1.05);
-  }
-  .service-popup-video-fullscreen.hover-tap-active {
-    background: rgba(0,0,0,.8);
     transform: scale(1.1);
   }
   .service-popup-arrow.hover-tap-active {

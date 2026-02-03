@@ -577,6 +577,43 @@ const translations = {
   },
 };
 
+// Развёрнутые тексты для попапа услуг (по языкам и data-service-icon)
+const servicePopupLongText = {
+  ru: {
+    analysis: '<p>Мы начинаем продвижение с глубокого анализа, чтобы каждое действие опиралось на данные, а не на догадки.</p><p><strong>Что входит:</strong></p><ul><li>Анализ текущего позиционирования бренда и его восприятия аудиторией</li><li>Исследование рынка и конкурентной среды</li><li>Определение целевой аудитории, её потребностей, болей и мотивации</li><li>Анализ продуктовой линейки: сильные и слабые стороны, точки роста</li><li>Формирование ключевых УТП и коммуникационных сообщений</li></ul><p><strong>Результат:</strong></p><p>Чёткое понимание, <em>что, кому и как продавать</em>, а также основа для эффективной стратегии продвижения.</p>',
+    content: '<p>Контент — ключевой инструмент привлечения и удержания внимания в digital-среде.</p><p><strong>Что мы делаем:</strong></p><ul><li>Разработка концепции и сценариев под цели бренда</li><li>Фото- и видеосъёмка для социальных сетей, рекламы и сайта</li><li>Создание имиджевого, продуктового и lifestyle-контента</li><li>Адаптация контента под разные платформы (форматы, длительность, подача)</li></ul><p><strong>Результат:</strong></p><p>Визуально сильный контент, который формирует доверие, повышает вовлечённость и стимулирует продажи.</p>',
+    video: '<p>Для брендов, которым важно выделяться и выглядеть технологично и премиально.</p><p><strong>Что входит:</strong></p><ul><li>Профессиональная видеосъёмка с использованием студийного и выездного оборудования</li><li>Рекламные и презентационные видеоролики</li><li>Motion-дизайн и анимация</li><li>3D-визуализация продуктов, логотипов и сцен</li><li>Интеграция 3D-графики в видео и рекламные материалы</li></ul><p><strong>Результат:</strong></p><p>Эффектный визуал, который усиливает бренд и повышает конверсию рекламных кампаний.</p>',
+    strategy: '<p>Мы выстраиваем системный подход к росту бренда, а не разрозненные действия.</p><p><strong>Что мы делаем:</strong></p><ul><li>Определение целей и KPI продвижения</li><li>Подбор эффективных digital-каналов</li><li>Формирование контент- и рекламной стратегии</li><li>Планирование этапов роста и масштабирования</li><li>Контроль реализации и корректировка стратегии по данным аналитики</li></ul><p><strong>Результат:</strong></p><p>Понятный и измеримый путь развития бренда с прогнозируемым результатом.</p>',
+    social: '<p>Социальные сети — это диалог с аудиторией и постоянное присутствие бренда в её жизни.</p><p><strong>Что входит:</strong></p><ul><li>Разработка SMM-стратегии и контент-плана</li><li>Создание и публикация контента</li><li>Визуальное и текстовое оформление аккаунтов</li><li>Работа с комментариями и сообщениями</li><li>Анализ статистики и оптимизация контента</li></ul><p><strong>Результат:</strong></p><p>Активные аккаунты с живой аудиторией, рост узнаваемости и лояльности к бренду.</p>',
+    design: '<p>Дизайн — это не только эстетика, но и инструмент продаж.</p><p><strong>Что мы делаем:</strong></p><ul><li>Разработка фирменного стиля и айдентики</li><li>Дизайн рекламных материалов и креатива</li><li>UI/UX-дизайн сайтов и лендингов</li><li>Адаптивный дизайн под все устройства</li></ul><p><strong>Результат:</strong></p><p>Визуально целостный и удобный дизайн, усиливающий бренд и пользовательский опыт.</p>',
+    ads: '<p>Мы настраиваем рекламу так, чтобы она работала на результат, а не «сливала бюджет».</p><p><strong>Что входит:</strong></p><ul><li>Анализ и выбор рекламных каналов</li><li>Настройка таргетированной и контекстной рекламы</li><li>Создание рекламных креативов и текстов</li><li>A/B-тестирование и оптимизация</li><li>Постоянный контроль и аналитика эффективности</li></ul><p><strong>Результат:</strong></p><p>Стабильный поток целевых заявок и рост продаж при оптимальных затратах.</p>',
+    community: '<p>Работа с сообществами усиливает доверие и формирует лояльное окружение вокруг бренда.</p><p><strong>Что мы делаем:</strong></p><ul><li>Поиск и подбор релевантных сообществ</li><li>Нативное продвижение бренда</li><li>Работа с лидерами мнений и администраторами</li><li>Организация активности и вовлечения аудитории</li><li>Мониторинг репутации бренда</li></ul><p><strong>Результат:</strong></p><p>Органический рост узнаваемости и положительный имидж бренда.</p>',
+    web: '<p>Технологическая основа для масштабирования бизнеса.</p><p><strong>Что входит:</strong></p><ul><li>Разработка корпоративных сайтов и лендингов</li><li>Создание интернет-магазинов</li><li>Индивидуальные веб-сервисы и платформы</li><li>Интеграция с CRM, аналитикой и сторонними сервисами</li><li>Техническая поддержка и развитие проектов</li></ul><p><strong>Результат:</strong></p><p>Надёжные, быстрые и удобные digital-продукты, которые поддерживают рост бизнеса.</p>',
+  },
+  en: {
+    analysis: '<p>We start every project with in-depth research to ensure that all marketing decisions are data-driven and effective.</p><p><strong>What\'s included:</strong></p><ul><li>Analysis of brand positioning and audience perception</li><li>Market and competitor research</li><li>Identification of target audiences, their needs and pain points</li><li>Evaluation of the product line and growth opportunities</li><li>Development of clear value propositions and key messages</li></ul><p><strong>Result:</strong></p><p>A solid strategic foundation that defines <em>what to promote, to whom, and how</em>.</p>',
+    content: '<p>High-quality content is essential for capturing attention and building trust online.</p><p><strong>What we deliver:</strong></p><ul><li>Creative concepts and scripts aligned with brand goals</li><li>Photo and video production for social media, websites, and ads</li><li>Product, lifestyle, and brand storytelling content</li><li>Content adaptation for different platforms and formats</li></ul><p><strong>Result:</strong></p><p>Engaging visual content that increases brand recognition and drives conversions.</p>',
+    video: '<p>For brands that want to stand out with premium, high-impact visuals.</p><p><strong>What\'s included:</strong></p><ul><li>Professional studio and on-location video shoots</li><li>Commercial and promotional video production</li><li>Motion design and animation</li><li>3D product visualization and brand elements</li><li>Seamless integration of 3D graphics into video content</li></ul><p><strong>Result:</strong></p><p>Visually powerful assets that elevate brand perception and performance.</p>',
+    strategy: '<p>We build structured marketing systems, not isolated campaigns.</p><p><strong>What we do:</strong></p><ul><li>Goal setting and KPI definition</li><li>Selection of the most effective digital channels</li><li>Development of content and advertising strategies</li><li>Step-by-step growth and scaling plans</li><li>Ongoing performance monitoring and optimization</li></ul><p><strong>Result:</strong></p><p>A clear, measurable roadmap for sustainable brand growth.</p>',
+    social: '<p>Social media is where brands communicate, engage, and build long-term relationships.</p><p><strong>What\'s included:</strong></p><ul><li>SMM strategy and content planning</li><li>Content creation and publishing</li><li>Visual and textual brand consistency</li><li>Community management and audience interaction</li><li>Performance analysis and continuous improvement</li></ul><p><strong>Result:</strong></p><p>Active, growing social media profiles with engaged audiences.</p>',
+    design: '<p>Design is not just about aesthetics — it\'s a conversion tool.</p><p><strong>What we offer:</strong></p><ul><li>Brand identity and visual system design</li><li>Advertising creatives and digital assets</li><li>UI/UX design for websites and landing pages</li><li>Fully responsive design across all devices</li></ul><p><strong>Result:</strong></p><p>A cohesive visual identity that enhances user experience and brand value.</p>',
+    ads: '<p>We focus on efficiency, performance, and measurable results.</p><p><strong>What\'s included:</strong></p><ul><li>Channel and audience analysis</li><li>Setup of targeted and contextual advertising</li><li>Creative development and copywriting</li><li>A/B testing and ongoing optimization</li><li>Detailed analytics and performance tracking</li></ul><p><strong>Result:</strong></p><p>Consistent lead generation and sales growth with optimized budgets.</p>',
+    community: '<p>Community-driven promotion builds trust and organic brand authority.</p><p><strong>What we do:</strong></p><ul><li>Identification of relevant online communities</li><li>Native brand promotion and discussions</li><li>Collaboration with influencers and community leaders</li><li>Engagement campaigns and brand activity</li><li>Reputation monitoring and management</li></ul><p><strong>Result:</strong></p><p>Organic visibility and a strong, positive brand reputation.</p>',
+    web: '<p>We create scalable digital products that support business growth.</p><p><strong>What\'s included:</strong></p><ul><li>Corporate websites and landing pages</li><li>E-commerce solutions</li><li>Custom web platforms and services</li><li>CRM, analytics, and third-party integrations</li><li>Ongoing maintenance and development</li></ul><p><strong>Result:</strong></p><p>Reliable, fast, and user-friendly digital solutions built for growth.</p>',
+  },
+  et: {
+    analysis: '<p>Iga eduka turundusprojekti aluseks on põhjalik analüüs ja strateegiline lähenemine.</p><p><strong>Sisaldab:</strong></p><ul><li>Brändi positsioneerimise ja tajumise analüüsi</li><li>Turu ja konkurentide uuringut</li><li>Sihtrühmade, nende vajaduste ja probleemide määratlemist</li><li>Tooteportfelli analüüsi ja kasvuvõimaluste kaardistamist</li><li>Selgete väärtuspakkumiste ja sõnumite loomist</li></ul><p><strong>Tulemus:</strong></p><p>Selge arusaam, <em>mida, kellele ja kuidas turundada</em>.</p>',
+    content: '<p>Kvaliteetne visuaalne sisu on digitaalse turunduse keskmes.</p><p><strong>Mida pakume:</strong></p><ul><li>Loomingulised kontseptsioonid ja stsenaariumid</li><li>Foto- ja videoproduktsioon sotsiaalmeedia, veebide ja reklaamide jaoks</li><li>Toote-, elustiili- ja brändisisu</li><li>Sisu kohandamine erinevatele platvormidele</li></ul><p><strong>Tulemus:</strong></p><p>Kaasaegne ja kaasahaarav sisu, mis suurendab tuntust ja müüki.</p>',
+    video: '<p>Ideaalne lahendus brändidele, kes soovivad eristuda ja mõjuda premium-tasemel.</p><p><strong>Sisaldab:</strong></p><ul><li>Professionaalsed videoülesvõtted stuudios ja kohapeal</li><li>Reklaam- ja tutvustusvideod</li><li>Motion-disain ja animatsioon</li><li>3D-visualiseerimine toodetele ja brändielementidele</li><li>3D-graafika integreerimine videotesse</li></ul><p><strong>Tulemus:</strong></p><p>Visuaalselt tugevad lahendused, mis tõstavad brändi väärtust.</p>',
+    strategy: '<p>Loome läbimõeldud ja mõõdetavaid turundussüsteeme.</p><p><strong>Mida teeme:</strong></p><ul><li>Eesmärkide ja KPI-de määratlemine</li><li>Sobivate digikanalite valik</li><li>Sisu- ja reklaamistrateegiate loomine</li><li>Kasvu ja skaleerimise planeerimine</li><li>Tulemuste analüüs ja optimeerimine</li></ul><p><strong>Tulemus:</strong></p><p>Selge ja toimiv strateegia brändi pikaajaliseks kasvuks.</p>',
+    social: '<p>Sotsiaalmeedia on brändi ja kliendi vaheline dialoog.</p><p><strong>Sisaldab:</strong></p><ul><li>Sotsiaalmeedia strateegiat ja sisukava</li><li>Postituste loomist ja avaldamist</li><li>Visuaalse ja sõnalise ühtsuse tagamist</li><li>Suhtlust jälgijatega</li><li>Analüüsi ja pidevat parendamist</li></ul><p><strong>Tulemus:</strong></p><p>Aktiivsed ja kasvavad sotsiaalmeediakanalid.</p>',
+    design: '<p>Hea disain ühendab visuaali ja funktsionaalsuse.</p><p><strong>Pakume:</strong></p><ul><li>Brändi visuaalse identiteedi loomist</li><li>Reklaam- ja digidisaini lahendusi</li><li>UI/UX-disaini veebidele ja maandumislehtedele</li><li>Mobiili- ja kasutajasõbralikku disaini</li></ul><p><strong>Tulemus:</strong></p><p>Ühtne ja professionaalne visuaalne kuvand.</p>',
+    ads: '<p>Tulemustele suunatud reklaam, mitte lihtsalt nähtavus.</p><p><strong>Sisaldab:</strong></p><ul><li>Reklaamikanalite ja sihtrühmade analüüsi</li><li>Targalt seadistatud reklaamikampaaniaid</li><li>Reklaamitekstide ja visuaalide loomist</li><li>A/B-testimist ja optimeerimist</li><li>Detailset tulemusanalüüsi</li></ul><p><strong>Tulemus:</strong></p><p>Stabiilne päringute ja müügi kasv.</p>',
+    community: '<p>Kogukondlik turundus loob usaldust ja pikaajalist väärtust.</p><p><strong>Mida teeme:</strong></p><ul><li>Sobivate kogukondade leidmine</li><li>Loomulik ja usaldusväärne brändi esitlemine</li><li>Koostöö arvamusliidritega</li><li>Aktiivsuse ja kaasatuse suurendamine</li><li>Brändi maine jälgimine</li></ul><p><strong>Tulemus:</strong></p><p>Orgaaniline nähtavus ja tugev brändi maine.</p>',
+    web: '<p>Loome tehnilisi lahendusi, mis toetavad äri kasvu.</p><p><strong>Sisaldab:</strong></p><ul><li>Ettevõtte veebilehti ja maandumislehti</li><li>E-kaubanduse lahendusi</li><li>Kohandatud veebiplatvorme</li><li>CRM-i ja muude süsteemide integratsioone</li><li>Jätkuvat arendust ja tuge</li></ul><p><strong>Tulemus:</strong></p><p>Kiired, usaldusväärsed ja skaleeritavad digilahendused.</p>',
+  },
+};
+
 // Ищем значение по точечному пути в словаре переводов
 function resolveTranslation(dictionary, path) {
   return path
@@ -881,7 +918,10 @@ document.addEventListener("DOMContentLoaded", () => {
     return bodyScrollLockCount > 0;
   }
   doc.addEventListener("wheel", (e) => {
-    if (isScrollLocked()) e.preventDefault();
+    if (!isScrollLocked()) return;
+    // Разрешаем прокрутку колёсиком внутри попапа услуг
+    if (e.target.closest("#service-popup .service-popup-scroll")) return;
+    e.preventDefault();
   }, { passive: false });
 
   const headerNavLinks = Array.from(doc.querySelectorAll('.header-nav a[href^="#"]'));
@@ -2613,33 +2653,39 @@ document.addEventListener("DOMContentLoaded", () => {
   const servicePopup = doc.getElementById('service-popup');
   const servicePopupContainer = servicePopup?.querySelector('.service-popup-container');
   const servicePopupTitle = servicePopup?.querySelector('.service-popup-title');
-  const servicePopupText = servicePopup?.querySelector('.service-popup-text');
+  const servicePopupTextContent = servicePopup?.querySelector('.service-popup-text-content');
   const servicePopupIcon = servicePopup?.querySelector('.service-popup-icon');
   const servicePopupClose = servicePopup?.querySelector('.service-popup-close');
   const servicePopupOverlay = servicePopup?.querySelector('.service-popup-overlay');
   const servicePopupPrev = servicePopup?.querySelector('.service-popup-prev');
   const servicePopupNext = servicePopup?.querySelector('.service-popup-next');
-  const servicePopupVideoPlaceholder = servicePopup?.querySelector('.service-popup-video-placeholder');
-  const servicePopupVideoPlay = servicePopup?.querySelector('.service-popup-video-play');
-  const servicePopupVideoEl = servicePopup?.querySelector('.service-popup-video');
+  const servicePopupInlineVideoEl = servicePopup?.querySelector('.service-popup-inline-video-el');
+  const servicePopupInlineVideoPlaceholder = servicePopup?.querySelector('.service-popup-inline-video-placeholder');
   
   let currentServiceIndex = -1;
-  const SERVICE_POPUP_PLACEHOLDER_VIDEO = "assets/videos/Horizontal/LAMBO5.mp4";
+  let servicePopupPlyr = null;
+  let servicePopupVideoLoaded = false;
+  const SERVICE_POPUP_MAIN_VIDEO = "assets/videos/Horizontal/BSU3.mp4";
 
   function openServicePopup(card, index = -1) {
-    if (!servicePopup || !servicePopupContainer || !servicePopupTitle || !servicePopupText) return;
+    if (!servicePopup || !servicePopupContainer || !servicePopupTitle || !servicePopupTextContent) return;
     
     currentServiceIndex = index >= 0 ? index : cards.indexOf(card);
     
     const title = card.querySelector('h3')?.textContent || '';
     const text = card.querySelector('p')?.textContent || '';
     const serviceType = card.getAttribute('data-service-icon') || '';
+    const currentLang = document.documentElement.lang || DEFAULT_LANG;
+    const longHtml = servicePopupLongText[currentLang] && servicePopupLongText[currentLang][serviceType];
     
     servicePopupTitle.textContent = title;
-    servicePopupText.textContent = text;
+    if (longHtml) {
+      servicePopupTextContent.innerHTML = longHtml;
+    } else {
+      servicePopupTextContent.textContent = text;
+    }
     servicePopupContainer.setAttribute('data-service-type', serviceType);
     
-    // Копируем CSS переменные цвета услуги
     const computedStyle = getComputedStyle(card);
     const serviceColor = computedStyle.getPropertyValue('--service-color');
     const serviceBorderColor = computedStyle.getPropertyValue('--service-border-color');
@@ -2647,7 +2693,6 @@ document.addEventListener("DOMContentLoaded", () => {
     servicePopupContainer.style.setProperty('--service-color', serviceColor);
     servicePopupContainer.style.setProperty('--service-border-color', serviceBorderColor);
     
-    // Копируем иконку из карточки
     if (servicePopupIcon) {
       const cardIcon = getComputedStyle(card, '::after');
       const iconUrl = cardIcon.backgroundImage;
@@ -2658,24 +2703,110 @@ document.addEventListener("DOMContentLoaded", () => {
     
     if (!servicePopup.classList.contains('active')) lockBodyScroll();
     servicePopup.classList.add('active');
-    resetServicePopupVideo();
+    resetServicePopupInlineVideo();
+    showServicePopupPlaceholder();
   }
 
-  let servicePopupPlyr = null;
+  function showServicePopupPlaceholder() {
+    servicePopupVideoLoaded = false;
+    if (servicePopupInlineVideoPlaceholder) {
+      servicePopupInlineVideoPlaceholder.style.display = "flex";
+      servicePopupInlineVideoPlaceholder.removeAttribute("hidden");
+    }
+    if (servicePopupInlineVideoEl) {
+      servicePopupInlineVideoEl.style.display = "none";
+    }
+    const plyrWrap = servicePopup?.querySelector(".service-popup-inline-video .plyr");
+    if (plyrWrap) plyrWrap.style.display = "none";
+  }
 
-  function resetServicePopupVideo() {
-    if (!servicePopupVideoEl || !servicePopupVideoPlaceholder || !servicePopupVideoPlay) return;
+  function hideServicePopupPlaceholder() {
+    servicePopupVideoLoaded = true;
+    if (servicePopupInlineVideoPlaceholder) {
+      servicePopupInlineVideoPlaceholder.style.display = "none";
+      servicePopupInlineVideoPlaceholder.setAttribute("hidden", "");
+    }
+    if (servicePopupInlineVideoEl) {
+      servicePopupInlineVideoEl.style.display = "block";
+    }
+    const plyrWrap = servicePopup?.querySelector(".service-popup-inline-video .plyr");
+    if (plyrWrap) plyrWrap.style.display = "block";
+  }
+
+  function loadAndPlayServicePopupVideo() {
+    if (!servicePopupInlineVideoEl || servicePopupVideoLoaded) return;
+    videoLoadManager.pauseFeedLoading();
+    servicePopupInlineVideoEl.src = SERVICE_POPUP_MAIN_VIDEO;
+    servicePopupInlineVideoEl.preload = "auto";
+    servicePopupInlineVideoEl.load();
+    if (!servicePopupPlyr && typeof Plyr !== "undefined") {
+      initServicePopupPlyr();
+    }
+    function onReady() {
+      hideServicePopupPlaceholder();
+      if (servicePopupPlyr) {
+        servicePopupPlyr.play().catch(() => {});
+      } else {
+        servicePopupInlineVideoEl.play().catch(() => {});
+      }
+    }
+    if (servicePopupPlyr) {
+      servicePopupPlyr.once("ready", onReady);
+      if (servicePopupInlineVideoEl.readyState >= 2) onReady();
+    } else {
+      servicePopupInlineVideoEl.addEventListener("loadeddata", onReady, { once: true });
+      if (servicePopupInlineVideoEl.readyState >= 2) onReady();
+    }
+  }
+
+  function initServicePopupPlyr() {
+    if (!servicePopupInlineVideoEl || servicePopupPlyr) return;
+    if (typeof Plyr === "undefined") {
+      servicePopupInlineVideoEl.controls = true;
+      return;
+    }
+    try {
+      const controls = [
+        "play-large",
+        "play",
+        "progress",
+        "current-time",
+        "duration",
+        "mute",
+        "volume",
+        "settings",
+        "airplay",
+        "fullscreen"
+      ];
+      const isMobile = window.innerWidth <= 768;
+      servicePopupPlyr = new Plyr(servicePopupInlineVideoEl, {
+        controls,
+        settings: ["quality", "speed"],
+        speed: { selected: 1, options: [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2] },
+        keyboard: { focused: true, global: false },
+        clickToPlay: true,
+        hideControls: isMobile,
+        resetOnEnd: true,
+        ratio: null,
+        volume: isMobile ? 1 : 0.5
+      });
+    } catch (err) {
+      servicePopupInlineVideoEl.controls = true;
+    }
+  }
+
+  function resetServicePopupInlineVideo() {
     if (servicePopupPlyr) {
       try { servicePopupPlyr.destroy(); } catch (_) {}
       servicePopupPlyr = null;
     }
-    servicePopupVideoEl.pause();
-    servicePopupVideoEl.src = "";
-    servicePopupVideoEl.style.display = "none";
-    const plyrContainer = servicePopupVideoEl.closest && servicePopupVideoEl.closest(".plyr");
-    if (plyrContainer) plyrContainer.style.display = "none";
-    servicePopupVideoPlaceholder.style.display = "flex";
-    servicePopupVideoPlay.style.display = "flex";
+    if (!servicePopupInlineVideoEl) return;
+    servicePopupInlineVideoEl.pause();
+    servicePopupInlineVideoEl.removeAttribute('src');
+    servicePopupInlineVideoEl.preload = "none";
+    servicePopupInlineVideoEl.load();
+    servicePopupInlineVideoEl.controls = false;
+    videoLoadManager.resumeFeedVideos();
   }
 
   function closeServicePopup() {
@@ -2683,7 +2814,21 @@ document.addEventListener("DOMContentLoaded", () => {
     servicePopup.classList.remove('active');
     unlockBodyScroll();
     currentServiceIndex = -1;
-    resetServicePopupVideo();
+    resetServicePopupInlineVideo();
+    showServicePopupPlaceholder();
+  }
+
+  if (servicePopupInlineVideoPlaceholder) {
+    servicePopupInlineVideoPlaceholder.addEventListener("click", (e) => {
+      e.preventDefault();
+      loadAndPlayServicePopupVideo();
+    });
+    servicePopupInlineVideoPlaceholder.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        loadAndPlayServicePopupVideo();
+      }
+    });
   }
   
   function navigateServicePopup(direction) {
@@ -2726,23 +2871,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Клик по плейсхолдеру видео в попапе — открыть AdviralPlayer (модалку) с плейсхолдер-видео
-  function openAdviralPlayerWithPlaceholder() {
-    doc.dispatchEvent(new CustomEvent("open-video-modal", { detail: { src: SERVICE_POPUP_PLACEHOLDER_VIDEO } }));
-  }
-
-  if (servicePopupVideoPlaceholder) {
-    servicePopupVideoPlaceholder.addEventListener("click", (e) => {
-      e.preventDefault();
-      openAdviralPlayerWithPlaceholder();
-    });
-    servicePopupVideoPlaceholder.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        openAdviralPlayerWithPlaceholder();
-      }
-    });
-  }
+  // При смене языка обновляем контент попапа, если он открыт
+  doc.addEventListener('i18n-applied', () => {
+    if (servicePopup?.classList.contains('active') && currentServiceIndex >= 0 && cards[currentServiceIndex]) {
+      openServicePopup(cards[currentServiceIndex], currentServiceIndex);
+    }
+  });
 
   cards.forEach((card) => {
     card.addEventListener('click', () => {
