@@ -3295,11 +3295,11 @@ section { scroll-margin-top: 0; }
 /* Планшет: увеличиваем высоту блока лент и контейнера, чтобы секция «Наши работы» была видна целиком */
 @media (min-width: 769px) and (max-width: 1024px) {
   #works .container {
-    min-height: 520px;
+    min-height: 720px;
   }
   .feeds-vert-horis-wrapper {
-    min-height: 460px;
-    max-height: min(620px, 65vw);
+    min-height: 620px;
+    max-height: min(760px, 72vw);
     aspect-ratio: 580 / 1360;
   }
 }
@@ -3329,11 +3329,16 @@ section { scroll-margin-top: 0; }
   margin: 0 auto;
 }
 
-/* Мобильная версия: без даунскейла, ленты прокручиваются горизонтально, масштаб 50% */
+/* Мобильная версия: без даунскейла, ленты прокручиваются горизонтально, масштаб 50%.
+   Фикс обрезания низа секции «Наши работы» при ширине 545–768px:
+   — max-height: none у обёртки (раньше 65vh), чтобы низ не обрезался;
+   — margin-bottom: -8vw у FeedsVertHoris (раньше -30vw), чтобы следующий блок не перекрывал низ;
+   — увеличен padding-bottom у #works.section и min-height у обёртки. */
 @media (max-width: 768px) {
   .feeds-vert-horis-wrapper {
     aspect-ratio: auto;
-    max-height: 65vh; /* уменьшаем общую высоту блока лент на мобильной */
+    max-height: none; /* не ограничиваем высоту — низ секции не обрезается (545–768px) */
+    min-height: 420px;
     height: auto;
     container-type: normal;
     overflow-x: hidden;
@@ -3348,8 +3353,8 @@ section { scroll-margin-top: 0; }
     height: auto;
     transform: scale(0.7);
     transform-origin: top center;
-    /* убираем пустое пространство под масштабированным контентом (30% высоты при scale 0.7) */
-    margin-bottom: -30vw;
+    /* небольшой отрицательный margin, чтобы следующий блок не перекрывал низ секции */
+    margin-bottom: -8vw;
   }
   .FeedsVertHoris .ig-slider {
     max-width: 100%;
@@ -3369,9 +3374,9 @@ section { scroll-margin-top: 0; }
   .FeedsVertHoris .ig-strip .ig-item {
     scroll-snap-align: center;
   }
-  /* меньше нижний отступ секции работ на мобильных после сжатия лент */
+  /* отступ снизу секции, чтобы низ был виден и не перекрывался */
   #works.section {
-    padding-bottom: clamp(24px, 4vw, 40px);
+    padding-bottom: clamp(32px, 5vw, 56px);
   }
 }
 
