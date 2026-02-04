@@ -3687,7 +3687,6 @@ section[id] { scroll-margin-top: var(--header-h); }
   padding: 18px 32px 12px; /* Уменьшен нижний паддинг для меньшего расстояния между лентами */
   scroll-snap-type: none; /* отключено - стрелки просто прокручивают ленту */
   scroll-padding: 0 24px;
-  scrollbar-width: none; /* прячем стандартный скроллбар */
   max-width: 100%;
   margin: 0 auto;
   cursor: grab;
@@ -3696,6 +3695,9 @@ section[id] { scroll-margin-top: var(--header-h); }
   will-change: scroll-position;
 }
 .ig-strip::-webkit-scrollbar { display: none; }
+@supports (scrollbar-width: none) {
+  .ig-strip { scrollbar-width: none; }
+}
 
 /* При наведении верх/низ не обрезать; overflow-x: auto сохраняем для горизонтальной прокрутки */
 #works .ig-strip {
@@ -3706,7 +3708,6 @@ section[id] { scroll-margin-top: var(--header-h); }
 .ig-strip-scroll {
   overflow-x: auto;
   overflow-y: visible;
-  scrollbar-width: none;
   scroll-padding: 0 24px;
   max-width: 100%;
   margin: 0 auto;
@@ -3716,6 +3717,9 @@ section[id] { scroll-margin-top: var(--header-h); }
   will-change: scroll-position;
 }
 .ig-strip-scroll::-webkit-scrollbar { display: none; }
+@supports (scrollbar-width: none) {
+  .ig-strip-scroll { scrollbar-width: none; }
+}
 #works .ig-strip-scroll > .ig-strip {
   overflow: visible;
   overflow-x: visible;
@@ -4218,8 +4222,12 @@ section[id] { scroll-margin-top: var(--header-h); }
     height: calc(308px * 2 / 3 + 26px); /* высота секции при scale(2/3) + запас снизу, чтобы низ ленты (skew) не обрезался */
     overflow-x: auto;
     overflow-y: hidden;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  }
+  @supports (scrollbar-width: thin) {
+    #partners .clients-grid-scale-wrapper {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+    }
   }
   #partners .clients-grid-scale-wrapper::-webkit-scrollbar {
     height: 6px;
