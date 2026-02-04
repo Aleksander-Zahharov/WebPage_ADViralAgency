@@ -1278,9 +1278,28 @@ section { scroll-margin-top: 0; }
   text-align: right;
 }
 
-/* Секция Наши клиенты: без лишнего пространства снизу */
+/* Секция Наши клиенты: без лишнего пространства снизу; верхний отступ как у остальных секций */
 #partners .container {
   min-height: 0; /* не растягивать по flex/grid */
+}
+#partners.section {
+  padding-top: calc(var(--header-h) + 20px); /* как у .section по умолчанию */
+}
+
+/* Ноутбук 769–1024px: выровнять отступы между секциями (меньше пропасть после «Наши работы», больше после «Услуги») */
+@media (min-width: 769px) and (max-width: 1024px) {
+  #works.section {
+    padding-bottom: clamp(16px, 2.5vw, 28px);
+  }
+  #services.section {
+    padding-bottom: clamp(48px, 6vw, 72px);
+  }
+}
+/* Десктоп 1025px+: расстояние между Услуги и Клиенты как на планшете */
+@media (min-width: 1025px) {
+  #services.section {
+    padding-bottom: clamp(48px, 5vw, 64px);
+  }
 }
 
 /* Хедеры и параграфы карточек Услуги начинаются слева */
@@ -1668,6 +1687,13 @@ section { scroll-margin-top: 0; }
   min-height: 320px;
   height: min(420px, 52vh);
   align-items: stretch;
+}
+/* Ноутбук 769–1024px: меньше высота блока карточек — убрать лишнее пространство снизу */
+@media (min-width: 769px) and (max-width: 1024px) {
+  #services .cards {
+    height: min(340px, 44vh);
+    min-height: 280px;
+  }
 }
 /* Десктоп: отступы слева и справа у блока с карточками (чуть меньше — карточки шире) */
 @media (min-width: 901px) {
@@ -3281,26 +3307,26 @@ section { scroll-margin-top: 0; }
   overflow: visible;
 }
 
-/* Обёртка лент: фиксированный размер 1360×505, масштаб при сужении экрана */
+/* Обёртка лент: уменьшенная высота во всех версиях */
 .feeds-vert-horis-wrapper {
   width: 100%;
   aspect-ratio: 505 / 1360;
-  max-height: min(505px, 52vw);
+  max-height: min(280px, 38vw);
   position: relative;
   overflow: visible; /* стрелки и hover не обрезать */
   container-type: inline-size;
   margin-top: 24px;
 }
 
-/* Планшет: увеличиваем высоту блока лент и контейнера, чтобы секция «Наши работы» была видна целиком */
+/* Планшет: высота блока лент уменьшена */
 @media (min-width: 769px) and (max-width: 1024px) {
   #works .container {
-    min-height: 720px;
+    min-height: 400px;
   }
   .feeds-vert-horis-wrapper {
-    min-height: 620px;
-    max-height: min(760px, 72vw);
-    aspect-ratio: 580 / 1360;
+    min-height: 340px;
+    max-height: min(420px, 50vw);
+    aspect-ratio: 505 / 1360;
   }
 }
 .FeedsVertHoris {
@@ -3338,7 +3364,7 @@ section { scroll-margin-top: 0; }
   .feeds-vert-horis-wrapper {
     aspect-ratio: auto;
     max-height: none; /* не ограничиваем высоту — низ секции не обрезается (545–768px) */
-    min-height: 420px;
+    min-height: 200px;
     height: auto;
     container-type: normal;
     overflow-x: hidden;
@@ -3860,11 +3886,11 @@ section { scroll-margin-top: 0; }
 }
 /* Включение стрелок и режима ленты на десктопе при добавлении класса: #partners.clients-strip-mode .clients-arrow { visibility: visible; pointer-events: auto; } и при необходимости overflow-x: auto у обёртки. */
 
-/* Обёртка для масштабирования: занимает 100% ширины, высота по aspect-ratio 308/1360. max-height убирает лишнее пространство снизу на широких экранах */
+/* Обёртка для масштабирования: занимает 100% ширины, высота по aspect-ratio. max-height ограничивает высоту блока */
 .clients-grid-scale-wrapper {
   width: 100%;
   aspect-ratio: 308 / 1360;
-  max-height: 420px; /* ограничение высоты — убрать лишнее пространство снизу на широких экранах */
+  max-height: 260px; /* уменьшенная высота блока на десктопе/планшете */
   position: relative;
   overflow: visible;
   container-type: inline-size;
