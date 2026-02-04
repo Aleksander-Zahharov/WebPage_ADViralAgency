@@ -127,6 +127,10 @@
 [data-theme="light"] .menu-toggle__bar {
   background: #1d1d1f;
 }
+[data-theme="light"] .menu-open #menu-toggle {
+  border-color: rgba(251, 146, 60, 0.8);
+  box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.35);
+}
 [data-theme="light"] .lang-switcher__toggle {
   border-color: rgba(0,0,0,.14);
   color: #1d1d1f;
@@ -325,14 +329,18 @@
 
 @media (max-width: 820px) {
   [data-theme="light"] .header-nav {
-    background: rgba(255,255,255,.9);
     border-top-color: rgba(0,0,0,.08);
+  }
+  [data-theme="light"] .header-nav::before {
+    background: rgba(255,255,255,.9);
+    -webkit-backdrop-filter: blur(var(--blur));
+    backdrop-filter: blur(var(--blur));
   }
   [data-theme="light"] .header-nav a {
     color: #1d1d1f;
   }
   [data-theme="light"].menu-open body::before {
-    background: rgba(255, 255, 255, 0.4);
+    background: transparent;
   }
   [data-theme="light"] .services-dropdown-panel:not([hidden])::before {
     background: rgba(0, 0, 0, 0.5);
@@ -543,6 +551,20 @@
 }
 [data-theme="light"] .header-nav a[href="#contact"].btn-primary.hover-tap-active {
   background: linear-gradient(135deg, #c2410c, #fb923c);
+}
+/* Контакты в шапке: при наведении в светлой теме — оранжевое свечение (как фиолетовое в тёмной) */
+@media (hover: hover) {
+  [data-theme="light"] .header-nav a[href="#contact"].btn:hover,
+  [data-theme="light"] .header-nav a[href="#contact"].btn-primary:hover {
+    background: linear-gradient(135deg, #ea580c, #fb923c);
+    -webkit-background-clip: text;
+    background-clip: text;
+    border: none;
+  }
+}
+[data-theme="light"] .header-nav a[href="#contact"].btn:focus-visible,
+[data-theme="light"] .header-nav a[href="#contact"].btn-primary:focus-visible {
+  box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.25);
 }
 [data-theme="light"] .hero .btn-primary.hover-tap-active {
   background: linear-gradient(135deg, rgba(194, 65, 12, 0.5), rgba(251, 146, 60, 0.5));
@@ -878,11 +900,11 @@ p { color: var(--muted); margin: 0 0 12px; }
 }
 /* При открытом меню полоски не меняются */
 
-/* Подсветка кнопки бургера при открытом меню (фиолетовая, как у переключателя языка) */
+/* Подсветка кнопки бургера при открытом меню — оранжевые границы и свечение */
 .menu-open #menu-toggle {
-  border-color: rgba(176,134,249,.65);
+  border-color: rgba(251, 146, 60, 0.8);
   background: transparent; /* Фон остается прозрачным даже при открытом меню */
-  box-shadow: 0 0 0 3px rgba(138,88,255,.32); /* Только внешнее свечение */
+  box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.35);
 }
 
 /* Текстовый градиентный стиль для кнопки «Контакты» в шапке */
@@ -1057,14 +1079,12 @@ p { color: var(--muted); margin: 0 0 12px; }
     gap: 12px;
   }
 
-  /* Мобильное меню: тот же фон и блюр, что и у хедера (.site-header) */
+  /* Мобильное меню: блюр через ::before (отдельный слой), чтобы backdrop-filter работал */
   .header-nav {
     position: fixed;
     inset: var(--header-h) 0 auto 0;
     height: calc(100vh - var(--header-h));
-    background: rgba(10,10,11,.5);
-    -webkit-backdrop-filter: blur(var(--blur));
-    backdrop-filter: blur(var(--blur));
+    background: transparent;
     border-top: 1px solid rgba(255,255,255,.08);
     display: grid;
     grid-auto-rows: min-content;
@@ -1077,6 +1097,16 @@ p { color: var(--muted); margin: 0 0 12px; }
     opacity: 0;
     pointer-events: none;
     transition: transform .22s ease, opacity .22s ease;
+    overflow: hidden;
+  }
+  .header-nav::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: rgba(10,10,11,.5);
+    -webkit-backdrop-filter: blur(var(--blur));
+    backdrop-filter: blur(var(--blur));
   }
   .menu-open .header-nav {
     transform: translateY(0);
@@ -5535,15 +5565,15 @@ input::placeholder, textarea::placeholder {
   overflow: hidden;
 }
 
-/* Мобильная версия: блюр фона за развёрнутым меню (стандартный blur сайта) */
+/* Мобильная версия: затемнение и блюр только на панели меню, чтобы backdrop-filter размывал контент страницы */
 @media (max-width: 820px) {
   .menu-open body::before {
     content: "";
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.15);
-    -webkit-backdrop-filter: blur(var(--blur));
-    backdrop-filter: blur(var(--blur));
+    background: transparent;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
     z-index: 0;
     pointer-events: none;
   }
