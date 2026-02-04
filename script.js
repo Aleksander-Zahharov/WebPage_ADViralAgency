@@ -1226,11 +1226,7 @@ document.addEventListener("DOMContentLoaded", () => {
         applyTheme(stored);
         return;
       }
-      if (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) {
-        applyTheme("light");
-      } else {
-        applyTheme("dark");
-      }
+      applyTheme("dark");
     }
 
     initTheme();
