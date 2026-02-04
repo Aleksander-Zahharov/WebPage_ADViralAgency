@@ -717,8 +717,8 @@ p { color: var(--muted); margin: 0 0 12px; }
 /* Кнопки */
 /* === Сброс стилей кнопок, убираем артефакт слева === */
 .btn {
-  appearance: none;
   -webkit-appearance: none;
+  appearance: none;
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -924,8 +924,8 @@ p { color: var(--muted); margin: 0 0 12px; }
 }
 
 .lang-switcher__toggle {
-  appearance: none;
   -webkit-appearance: none;
+  appearance: none;
   height: 44px;
   padding: 0 44px 0 16px;
   border-radius: 20px;
@@ -1066,8 +1066,8 @@ p { color: var(--muted); margin: 0 0 12px; }
     inset: var(--header-h) 0 auto 0;
     height: calc(100vh - var(--header-h));
     background: rgba(10,10,11,.5);
-    backdrop-filter: blur(var(--blur));
     -webkit-backdrop-filter: blur(var(--blur));
+    backdrop-filter: blur(var(--blur));
     border-top: 1px solid rgba(255,255,255,.08);
     display: grid;
     grid-auto-rows: min-content;
@@ -1336,10 +1336,17 @@ section[id] { scroll-margin-top: var(--header-h); }
     padding-bottom: clamp(48px, 6vw, 72px);
   }
 }
-/* Десктоп 1025px+: расстояние между Услуги и Клиенты как на планшете */
+/* Десктоп 1025px+: приличное расстояние между «Наши работы» и «Услуги» (паддинг сверху у Услуг), расстояние между Услуги и Клиенты как на планшете */
 @media (min-width: 1025px) {
   #services.section {
+    padding-top: calc(var(--header-h) + clamp(80px, 10vw, 160px));
     padding-bottom: clamp(48px, 5vw, 64px);
+  }
+}
+/* 4K 2560px+: ещё больше расстояние между «Наши работы» и «Услуги» */
+@media (min-width: 2560px) {
+  #services.section {
+    padding-top: calc(var(--header-h) + clamp(160px, 12vw, 240px));
   }
 }
 
@@ -1424,14 +1431,14 @@ section[id] { scroll-margin-top: var(--header-h); }
   width: min(280px, 55%);
   height: min(280px, 55%);
   background-color: #3d3d3d; /* тёмно-серый */
-  mask-image: url("./assets/images/icons/Icon_Filming.webp");
-  mask-size: contain;
-  mask-position: center;
-  mask-repeat: no-repeat;
   -webkit-mask-image: url("./assets/images/icons/Icon_Filming.webp");
   -webkit-mask-size: contain;
   -webkit-mask-position: center;
   -webkit-mask-repeat: no-repeat;
+  mask-image: url("./assets/images/icons/Icon_Filming.webp");
+  mask-size: contain;
+  mask-position: center;
+  mask-repeat: no-repeat;
   pointer-events: none;
   z-index: 0;
   opacity: 0.25;
@@ -1517,7 +1524,7 @@ section[id] { scroll-margin-top: var(--header-h); }
     max-width: 100%; /* Убираем ограничение на мобильных */
     min-width: 0; /* Убираем минимальную ширину */
     height: auto; /* Автоматическая высота */
-    min-height: auto; /* Убираем минимальную высоту */
+    min-height: 0; /* Убираем минимальную высоту для flex */
     flex-shrink: 1; /* Разрешаем сжатие на мобильных */
     padding: 0 var(--gap); /* Боковые отступы для текста */
   }
@@ -2383,8 +2390,8 @@ section[id] { scroll-margin-top: var(--header-h); }
   position: absolute;
   inset: 0;
   background: var(--service-color, rgba(138, 88, 255, 0.5)); /* цвет круговой подсветки - используем цвет услуги */
-  mask: radial-gradient(25rem 25rem at var(--x) var(--y), #000 1%, transparent 50%);
   -webkit-mask: radial-gradient(25rem 25rem at var(--x) var(--y), #000 1%, transparent 50%);
+  mask: radial-gradient(25rem 25rem at var(--x) var(--y), #000 1%, transparent 50%);
   opacity: var(--opacity, 0);
   pointer-events: none;
   transition: opacity 0.25s ease-in-out; /* синхронно с border-glow — 250ms */
@@ -2601,8 +2608,8 @@ section[id] { scroll-margin-top: var(--header-h); }
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(var(--blur));
   -webkit-backdrop-filter: blur(var(--blur));
+  backdrop-filter: blur(var(--blur));
   cursor: pointer;
 }
 .author-popup-wrapper {
@@ -2703,8 +2710,8 @@ section[id] { scroll-margin-top: var(--header-h); }
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(var(--blur));
   -webkit-backdrop-filter: blur(var(--blur));
+  backdrop-filter: blur(var(--blur));
 }
 
 .service-popup-wrapper {
@@ -3434,7 +3441,6 @@ section[id] { scroll-margin-top: var(--header-h); }
     max-width: 100%;
     margin: 0;
     overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
     scroll-snap-type: x proximity;
     scroll-padding-inline: var(--gap);
   }
@@ -3681,7 +3687,6 @@ section[id] { scroll-margin-top: var(--header-h); }
   padding: 18px 32px 12px; /* Уменьшен нижний паддинг для меньшего расстояния между лентами */
   scroll-snap-type: none; /* отключено - стрелки просто прокручивают ленту */
   scroll-padding: 0 24px;
-  -webkit-overflow-scrolling: touch; /* плавный скролл на тач-устройствах */
   scrollbar-width: none; /* прячем стандартный скроллбар */
   max-width: 100%;
   margin: 0 auto;
@@ -3701,7 +3706,6 @@ section[id] { scroll-margin-top: var(--header-h); }
 .ig-strip-scroll {
   overflow-x: auto;
   overflow-y: visible;
-  -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   scroll-padding: 0 24px;
   max-width: 100%;
@@ -4214,7 +4218,6 @@ section[id] { scroll-margin-top: var(--header-h); }
     height: calc(308px * 2 / 3 + 26px); /* высота секции при scale(2/3) + запас снизу, чтобы низ ленты (skew) не обрезался */
     overflow-x: auto;
     overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
   }
@@ -4411,8 +4414,8 @@ section[id] { scroll-margin-top: var(--header-h); }
   position: absolute;
   inset: 0;
   background: rgba(255, 255, 255, 0.5);
-  mask: radial-gradient(25rem 25rem at var(--x, 50%) var(--y, 50%), #000 1%, transparent 50%);
   -webkit-mask: radial-gradient(25rem 25rem at var(--x, 50%) var(--y, 50%), #000 1%, transparent 50%);
+  mask: radial-gradient(25rem 25rem at var(--x, 50%) var(--y, 50%), #000 1%, transparent 50%);
   opacity: var(--opacity, 0);
   pointer-events: none;
   transition: opacity 0.3s ease;
@@ -4510,8 +4513,8 @@ section[id] { scroll-margin-top: var(--header-h); }
   border: 1px solid rgba(255,255,255,.1);
   border-radius: 20px;
   background: rgba(28, 28, 32, 0.45);
-  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   box-shadow: none;
   padding: 10px;
 }
@@ -4549,7 +4552,6 @@ section#contact .services-dropdown-panel {
     min-height: 0;
     overflow-y: auto;
     overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
   }
 }
 
@@ -4797,7 +4799,6 @@ section#contact .services-dropdown-selected .service-tag-icon:hover img {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    -webkit-overflow-scrolling: touch;
   }
   .services-dropdown-options-scroll {
     flex: 1;
@@ -5055,8 +5056,8 @@ input::placeholder, textarea::placeholder {
   position: absolute;
   inset: 0;
   background: rgba(255, 255, 255, 0.5); /* белое пятно подсветки */
-  mask: radial-gradient(25rem 25rem at var(--x, 50%) var(--y, 50%), #000 1%, transparent 50%);
   -webkit-mask: radial-gradient(25rem 25rem at var(--x, 50%) var(--y, 50%), #000 1%, transparent 50%);
+  mask: radial-gradient(25rem 25rem at var(--x, 50%) var(--y, 50%), #000 1%, transparent 50%);
   opacity: var(--opacity, 0);
   pointer-events: none;
   transition: opacity 0.3s ease;
@@ -5527,8 +5528,8 @@ input::placeholder, textarea::placeholder {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.15);
-    backdrop-filter: blur(var(--blur));
     -webkit-backdrop-filter: blur(var(--blur));
+    backdrop-filter: blur(var(--blur));
     z-index: 0;
     pointer-events: none;
   }
@@ -5643,8 +5644,8 @@ input::placeholder, textarea::placeholder {
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(var(--blur));
   -webkit-backdrop-filter: blur(var(--blur));
+  backdrop-filter: blur(var(--blur));
 }
 
 .video-modal-container {
@@ -5824,8 +5825,8 @@ input::placeholder, textarea::placeholder {
 /* Фон меню настроек */
 .video-modal-content .plyr__menu__container {
   background: rgba(20, 20, 22, 0.95) !important;
-  backdrop-filter: blur(var(--blur)) !important;
   -webkit-backdrop-filter: blur(var(--blur)) !important;
+  backdrop-filter: blur(var(--blur)) !important;
   color: #fff !important;
   border-radius: 20px !important;
   border: 1px solid rgba(255, 255, 255, 0.1);
