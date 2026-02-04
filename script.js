@@ -1972,7 +1972,7 @@ document.addEventListener("DOMContentLoaded", () => {
           },
           autoplay: false,
           clickToPlay: true,
-          hideControls: isMobile,
+          hideControls: false,
           resetOnEnd: true,
           ratio: null,
           volume: isMobile ? 1 : 0.5
@@ -1993,17 +1993,83 @@ document.addEventListener("DOMContentLoaded", () => {
           });
         }
 
-        // Клик по области плеера в любом месте — пауза, повторный клик — воспроизведение
+        // Плей/стоп по нажатию на экран (область видео): срабатывает при клике и тапе, в capture чтобы не перехватывал Plyr
         const modalContent = modalPlayer.closest(".video-modal-content");
         if (modalContent && !modalContent.hasAttribute("data-adviral-click-bound")) {
           modalContent.setAttribute("data-adviral-click-bound", "1");
-          modalContent.addEventListener("click", (e) => {
-            if (e.target.closest(".plyr__controls") || e.target.closest(".video-modal-close") || e.target.closest(".modal-arrow")) return;
-            e.preventDefault();
-            e.stopPropagation();
+          let lastTapTime = 0;
+          const TAP_DEBOUNCE_MS = 350;
+          function isVideoAreaClick(target) {
+            if (!target || !modalContent.contains(target)) return false;
+            if (target.closest(".plyr__controls") || target.closest(".video-modal-close") || target.closest(".modal-arrow") || target.closest('[data-plyr="fullscreen"]')) return false;
+            return true;
+          }
+          function handlePlayPauseTap(e) {
+            if (!isVideoAreaClick(e.target)) return;
+            if (player) {
+              player.togglePlay();
+              e.preventDefault();
+              e.stopPropagation();
+            }
+          }
+          modalContent.addEventListener("touchend", (e) => {
+            if (!isVideoAreaClick(e.target)) return;
+            const now = Date.now();
+            if (now - lastTapTime < TAP_DEBOUNCE_MS) return;
+            lastTapTime = now;
             if (player) player.togglePlay();
+            e.preventDefault();
+          }, { capture: true, passive: false });
+          modalContent.addEventListener("click", (e) => {
+            if (!isVideoAreaClick(e.target)) return;
+            if (Date.now() - lastTapTime < TAP_DEBOUNCE_MS) {
+              e.preventDefault();
+              e.stopPropagation();
+              return;
+            }
+            handlePlayPauseTap(e);
+          }, { capture: true });
+        }
+
+        // Мобильная версия: кнопка «на весь экран» — прямой вызов webkitEnterFullscreen по жесту пользователя (иначе на iOS не срабатывает)
+        if (isMobile && modalContent) {
+          modalContent.addEventListener("click", (e) => {
+            if (!e.target.closest('[data-plyr="fullscreen"]')) return;
+            if (typeof modalPlayer.webkitEnterFullscreen === "function") {
+              e.preventDefault();
+              e.stopPropagation();
+              try {
+                modalPlayer.webkitEnterFullscreen();
+              } catch (err) {
+                if (player && player.fullscreen) player.fullscreen.enter();
+              }
+            }
+          }, true);
+          modalPlayer.addEventListener("webkitendfullscreen", () => {
+            if (player && player.fullscreen && player.fullscreen.active) player.fullscreen.exit();
           });
         }
+
+        // Панель плеера: показывается при любом взаимодействии, уезжает вниз через 3 с без взаимодействия
+        function setupAdviralControlsIdle(container) {
+          if (!container || container.hasAttribute("data-adviral-idle-bound")) return;
+          container.setAttribute("data-adviral-idle-bound", "1");
+          let idleTimeout = null;
+          const IDLE_MS = 3000;
+          function scheduleHide() {
+            clearTimeout(idleTimeout);
+            idleTimeout = setTimeout(() => container.classList.add("adviral-controls-idle"), IDLE_MS);
+          }
+          function showControls() {
+            container.classList.remove("adviral-controls-idle");
+            scheduleHide();
+          }
+          ["pointermove", "pointerdown", "touchstart", "click", "keydown"].forEach((ev) => {
+            container.addEventListener(ev, showControls, { passive: true });
+          });
+          container._adviralShowControls = showControls;
+        }
+        if (modalContent) setupAdviralControlsIdle(modalContent);
         
         // Проверяем, что Plyr правильно инициализировался
         player.on("ready", () => {
@@ -2148,6 +2214,7 @@ document.addEventListener("DOMContentLoaded", () => {
       
       if (modal.hidden) lockBodyScroll();
       modal.hidden = false;
+      modalPlayer.closest(".video-modal-content")?._adviralShowControls?.();
       
       // Воспроизводим после загрузки
       if (player) {
@@ -2787,6 +2854,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       function onReady() {
         hideServicePopupPlaceholder();
+        videoEl.closest(".AdviralPlayer")?._adviralShowControls?.();
         if (servicePopupPlyr) {
           servicePopupPlyr.play().catch(() => {});
         } else {
@@ -2832,7 +2900,7 @@ document.addEventListener("DOMContentLoaded", () => {
         speed: { selected: 1, options: [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2] },
         keyboard: { focused: true, global: false },
         clickToPlay: true,
-        hideControls: isMobile,
+        hideControls: false,
         resetOnEnd: true,
         ratio: null,
         volume: isMobile ? 1 : 0.5
@@ -2844,16 +2912,68 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         });
       }
-      // Клик по области плеера в любом месте — пауза / воспроизведение
       const popupPlayerWrap = el.closest(".AdviralPlayer");
-      if (popupPlayerWrap && !popupPlayerWrap.hasAttribute("data-adviral-click-bound")) {
-        popupPlayerWrap.setAttribute("data-adviral-click-bound", "1");
-        popupPlayerWrap.addEventListener("click", (e) => {
-          if (e.target.closest(".plyr__controls") || e.target.closest(".service-popup-close") || e.target.closest(".service-popup-arrow")) return;
-          e.preventDefault();
-          e.stopPropagation();
-          if (servicePopupPlyr) servicePopupPlyr.togglePlay();
-        });
+      if (popupPlayerWrap) {
+        if (isMobile) {
+          popupPlayerWrap.addEventListener("click", (e) => {
+            if (!e.target.closest('[data-plyr="fullscreen"]')) return;
+            if (typeof el.webkitEnterFullscreen === "function") {
+              e.preventDefault();
+              e.stopPropagation();
+              try {
+                el.webkitEnterFullscreen();
+              } catch (err) {
+                if (servicePopupPlyr && servicePopupPlyr.fullscreen) servicePopupPlyr.fullscreen.enter();
+              }
+            }
+          }, true);
+        }
+        if (!popupPlayerWrap.hasAttribute("data-adviral-idle-bound")) {
+          popupPlayerWrap.setAttribute("data-adviral-idle-bound", "1");
+          let idleTimeout = null;
+          const IDLE_MS = 3000;
+          function scheduleHide() {
+            clearTimeout(idleTimeout);
+            idleTimeout = setTimeout(() => popupPlayerWrap.classList.add("adviral-controls-idle"), IDLE_MS);
+          }
+          function showControls() {
+            popupPlayerWrap.classList.remove("adviral-controls-idle");
+            scheduleHide();
+          }
+          ["pointermove", "pointerdown", "touchstart", "click", "keydown"].forEach((ev) => {
+            popupPlayerWrap.addEventListener(ev, showControls, { passive: true });
+          });
+          popupPlayerWrap._adviralShowControls = showControls;
+        }
+        if (!popupPlayerWrap.hasAttribute("data-adviral-click-bound")) {
+          popupPlayerWrap.setAttribute("data-adviral-click-bound", "1");
+          let popupLastTapTime = 0;
+          const POPUP_TAP_DEBOUNCE_MS = 350;
+          function isPopupVideoAreaClick(target) {
+            if (!target || !popupPlayerWrap.contains(target)) return false;
+            if (target.closest(".plyr__controls") || target.closest(".service-popup-close") || target.closest(".service-popup-arrow") || target.closest('[data-plyr="fullscreen"]')) return false;
+            return true;
+          }
+          popupPlayerWrap.addEventListener("touchend", (e) => {
+            if (!isPopupVideoAreaClick(e.target)) return;
+            const now = Date.now();
+            if (now - popupLastTapTime < POPUP_TAP_DEBOUNCE_MS) return;
+            popupLastTapTime = now;
+            if (servicePopupPlyr) servicePopupPlyr.togglePlay();
+            e.preventDefault();
+          }, { capture: true, passive: false });
+          popupPlayerWrap.addEventListener("click", (e) => {
+            if (!isPopupVideoAreaClick(e.target)) return;
+            if (Date.now() - popupLastTapTime < POPUP_TAP_DEBOUNCE_MS) {
+              e.preventDefault();
+              e.stopPropagation();
+              return;
+            }
+            e.preventDefault();
+            e.stopPropagation();
+            if (servicePopupPlyr) servicePopupPlyr.togglePlay();
+          }, { capture: true });
+        }
       }
     } catch (err) {
       el.controls = true;

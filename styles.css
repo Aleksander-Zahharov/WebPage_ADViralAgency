@@ -5903,7 +5903,8 @@ input::placeholder, textarea::placeholder {
 }
 
 /* Панель управления: высота только от верхней границы прогресс-бара (seek) до низа — тайм над панелью */
-.video-modal-content .plyr__controls {
+.video-modal-content .plyr__controls,
+.AdviralPlayer .plyr__controls {
   position: absolute !important;
   bottom: 0 !important;
   left: 0 !important;
@@ -5923,6 +5924,15 @@ input::placeholder, textarea::placeholder {
   padding: 0 !important;
   padding-top: 0 !important;
   box-sizing: border-box !important;
+  transition: transform 0.25s ease, opacity 0.25s ease !important;
+}
+
+/* ADViralPlayer: панель уезжает вниз после 3 с без взаимодействия (класс выставляется из JS) */
+.video-modal-content.adviral-controls-idle .plyr__controls,
+.AdviralPlayer.adviral-controls-idle .plyr__controls {
+  transform: translateY(100%) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 /* Общий блок для текущего времени и длительности (обёртка из JS) */
