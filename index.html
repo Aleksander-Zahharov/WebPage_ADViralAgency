@@ -445,7 +445,6 @@
         </div>
           </div>
         </div>
-      </div>
     </section>
 
   <!-- Секция 3: Что мы предоставляем -->
@@ -601,18 +600,18 @@
                   <span data-i18n="contact.form.submit">Send request</span>
                 </button>
               </form>
-              <div class="services-dropdown-panel" id="interested-services-list" role="listbox" aria-multiselectable="true" aria-labelledby="interested-services-label" hidden>
+              <div class="services-dropdown-panel" id="interested-services-list" hidden>
                 <h2 class="services-dropdown-popup-title" data-i18n="contact.form.interestedServicesPlaceholder">Выберите услуги</h2>
-                <div class="services-dropdown-options-scroll">
+                <div class="services-dropdown-options-scroll" role="listbox" aria-multiselectable="true" aria-labelledby="interested-services-label">
                   <div class="services-dropdown-option" role="option" data-value="analysis" tabindex="0"><img src="assets/images/icons/Icon_Analysis.webp" alt="" width="24" height="24" loading="lazy" /><span data-i18n="services.cards.analysis.title">Brand, market, and product line analysis</span></div>
-                  <div class="services-dropdown-option" role="option" data-value="content" tabindex="0"><img src="assets/images/icons/Icon_Content.webp" alt="" width="24" height="24" loading="lazy" /><span data-i18n="services.cards.contentCreation.title">Video and photo content creation</span></div>
-                  <div class="services-dropdown-option" role="option" data-value="video" tabindex="0"><img src="assets/images/icons/Icon_clapper.webp" alt="" width="24" height="24" loading="lazy" /><span data-i18n="services.cards.videoProduction.title">Professional video production & 3D graphics</span></div>
-                  <div class="services-dropdown-option" role="option" data-value="strategy" tabindex="0"><img src="assets/images/icons/Icon_Target.webp" alt="" width="24" height="24" loading="lazy" /><span data-i18n="services.cards.strategy.title">Development and execution of promotion strategies</span></div>
-                  <div class="services-dropdown-option" role="option" data-value="social" tabindex="0"><img src="assets/images/icons/Icon_SocialNetworks.webp" alt="" width="24" height="24" loading="lazy" /><span data-i18n="services.cards.socialManagement.title">Social media management and growth</span></div>
-                  <div class="services-dropdown-option" role="option" data-value="design" tabindex="0"><img src="assets/images/icons/Icon_Design.webp" alt="" width="24" height="24" loading="lazy" /><span data-i18n="services.cards.design.title">Graphic & web design</span></div>
-                  <div class="services-dropdown-option" role="option" data-value="ads" tabindex="0"><img src="assets/images/icons/Icon_Target.webp" alt="" width="24" height="24" loading="lazy" /><span data-i18n="services.cards.adCampaigns.title">Launch and optimization of advertising campaigns</span></div>
-                  <div class="services-dropdown-option" role="option" data-value="community" tabindex="0"><img src="assets/images/icons/Icon_ComunityDev.webp" alt="" width="24" height="24" loading="lazy" /><span data-i18n="services.cards.communityEngagement.title">Community engagement and promotion</span></div>
-                  <div class="services-dropdown-option" role="option" data-value="web" tabindex="0"><img src="assets/images/icons/Icon_SoftwareDev.webp" alt="" width="24" height="24" loading="lazy" /><span data-i18n="services.cards.webDevelopment.title">Website and software development from scratch</span></div>
+                  <div class="services-dropdown-option" role="option" data-value="content" tabindex="-1"><img src="assets/images/icons/Icon_Content.webp" alt="" width="24" height="24" loading="lazy" /><span data-i18n="services.cards.contentCreation.title">Video and photo content creation</span></div>
+                  <div class="services-dropdown-option" role="option" data-value="video" tabindex="-1"><img src="assets/images/icons/Icon_clapper.webp" alt="" width="24" height="24" loading="lazy" /><span data-i18n="services.cards.videoProduction.title">Professional video production & 3D graphics</span></div>
+                  <div class="services-dropdown-option" role="option" data-value="strategy" tabindex="-1"><img src="assets/images/icons/Icon_Target.webp" alt="" width="24" height="24" loading="lazy" /><span data-i18n="services.cards.strategy.title">Development and execution of promotion strategies</span></div>
+                  <div class="services-dropdown-option" role="option" data-value="social" tabindex="-1"><img src="assets/images/icons/Icon_SocialNetworks.webp" alt="" width="24" height="24" loading="lazy" /><span data-i18n="services.cards.socialManagement.title">Social media management and growth</span></div>
+                  <div class="services-dropdown-option" role="option" data-value="design" tabindex="-1"><img src="assets/images/icons/Icon_Design.webp" alt="" width="24" height="24" loading="lazy" /><span data-i18n="services.cards.design.title">Graphic & web design</span></div>
+                  <div class="services-dropdown-option" role="option" data-value="ads" tabindex="-1"><img src="assets/images/icons/Icon_Target.webp" alt="" width="24" height="24" loading="lazy" /><span data-i18n="services.cards.adCampaigns.title">Launch and optimization of advertising campaigns</span></div>
+                  <div class="services-dropdown-option" role="option" data-value="community" tabindex="-1"><img src="assets/images/icons/Icon_ComunityDev.webp" alt="" width="24" height="24" loading="lazy" /><span data-i18n="services.cards.communityEngagement.title">Community engagement and promotion</span></div>
+                  <div class="services-dropdown-option" role="option" data-value="web" tabindex="-1"><img src="assets/images/icons/Icon_SoftwareDev.webp" alt="" width="24" height="24" loading="lazy" /><span data-i18n="services.cards.webDevelopment.title">Website and software development from scratch</span></div>
                 </div>
                 <div class="services-dropdown-popup-footer">
                   <button type="button" class="btn btn-primary full" id="interested-services-save-btn" data-i18n="contact.form.saveServicesSelection">Сохранить выбор</button>
@@ -647,6 +646,7 @@
 
   <!-- Модальное окно для видеоплеера -->
   <div id="video-modal" class="video-modal" role="dialog" aria-modal="true" aria-labelledby="video-modal-title" hidden>
+    <h2 id="video-modal-title" class="visually-hidden" data-i18n="videoModal.title">Video player</h2>
     <div class="video-modal-overlay"></div>
     <div class="video-modal-container">
       <button class="video-modal-close" aria-label="Close video player" type="button">×</button>
@@ -666,7 +666,7 @@
     <div class="service-popup-overlay"></div>
     <div class="service-popup-wrapper">
       <div class="service-popup-inner">
-      <button class="service-popup-close" aria-label="Close">×</button>
+      <button class="service-popup-close" aria-label="Close service popup" type="button">×</button>
       <div class="service-popup-container">
         <div class="service-popup-scroll">
           <div class="service-popup-body">
@@ -702,7 +702,7 @@
     <div class="author-popup-overlay"></div>
     <div class="author-popup-wrapper">
       <div class="author-popup-container">
-        <button type="button" class="author-popup-close" aria-label="Close">×</button>
+        <button type="button" class="author-popup-close" aria-label="Close dialog">×</button>
         <p id="author-popup-title" class="author-popup-text" data-i18n="footer.authorCredits"></p>
       </div>
     </div>
@@ -714,7 +714,7 @@
       <span class="theme-toggle-icon theme-toggle-icon--sun" aria-hidden="true"></span>
       <span class="theme-toggle-icon theme-toggle-icon--moon" aria-hidden="true"></span>
     </button>
-    <a href="#" class="scroll-to-top" id="scroll-to-top" aria-label="Back to top" title=""><span aria-hidden="true">›</span></a>
+    <a href="#" class="scroll-to-top" id="scroll-to-top" aria-label="Back to top" title="Back to top"><span aria-hidden="true">›</span></a>
   </div>
 
     <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>

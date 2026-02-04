@@ -225,7 +225,7 @@ const translations = {
     footer: {
       copy: "© 2026 ADViral Agency",
       authorLabel: "Made by",
-      authorCredits: "Сделано самым классным, красивым, замечательным, умным, креативным, находчивым, бесстрашным, талантливым, легендарным, харизматичным, проницательным, великолепным, блестящим, виртуозным, амбициозным, прогрессивным, неповторимым, атлетичным, эрудированным, дальновидным, безупречным, искрометным, галантным, целеустремленным, вдохновляющим, энергичным, оригинальным, выдающимся, эффектным, мудрым, надежным, решительным, многогранным, тактичным, искусным, благородным, уникальным, феноменальным, эстетичным, неутомимым, аттрактивным, авторитетным, непревзойденным, изобретательным, хайповым, незаменимым, жизнерадостным, глубоким, статным и скромным человеком — Александром Захаровым 🕶️",
+      authorCredits: "Сделано самым классным, красивым, замечательным, умным, креативным, находчивым, бесстрашным, талантливым, легендарным, харизматичным, проницательным, великолепным, блестящим, виртуозным, амбициозным, прогрессивным, неповторимым, атлетичным, эрудированным, дальновидным, безупречным, искрометным, галантным, целеустремленным, вдохновляющим, энергичным, оригинальным, выдающимся, эффектным, мудрым, надежным, решительным, многогранным, тактичным, искусным, благородным, уникальным, феноменальным, эстетичным, неутомимым, аттрактивным, авторитетным, непревзойденным, изобретательным, хайповым, незаменимым, жизнерадостным, глубоким, статным и скромным человеком — Александром Захаровым 😎",
       authorCreditsAria: "О создателе",
       email: "info@adviral.agency",
       social: {
@@ -233,6 +233,9 @@ const translations = {
         facebook: "",
         tiktok: "",
       },
+    },
+    videoModal: {
+      title: "Видеоплеер",
     },
     email: {
       copied: "Сообщение скопировано!",
@@ -392,7 +395,7 @@ const translations = {
     footer: {
       copy: "© 2026 ADViral Agency",
       authorLabel: "Made by",
-      authorCredits: "Made by the coolest, most beautiful, wonderful, smart, creative, resourceful, fearless, talented, legendary, charismatic, insightful, magnificent, brilliant, virtuoso, ambitious, progressive, one-of-a-kind, athletic, erudite, visionary, impeccable, sparkling, gallant, determined, inspiring, energetic, original, outstanding, striking, wise, reliable, decisive, multifaceted, tactful, skillful, noble, unique, phenomenal, aesthetic, tireless, attractive, authoritative, unsurpassed, inventive, hype, irreplaceable, cheerful, profound, stately and modest person — Alexander Zahharov 🕶️",
+      authorCredits: "Made by the coolest, most beautiful, wonderful, smart, creative, resourceful, fearless, talented, legendary, charismatic, insightful, magnificent, brilliant, virtuoso, ambitious, progressive, one-of-a-kind, athletic, erudite, visionary, impeccable, sparkling, gallant, determined, inspiring, energetic, original, outstanding, striking, wise, reliable, decisive, multifaceted, tactful, skillful, noble, unique, phenomenal, aesthetic, tireless, attractive, authoritative, unsurpassed, inventive, hype, irreplaceable, cheerful, profound, stately and modest person — Alexander Zahharov 😎",
       authorCreditsAria: "Credits",
       email: "info@adviral.agency",
       social: {
@@ -400,6 +403,9 @@ const translations = {
         facebook: "",
         tiktok: "",
       },
+    },
+    videoModal: {
+      title: "Video player",
     },
     email: {
       copied: "Message copied!",
@@ -559,7 +565,7 @@ const translations = {
     footer: {
       copy: "© 2026 ADViral Agency",
       authorLabel: "Made by",
-      authorCredits: "Tehtud kõige lahedama, ilusama, imelise, targa, loova, leidlike, kartmatu, andeka, legendaarse, karismaatilise, terava, suurepärase, hiilgava, virtuoosse, ambitsioonika, progressiivse, ainulaadse, atleetilise, erudiitse, kaugemalevaatava, veatu, sädelava, galantse, sihikindla, inspireeriva, energilise, originaalse, silmapaistva, mõjuka, usaldusväärse, otsustusvõimelise, mitmekülgse, taktilise, osava, väärika, unikaalse, fenomenalse, esteetilise, väsimatu, atraktiivse, autoriteetse, ületamatu, leidliku, trendika, asendamatu, rõõmsameelse, sügava, statuursa ja tagasihoidliku inimese poolt — Aleksandr Zahharov 🕶️",
+      authorCredits: "Tehtud kõige lahedama, ilusama, imelise, targa, loova, leidlike, kartmatu, andeka, legendaarse, karismaatilise, terava, suurepärase, hiilgava, virtuoosse, ambitsioonika, progressiivse, ainulaadse, atleetilise, erudiitse, kaugemalevaatava, veatu, sädelava, galantse, sihikindla, inspireeriva, energilise, originaalse, silmapaistva, mõjuka, usaldusväärse, otsustusvõimelise, mitmekülgse, taktilise, osava, väärika, unikaalse, fenomenalse, esteetilise, väsimatu, atraktiivse, autoriteetse, ületamatu, leidliku, trendika, asendamatu, rõõmsameelse, sügava, statuursa ja tagasihoidliku inimese poolt — Aleksandr Zahharov 😎",
       authorCreditsAria: "Krediidid",
       email: "info@adviral.agency",
       social: {
@@ -567,6 +573,9 @@ const translations = {
         facebook: "",
         tiktok: "",
       },
+    },
+    videoModal: {
+      title: "Videomängija",
     },
     email: {
       copied: "Sõnum kopeeritud!",
@@ -2474,6 +2483,24 @@ document.addEventListener("DOMContentLoaded", () => {
         contactSection.classList.remove("has-focus");
       }
     }
+    function setFocusedIndex(idx) {
+      if (idx < 0 || idx >= options.length) return;
+      options[idx].focus();
+      options.forEach((o, i) => o.setAttribute("tabindex", i === idx ? "0" : "-1"));
+    }
+
+    trigger.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " " || e.key === "ArrowDown" || e.key === "ArrowUp") {
+        if (panel.hasAttribute("hidden")) {
+          e.preventDefault();
+          openPanel();
+          setFocusedIndex(0);
+        } else if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+          e.preventDefault();
+          setFocusedIndex(0);
+        }
+      }
+    });
 
     trigger.addEventListener("click", (e) => {
       const iconChip = e.target.closest(".service-tag-icon");
@@ -2492,6 +2519,31 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       if (panel.hasAttribute("hidden")) openPanel();
       else closePanel();
+    });
+
+    panel.addEventListener("keydown", (e) => {
+      if (panel.hasAttribute("hidden")) return;
+      const opt = e.target.closest(".services-dropdown-option");
+      if (!opt) return;
+      const idx = options.indexOf(opt);
+      if (idx === -1) return;
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        setFocusedIndex((idx + 1) % options.length);
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        setFocusedIndex(idx === 0 ? options.length - 1 : idx - 1);
+      } else if (e.key === "Home") {
+        e.preventDefault();
+        setFocusedIndex(0);
+      } else if (e.key === "End") {
+        e.preventDefault();
+        setFocusedIndex(options.length - 1);
+      } else if (e.key === "Escape") {
+        e.preventDefault();
+        closePanel();
+        trigger.focus();
+      }
     });
 
     options.forEach((opt) => {
