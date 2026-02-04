@@ -1942,10 +1942,18 @@ document.addEventListener("DOMContentLoaded", () => {
         ];
         
         const isMobile = window.innerWidth <= 768;
+        // На мобильных: нативный fullscreen на iOS (webkitEnterFullscreen) и разблокировка ориентации при fullscreen,
+        // чтобы видео раскрывалось на весь экран и могло поворачиваться в ландшафт при повороте устройства
+        const fullscreenConfig = isMobile
+          ? { iosNative: true }
+          : {};
         
         player = new Plyr(modalPlayer, {
           controls,
           settings: ["quality", "speed"],
+          fullscreen: {
+            ...fullscreenConfig
+          },
           quality: {
             default: 720,
             options: [1080, 720, 480, 360],
@@ -1974,6 +1982,16 @@ document.addEventListener("DOMContentLoaded", () => {
         player.on("error", (event) => {
           console.error("Plyr error:", event.detail);
         });
+
+        // Мобильная версия: при входе в fullscreen разблокируем ориентацию экрана,
+        // чтобы видео могло поворачиваться в ландшафт (90°), если у пользователя включён поворот экрана
+        if (isMobile) {
+          player.on("enterfullscreen", () => {
+            if (screen.orientation && typeof screen.orientation.unlock === "function") {
+              screen.orientation.unlock().catch(() => {});
+            }
+          });
+        }
 
         // Клик по области плеера в любом месте — пауза, повторный клик — воспроизведение
         const modalContent = modalPlayer.closest(".video-modal-content");
@@ -2806,9 +2824,11 @@ document.addEventListener("DOMContentLoaded", () => {
         "fullscreen"
       ];
       const isMobile = window.innerWidth <= 768;
+      const fullscreenConfig = isMobile ? { iosNative: true } : {};
       servicePopupPlyr = new Plyr(el, {
         controls,
         settings: ["quality", "speed"],
+        fullscreen: { ...fullscreenConfig },
         speed: { selected: 1, options: [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2] },
         keyboard: { focused: true, global: false },
         clickToPlay: true,
@@ -2817,6 +2837,13 @@ document.addEventListener("DOMContentLoaded", () => {
         ratio: null,
         volume: isMobile ? 1 : 0.5
       });
+      if (isMobile) {
+        servicePopupPlyr.on("enterfullscreen", () => {
+          if (screen.orientation && typeof screen.orientation.unlock === "function") {
+            screen.orientation.unlock().catch(() => {});
+          }
+        });
+      }
       // Клик по области плеера в любом месте — пауза / воспроизведение
       const popupPlayerWrap = el.closest(".AdviralPlayer");
       if (popupPlayerWrap && !popupPlayerWrap.hasAttribute("data-adviral-click-bound")) {

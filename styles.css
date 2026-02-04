@@ -3355,12 +3355,14 @@ section[id] { scroll-margin-top: var(--header-h); }
   overflow: visible;
 }
 
-/* Обёртка лент: уменьшенная высота во всех версиях */
+/* Обёртка лент: уменьшенная высота во всех версиях.
+   z-index: 1 — чтобы нижняя (горизонтальная) лента не перекрывалась следующей секцией и клики доходили до видео. */
 .feeds-vert-horis-wrapper {
   width: 100%;
   aspect-ratio: 505 / 1360;
   max-height: min(240px, 38vw);
   position: relative;
+  z-index: 1;
   overflow: visible; /* стрелки и hover не обрезать */
   container-type: inline-size;
   margin-top: 24px;
@@ -5743,7 +5745,8 @@ input::placeholder, textarea::placeholder {
   display: block;
 }
 
-/* Полноэкранный режим: видео на весь экран без пустых мест (все устройства) */
+/* Полноэкранный режим: видео на весь экран без пустых мест (все устройства).
+   На мобильных при повороте экрана (ландшафт) 100vw/100vh пересчитываются — видео заполняет экран в любой ориентации. */
 .plyr:fullscreen,
 .plyr:-webkit-full-screen,
 .plyr:-moz-full-screen,
