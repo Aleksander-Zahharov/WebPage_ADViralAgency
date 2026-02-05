@@ -6319,7 +6319,7 @@ input::placeholder, textarea::placeholder {
   width: 100% !important;
   min-width: 0 !important;
   margin: 0 !important;
-  padding: 0 6px !important;
+  padding: 0 !important;
   height: auto !important;
   min-height: 8px !important;
   box-sizing: border-box !important;
@@ -6330,7 +6330,27 @@ input::placeholder, textarea::placeholder {
   flex: 1 1 auto !important;
 }
 
-/* Seek-инпут: не выходит за границы прогресса, одинаковые отступы слева и справа */
+/* Буфер и seek-инпут — одна и та же длина и позиция (идеально совпадают) */
+.video-modal-content .plyr__progress__buffer,
+.AdviralPlayer .plyr__progress__buffer {
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: auto !important;
+  height: 4px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  border: none !important;
+  border-radius: 2px !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+}
+
 .video-modal-content .plyr__progress input[type=range],
 .AdviralPlayer .plyr__progress input[type=range] {
   color: #8B5CF6 !important;
@@ -6342,10 +6362,8 @@ input::placeholder, textarea::placeholder {
   display: block !important;
   box-sizing: border-box !important;
   position: absolute !important;
-  left: 6px !important;
-  right: 6px !important;
-  top: 50% !important;
-  transform: translateY(-50%) !important;
+  left: 0 !important;
+  right: 0 !important;
   top: 50% !important;
   transform: translateY(-50%) !important;
   z-index: 2 !important;
@@ -6576,7 +6594,7 @@ input::placeholder, textarea::placeholder {
   .video-modal-content .plyr__progress {
     flex: 0 0 100% !important;
     margin: 0 !important;
-    padding: 8px 16px 4px !important;
+    padding: 8px 0 4px !important;
     align-self: stretch !important;
     display: flex !important;
     align-items: center !important;
@@ -6586,8 +6604,8 @@ input::placeholder, textarea::placeholder {
     height: 8px !important;
     margin: 0 !important;
     width: auto !important;
-    left: 6px !important;
-    right: 6px !important;
+    left: 0 !important;
+    right: 0 !important;
     position: absolute !important;
     top: 50% !important;
     transform: translateY(-50%) !important;
@@ -6820,7 +6838,7 @@ input::placeholder, textarea::placeholder {
   .video-modal-content .plyr__progress {
     flex: 0 0 100% !important;
     margin: 0 !important;
-    padding: 8px 18px 4px !important;
+    padding: 8px 0 4px !important;
     align-self: stretch !important;
     display: flex !important;
     align-items: center !important;
@@ -6830,8 +6848,8 @@ input::placeholder, textarea::placeholder {
     height: 8px !important;
     margin: 0 !important;
     width: auto !important;
-    left: 6px !important;
-    right: 6px !important;
+    left: 0 !important;
+    right: 0 !important;
     position: absolute !important;
     top: 50% !important;
     transform: translateY(-50%) !important;
@@ -6938,7 +6956,7 @@ input::placeholder, textarea::placeholder {
   .video-modal-content .plyr__progress {
     flex: 0 0 100% !important;
     margin: 0 !important;
-    padding: 6px 14px 4px !important;
+    padding: 6px 0 4px !important;
     align-self: stretch !important;
     display: flex !important;
     align-items: center !important;
@@ -6948,8 +6966,8 @@ input::placeholder, textarea::placeholder {
     height: 8px !important;
     margin: 0 !important;
     width: auto !important;
-    left: 6px !important;
-    right: 6px !important;
+    left: 0 !important;
+    right: 0 !important;
     position: absolute !important;
     top: 50% !important;
     transform: translateY(-50%) !important;

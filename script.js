@@ -2225,6 +2225,21 @@ document.addEventListener("DOMContentLoaded", () => {
           // Удаляем кнопки «Go back» в подменю качества и скорости
           content?.querySelectorAll(".plyr__menu__container .plyr__control--back").forEach((btn) => btn.remove());
 
+          // Seek-инпут и буфер — одна позиция и длина: отменяем inline-стили Plyr у seek
+          const seekInput = content?.querySelector('.plyr__progress input[data-plyr="seek"]');
+          if (seekInput) {
+            const fixSeekPosition = () => {
+              seekInput.style.setProperty('left', '0', 'important');
+              seekInput.style.setProperty('right', '0', 'important');
+              seekInput.style.setProperty('top', '50%', 'important');
+              seekInput.style.setProperty('transform', 'translateY(-50%)', 'important');
+            };
+            fixSeekPosition();
+            const mo = new MutationObserver(fixSeekPosition);
+            mo.observe(seekInput, { attributes: true, attributeFilter: ['style'] });
+            player.on('timeupdate', fixSeekPosition);
+          }
+
           // Обёртка для громкости, настроек и полного экрана — привязана к правому краю панели
           if (controls && !content.querySelector(".adviral-controls-right")) {
             const volume = controls.querySelector(".plyr__controls__item.plyr__volume") || controls.querySelector(".plyr__volume");
