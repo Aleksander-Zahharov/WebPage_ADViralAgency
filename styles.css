@@ -135,6 +135,12 @@
   border-color: rgba(0,0,0,.14);
   color: #1d1d1f;
 }
+@media (hover: hover) {
+  [data-theme="light"] .lang-switcher__toggle:hover {
+    border-color: rgba(0,0,0,.28);
+    box-shadow: none;
+  }
+}
 [data-theme="light"] .btn-ghost {
   color: #1d1d1f;
   background-color: rgba(0,0,0,.06);
@@ -6604,6 +6610,10 @@ input::placeholder, textarea::placeholder {
   }
   .lang-switcher__toggle.hover-tap-active {
     border-color: rgba(255,255,255,.26);
+    box-shadow: none;
+  }
+  [data-theme="light"] .lang-switcher__toggle.hover-tap-active {
+    border-color: rgba(0,0,0,.28);
     box-shadow: none;
   }
   .lang-switcher__option.hover-tap-active {
