@@ -5,6 +5,60 @@ const LANG_STORAGE_KEY = "adviral-lang";
 // Имя cookie, которым дублируем язык (на случай очистки localStorage)
 const LANG_COOKIE_NAME = "adviral-lang";
 
+// Кнопка «Назад» на телефоне: закрывает попапы/меню/дропдауны, а не уходит со страницы
+(function initBackOverlay() {
+  const overlayStack = [];
+  let programmaticCloseInProgress = false;
+  const TABLET_MAX_WIDTH = 1024;
+
+  function isMobile() {
+    if (typeof window === "undefined") return false;
+    const touchOrTablet =
+      window.matchMedia("(pointer: coarse)").matches ||
+      window.innerWidth <= TABLET_MAX_WIDTH;
+    return touchOrTablet;
+  }
+
+  function pushOverlayForBack(id) {
+    if (!isMobile()) return;
+    overlayStack.push(id);
+    if (typeof history !== "undefined" && history.pushState) {
+      history.pushState({ backOverlay: id }, "", location.href);
+    }
+  }
+
+  function removeFromStackAndBack(id) {
+    const i = overlayStack.indexOf(id);
+    if (i === -1) return;
+    overlayStack.splice(i, 1);
+    programmaticCloseInProgress = true;
+    if (typeof history !== "undefined" && history.back) history.back();
+  }
+
+  function closeOverlayById(id) {
+    if (typeof window === "undefined") return;
+    window.dispatchEvent(new CustomEvent("adviral-close-overlay", { detail: { id } }));
+  }
+
+  if (typeof window !== "undefined") {
+    window.addEventListener("popstate", function () {
+      if (programmaticCloseInProgress) {
+        programmaticCloseInProgress = false;
+        return;
+      }
+      if (overlayStack.length === 0) return;
+      const id = overlayStack.pop();
+      closeOverlayById(id);
+    });
+    window.AdviralBackOverlay = {
+      pushOverlayForBack,
+      removeFromStackAndBack,
+      closeOverlayById,
+      isMobile,
+    };
+  }
+})();
+
 // Поддерживаемые коды языков
 const SUPPORTED_LANGS = ["ru", "en", "et"];
 
@@ -704,23 +758,24 @@ function setupLanguageSwitcher(root) {
 
   const handleOutsidePointer = (event) => {
     if (!root.contains(event.target)) {
-      setOpen(false);
+      setOpen(false, false);
     }
   };
 
   const handleEscapeKey = (event) => {
     if (event.key === "Escape") {
-      setOpen(false);
+      setOpen(false, false);
       toggle.focus({ preventScroll: true });
     }
   };
 
-  function setOpen(state) {
+  function setOpen(state, fromBack) {
     if (isOpen === state) return;
     isOpen = state;
     clearTimeout(closeTimer);
 
     if (state) {
+      window.AdviralBackOverlay?.pushOverlayForBack?.("lang");
       menu.hidden = false;
       requestAnimationFrame(() => {
         root.dataset.open = "true";
@@ -733,6 +788,7 @@ function setupLanguageSwitcher(root) {
       document.addEventListener("pointerdown", handleOutsidePointer, true);
       document.addEventListener("keydown", handleEscapeKey, true);
     } else {
+      if (!fromBack) window.AdviralBackOverlay?.removeFromStackAndBack?.("lang");
       root.dataset.open = "false";
       toggle.setAttribute("aria-expanded", "false");
       document.removeEventListener("pointerdown", handleOutsidePointer, true);
@@ -776,7 +832,7 @@ function setupLanguageSwitcher(root) {
 
     const current = root.dataset.activeLang;
     if (current === lang) {
-      setOpen(false);
+      setOpen(false, false);
       toggle.focus({ preventScroll: true });
       return;
     }
@@ -784,7 +840,7 @@ function setupLanguageSwitcher(root) {
     localStorage.setItem(LANG_STORAGE_KEY, lang);
     writeLangCookie(lang);
     applyLanguage(lang);
-    setOpen(false);
+    setOpen(false, false);
     toggle.focus({ preventScroll: true });
   }
 
@@ -828,7 +884,7 @@ function setupLanguageSwitcher(root) {
       }
       case "Escape":
         event.preventDefault();
-        setOpen(false);
+        setOpen(false, false);
         toggle.focus({ preventScroll: true });
         break;
       default:
@@ -840,7 +896,14 @@ function setupLanguageSwitcher(root) {
     if (!isOpen) return;
     const next = event.relatedTarget;
     if (!menu.contains(next) && next !== toggle) {
-      setOpen(false);
+      setOpen(false, false);
+    }
+  });
+
+  window.addEventListener("adviral-close-overlay", (e) => {
+    if (e.detail?.id === "lang") {
+      setOpen(false, true);
+      toggle.focus({ preventScroll: true });
     }
   });
 
@@ -973,6 +1036,7 @@ document.addEventListener("DOMContentLoaded", () => {
       html.classList.add("menu-open");
       toggle.setAttribute("aria-expanded", "true");
       header?.classList.remove('header--hidden');
+      window.AdviralBackOverlay?.pushOverlayForBack?.("menu");
       // Переводим фокус на первый пункт
       const firstLink = menu.querySelector('a[href^="#"]');
       firstLink?.focus({ preventScroll: true });
@@ -980,7 +1044,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.addEventListener("click", onOutsideClick, true);
     }
 
-    function closeMenu() {
+    function closeMenu(fromBack) {
       if (!isOpen) return;
       isOpen = false;
       html.classList.remove("menu-open");
@@ -988,6 +1052,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.removeEventListener("keydown", onKeyDown);
       document.removeEventListener("click", onOutsideClick, true);
       toggle.focus({ preventScroll: true });
+      if (!fromBack) window.AdviralBackOverlay?.removeFromStackAndBack?.("menu");
     }
 
     function onKeyDown(e) {
@@ -1015,6 +1080,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // При ресайзе на десктоп — закрываем
     window.addEventListener("resize", () => {
       if (window.innerWidth > 820) closeMenu();
+    });
+
+    window.addEventListener("adviral-close-overlay", (e) => {
+      if (e.detail?.id === "menu") closeMenu(true);
     });
   })();
 
@@ -2219,6 +2288,7 @@ document.addEventListener("DOMContentLoaded", () => {
       
       if (modal.hidden) lockBodyScroll();
       modal.hidden = false;
+      window.AdviralBackOverlay?.pushOverlayForBack?.("video-modal");
       modalPlayer.closest(".video-modal-content")?._adviralShowControls?.();
       
       // Воспроизводим после загрузки
@@ -2251,7 +2321,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    function closeModal() {
+    function closeModal(fromBack) {
       const srcEmit = currentVideoSrc;
       if (player) {
         player.pause();
@@ -2263,6 +2333,7 @@ document.addEventListener("DOMContentLoaded", () => {
       currentVideoSrc = "";
       modal.hidden = true;
       unlockBodyScroll();
+      if (!fromBack) window.AdviralBackOverlay?.removeFromStackAndBack?.("video-modal");
       // Восстанавливаем превью в ленте и при необходимости запускаем фоновый прелоад
       videoLoadManager.resumeFeedVideos();
       if (srcEmit) {
@@ -2299,12 +2370,16 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    window.addEventListener("adviral-close-overlay", (e) => {
+      if (e.detail?.id === "video-modal" && modal && !modal.hidden) closeModal(true);
+    });
+
     // Закрытие по Escape и навигация стрелками клавиатуры
     doc.addEventListener("keydown", (e) => {
       if (modal.hidden) return;
       
       if (e.key === "Escape") {
-        closeModal();
+        closeModal(false);
       } else if (e.key === "ArrowLeft") {
           // Если фокус не в инпуте (например, громкость)
           if (document.activeElement.tagName !== 'INPUT') {
@@ -2472,11 +2547,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function openPanel() {
+      window.AdviralBackOverlay?.pushOverlayForBack?.("services-dropdown");
       panel.removeAttribute("hidden");
       trigger.setAttribute("aria-expanded", "true");
       contactSection?.classList.add("has-focus");
     }
-    function closePanel() {
+    function closePanel(fromBack) {
+      if (!fromBack) window.AdviralBackOverlay?.removeFromStackAndBack?.("services-dropdown");
       panel.setAttribute("hidden", "");
       trigger.setAttribute("aria-expanded", "false");
       if (contactSection && !doc.activeElement?.closest?.(".contact-form-wrapper")) {
@@ -2518,7 +2595,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       e.preventDefault();
       if (panel.hasAttribute("hidden")) openPanel();
-      else closePanel();
+      else closePanel(false);
     });
 
     panel.addEventListener("keydown", (e) => {
@@ -2541,7 +2618,7 @@ document.addEventListener("DOMContentLoaded", () => {
         setFocusedIndex(options.length - 1);
       } else if (e.key === "Escape") {
         e.preventDefault();
-        closePanel();
+        closePanel(false);
         trigger.focus();
       }
     });
@@ -2564,9 +2641,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     doc.addEventListener("click", (e) => {
       if (panel.hasAttribute("hidden")) return;
-      if (!trigger.contains(e.target) && !panel.contains(e.target)) closePanel();
+      if (!trigger.contains(e.target) && !panel.contains(e.target)) closePanel(false);
     });
-    if (saveBtn) saveBtn.addEventListener("click", (e) => { e.preventDefault(); closePanel(); });
+    if (saveBtn) saveBtn.addEventListener("click", (e) => { e.preventDefault(); closePanel(false); });
+    window.addEventListener("adviral-close-overlay", (e) => {
+      if (e.detail?.id === "services-dropdown" && !panel.hasAttribute("hidden")) {
+        closePanel(true);
+        trigger.focus({ preventScroll: true });
+      }
+    });
     doc.addEventListener("i18n-applied", () => updateSelectedDisplay());
     const form = doc.querySelector("#contact-form");
     if (form) form.addEventListener("reset", () => {
@@ -2848,6 +2931,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     if (!servicePopup.classList.contains('active')) lockBodyScroll();
     servicePopup.classList.add('active');
+    window.AdviralBackOverlay?.pushOverlayForBack?.("service-popup");
     resetServicePopupInlineVideo();
     showServicePopupPlaceholder();
   }
@@ -3053,13 +3137,14 @@ document.addEventListener("DOMContentLoaded", () => {
     videoLoadManager.resumeFeedVideos();
   }
 
-  function closeServicePopup() {
+  function closeServicePopup(fromBack) {
     if (!servicePopup) return;
     servicePopup.classList.remove('active');
     unlockBodyScroll();
     currentServiceIndex = -1;
     resetServicePopupInlineVideo();
     showServicePopupPlaceholder();
+    if (!fromBack) window.AdviralBackOverlay?.removeFromStackAndBack?.("service-popup");
   }
 
   if (servicePopupInlineVideoPlaceholder) {
@@ -3111,8 +3196,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // Закрытие по Escape
   doc.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && servicePopup?.classList.contains('active')) {
-      closeServicePopup();
+      closeServicePopup(false);
     }
+  });
+
+  window.addEventListener("adviral-close-overlay", (e) => {
+    if (e.detail?.id === "service-popup" && servicePopup?.classList.contains("active")) closeServicePopup(true);
   });
 
   // При смене языка обновляем контент попапа, если он открыт
@@ -3311,13 +3400,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const overlay = authorPopup.querySelector(".author-popup-overlay");
     const closeBtn = authorPopup.querySelector(".author-popup-close");
     const openPopup = () => {
+      window.AdviralBackOverlay?.pushOverlayForBack?.("author-popup");
       authorPopup.hidden = false;
       closeBtn.focus();
       doc.body.style.overflow = "hidden";
     };
-    const closePopup = () => {
+    const closePopup = (fromBack) => {
       authorPopup.hidden = true;
       doc.body.style.overflow = "";
+      if (!fromBack) window.AdviralBackOverlay?.removeFromStackAndBack?.("author-popup");
     };
     authorColon.addEventListener("click", (e) => {
       e.preventDefault();
@@ -3329,10 +3420,13 @@ document.addEventListener("DOMContentLoaded", () => {
         openPopup();
       }
     });
-    if (overlay) overlay.addEventListener("click", closePopup);
-    if (closeBtn) closeBtn.addEventListener("click", closePopup);
+    if (overlay) overlay.addEventListener("click", () => closePopup(false));
+    if (closeBtn) closeBtn.addEventListener("click", () => closePopup(false));
     doc.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && authorPopup && !authorPopup.hidden) closePopup();
+      if (e.key === "Escape" && authorPopup && !authorPopup.hidden) closePopup(false);
+    });
+    window.addEventListener("adviral-close-overlay", (e) => {
+      if (e.detail?.id === "author-popup" && authorPopup && !authorPopup.hidden) closePopup(true);
     });
   }
 

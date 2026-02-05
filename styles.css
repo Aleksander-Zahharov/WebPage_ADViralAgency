@@ -6403,10 +6403,12 @@ input::placeholder, textarea::placeholder {
 
   .video-modal-content {
     padding-bottom: min(177.78%, 85vh);
-    border-radius: 0;
+    border-radius: 16px;
     max-height: 95vh;
+    overflow: hidden;
   }
 
+  /* Крестик у верхней границы окна плеера, чтобы не обрезался хедером браузера */
   .video-modal-close {
     top: 8px;
     right: 8px;
@@ -6415,6 +6417,16 @@ input::placeholder, textarea::placeholder {
     font-size: 20px;
     background: rgba(0, 0, 0, 0.7);
     z-index: 9999;
+  }
+
+  /* Закруглённые углы у окна плеера (контейнер и видео-область), без чёрных уголков */
+  .video-modal-content .plyr,
+  .video-modal-content .plyr__video-wrapper,
+  .video-modal-content .plyr__poster {
+    border-radius: 16px;
+  }
+  .video-modal-content .plyr__video-wrapper {
+    overflow: hidden;
   }
   
   /* Мобильные оптимизации для Plyr */
@@ -6517,8 +6529,9 @@ input::placeholder, textarea::placeholder {
 
   .video-modal-content {
     padding-bottom: min(177.78%, 90vh);
-    border-radius: 0;
+    border-radius: 12px;
     max-height: 95vh;
+    overflow: hidden;
   }
 
   .video-modal-close {
@@ -6529,6 +6542,15 @@ input::placeholder, textarea::placeholder {
     font-size: 18px;
     background: rgba(0, 0, 0, 0.8);
     z-index: 9999;
+  }
+
+  .video-modal-content .plyr,
+  .video-modal-content .plyr__video-wrapper,
+  .video-modal-content .plyr__poster {
+    border-radius: 12px;
+  }
+  .video-modal-content .plyr__video-wrapper {
+    overflow: hidden;
   }
   
   .video-modal-content .plyr__controls {
