@@ -1960,20 +1960,11 @@ document.addEventListener("DOMContentLoaded", () => {
         setupQualitySources(newSrc);
         
         if (player) {
-          // Для Plyr нужно обновить источник через API
-          player.source = {
-            type: 'video',
-            sources: [
-              {
-                src: newSrc,
-                type: 'video/mp4',
-              },
-            ],
-          };
-          
-          player.once("ready", () => {
-             player.play().catch(() => {});
-          });
+          // Не вызываем player.source — иначе Plyr пересоздаёт UI и сбрасывает настройки
+          modalPlayer.load();
+          const playWhenLoaded = () => player.play().catch(() => {});
+          modalPlayer.addEventListener("loadeddata", playWhenLoaded, { once: true });
+          if (modalPlayer.readyState >= 2) playWhenLoaded();
         } else {
           modalPlayer.load();
           modalPlayer.play().catch(() => {});
@@ -2188,74 +2179,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
         // Проверяем, что Plyr правильно инициализировался
         player.on("ready", () => {
-          // console.log("Plyr ready");
-          
-          // Обёртка для текущего времени и длительности в один общий блок
-          const content = modalPlayer.closest(".video-modal-content");
-          const controls = content?.querySelector(".plyr__controls");
-          const timeCurrent = content?.querySelector(".plyr__time--current");
-          const timeDuration = content?.querySelector(".plyr__time--duration");
-          if (controls && timeCurrent && timeDuration && !content.querySelector(".plyr__time-group")) {
-            const timeGroup = doc.createElement("div");
-            timeGroup.className = "plyr__time-group";
-            const separator = doc.createElement("span");
-            separator.className = "plyr__time plyr__time-separator";
-            separator.setAttribute("aria-hidden", "true");
-            separator.textContent = "/";
-            controls.insertBefore(timeGroup, controls.firstChild);
-            timeGroup.appendChild(timeCurrent);
-            timeGroup.appendChild(separator);
-            timeGroup.appendChild(timeDuration);
-          }
-          // Убираем лишний "/" из текста длительности и оставляем в разделителе ровно один "/" без пробелов
-          const normalizeTimeDisplay = () => {
-            const durationEl = content?.querySelector(".plyr__time--duration");
-            if (durationEl && /^\s*\/\s*/.test(durationEl.textContent)) {
-              durationEl.textContent = durationEl.textContent.replace(/^\s*\/\s*/, "").trim();
-            }
-            const sep = content?.querySelector(".plyr__time-separator");
-            if (sep && sep.textContent !== "/") {
-              sep.textContent = "/";
-            }
-          };
-          normalizeTimeDisplay();
-          player.on("timeupdate", normalizeTimeDisplay);
-          player.on("loadedmetadata", normalizeTimeDisplay);
-
-          // Удаляем кнопки «Go back» в подменю качества и скорости
-          content?.querySelectorAll(".plyr__menu__container .plyr__control--back").forEach((btn) => btn.remove());
-
-          // Seek-инпут и буфер — одна позиция и длина: отменяем inline-стили Plyr у seek
-          const seekInput = content?.querySelector('.plyr__progress input[data-plyr="seek"]');
-          if (seekInput) {
-            const fixSeekPosition = () => {
-              seekInput.style.setProperty('left', '0', 'important');
-              seekInput.style.setProperty('right', '0', 'important');
-              seekInput.style.setProperty('top', '50%', 'important');
-              seekInput.style.setProperty('transform', 'translateY(-50%)', 'important');
-            };
-            fixSeekPosition();
-            const mo = new MutationObserver(fixSeekPosition);
-            mo.observe(seekInput, { attributes: true, attributeFilter: ['style'] });
-            player.on('timeupdate', fixSeekPosition);
-          }
-
-          // Обёртка для громкости, настроек и полного экрана — привязана к правому краю панели
-          if (controls && !content.querySelector(".adviral-controls-right")) {
-            const volume = controls.querySelector(".plyr__controls__item.plyr__volume") || controls.querySelector(".plyr__volume");
-            const menu = controls.querySelector(".plyr__menu");
-            const fullscreenBtn = controls.querySelector(".plyr__control[data-plyr=\"fullscreen\"]") || controls.querySelector("button[data-plyr=\"fullscreen\"]");
-            if (volume && menu && fullscreenBtn) {
-              const rightGroup = doc.createElement("div");
-              rightGroup.className = "adviral-controls-right";
-              controls.insertBefore(rightGroup, volume);
-              rightGroup.appendChild(volume);
-              rightGroup.appendChild(menu);
-              rightGroup.appendChild(fullscreenBtn);
-            }
-          }
-          
-          // Добавляем поддержку жестов на мобильных устройствах
+          applyAdviralControlsLayout();
           if (window.innerWidth <= 768) {
             setupMobileGestures();
           }
@@ -2312,6 +2236,87 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
+    // Восстанавливает нашу разметку контролов (time-group, adviral-controls-right, seek, громкость).
+    // Вызывать при ready и при каждом открытии модалки — Plyr при смене источника пересоздаёт контролы.
+    function applyAdviralControlsLayout() {
+      const content = modalPlayer.closest(".video-modal-content");
+      const controls = content?.querySelector(".plyr__controls");
+      if (!content || !controls || !player) return;
+
+      const timeCurrent = content.querySelector(".plyr__time--current");
+      const timeDuration = content.querySelector(".plyr__time--duration");
+      if (timeCurrent && timeDuration && !content.querySelector(".plyr__time-group")) {
+        const timeGroup = doc.createElement("div");
+        timeGroup.className = "plyr__time-group";
+        const separator = doc.createElement("span");
+        separator.className = "plyr__time plyr__time-separator";
+        separator.setAttribute("aria-hidden", "true");
+        separator.textContent = "/";
+        controls.insertBefore(timeGroup, controls.firstChild);
+        timeGroup.appendChild(timeCurrent);
+        timeGroup.appendChild(separator);
+        timeGroup.appendChild(timeDuration);
+      }
+
+      const normalizeTimeDisplay = () => {
+        const durationEl = content.querySelector(".plyr__time--duration");
+        if (durationEl && /^\s*\/\s*/.test(durationEl.textContent)) {
+          durationEl.textContent = durationEl.textContent.replace(/^\s*\/\s*/, "").trim();
+        }
+        const sep = content.querySelector(".plyr__time-separator");
+        if (sep && sep.textContent !== "/") sep.textContent = "/";
+      };
+      if (!player._adviralNormalizeBound) {
+        player.on("timeupdate", normalizeTimeDisplay);
+        player.on("loadedmetadata", normalizeTimeDisplay);
+        player._adviralNormalizeBound = true;
+      }
+      normalizeTimeDisplay();
+
+      content.querySelectorAll(".plyr__menu__container .plyr__control--back").forEach((btn) => btn.remove());
+
+      const seekInput = content.querySelector('.plyr__progress input[data-plyr="seek"]');
+      if (seekInput && !seekInput.dataset.adviralSeekFixed) {
+        seekInput.dataset.adviralSeekFixed = "1";
+        const fixSeekPosition = () => {
+          const inp = content.querySelector('.plyr__progress input[data-plyr="seek"]');
+          if (inp) {
+            inp.style.setProperty("left", "0", "important");
+            inp.style.setProperty("right", "0", "important");
+            inp.style.setProperty("top", "50%", "important");
+            inp.style.setProperty("transform", "translateY(-50%)", "important");
+          }
+        };
+        fixSeekPosition();
+        const mo = new MutationObserver(fixSeekPosition);
+        mo.observe(seekInput, { attributes: true, attributeFilter: ["style"] });
+        if (!player._adviralSeekBound) {
+          player.on("timeupdate", fixSeekPosition);
+          player._adviralSeekBound = true;
+        }
+      }
+
+      if (!content.querySelector(".adviral-controls-right")) {
+        const volume = controls.querySelector(".plyr__controls__item.plyr__volume") || controls.querySelector(".plyr__volume");
+        const menu = controls.querySelector(".plyr__menu");
+        const fullscreenBtn = controls.querySelector(".plyr__control[data-plyr=\"fullscreen\"]") || controls.querySelector("button[data-plyr=\"fullscreen\"]");
+        if (volume && menu && fullscreenBtn) {
+          const rightGroup = doc.createElement("div");
+          rightGroup.className = "adviral-controls-right";
+          controls.insertBefore(rightGroup, volume);
+          rightGroup.appendChild(volume);
+          rightGroup.appendChild(menu);
+          rightGroup.appendChild(fullscreenBtn);
+        }
+      }
+
+      if (window.innerWidth <= 1024 || "ontouchstart" in doc.documentElement) {
+        content.querySelectorAll(".plyr__volume, .plyr__controls__item.plyr__volume").forEach((el) => {
+          el.style.setProperty("display", "none", "important");
+        });
+      }
+    }
+
     function openModal(videoSrc, itemElement) {
       if (!videoSrc) {
         console.warn("No video source found");
@@ -2346,41 +2351,27 @@ document.addEventListener("DOMContentLoaded", () => {
         modalPlayer.controls = true;
         modalPlayer.load();
       } else {
-        // Обновляем источники видео для Plyr через API, если он уже создан, или просто load если только что создан
-        // Но лучше всегда использовать source setter если плеер готов, или src attr если нет.
-        // Выше мы уже установили src атрибут.
-        
-        // Важно: если плеер уже был создан, просто смена атрибута src может не сработать в Plyr v3
-        if (player.source) {
-             player.source = {
-                type: 'video',
-                sources: [{ src: videoSrc, type: 'video/mp4' }]
-             };
-        } else {
-             // Первый запуск
-             modalPlayer.load();
-        }
+        // При смене видео не вызываем player.source — Plyr пересоздаёт весь UI и сбрасывает настройки.
+        // Меняем только src у video и вызываем load() — контролы остаются теми же.
+        modalPlayer.load();
       }
       
       if (modal.hidden) lockBodyScroll();
       modal.hidden = false;
       window.AdviralBackOverlay?.pushOverlayForBack?.("video-modal");
       modalPlayer.closest(".video-modal-content")?._adviralShowControls?.();
-      
+
       // Воспроизводим после загрузки
       if (player) {
-        player.once("ready", () => { // Ждем ready для нового source
+        const playWhenReady = () => {
           player.play().catch((err) => {
             // Автоплей может быть заблокирован политикой браузера - это нормально
           });
-        });
-        // Если плеер уже был готов и мы просто сменили сурс, событие ready может сработать быстро или мы его пропустим?
-        // Plyr usually fires ready after source change.
-        
+        };
+        modalPlayer.addEventListener("loadeddata", playWhenReady, { once: true });
+        if (modalPlayer.readyState >= 2) playWhenReady();
         setTimeout(() => {
-          if (player) {
-            player.focus();
-          }
+          if (player) player.focus();
         }, 100);
       } else {
         // Fallback для стандартного HTML5 video
