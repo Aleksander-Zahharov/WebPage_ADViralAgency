@@ -2038,7 +2038,7 @@ document.addEventListener("DOMContentLoaded", () => {
           },
           speed: {
             selected: 1,
-            options: [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]
+            options: [0.5, 1, 1.25, 1.5, 2]
           },
           keyboard: {
             focused: true,
@@ -2057,6 +2057,69 @@ document.addEventListener("DOMContentLoaded", () => {
           console.error("Plyr error:", event.detail);
         });
 
+        // Меню настроек: при открытии — показывать «домашнее» (Quality, Speed); при клике Quality/Speed — подменю; после выбора — назад на домашнее, без закрытия
+        const modalContent = modalPlayer.closest(".video-modal-content");
+        const menuContainer = modalContent?.querySelector(".plyr__menu__container");
+        if (menuContainer) {
+          // При открытии меню — показывать только домашнюю панель (observer + клик по шестерёнке как запасной вариант)
+          const ensureShowHome = () => {
+            if (!menuContainer.hidden) menuContainer.classList.add("adviral-menu-show-home");
+          };
+          const menuObserver = new MutationObserver(ensureShowHome);
+          menuObserver.observe(menuContainer, { attributes: true, attributeFilter: ["hidden"] });
+          const settingsBtn = modalContent?.querySelector('[data-plyr="settings"]');
+          if (settingsBtn) {
+            settingsBtn.addEventListener("click", () => {
+              requestAnimationFrame(() => {
+                requestAnimationFrame(ensureShowHome);
+              });
+            });
+          }
+
+          // При клике на «Quality»/«Speed» (forward) — снять ограничение ДО переключения панели Plyr (capture), чтобы не было лишней анимации закрытия
+          modalContent.addEventListener("click", (e) => {
+            if (e.target.closest(".plyr__control--forward") && menuContainer.contains(e.target)) {
+              menuContainer.classList.remove("adviral-menu-show-home");
+            }
+          }, true);
+
+          // При выборе качества/скорости (menuitemradio): не закрывать меню, применить значение и вернуть вид «домашнее» меню
+          modalContent.addEventListener("click", (e) => {
+            const radio = e.target.closest(".plyr__control[role=\"menuitemradio\"]");
+            if (!radio || !menuContainer.contains(radio)) return;
+            e.preventDefault();
+            e.stopPropagation();
+            const value = radio.getAttribute("value");
+            if (value === null) return;
+            const panel = radio.closest("[id$=\"-quality\"], [id$=\"-speed\"]");
+            const isSpeed = panel && panel.id.endsWith("-speed");
+            if (isSpeed) {
+              player.speed = Number.parseFloat(value);
+            } else {
+              player.quality = value;
+            }
+            radio.setAttribute("aria-checked", "true");
+            const list = radio.closest("[role=\"menu\"]");
+            if (list) {
+              list.querySelectorAll("[role=\"menuitemradio\"]").forEach((el) => {
+                if (el !== radio) el.setAttribute("aria-checked", "false");
+              });
+            }
+            menuContainer.classList.add("adviral-menu-show-home");
+            const home = menuContainer.querySelector("[id$=\"-home\"]");
+            const quality = menuContainer.querySelector("[id$=\"-quality\"]");
+            const speed = menuContainer.querySelector("[id$=\"-speed\"]");
+            [quality, speed].filter(Boolean).forEach((p) => { p.hidden = true; });
+            if (home) home.hidden = false;
+            // Обновить подпись на кнопках Quality [0] и Speed [1] в домашнем меню
+            const valueSpans = home?.querySelectorAll(".plyr__control--forward .plyr__menu__value");
+            if (valueSpans && valueSpans.length >= 2) {
+              if (isSpeed) valueSpans[1].textContent = value === "1" ? "Normal" : value + "×";
+              else valueSpans[0].textContent = value + "p";
+            }
+          }, true);
+        }
+
         // Мобильная версия: при входе в fullscreen разблокируем ориентацию экрана,
         // чтобы видео могло поворачиваться в ландшафт (90°), если у пользователя включён поворот экрана
         if (isMobile) {
@@ -2068,7 +2131,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // Плей/стоп по нажатию на экран (область видео): срабатывает при клике и тапе, в capture чтобы не перехватывал Plyr
-        const modalContent = modalPlayer.closest(".video-modal-content");
         if (modalContent && !modalContent.hasAttribute("data-adviral-click-bound")) {
           modalContent.setAttribute("data-adviral-click-bound", "1");
           let lastTapTime = 0;
@@ -3029,7 +3091,7 @@ document.addEventListener("DOMContentLoaded", () => {
         controls,
         settings: ["quality", "speed"],
         fullscreen: { ...fullscreenConfig },
-        speed: { selected: 1, options: [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2] },
+        speed: { selected: 1, options: [0.5, 1, 1.25, 1.5, 2] },
         keyboard: { focused: true, global: false },
         clickToPlay: true,
         hideControls: false,
