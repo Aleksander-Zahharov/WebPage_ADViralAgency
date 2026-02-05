@@ -2191,7 +2191,7 @@ document.addEventListener("DOMContentLoaded", () => {
             separator.className = "plyr__time plyr__time-separator";
             separator.setAttribute("aria-hidden", "true");
             separator.textContent = "/";
-            controls.insertBefore(timeGroup, timeCurrent);
+            controls.insertBefore(timeGroup, controls.firstChild);
             timeGroup.appendChild(timeCurrent);
             timeGroup.appendChild(separator);
             timeGroup.appendChild(timeDuration);

@@ -2861,6 +2861,31 @@ section[id] { scroll-margin-top: var(--header-h); }
   flex-direction: column;
   min-height: 0;
 }
+
+/* Мобильные и сенсор: попап без скролла, влезает в экран (масштаб + overflow hidden) */
+@media (max-width: 768px) {
+  .service-popup-container {
+    max-height: 85vh;
+    max-height: min(85vh, 85dvh);
+    overflow: hidden !important;
+    overflow-y: hidden !important;
+  }
+  .service-popup-scroll {
+    overflow: hidden !important;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .service-popup-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  .service-popup-wrapper {
+    max-height: 85vh;
+    max-height: min(85vh, 85dvh);
+    transform: scale(0.92);
+    transform-origin: center center;
+  }
+}
+
 /* Планшет и десктоп: попап увеличенной высоты (строго не заходит за края экрана), прокрутка текста и видео в одном диве */
 @media (min-width: 601px) {
   .service-popup-container {
@@ -5946,8 +5971,9 @@ input::placeholder, textarea::placeholder {
   transform: translate(-50%, -50%) scale(1.1) !important;
 }
 
-/* Скрываем кнопку Play, когда видео играет и нет ховера на плеере, или даем Plyr самому управлять классами */
-.video-modal-content .plyr--playing .plyr__control--overlaid {
+/* Когда интерфейс скрыт (idle) и видео играет — скрываем центральную кнопку; при активном интерфейсе показываем её с иконкой Паузы и по нажатию ставим паузу */
+.video-modal-content.adviral-controls-idle .plyr--playing .plyr__control--overlaid,
+.AdviralPlayer.adviral-controls-idle .plyr--playing .plyr__control--overlaid {
   opacity: 0 !important;
   visibility: hidden !important;
 }
@@ -6041,7 +6067,7 @@ input::placeholder, textarea::placeholder {
   background: transparent !important;
 }
 
-/* Панель управления: высота только от верхней границы прогресс-бара (seek) до низа — тайм над панелью */
+/* Панель управления: тайм и прогресс слева; громкость, настройки, полный экран — справа */
 .video-modal-content .plyr__controls,
 .AdviralPlayer .plyr__controls {
   position: absolute !important;
@@ -6064,6 +6090,11 @@ input::placeholder, textarea::placeholder {
   padding-top: 0 !important;
   box-sizing: border-box !important;
   transition: transform 0.25s ease, opacity 0.25s ease !important;
+}
+
+.video-modal-content .plyr__controls .plyr__volume,
+.AdviralPlayer .plyr__controls .plyr__volume {
+  margin-left: auto !important;
 }
 
 /* ADViralPlayer: панель уезжает вниз после 3 с без взаимодействия (класс выставляется из JS) */
@@ -6583,8 +6614,23 @@ input::placeholder, textarea::placeholder {
     max-height: calc(100vh - 80px);
     max-height: min(100vh - 80px, 100dvh - 80px);
     padding: 48px 16px 16px 16px;
-    overflow: hidden;
+    overflow: hidden !important;
+    overflow-y: hidden !important;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .service-popup-scroll {
+    overflow: hidden !important;
+    min-height: 0;
+    flex: 1 1 auto;
+  }
+
+  .service-popup-wrapper {
+    transform: scale(0.82);
+    transform-origin: center center;
   }
 
   .service-popup-close {
