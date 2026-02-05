@@ -1826,9 +1826,14 @@ section[id] { scroll-margin-top: var(--header-h); }
   transition: transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out; /* загорание/потухание — 0.25s (250ms) */
   min-height: 0; /* чтобы карточка могла сжиматься в grid и показывать overflow */
   overflow-y: auto; /* при длинном тексте — прокрутка внутри карточки */
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+#services .cards .card::-webkit-scrollbar {
+  display: none !important;
 }
 
-/* Сенсорные устройства: отключаем визуальный эффект hover (увеличение, подсветка), скрываем скроллбар на карточках */
+/* Сенсорные устройства: отключаем визуальный эффект hover (увеличение, подсветка) */
 @media (hover: none) {
   #services .cards .card:hover,
   #services .cards .card:focus-within,
@@ -1851,14 +1856,6 @@ section[id] { scroll-margin-top: var(--header-h); }
   #services .cards .card:nth-child(-n+3).hover-tap-active,
   #services .cards .card:nth-child(n+7).hover-tap-active {
     box-shadow: none !important;
-  }
-  #services .cards .card {
-    overflow-y: hidden;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-  #services .cards .card::-webkit-scrollbar {
-    display: none;
   }
 }
 /* Класс .card-scale-on добавляется/снимается из JS в такт с загоранием границы; размер карточки не меняется (без scale), только подсветка */
@@ -5941,9 +5938,17 @@ input::placeholder, textarea::placeholder {
   display: none !important;
 }
 
-/* Настройка кнопки Play по центру видео (иконка и круг ровно по центру) */
+/* Настройка кнопки Play/Пауза по центру видео: свои иконки icon_play.svg и icon_pause.svg */
 .video-modal-content .plyr__control--overlaid,
 .AdviralPlayer .plyr__control--overlaid {
+  position: fixed !important;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: clamp(40px, 11vmin, 72px) !important;
+  height: clamp(40px, 11vmin, 72px) !important;
+  min-width: 40px !important;
+  min-height: 40px !important;
   background: rgba(20, 20, 22, 0.6) !important;
   -webkit-backdrop-filter: blur(var(--blur)) !important;
   backdrop-filter: blur(var(--blur)) !important;
@@ -5956,26 +5961,60 @@ input::placeholder, textarea::placeholder {
   color: #fff !important;
   transition: all 0.2s ease !important;
 }
+/* В полноэкранном режиме кнопка крупнее */
+.video-modal-content .plyr:fullscreen .plyr__control--overlaid,
+.video-modal-content .plyr:-webkit-full-screen .plyr__control--overlaid,
+.video-modal-content .plyr:-ms-fullscreen .plyr__control--overlaid,
+.AdviralPlayer .plyr:fullscreen .plyr__control--overlaid,
+.AdviralPlayer .plyr:-webkit-full-screen .plyr__control--overlaid,
+.AdviralPlayer .plyr:-ms-fullscreen .plyr__control--overlaid {
+  width: clamp(56px, 14vmin, 120px) !important;
+  height: clamp(56px, 14vmin, 120px) !important;
+  min-width: 56px !important;
+  min-height: 56px !important;
+}
 .AdviralPlayer .plyr__control--overlaid svg,
 .video-modal-content .plyr__control--overlaid svg {
-  display: block !important;
-  margin: auto !important;
+  display: none !important;
+}
+/* Иконка масштабируется относительно размера кнопки (55% — всегда внутри круга) */
+.video-modal-content .plyr__control--overlaid::after,
+.AdviralPlayer .plyr__control--overlaid::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  -webkit-mask-image: url("./assets/images/icons/icon_play.svg") !important;
+  mask-image: url("./assets/images/icons/icon_play.svg") !important;
+  -webkit-mask-size: 55% 55% !important;
+  mask-size: 55% 55% !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  background-color: #fff !important;
+  pointer-events: none !important;
+}
+.video-modal-content .plyr--playing .plyr__control--overlaid::after,
+.AdviralPlayer .plyr--playing .plyr__control--overlaid::after {
+  -webkit-mask-image: url("./assets/images/icons/icon_pause.svg") !important;
+  mask-image: url("./assets/images/icons/icon_pause.svg") !important;
 }
 
 .video-modal-content .plyr__control--overlaid:hover,
 .video-modal-content .plyr__control--overlaid:active,
 .video-modal-content .plyr__control--overlaid:focus-visible {
-  background: rgba(176, 134, 249, 0.2) !important; /* Фиолетовая подсветка при наведении как у стрелок */
+  background: rgba(176, 134, 249, 0.2) !important;
   border-color: rgba(176, 134, 249, 0.4) !important;
-  box-shadow: none !important; /* Убираем тень */
+  box-shadow: none !important;
   transform: translate(-50%, -50%) scale(1.1) !important;
 }
 
-/* Когда интерфейс скрыт (idle) и видео играет — скрываем центральную кнопку; при активном интерфейсе показываем её с иконкой Паузы и по нажатию ставим паузу */
-.video-modal-content.adviral-controls-idle .plyr--playing .plyr__control--overlaid,
-.AdviralPlayer.adviral-controls-idle .plyr--playing .plyr__control--overlaid {
+/* Центральная кнопка Play/Пауза: скрывается вместе с интерфейсом после неактивности; при активном интерфейсе видна (иконка Play при паузе, Пауза при воспроизведении) */
+.video-modal-content.adviral-controls-idle .plyr__control--overlaid,
+.AdviralPlayer.adviral-controls-idle .plyr__control--overlaid {
   opacity: 0 !important;
   visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 /* Настройка цветов Plyr */
@@ -6048,10 +6087,20 @@ input::placeholder, textarea::placeholder {
   color: var(--primary-1) !important;
 }
 
-/* Убираем кнопку «Назад» (Go back to previous menu) в меню настроек */
+/* Убираем кнопки «Назад» (Go back) в меню качества и скорости */
 .video-modal-content .plyr__menu__container .plyr__control--back,
-.AdviralPlayer .plyr__menu__container .plyr__control--back {
+.AdviralPlayer .plyr__menu__container .plyr__control--back,
+.video-modal-content [id$="-quality"] .plyr__control--back,
+.video-modal-content [id$="-speed"] .plyr__control--back,
+.AdviralPlayer [id$="-quality"] .plyr__control--back,
+.AdviralPlayer [id$="-speed"] .plyr__control--back {
   display: none !important;
+  visibility: hidden !important;
+  position: absolute !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0,0,0,0) !important;
 }
 
 /* Убираем кружки (индикаторы радио) слева у пунктов Quality/Speed — и ::before, и ::after */
@@ -6092,9 +6141,53 @@ input::placeholder, textarea::placeholder {
   transition: transform 0.25s ease, opacity 0.25s ease !important;
 }
 
-.video-modal-content .plyr__controls .plyr__volume,
-.AdviralPlayer .plyr__controls .plyr__volume {
+/* Обёртка «громкость + настройки + полный экран» привязана к правому краю, элементы впритык */
+.video-modal-content .plyr__controls .adviral-controls-right,
+.AdviralPlayer .plyr__controls .adviral-controls-right {
   margin-left: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0 !important;
+  flex: 0 0 auto !important;
+}
+.video-modal-content .adviral-controls-right .plyr__volume,
+.video-modal-content .adviral-controls-right .plyr__controls__item.plyr__volume,
+.AdviralPlayer .adviral-controls-right .plyr__volume,
+.AdviralPlayer .adviral-controls-right .plyr__controls__item.plyr__volume {
+  display: flex !important;
+  flex: 0 0 auto !important;
+  margin: 0 !important;
+}
+.video-modal-content .adviral-controls-right .plyr__menu,
+.AdviralPlayer .adviral-controls-right .plyr__menu {
+  flex: 0 0 auto !important;
+  margin: 0 !important;
+}
+.video-modal-content .plyr__controls__item.plyr__volume,
+.AdviralPlayer .plyr__controls__item.plyr__volume {
+  display: flex !important;
+}
+
+/* На мобильных и планшетах (сенсорные): громкость не показываем и не управляем — громкость видео = громкость устройства */
+@media (max-width: 1024px) {
+  .video-modal-content .adviral-controls-right .plyr__volume,
+  .video-modal-content .adviral-controls-right .plyr__controls__item.plyr__volume,
+  .video-modal-content .plyr__controls .plyr__volume,
+  .AdviralPlayer .adviral-controls-right .plyr__volume,
+  .AdviralPlayer .adviral-controls-right .plyr__controls__item.plyr__volume,
+  .AdviralPlayer .plyr__controls .plyr__volume {
+    display: none !important;
+  }
+}
+@media (hover: none) {
+  .video-modal-content .adviral-controls-right .plyr__volume,
+  .video-modal-content .adviral-controls-right .plyr__controls__item.plyr__volume,
+  .video-modal-content .plyr__controls .plyr__volume,
+  .AdviralPlayer .adviral-controls-right .plyr__volume,
+  .AdviralPlayer .adviral-controls-right .plyr__controls__item.plyr__volume,
+  .AdviralPlayer .plyr__controls .plyr__volume {
+    display: none !important;
+  }
 }
 
 /* ADViralPlayer: панель уезжает вниз после 3 с без взаимодействия (класс выставляется из JS) */
@@ -6105,19 +6198,23 @@ input::placeholder, textarea::placeholder {
   pointer-events: none !important;
 }
 
-/* Общий блок для текущего времени и длительности (обёртка из JS) */
+/* Общий блок для текущего времени, "/" и длительности — адаптивная ширина под содержимое */
 .video-modal-content .plyr__time-group {
   position: absolute !important;
   bottom: calc(100% + 26px) !important;
   left: 12px !important;
   display: flex !important;
   align-items: center !important;
-  gap: 0.5em !important;
+  gap: 0.35em !important;
   margin: 0 0 8px 0 !important;
   z-index: 2 !important;
+  width: auto !important;
+  min-width: 8em !important;
+  max-width: none !important;
+  overflow: visible !important;
 }
 
-/* Фиксированная ширина «окна» для времени: не прыгает при смене цифр, хватает для 99:59 */
+/* Ширина «окна» для времени: не прыгает при смене цифр */
 .video-modal-content .plyr__time-group .plyr__time--current,
 .video-modal-content .plyr__time-group .plyr__time--duration {
   position: relative !important;
@@ -6125,19 +6222,27 @@ input::placeholder, textarea::placeholder {
   left: auto !important;
   top: auto !important;
   margin: 0 !important;
+  padding: 0 !important;
   min-width: 2.8em !important;
   width: 2.8em !important;
   flex-shrink: 0 !important;
   box-sizing: border-box !important;
+  letter-spacing: 0 !important;
+  white-space: nowrap !important;
 }
 
-/* Разделитель "/" между текущим временем и длительностью — равные отступы за счёт gap */
+/* Разделитель "/" — всегда виден, место под один символ */
 .video-modal-content .plyr__time-separator {
   color: inherit !important;
   font-size: inherit !important;
   margin: 0 !important;
-  padding: 0 0.25em !important;
+  padding: 0 0.1em !important;
   flex-shrink: 0 !important;
+  min-width: 1ch !important;
+  width: 1ch !important;
+  display: inline-block !important;
+  text-align: center !important;
+  box-sizing: content-box !important;
 }
 
 /* "/" удалён по запросу */
@@ -6145,8 +6250,10 @@ input::placeholder, textarea::placeholder {
   content: "" !important;
 }
 
-.video-modal-content .plyr__time--duration::before {
+.video-modal-content .plyr__time--duration::before,
+.video-modal-content .plyr__time--duration::after {
   content: "" !important;
+  display: none !important;
 }
 
 /* Тайм вне обёртки (до выполнения JS) — позиция над прогресс-баром */
@@ -6165,16 +6272,16 @@ input::placeholder, textarea::placeholder {
   left: 72px !important;
 }
 
-/* Прогресс-бар (seek + buffer) — над .plyr__controls, под таймом: общий ряд между таймом и кнопками */
+/* Прогресс-бар — над .plyr__controls, чуть короче слева и справа, симметрично по центру */
 .video-modal-content .plyr__progress__container,
 .video-modal-content .plyr__controls .plyr__progress__container {
   position: absolute !important;
   bottom: 100% !important;
   top: auto !important;
-  left: 0 !important;
-  right: 0 !important;
-  width: 100% !important;
-  margin: 0 0 0 0 !important;
+  left: 12px !important;
+  right: 12px !important;
+  width: auto !important;
+  margin: 0 !important;
   padding: 0 !important;
   height: 26px !important;
   min-height: 26px !important;
@@ -6501,13 +6608,9 @@ input::placeholder, textarea::placeholder {
   }
 }
 
-/* Мобильная версия (до 768px): тот же плеер, громкость отключена, контролы выровнены, кнопка Play по центру */
+/* Мобильная версия (до 768px): громкость скрыта — настройки и полный экран остаются справа */
 @media (max-width: 768px) {
-  .video-modal-content .plyr__volume,
-  .video-modal-content .plyr__controls__item.plyr__volume,
-  .video-modal-content .plyr__control[data-plyr="mute"] {
-    display: none !important;
-  }
+  /* adviral-controls-right уже привязан к правому краю */
   /* AdviralPlayer: иконка Play и круг ровно по центру экрана на мобильных */
   .AdviralPlayer .plyr__control--overlaid,
   .video-modal-content .plyr__control--overlaid {
@@ -6549,7 +6652,7 @@ input::placeholder, textarea::placeholder {
   }
 }
 
-/* Мобильный ландшафт: мало высоты — уменьшаем окно плеера, чтобы не обрезалось хедером браузера */
+/* Мобильный ландшафт: мало высоты — отступ сверху под хедер браузера, окно плеера не обрезается */
 @media (orientation: landscape) and (max-height: 500px) {
   .video-modal-container {
     width: 92%;
@@ -6558,6 +6661,7 @@ input::placeholder, textarea::placeholder {
     min-height: 0;
     align-items: center !important;
     justify-content: center;
+    padding-top: max(12px, env(safe-area-inset-top)) !important;
   }
 
   .video-modal-content {
@@ -6590,13 +6694,13 @@ input::placeholder, textarea::placeholder {
     overflow-y: visible !important;
   }
 
-  /* Попап услуг в мобильном ландшафте: строго в границах экрана, крестик внутри окна, без скроллбара */
+  /* Попап услуг в мобильном ландшафте: отступ сверху под хедер браузера, в границах экрана */
   .service-popup-wrapper {
     width: auto;
     max-width: calc(100vw - 24px);
     max-height: calc(100vh - 24px);
     max-height: min(100vh - 24px, 100dvh - 24px);
-    padding: 0 12px;
+    padding: max(12px, env(safe-area-inset-top)) 12px 12px 12px;
     box-sizing: border-box;
     transform: scale(0.85);
     transform-origin: center center;
@@ -6724,12 +6828,6 @@ input::placeholder, textarea::placeholder {
     background: #8B5CF6 !important;
     width: 16px !important;
     height: 16px !important;
-  }
-  
-  /* Скрываем элементы управления громкостью на мобильных */
-  .video-modal-content .plyr__volume,
-  .video-modal-content .plyr__controls__item.plyr__volume {
-    display: none !important;
   }
   
   /* Меню настроек качества */

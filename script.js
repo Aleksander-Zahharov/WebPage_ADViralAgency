@@ -2016,6 +2016,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ];
         
         const isMobile = window.innerWidth <= 768;
+        const isTouchOrTablet = window.innerWidth <= 1024 || typeof document !== "undefined" && "ontouchstart" in document.documentElement;
         // На мобильных: нативный fullscreen на iOS (webkitEnterFullscreen) и разблокировка ориентации при fullscreen,
         // чтобы видео раскрывалось на весь экран и могло поворачиваться в ландшафт при повороте устройства
         const fullscreenConfig = isMobile
@@ -2049,7 +2050,7 @@ document.addEventListener("DOMContentLoaded", () => {
           hideControls: false,
           resetOnEnd: true,
           ratio: null,
-          volume: isMobile ? 1 : 0.5
+          volume: isTouchOrTablet ? 1 : 0.5
         });
 
         // Обработка ошибок загрузки
@@ -2061,9 +2062,19 @@ document.addEventListener("DOMContentLoaded", () => {
         const modalContent = modalPlayer.closest(".video-modal-content");
         const menuContainer = modalContent?.querySelector(".plyr__menu__container");
         if (menuContainer) {
-          // При открытии меню — показывать только домашнюю панель (observer + клик по шестерёнке как запасной вариант)
+          const home = () => menuContainer.querySelector("[id$=\"-home\"]");
+          const quality = () => menuContainer.querySelector("[id$=\"-quality\"]");
+          const speed = () => menuContainer.querySelector("[id$=\"-speed\"]");
+          // При открытии меню — показывать только домашнюю панель и сбрасывать видимость панелей (чтобы шестерёнка снова открывала меню после смены настроек)
           const ensureShowHome = () => {
-            if (!menuContainer.hidden) menuContainer.classList.add("adviral-menu-show-home");
+            if (menuContainer.hidden) {
+              menuContainer.classList.remove("adviral-menu-show-home");
+              return;
+            }
+            menuContainer.classList.add("adviral-menu-show-home");
+            const h = home(), q = quality(), s = speed();
+            [q, s].filter(Boolean).forEach((p) => { p.hidden = true; });
+            if (h) h.hidden = false;
           };
           const menuObserver = new MutationObserver(ensureShowHome);
           menuObserver.observe(menuContainer, { attributes: true, attributeFilter: ["hidden"] });
@@ -2195,6 +2206,24 @@ document.addEventListener("DOMContentLoaded", () => {
             timeGroup.appendChild(timeCurrent);
             timeGroup.appendChild(separator);
             timeGroup.appendChild(timeDuration);
+          }
+
+          // Удаляем кнопки «Go back» в подменю качества и скорости
+          content?.querySelectorAll(".plyr__menu__container .plyr__control--back").forEach((btn) => btn.remove());
+
+          // Обёртка для громкости, настроек и полного экрана — привязана к правому краю панели
+          if (controls && !content.querySelector(".adviral-controls-right")) {
+            const volume = controls.querySelector(".plyr__controls__item.plyr__volume") || controls.querySelector(".plyr__volume");
+            const menu = controls.querySelector(".plyr__menu");
+            const fullscreenBtn = controls.querySelector(".plyr__control[data-plyr=\"fullscreen\"]") || controls.querySelector("button[data-plyr=\"fullscreen\"]");
+            if (volume && menu && fullscreenBtn) {
+              const rightGroup = doc.createElement("div");
+              rightGroup.className = "adviral-controls-right";
+              controls.insertBefore(rightGroup, volume);
+              rightGroup.appendChild(volume);
+              rightGroup.appendChild(menu);
+              rightGroup.appendChild(fullscreenBtn);
+            }
           }
           
           // Добавляем поддержку жестов на мобильных устройствах
