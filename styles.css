@@ -198,8 +198,15 @@
   }
 }
 [data-theme="light"] .footer-right .social-icon {
+  filter: brightness(0) saturate(100%); /* брендовый чёрный, как остальные элементы футера */
+  opacity: 1;
+}
+/* Переопределяем базовый filter для иконок в nav.footer-right.social (иначе правило ниже в файле перекрывает) */
+[data-theme="light"] .footer-right.social .social-icon.instagram,
+[data-theme="light"] .footer-right.social .social-icon.facebook,
+[data-theme="light"] .footer-right.social .social-icon.tiktok {
   filter: brightness(0) saturate(100%);
-  opacity: 0.75;
+  opacity: 1;
 }
 [data-theme="light"] .footer-left .author-email-link.hover-tap-active,
 [data-theme="light"] .footer-center a.hover-tap-active,

@@ -1190,7 +1190,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const siteHeader = doc.querySelector('.site-header');
-  const scrollThreshold = 80;
+  const scrollThreshold = 1;
   window.addEventListener('scroll', () => {
     const currentY = window.scrollY || window.pageYOffset;
     if (currentY > lastScrollY) {
