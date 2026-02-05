@@ -6198,22 +6198,25 @@ input::placeholder, textarea::placeholder {
   pointer-events: none !important;
 }
 
-/* Блок времени — та же ширина и позиция, что и прогресс-бар (left/right 12px) */
-.video-modal-content .plyr__time-group {
-  position: absolute !important;
-  bottom: calc(100% + 26px) !important;
-  left: 12px !important;
-  right: 12px !important;
+/* Блок времени — под прогресс-баром, в одном ряду с кнопками (Settings, Fullscreen), ширина по содержимому */
+.video-modal-content .plyr__time-group,
+.AdviralPlayer .plyr__time-group {
+  position: relative !important;
+  bottom: auto !important;
+  left: auto !important;
+  right: auto !important;
   display: flex !important;
   align-items: center !important;
   gap: 0.35em !important;
-  margin: 0 0 8px 0 !important;
+  margin: 0 !important;
+  padding: 0 10px !important;
   z-index: 2 !important;
-  width: auto !important;
+  width: max-content !important;
   min-width: 0 !important;
-  max-width: none !important;
+  flex-shrink: 0 !important;
   overflow: visible !important;
   box-sizing: border-box !important;
+  align-self: center !important;
 }
 
 /* Ширина «окна» для времени: не прыгает при смене цифр */
