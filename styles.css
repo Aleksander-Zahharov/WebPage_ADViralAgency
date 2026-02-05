@@ -6198,20 +6198,22 @@ input::placeholder, textarea::placeholder {
   pointer-events: none !important;
 }
 
-/* Общий блок для текущего времени, "/" и длительности — адаптивная ширина под содержимое */
+/* Блок времени — та же ширина и позиция, что и прогресс-бар (left/right 12px) */
 .video-modal-content .plyr__time-group {
   position: absolute !important;
   bottom: calc(100% + 26px) !important;
   left: 12px !important;
+  right: 12px !important;
   display: flex !important;
   align-items: center !important;
   gap: 0.35em !important;
   margin: 0 0 8px 0 !important;
   z-index: 2 !important;
   width: auto !important;
-  min-width: 8em !important;
+  min-width: 0 !important;
   max-width: none !important;
   overflow: visible !important;
+  box-sizing: border-box !important;
 }
 
 /* Ширина «окна» для времени: не прыгает при смене цифр */
@@ -6231,12 +6233,13 @@ input::placeholder, textarea::placeholder {
   white-space: nowrap !important;
 }
 
-/* Разделитель "/" — всегда виден, место под один символ */
-.video-modal-content .plyr__time-separator {
+/* Разделитель — ровно один "/" без пробелов и без дублирования */
+.video-modal-content .plyr__time-separator,
+.AdviralPlayer .plyr__time-separator {
   color: inherit !important;
   font-size: inherit !important;
   margin: 0 !important;
-  padding: 0 0.1em !important;
+  padding: 0 !important;
   flex-shrink: 0 !important;
   min-width: 1ch !important;
   width: 1ch !important;
@@ -6244,16 +6247,32 @@ input::placeholder, textarea::placeholder {
   text-align: center !important;
   box-sizing: content-box !important;
 }
+.video-modal-content .plyr__time-separator::before,
+.video-modal-content .plyr__time-separator::after,
+.AdviralPlayer .plyr__time-separator::before,
+.AdviralPlayer .plyr__time-separator::after {
+  content: none !important;
+  display: none !important;
+}
 
 /* "/" удалён по запросу */
 .video-modal-content .plyr__time--current::after {
   content: "" !important;
 }
 
+/* Убираем лишний "/" у длительности — слэш только в span.plyr__time-separator */
 .video-modal-content .plyr__time--duration::before,
-.video-modal-content .plyr__time--duration::after {
-  content: "" !important;
+.video-modal-content .plyr__time--duration::after,
+.video-modal-content .plyr__time-group .plyr__time--duration::before,
+.video-modal-content .plyr__time-group .plyr__time--duration::after,
+.AdviralPlayer .plyr__time--duration::before,
+.AdviralPlayer .plyr__time--duration::after,
+.AdviralPlayer .plyr__time-group .plyr__time--duration::before,
+.AdviralPlayer .plyr__time-group .plyr__time--duration::after {
+  content: none !important;
   display: none !important;
+  -webkit-mask: none !important;
+  mask: none !important;
 }
 
 /* Тайм вне обёртки (до выполнения JS) — позиция над прогресс-баром */

@@ -2207,6 +2207,20 @@ document.addEventListener("DOMContentLoaded", () => {
             timeGroup.appendChild(separator);
             timeGroup.appendChild(timeDuration);
           }
+          // Убираем лишний "/" из текста длительности и оставляем в разделителе ровно один "/" без пробелов
+          const normalizeTimeDisplay = () => {
+            const durationEl = content?.querySelector(".plyr__time--duration");
+            if (durationEl && /^\s*\/\s*/.test(durationEl.textContent)) {
+              durationEl.textContent = durationEl.textContent.replace(/^\s*\/\s*/, "").trim();
+            }
+            const sep = content?.querySelector(".plyr__time-separator");
+            if (sep && sep.textContent !== "/") {
+              sep.textContent = "/";
+            }
+          };
+          normalizeTimeDisplay();
+          player.on("timeupdate", normalizeTimeDisplay);
+          player.on("loadedmetadata", normalizeTimeDisplay);
 
           // Удаляем кнопки «Go back» в подменю качества и скорости
           content?.querySelectorAll(".plyr__menu__container .plyr__control--back").forEach((btn) => btn.remove());
