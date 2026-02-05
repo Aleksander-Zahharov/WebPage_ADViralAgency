@@ -2130,41 +2130,9 @@ document.addEventListener("DOMContentLoaded", () => {
           });
         }
 
-        // Плей/стоп по нажатию на экран (область видео): срабатывает при клике и тапе, в capture чтобы не перехватывал Plyr
+        // По нажатию на экран только показываем интерфейс плеера; пауза — только по кнопке Play (overlaid) в центре
         if (modalContent && !modalContent.hasAttribute("data-adviral-click-bound")) {
           modalContent.setAttribute("data-adviral-click-bound", "1");
-          let lastTapTime = 0;
-          const TAP_DEBOUNCE_MS = 350;
-          function isVideoAreaClick(target) {
-            if (!target || !modalContent.contains(target)) return false;
-            if (target.closest(".plyr__controls") || target.closest(".video-modal-close") || target.closest(".modal-arrow") || target.closest('[data-plyr="fullscreen"]')) return false;
-            return true;
-          }
-          function handlePlayPauseTap(e) {
-            if (!isVideoAreaClick(e.target)) return;
-            if (player) {
-              player.togglePlay();
-              e.preventDefault();
-              e.stopPropagation();
-            }
-          }
-          modalContent.addEventListener("touchend", (e) => {
-            if (!isVideoAreaClick(e.target)) return;
-            const now = Date.now();
-            if (now - lastTapTime < TAP_DEBOUNCE_MS) return;
-            lastTapTime = now;
-            if (player) player.togglePlay();
-            e.preventDefault();
-          }, { capture: true, passive: false });
-          modalContent.addEventListener("click", (e) => {
-            if (!isVideoAreaClick(e.target)) return;
-            if (Date.now() - lastTapTime < TAP_DEBOUNCE_MS) {
-              e.preventDefault();
-              e.stopPropagation();
-              return;
-            }
-            handlePlayPauseTap(e);
-          }, { capture: true });
         }
 
         // Мобильная версия: кнопка «на весь экран» — прямой вызов webkitEnterFullscreen по жесту пользователя (иначе на iOS не срабатывает)
@@ -2220,7 +2188,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const timeGroup = doc.createElement("div");
             timeGroup.className = "plyr__time-group";
             const separator = doc.createElement("span");
-            separator.className = "plyr__time-separator";
+            separator.className = "plyr__time plyr__time-separator";
             separator.setAttribute("aria-hidden", "true");
             separator.textContent = "/";
             controls.insertBefore(timeGroup, timeCurrent);
@@ -2245,49 +2213,37 @@ document.addEventListener("DOMContentLoaded", () => {
           let tapTimeout = null;
           let indicatorTimeout = null;
           
+          const SEEK_SEC = 5;
           function showSeekIndicator(direction) {
             if (!seekIndicator) return;
-            
-            // Устанавливаем иконку направления
-            seekIndicator.textContent = direction === 'forward' ? '⏩' : '⏪';
+            seekIndicator.textContent = direction === 'forward' ? '+5 sec' : '-5 sec';
             seekIndicator.classList.add('show');
-            
-            // Скрываем индикатор через 500ms
             clearTimeout(indicatorTimeout);
-            indicatorTimeout = setTimeout(() => {
-              seekIndicator.classList.remove('show');
-            }, 500);
+            indicatorTimeout = setTimeout(() => seekIndicator.classList.remove('show'), 500);
           }
-          
+
           videoWrapper.addEventListener('touchend', (e) => {
-            const currentTime = new Date().getTime();
-            const tapLength = currentTime - lastTapTime;
-            
-            // Двойное нажатие (в течение 300ms)
+            const now = Date.now();
+            const tapLength = now - lastTapTime;
             if (tapLength < 300 && tapLength > 0) {
               clearTimeout(tapTimeout);
-              
-              // Определяем, где нажали (левая или правая половина экрана)
-              const touch = e.changedTouches[0];
+              const touch = e.changedTouches?.[0];
+              if (!touch) { lastTapTime = 0; return; }
               const rect = videoWrapper.getBoundingClientRect();
               const x = touch.clientX - rect.left;
               const screenWidth = rect.width;
-              
-              if (player && player.currentTime !== undefined) {
+              if (player && typeof player.currentTime !== 'undefined') {
                 if (x < screenWidth / 2) {
-                  // Левая половина - перемотка назад на 10 секунд
-                  player.rewind(10);
+                  player.rewind(SEEK_SEC);
                   showSeekIndicator('backward');
                 } else {
-                  // Правая половина - перемотка вперед на 10 секунд
-                  player.forward(10);
+                  player.forward(SEEK_SEC);
                   showSeekIndicator('forward');
                 }
               }
-              
-              lastTapTime = 0; // Сброс для следующего двойного нажатия
+              lastTapTime = 0;
             } else {
-              lastTapTime = currentTime;
+              lastTapTime = now;
             }
           }, { passive: true });
         }

@@ -5721,20 +5721,27 @@ input::placeholder, textarea::placeholder {
   overflow-y: auto; /* Добавляем прокрутку если контент не помещается */
 }
 
-/* Индикатор перемотки для мобильных устройств */
+/* Скрыть кнопку Play в панели управления; главная — только overlaid (центр экрана) */
+.video-modal-content .plyr__controls .plyr__control[data-plyr="play"],
+.AdviralPlayer .plyr__controls .plyr__control[data-plyr="play"] {
+  display: none !important;
+}
+
+/* Индикатор перемотки для сенсорной версии: «+5 sec» / «-5 sec» */
 .video-seek-indicator {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   background: rgba(0, 0, 0, 0.7);
-  border-radius: 50%;
-  width: 80px;
-  height: 80px;
+  border-radius: 12px;
+  padding: 12px 20px;
+  min-width: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 32px;
+  font-size: 20px;
+  font-weight: 600;
   color: #fff;
   pointer-events: none;
   opacity: 0;
