@@ -1,6 +1,6 @@
 # ADViralPlayer
 
-Плеер на базе [Plyr](https://github.com/sampotts/plyr) с единым дизайном: модальное окно видео, центральная кнопка Play/Пауза, прогресс-бар по центру, время под прогрессом в одном ряду с кнопками Settings и Fullscreen, меню Quality/Speed без кнопок «Назад», скрытие панели через 3 с без взаимодействия.
+Плеер на базе [Plyr](https://github.com/sampotts/plyr) с единым дизайном: модальное окно видео, центральная кнопка Play/Пауза, прогресс-бар по центру, время под прогрессом (тот же отступ слева, что и у прогресс-бара — 12px) в одном ряду с кнопками Settings и Fullscreen, меню Quality/Speed без кнопок «Назад», скрытие панели через 3 с без взаимодействия, громкость скрыта на мобильных/планшетах.
 
 ## Зависимости
 
@@ -57,6 +57,22 @@ const player = ADViralPlayer.init(videoEl);
 ADViralPlayer.init(videoEl, { seekIndicatorId: 'video-seek-indicator' });
 ```
 
+## Смена видео (важно)
+
+При переключении на другое видео **не вызывайте** `player.source = { ... }` — Plyr пересоздаёт весь UI и сбрасывает настройки. Меняйте только источник у элемента `<video>` и вызывайте `load()`:
+
+```javascript
+videoElement.querySelector('source').src = newVideoUrl;
+videoElement.src = newVideoUrl;
+videoElement.load();
+// Воспроизведение после загрузки:
+videoElement.addEventListener('loadeddata', function playOnce() {
+  videoElement.removeEventListener('loadeddata', playOnce);
+  player.play().catch(function () {});
+}, { once: true });
+if (videoElement.readyState >= 2) player.play().catch(function () {});
+```
+
 ## Пути к ресурсам в CSS
 
 В `ADViralPlayer.css` используются пути к иконкам:
@@ -77,8 +93,8 @@ ADViralPlayer.init(videoEl, { seekIndicatorId: 'video-seek-indicator' });
 | Файл | Описание |
 |------|----------|
 | `README.md` | Эта инструкция |
-| `ADViralPlayer.js` | Конфиг Plyr и логика после `ready`: time-group, seek fix, adviral-controls-right, удаление кнопок «Назад», idle, мобильные жесты |
-| `ADViralPlayer.css` | Все стили плеера (модалка, контролы, прогресс, меню, кнопка Play по центру, адаптив). Полный дубликат блока из основного проекта. |
+| `ADViralPlayer.js` | Конфиг Plyr и `applyAdviralControlsLayout()`: time-group (отступ 12px как у прогресс-бара), seek fix, adviral-controls-right, скрытие громкости на мобильных, удаление кнопок «Назад», idle, мобильные жесты. При смене видео — только `video.src` + `video.load()`, не `player.source`. |
+| `ADViralPlayer.css` | Все стили плеера (модалка, контролы, прогресс, время margin-left 12px, меню, кнопка Play по центру, адаптив). Полный дубликат блока из основного проекта. |
 
 Скопируйте папку `ADViralPlayer` в новый проект и подключите CSS/JS как выше — плеер будет выглядеть и работать так же, как на сайте ADViralAgency.
 
@@ -86,4 +102,4 @@ ADViralPlayer.init(videoEl, { seekIndicatorId: 'video-seek-indicator' });
 
 **Синхронизация с основным проектом:** если вы правите плеер в `styles.css` или `script.js`, обновить сохранённую копию можно так:
 - **Стили:** в `styles.css` блок ADViralPlayer начинается с комментария `/* =========================` и строки `ADViralPlayer — единый дизайн плеера` (около строки 5707) и заканчивается перед следующим крупным блоком; медиазапросы для плеера разбросаны до ~6995. Скопируйте актуальный диапазон в `ADViralPlayer.css`.
-- **Логика:** инициализация Plyr и всё в `player.on("ready", ...)` в `script.js` (поиск по `initPlayer` / `new Plyr`) продублированы в `ADViralPlayer.js`.
+- **Логика:** инициализация Plyr и функция `applyAdviralControlsLayout()` в `script.js` (поиск по `initPlayer` / `applyAdviralControlsLayout`) продублированы в `ADViralPlayer.js`. При смене видео в основном проекте используется только `setupQualitySources()` + `modalPlayer.load()`, без `player.source`.

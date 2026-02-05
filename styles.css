@@ -1826,8 +1826,12 @@ section[id] { scroll-margin-top: var(--header-h); }
   transition: transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out; /* загорание/потухание — 0.25s (250ms) */
   min-height: 0; /* чтобы карточка могла сжиматься в grid и показывать overflow */
   overflow-y: auto; /* при длинном тексте — прокрутка внутри карточки */
-  scrollbar-width: none !important;
   -ms-overflow-style: none !important;
+}
+@supports (scrollbar-width: none) {
+  #services .cards .card {
+    scrollbar-width: none !important;
+  }
 }
 #services .cards .card::-webkit-scrollbar {
   display: none !important;
@@ -2869,8 +2873,12 @@ section[id] { scroll-margin-top: var(--header-h); }
   }
   .service-popup-scroll {
     overflow: hidden !important;
-    scrollbar-width: none;
     -ms-overflow-style: none;
+  }
+  @supports (scrollbar-width: none) {
+    .service-popup-scroll {
+      scrollbar-width: none;
+    }
   }
   .service-popup-scroll::-webkit-scrollbar {
     display: none;

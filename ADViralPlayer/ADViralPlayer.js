@@ -179,11 +179,14 @@
     }
     if (content) setupAdviralControlsIdle(content);
 
-    player.on("ready", function () {
-      var controls = content && content.querySelector(".plyr__controls");
-      var timeCurrent = content && content.querySelector(".plyr__time--current");
-      var timeDuration = content && content.querySelector(".plyr__time--duration");
-      if (controls && timeCurrent && timeDuration && content && !content.querySelector(".plyr__time-group")) {
+    function applyAdviralControlsLayout() {
+      if (!content || !player) return;
+      var controls = content.querySelector(".plyr__controls");
+      if (!controls) return;
+
+      var timeCurrent = content.querySelector(".plyr__time--current");
+      var timeDuration = content.querySelector(".plyr__time--duration");
+      if (timeCurrent && timeDuration && !content.querySelector(".plyr__time-group")) {
         var timeGroup = doc.createElement("div");
         timeGroup.className = "plyr__time-group";
         var separator = doc.createElement("span");
@@ -195,19 +198,23 @@
         timeGroup.appendChild(separator);
         timeGroup.appendChild(timeDuration);
       }
+
       function normalizeTimeDisplay() {
-        var durationEl = content && content.querySelector(".plyr__time--duration");
+        var durationEl = content.querySelector(".plyr__time--duration");
         if (durationEl && /^\s*\/\s*/.test(durationEl.textContent)) {
           durationEl.textContent = durationEl.textContent.replace(/^\s*\/\s*/, "").trim();
         }
-        var sep = content && content.querySelector(".plyr__time-separator");
+        var sep = content.querySelector(".plyr__time-separator");
         if (sep && sep.textContent !== "/") {
           sep.textContent = "/";
         }
       }
+      if (!player._adviralNormalizeBound) {
+        player.on("timeupdate", normalizeTimeDisplay);
+        player.on("loadedmetadata", normalizeTimeDisplay);
+        player._adviralNormalizeBound = true;
+      }
       normalizeTimeDisplay();
-      player.on("timeupdate", normalizeTimeDisplay);
-      player.on("loadedmetadata", normalizeTimeDisplay);
 
       if (content) {
         content.querySelectorAll(".plyr__menu__container .plyr__control--back").forEach(function (btn) {
@@ -215,21 +222,28 @@
         });
       }
 
-      var seekInput = content && content.querySelector(".plyr__progress input[data-plyr=\"seek\"]");
-      if (seekInput) {
+      var seekInput = content.querySelector(".plyr__progress input[data-plyr=\"seek\"]");
+      if (seekInput && !seekInput.dataset.adviralSeekFixed) {
+        seekInput.dataset.adviralSeekFixed = "1";
         function fixSeekPosition() {
-          seekInput.style.setProperty("left", "0", "important");
-          seekInput.style.setProperty("right", "0", "important");
-          seekInput.style.setProperty("top", "50%", "important");
-          seekInput.style.setProperty("transform", "translateY(-50%)", "important");
+          var inp = content.querySelector(".plyr__progress input[data-plyr=\"seek\"]");
+          if (inp) {
+            inp.style.setProperty("left", "0", "important");
+            inp.style.setProperty("right", "0", "important");
+            inp.style.setProperty("top", "50%", "important");
+            inp.style.setProperty("transform", "translateY(-50%)", "important");
+          }
         }
         fixSeekPosition();
         var mo = new MutationObserver(fixSeekPosition);
         mo.observe(seekInput, { attributes: true, attributeFilter: ["style"] });
-        player.on("timeupdate", fixSeekPosition);
+        if (!player._adviralSeekBound) {
+          player.on("timeupdate", fixSeekPosition);
+          player._adviralSeekBound = true;
+        }
       }
 
-      if (controls && content && !content.querySelector(".adviral-controls-right")) {
+      if (!content.querySelector(".adviral-controls-right")) {
         var volume = controls.querySelector(".plyr__controls__item.plyr__volume") || controls.querySelector(".plyr__volume");
         var menu = controls.querySelector(".plyr__menu");
         var fullscreenBtn = controls.querySelector(".plyr__control[data-plyr=\"fullscreen\"]") || controls.querySelector("button[data-plyr=\"fullscreen\"]");
@@ -243,6 +257,15 @@
         }
       }
 
+      if (global.innerWidth <= 1024 || ("ontouchstart" in doc.documentElement)) {
+        [].slice.call(content.querySelectorAll(".plyr__volume, .plyr__controls__item.plyr__volume")).forEach(function (el) {
+          el.style.setProperty("display", "none", "important");
+        });
+      }
+    }
+
+    player.on("ready", function () {
+      applyAdviralControlsLayout();
       if (global.innerWidth <= 768) {
         setupMobileGestures();
       }

@@ -626,7 +626,7 @@
   pointer-events: none !important;
 }
 
-/* Блок времени — под прогресс-баром, в одном ряду с кнопками (Settings, Fullscreen), ширина по содержимому */
+/* Блок времени — под прогресс-баром, тот же отступ слева что и у прогресс-бара (12px) */
 .video-modal-content .plyr__time-group,
 .AdviralPlayer .plyr__time-group {
   position: relative !important;
@@ -636,7 +636,7 @@
   display: flex !important;
   align-items: center !important;
   gap: 0.35em !important;
-  margin: 0 !important;
+  margin: 0 0 0 12px !important;
   padding: 0 10px !important;
   z-index: 2 !important;
   width: max-content !important;
