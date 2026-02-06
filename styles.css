@@ -63,6 +63,8 @@
   --fixed-btn-hover-border: rgba(255,255,255,.28);
   --action-right: calc(24px + env(safe-area-inset-right));
   --menu-toggle-size: 56px;
+  --menu-toggle-active-border: rgba(138, 88, 255, 0.8);
+  --menu-toggle-active-shadow: rgba(138, 88, 255, 0.35);
 }
 
 @media (max-width: 768px) {
@@ -106,6 +108,8 @@
   --fixed-btn-shadow: none;
   --fixed-btn-hover-bg: rgba(255,255,255,1);
   --fixed-btn-hover-border: rgba(0,0,0,.2);
+  --menu-toggle-active-border: rgba(251, 146, 60, 0.8);
+  --menu-toggle-active-shadow: rgba(251, 146, 60, 0.35);
 }
 
 [data-theme="light"] ::selection {
@@ -959,9 +963,9 @@ p { color: var(--muted); margin: 0 0 12px; }
 
 /* Подсветка кнопки бургера при открытом меню — оранжевые границы и свечение */
 .menu-open #menu-toggle {
-  border-color: rgba(251, 146, 60, 0.8);
+  border-color: var(--menu-toggle-active-border);
   background: transparent; /* Фон остается прозрачным даже при открытом меню */
-  box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.35);
+  box-shadow: 0 0 0 3px var(--menu-toggle-active-shadow);
 }
 
 /* Текстовый градиентный стиль для кнопки «Контакты» в шапке */
