@@ -65,6 +65,7 @@
   --menu-toggle-size: 56px;
   --menu-toggle-active-border: rgba(138, 88, 255, 0.8);
   --menu-toggle-active-shadow: rgba(138, 88, 255, 0.35);
+  --scrollbar-width: 0px;
 }
 
 @media (max-width: 768px) {
@@ -971,6 +972,7 @@ p { color: var(--muted); margin: 0 0 12px; }
   border-color: var(--menu-toggle-active-border);
   background: transparent; /* Фон остается прозрачным даже при открытом меню */
   box-shadow: 0 0 0 3px var(--menu-toggle-active-shadow);
+  right: calc(var(--action-right) + var(--scrollbar-width));
 }
 
 /* Текстовый градиентный стиль для кнопки «Контакты» в шапке */

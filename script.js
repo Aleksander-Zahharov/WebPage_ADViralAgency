@@ -1029,10 +1029,15 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!toggle || !menu) return;
 
     let isOpen = false;
+    const getScrollbarWidth = () => Math.max(0, window.innerWidth - doc.documentElement.clientWidth);
+    const setScrollbarWidth = (value) => {
+      html.style.setProperty("--scrollbar-width", `${value}px`);
+    };
 
     function openMenu() {
       if (isOpen) return;
       isOpen = true;
+      setScrollbarWidth(getScrollbarWidth());
       html.classList.add("menu-open");
       toggle.setAttribute("aria-expanded", "true");
       header?.classList.remove('header--hidden');
@@ -1048,6 +1053,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!isOpen) return;
       isOpen = false;
       html.classList.remove("menu-open");
+      setScrollbarWidth(0);
       toggle.setAttribute("aria-expanded", "false");
       document.removeEventListener("keydown", onKeyDown);
       document.removeEventListener("click", onOutsideClick, true);
