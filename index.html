@@ -670,7 +670,7 @@
     <div class="service-popup-overlay"></div>
     <div class="service-popup-wrapper">
       <div class="service-popup-inner">
-      <button class="service-popup-close" aria-label="Close service popup" type="button">×</button>
+      <div class="service-popup-scroll-outer">
       <div class="service-popup-container">
         <div class="service-popup-scroll">
           <div class="service-popup-body">
@@ -682,8 +682,9 @@
                   <div class="service-popup-text-content"></div>
                 </div>
                 <div class="service-popup-inline-video AdviralPlayer video-modal-content">
-                  <div class="service-popup-inline-video-placeholder" role="button" tabindex="0" aria-label="Play video">
+                  <div class="service-popup-inline-video-placeholder service-popup-video-soon" role="presentation" aria-label="Video coming soon">
                     <span class="service-popup-inline-video-play-icon" aria-hidden="true">▶</span>
+                    <span class="service-popup-inline-video-soon">Soon</span>
                   </div>
                   <video class="service-popup-inline-video-el" playsinline preload="none" aria-label="Example video"></video>
                 </div>
@@ -693,6 +694,8 @@
           </div>
         </div>
       </div>
+      </div>
+      <button class="service-popup-close" aria-label="Close service popup" type="button">×</button>
       <div class="service-popup-navigation">
         <button class="service-popup-arrow service-popup-prev" aria-label="Previous"></button>
         <button class="service-popup-arrow service-popup-next" aria-label="Next"></button>

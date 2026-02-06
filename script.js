@@ -3216,10 +3216,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (servicePopupInlineVideoPlaceholder) {
     servicePopupInlineVideoPlaceholder.addEventListener("click", (e) => {
+      if (servicePopupInlineVideoPlaceholder.classList.contains("service-popup-video-soon")) return;
       e.preventDefault();
       loadAndPlayServicePopupVideo();
     });
     servicePopupInlineVideoPlaceholder.addEventListener("keydown", (e) => {
+      if (servicePopupInlineVideoPlaceholder.classList.contains("service-popup-video-soon")) return;
       if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
         loadAndPlayServicePopupVideo();
