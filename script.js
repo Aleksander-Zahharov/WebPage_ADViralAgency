@@ -2037,7 +2037,7 @@ document.addEventListener("DOMContentLoaded", () => {
             global: false
           },
           autoplay: false,
-          clickToPlay: true,
+          clickToPlay: !isTouchOrTablet,
           hideControls: false,
           resetOnEnd: true,
           ratio: null,
@@ -2156,7 +2156,8 @@ document.addEventListener("DOMContentLoaded", () => {
           });
         }
 
-        // Панель плеера: показывается при любом взаимодействии, уезжает вниз через 3 с без взаимодействия
+        // Панель плеера: показывается при любом взаимодействии, уезжает вниз через 1 с без взаимодействия
+        // На моб/планшете: один тап по экрану показывает интерфейс, при уже показанном — скрывает
         function setupAdviralControlsIdle(container) {
           if (!container || container.hasAttribute("data-adviral-idle-bound")) return;
           container.setAttribute("data-adviral-idle-bound", "1");
@@ -2170,10 +2171,53 @@ document.addEventListener("DOMContentLoaded", () => {
             container.classList.remove("adviral-controls-idle");
             scheduleHide();
           }
+          function hideControls() {
+            clearTimeout(idleTimeout);
+            container.classList.add("adviral-controls-idle");
+          }
           ["pointermove", "pointerdown", "touchstart", "click", "keydown"].forEach((ev) => {
             container.addEventListener(ev, showControls, { passive: true });
           });
           container._adviralShowControls = showControls;
+
+          const hasHover = window.matchMedia("(hover: hover)").matches;
+          if (!hasHover) {
+            let lastTapTime = 0;
+            let toggleTimeout = null;
+            function isVideoAreaTap(target) {
+              if (!target || !container.contains(target)) return false;
+              if (target.closest(".plyr__controls") || target.closest(".plyr__control--overlaid") || target.closest(".video-modal-close") || target.closest(".modal-arrow")) return false;
+              return true;
+            }
+            container.addEventListener("touchend", (e) => {
+              if (!isVideoAreaTap(e.target)) return;
+              const now = Date.now();
+              if (now - lastTapTime < 300) {
+                clearTimeout(toggleTimeout);
+                lastTapTime = 0;
+                return;
+              }
+              lastTapTime = now;
+              clearTimeout(toggleTimeout);
+              toggleTimeout = setTimeout(() => {
+                toggleTimeout = null;
+                if (container.classList.contains("adviral-controls-idle")) {
+                  showControls();
+                } else {
+                  hideControls();
+                }
+              }, 300);
+            }, { capture: true, passive: true });
+            container.addEventListener("click", (e) => {
+              if (!isVideoAreaTap(e.target)) return;
+              if (toggleTimeout !== null) {
+                clearTimeout(toggleTimeout);
+                toggleTimeout = null;
+                e.preventDefault();
+                e.stopPropagation();
+              }
+            }, { capture: true });
+          }
         }
         if (modalContent) setupAdviralControlsIdle(modalContent);
         
@@ -2199,6 +2243,8 @@ document.addEventListener("DOMContentLoaded", () => {
           function showSeekIndicator(direction) {
             if (!seekIndicator) return;
             seekIndicator.textContent = direction === 'forward' ? '+5 sec' : '-5 sec';
+            seekIndicator.classList.remove('forward', 'backward');
+            seekIndicator.classList.add(direction === 'forward' ? 'forward' : 'backward');
             seekIndicator.classList.add('show');
             clearTimeout(indicatorTimeout);
             indicatorTimeout = setTimeout(() => seekIndicator.classList.remove('show'), 500);
@@ -3098,7 +3144,7 @@ document.addEventListener("DOMContentLoaded", () => {
         fullscreen: { ...fullscreenConfig },
         speed: { selected: 1, options: [0.5, 1, 1.25, 1.5, 2] },
         keyboard: { focused: true, global: false },
-        clickToPlay: true,
+        clickToPlay: window.matchMedia("(hover: hover)").matches,
         hideControls: false,
         resetOnEnd: true,
         ratio: null,
@@ -3139,39 +3185,85 @@ document.addEventListener("DOMContentLoaded", () => {
             popupPlayerWrap.classList.remove("adviral-controls-idle");
             scheduleHide();
           }
+          function hideControls() {
+            clearTimeout(idleTimeout);
+            popupPlayerWrap.classList.add("adviral-controls-idle");
+          }
           ["pointermove", "pointerdown", "touchstart", "click", "keydown"].forEach((ev) => {
             popupPlayerWrap.addEventListener(ev, showControls, { passive: true });
           });
           popupPlayerWrap._adviralShowControls = showControls;
+
+          const hasHover = window.matchMedia("(hover: hover)").matches;
+          if (!hasHover) {
+            let lastTapTime = 0;
+            let toggleTimeout = null;
+            function isPopupVideoAreaTap(target) {
+              if (!target || !popupPlayerWrap.contains(target)) return false;
+              if (target.closest(".plyr__controls") || target.closest(".plyr__control--overlaid") || target.closest(".service-popup-close") || target.closest(".service-popup-arrow") || target.closest('[data-plyr="fullscreen"]')) return false;
+              return true;
+            }
+            popupPlayerWrap.addEventListener("touchend", (e) => {
+              if (!isPopupVideoAreaTap(e.target)) return;
+              const now = Date.now();
+              if (now - lastTapTime < 300) {
+                clearTimeout(toggleTimeout);
+                lastTapTime = 0;
+                return;
+              }
+              lastTapTime = now;
+              clearTimeout(toggleTimeout);
+              toggleTimeout = setTimeout(() => {
+                toggleTimeout = null;
+                if (popupPlayerWrap.classList.contains("adviral-controls-idle")) {
+                  showControls();
+                } else {
+                  hideControls();
+                }
+              }, 300);
+            }, { capture: true, passive: true });
+            popupPlayerWrap.addEventListener("click", (e) => {
+              if (!isPopupVideoAreaTap(e.target)) return;
+              if (toggleTimeout !== null) {
+                clearTimeout(toggleTimeout);
+                toggleTimeout = null;
+                e.preventDefault();
+                e.stopPropagation();
+              }
+            }, { capture: true });
+          }
         }
         if (!popupPlayerWrap.hasAttribute("data-adviral-click-bound")) {
           popupPlayerWrap.setAttribute("data-adviral-click-bound", "1");
-          let popupLastTapTime = 0;
-          const POPUP_TAP_DEBOUNCE_MS = 350;
-          function isPopupVideoAreaClick(target) {
-            if (!target || !popupPlayerWrap.contains(target)) return false;
-            if (target.closest(".plyr__controls") || target.closest(".service-popup-close") || target.closest(".service-popup-arrow") || target.closest('[data-plyr="fullscreen"]')) return false;
-            return true;
-          }
-          popupPlayerWrap.addEventListener("touchend", (e) => {
-            if (!isPopupVideoAreaClick(e.target)) return;
-            const now = Date.now();
-            if (now - popupLastTapTime < POPUP_TAP_DEBOUNCE_MS) return;
-            popupLastTapTime = now;
-            if (servicePopupPlyr) servicePopupPlyr.togglePlay();
-            e.preventDefault();
-          }, { capture: true, passive: false });
-          popupPlayerWrap.addEventListener("click", (e) => {
-            if (!isPopupVideoAreaClick(e.target)) return;
-            if (Date.now() - popupLastTapTime < POPUP_TAP_DEBOUNCE_MS) {
+          const hasHover = window.matchMedia("(hover: hover)").matches;
+          if (hasHover) {
+            let popupLastTapTime = 0;
+            const POPUP_TAP_DEBOUNCE_MS = 350;
+            function isPopupVideoAreaClick(target) {
+              if (!target || !popupPlayerWrap.contains(target)) return false;
+              if (target.closest(".plyr__controls") || target.closest(".service-popup-close") || target.closest(".service-popup-arrow") || target.closest('[data-plyr="fullscreen"]')) return false;
+              return true;
+            }
+            popupPlayerWrap.addEventListener("touchend", (e) => {
+              if (!isPopupVideoAreaClick(e.target)) return;
+              const now = Date.now();
+              if (now - popupLastTapTime < POPUP_TAP_DEBOUNCE_MS) return;
+              popupLastTapTime = now;
+              if (servicePopupPlyr) servicePopupPlyr.togglePlay();
+              e.preventDefault();
+            }, { capture: true, passive: false });
+            popupPlayerWrap.addEventListener("click", (e) => {
+              if (!isPopupVideoAreaClick(e.target)) return;
+              if (Date.now() - popupLastTapTime < POPUP_TAP_DEBOUNCE_MS) {
+                e.preventDefault();
+                e.stopPropagation();
+                return;
+              }
               e.preventDefault();
               e.stopPropagation();
-              return;
-            }
-            e.preventDefault();
-            e.stopPropagation();
-            if (servicePopupPlyr) servicePopupPlyr.togglePlay();
-          }, { capture: true });
+              if (servicePopupPlyr) servicePopupPlyr.togglePlay();
+            }, { capture: true });
+          }
         }
       }
     } catch (err) {

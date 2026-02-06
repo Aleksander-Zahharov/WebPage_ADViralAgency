@@ -200,6 +200,12 @@
   transition: opacity 0.2s ease;
   z-index: 100;
 }
+.video-seek-indicator.backward {
+  left: 20%;
+}
+.video-seek-indicator.forward {
+  left: 80%;
+}
 
 .video-seek-indicator.show {
   opacity: 1;

@@ -52,7 +52,7 @@
       },
       keyboard: { focused: true, global: false },
       autoplay: false,
-      clickToPlay: true,
+      clickToPlay: !isTouchOrTablet,
       hideControls: false,
       resetOnEnd: true,
       ratio: null,
@@ -172,10 +172,53 @@
         container.classList.remove("adviral-controls-idle");
         scheduleHide();
       }
+      function hideControls() {
+        clearTimeout(idleTimeout);
+        container.classList.add("adviral-controls-idle");
+      }
       ["pointermove", "pointerdown", "touchstart", "click", "keydown"].forEach(function (ev) {
         container.addEventListener(ev, showControls, { passive: true });
       });
       container._adviralShowControls = showControls;
+
+      var hasHover = global.matchMedia("(hover: hover)").matches;
+      if (!hasHover) {
+        var lastTapTime = 0;
+        var toggleTimeout = null;
+        function isVideoAreaTap(target) {
+          if (!target || !container.contains(target)) return false;
+          if (target.closest(".plyr__controls") || target.closest(".plyr__control--overlaid") || target.closest(".video-modal-close") || target.closest(".modal-arrow")) return false;
+          return true;
+        }
+        container.addEventListener("touchend", function (e) {
+          if (!isVideoAreaTap(e.target)) return;
+          var now = Date.now();
+          if (now - lastTapTime < 300) {
+            clearTimeout(toggleTimeout);
+            lastTapTime = 0;
+            return;
+          }
+          lastTapTime = now;
+          clearTimeout(toggleTimeout);
+          toggleTimeout = setTimeout(function () {
+            toggleTimeout = null;
+            if (container.classList.contains("adviral-controls-idle")) {
+              showControls();
+            } else {
+              hideControls();
+            }
+          }, 300);
+        }, { capture: true, passive: true });
+        container.addEventListener("click", function (e) {
+          if (!isVideoAreaTap(e.target)) return;
+          if (toggleTimeout !== null) {
+            clearTimeout(toggleTimeout);
+            toggleTimeout = null;
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        }, { capture: true });
+      }
     }
     if (content) setupAdviralControlsIdle(content);
 
@@ -280,6 +323,8 @@
       function showSeekIndicatorDir(direction) {
         if (!seekIndicator) return;
         seekIndicator.textContent = direction === "forward" ? "+5 sec" : "-5 sec";
+        seekIndicator.classList.remove("forward", "backward");
+        seekIndicator.classList.add(direction === "forward" ? "forward" : "backward");
         seekIndicator.classList.add("show");
         clearTimeout(window._adviralSeekIndicatorTimeout);
         window._adviralSeekIndicatorTimeout = setTimeout(function () {
