@@ -140,9 +140,13 @@
 [data-theme="light"] .menu-toggle__bar {
   background: #1d1d1f;
 }
-[data-theme="light"] .menu-open #menu-toggle {
+[data-theme="light"].menu-open #menu-toggle {
   border-color: rgba(251, 146, 60, 0.8);
   box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.35);
+}
+[data-theme="dark"].menu-open #menu-toggle {
+  border-color: rgba(138, 88, 255, 0.8);
+  box-shadow: 0 0 0 3px rgba(138, 88, 255, 0.35);
 }
 [data-theme="light"] .lang-switcher__toggle {
   border-color: rgba(0,0,0,.14);
@@ -731,6 +735,7 @@ html {
   scroll-behavior: smooth;
   /* Используем ровный темный фон вместо градиента */
   background: var(--bg-page);
+  scrollbar-gutter: stable;
 }
 
 body {
