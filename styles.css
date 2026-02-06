@@ -6879,18 +6879,33 @@ input::placeholder, textarea::placeholder {
     overflow-y: visible !important;
   }
 
-  /* Попап услуг в мобильном ландшафте: почти на весь экран по высоте, без сильного scale — чтобы верх/низ не обрезались */
-  .service-popup-wrapper {
-    width: auto;
+  /* Попап услуг в мобильном ландшафте: центрирование через inset + margin: auto (без transform), чтобы не зависеть от 100vw/скроллбара */
+  .service-popup.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  #service-popup.service-popup .service-popup-wrapper {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: fit-content;
+    height: fit-content;
     max-width: calc(100vw - 24px);
-    max-height: calc(100vh - 16px);
     max-height: min(100vh - 16px, 100dvh - 16px);
     padding: max(8px, env(safe-area-inset-top)) 12px 8px 12px;
     box-sizing: border-box;
     transform: scale(0.96);
     transform-origin: center center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 
+  /* Контейнер попапа по центру inner: inner центрирует дочерние, scroll-outer центрирует container */
   .service-popup-inner {
     width: min(967px, calc(100vw - 248px));
     max-width: min(967px, calc(100vw - 248px));
@@ -6898,12 +6913,16 @@ input::placeholder, textarea::placeholder {
     max-height: 100%;
     display: flex;
     flex-direction: column;
+    align-items: center;
     min-height: 0;
   }
 
   .service-popup-scroll-outer {
     width: min(917px, calc(100vw - 298px));
     max-width: min(917px, calc(100vw - 298px));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     max-height: calc(100vh - 40px);
     max-height: min(100vh - 40px, 100dvh - 40px);
     overflow-y: auto;
@@ -6925,6 +6944,8 @@ input::placeholder, textarea::placeholder {
     display: flex;
     flex-direction: column;
     min-height: 0;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .service-popup-scroll {
@@ -6945,6 +6966,101 @@ input::placeholder, textarea::placeholder {
     min-width: 36px;
     min-height: 36px;
     z-index: 10;
+  }
+}
+
+/* Ландшафт: отключаем hover-анимации карточек услуг (сдвиг 1-го/3-го ряда), чтобы карточки не дёргались при наведении */
+/* Планшетный ландшафт 601–900px: база 14px */
+@media (orientation: landscape) and (max-height: 500px) and (min-width: 601px) and (max-width: 900px) {
+  #services .cards .card:hover,
+  #services .cards .card:focus-within,
+  #services .cards .card.hover-tap-active,
+  #services .cards .card:hover:not(.wave-active),
+  #services .cards .card:focus-within:not(.wave-active),
+  #services .cards .card:nth-child(-n+3):hover,
+  #services .cards .card:nth-child(-n+3):focus-within,
+  #services .cards .card:nth-child(-n+3).hover-tap-active,
+  #services .cards .card:nth-child(n+7):hover,
+  #services .cards .card:nth-child(n+7):focus-within,
+  #services .cards .card:nth-child(n+7).hover-tap-active {
+    transform: skew(-8deg, 0deg) !important;
+    transition: none !important;
+  }
+  #services .cards .card:nth-child(-n+3):hover,
+  #services .cards .card:nth-child(-n+3):focus-within,
+  #services .cards .card:nth-child(-n+3).hover-tap-active {
+    transform: skew(-8deg, 0deg) translateX(14px) !important;
+  }
+  #services .cards .card:nth-child(n+7):hover,
+  #services .cards .card:nth-child(n+7):focus-within,
+  #services .cards .card:nth-child(n+7).hover-tap-active {
+    transform: skew(-8deg, 0deg) translateX(-14px) !important;
+  }
+  #services .cards .card:active,
+  #services .cards .card:nth-child(-n+3):active,
+  #services .cards .card:nth-child(n+7):active,
+  #services .cards .card:nth-child(-n+3):hover:active,
+  #services .cards .card:nth-child(-n+3):focus-within:active,
+  #services .cards .card:nth-child(n+7):hover:active,
+  #services .cards .card:nth-child(n+7):focus-within:active {
+    transform: skew(-8deg, 0deg) scale(0.98) !important;
+  }
+  #services .cards .card:nth-child(-n+3):active,
+  #services .cards .card:nth-child(-n+3):hover:active,
+  #services .cards .card:nth-child(-n+3):focus-within:active {
+    transform: skew(-8deg, 0deg) translateX(14px) scale(0.98) !important;
+  }
+  #services .cards .card:nth-child(n+7):active,
+  #services .cards .card:nth-child(n+7):hover:active,
+  #services .cards .card:nth-child(n+7):focus-within:active {
+    transform: skew(-8deg, 0deg) translateX(-14px) scale(0.98) !important;
+  }
+}
+/* Ландшафт при ширине >900px или <601px: база 22px (не планшет 601–900) */
+@media (orientation: landscape) and (max-height: 500px) and (max-width: 600px),
+       (orientation: landscape) and (max-height: 500px) and (min-width: 901px) {
+  #services .cards .card:hover,
+  #services .cards .card:focus-within,
+  #services .cards .card.hover-tap-active,
+  #services .cards .card:hover:not(.wave-active),
+  #services .cards .card:focus-within:not(.wave-active),
+  #services .cards .card:nth-child(-n+3):hover,
+  #services .cards .card:nth-child(-n+3):focus-within,
+  #services .cards .card:nth-child(-n+3).hover-tap-active,
+  #services .cards .card:nth-child(n+7):hover,
+  #services .cards .card:nth-child(n+7):focus-within,
+  #services .cards .card:nth-child(n+7).hover-tap-active {
+    transform: skew(-8deg, 0deg) !important;
+    transition: none !important;
+  }
+  #services .cards .card:nth-child(-n+3):hover,
+  #services .cards .card:nth-child(-n+3):focus-within,
+  #services .cards .card:nth-child(-n+3).hover-tap-active {
+    transform: skew(-8deg, 0deg) translateX(22px) !important;
+  }
+  #services .cards .card:nth-child(n+7):hover,
+  #services .cards .card:nth-child(n+7):focus-within,
+  #services .cards .card:nth-child(n+7).hover-tap-active {
+    transform: skew(-8deg, 0deg) translateX(-22px) !important;
+  }
+  #services .cards .card:active,
+  #services .cards .card:nth-child(-n+3):active,
+  #services .cards .card:nth-child(n+7):active,
+  #services .cards .card:nth-child(-n+3):hover:active,
+  #services .cards .card:nth-child(-n+3):focus-within:active,
+  #services .cards .card:nth-child(n+7):hover:active,
+  #services .cards .card:nth-child(n+7):focus-within:active {
+    transform: skew(-8deg, 0deg) scale(0.98) !important;
+  }
+  #services .cards .card:nth-child(-n+3):active,
+  #services .cards .card:nth-child(-n+3):hover:active,
+  #services .cards .card:nth-child(-n+3):focus-within:active {
+    transform: skew(-8deg, 0deg) translateX(22px) scale(0.98) !important;
+  }
+  #services .cards .card:nth-child(n+7):active,
+  #services .cards .card:nth-child(n+7):hover:active,
+  #services .cards .card:nth-child(n+7):focus-within:active {
+    transform: skew(-8deg, 0deg) translateX(-22px) scale(0.98) !important;
   }
 }
 
