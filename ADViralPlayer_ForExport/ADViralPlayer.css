@@ -65,15 +65,17 @@
 [data-theme="light"] .pkg input:checked + .pkg-body:hover {
   box-shadow: 0 0 20px rgba(251, 146, 60, 0.5);
 }
-/* Плеер в светлой теме остаётся таким же — фиолетовые элементы не перекрашиваем в оранжевый */
-[data-theme="light"] .video-modal-content .plyr__control--overlaid:hover,
-[data-theme="light"] .video-modal-content .plyr__control--overlaid:active,
-[data-theme="light"] .video-modal-content .plyr__control--overlaid:focus-visible,
-[data-theme="light"] .AdviralPlayer .plyr__control--overlaid:hover,
-[data-theme="light"] .AdviralPlayer .plyr__control--overlaid:active,
-[data-theme="light"] .AdviralPlayer .plyr__control--overlaid:focus-visible {
-  background: rgba(139, 92, 246, 0.2) !important;
-  border-color: rgba(139, 92, 246, 0.4) !important;
+/* Плеер в светлой теме остаётся таким же — фиолетовые элементы не перекрашиваем в оранжевый; ховер только на десктопе */
+@media (hover: hover) {
+  [data-theme="light"] .video-modal-content .plyr__control--overlaid:hover,
+  [data-theme="light"] .video-modal-content .plyr__control--overlaid:active,
+  [data-theme="light"] .video-modal-content .plyr__control--overlaid:focus-visible,
+  [data-theme="light"] .AdviralPlayer .plyr__control--overlaid:hover,
+  [data-theme="light"] .AdviralPlayer .plyr__control--overlaid:active,
+  [data-theme="light"] .AdviralPlayer .plyr__control--overlaid:focus-visible {
+    background: rgba(139, 92, 246, 0.2) !important;
+    border-color: rgba(139, 92, 246, 0.4) !important;
+  }
 }
 [data-theme="light"] .video-modal-content .plyr__control:hover,
 [data-theme="light"] .AdviralPlayer .plyr__control:hover {
@@ -378,8 +380,8 @@
   min-width: 40px !important;
   min-height: 40px !important;
   background: rgba(20, 20, 22, 0.6) !important;
-  -webkit-backdrop-filter: blur(var(--blur)) !important;
-  backdrop-filter: blur(var(--blur)) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   box-shadow: none !important;
   z-index: 15 !important;
@@ -417,8 +419,8 @@
   mask-size: 55% 55% !important;
   -webkit-mask-repeat: no-repeat !important;
   mask-repeat: no-repeat !important;
-  -webkit-mask-position: center !important;
-  mask-position: center !important;
+  -webkit-mask-position: 54% 50% !important;
+  mask-position: 54% 50% !important;
   background-color: #fff !important;
   pointer-events: none !important;
 }
@@ -428,13 +430,15 @@
   mask-image: url("./assets/images/icons/icon_pause.svg") !important;
 }
 
-.video-modal-content .plyr__control--overlaid:hover,
-.video-modal-content .plyr__control--overlaid:active,
-.video-modal-content .plyr__control--overlaid:focus-visible {
-  background: rgba(176, 134, 249, 0.2) !important;
-  border-color: rgba(176, 134, 249, 0.4) !important;
-  box-shadow: none !important;
-  transform: translate(-50%, -50%) scale(1.1) !important;
+@media (hover: hover) {
+  .video-modal-content .plyr__control--overlaid:hover,
+  .video-modal-content .plyr__control--overlaid:active,
+  .video-modal-content .plyr__control--overlaid:focus-visible {
+    background: rgba(176, 134, 249, 0.2) !important;
+    border-color: rgba(176, 134, 249, 0.4) !important;
+    box-shadow: none !important;
+    transform: translate(-50%, -50%) scale(1.1) !important;
+  }
 }
 
 /* Центральная кнопка Play/Пауза: скрывается вместе с интерфейсом после неактивности; при активном интерфейсе видна (иконка Play при паузе, Пауза при воспроизведении) */
