@@ -161,7 +161,7 @@
       if (!container || container.hasAttribute("data-adviral-idle-bound")) return;
       container.setAttribute("data-adviral-idle-bound", "1");
       var idleTimeout = null;
-      var IDLE_MS = 3000;
+      var IDLE_MS = 1000;
       function scheduleHide() {
         clearTimeout(idleTimeout);
         idleTimeout = setTimeout(function () {

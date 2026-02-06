@@ -2161,7 +2161,7 @@ document.addEventListener("DOMContentLoaded", () => {
           if (!container || container.hasAttribute("data-adviral-idle-bound")) return;
           container.setAttribute("data-adviral-idle-bound", "1");
           let idleTimeout = null;
-          const IDLE_MS = 3000;
+          const IDLE_MS = 1000;
           function scheduleHide() {
             clearTimeout(idleTimeout);
             idleTimeout = setTimeout(() => container.classList.add("adviral-controls-idle"), IDLE_MS);
@@ -3130,7 +3130,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!popupPlayerWrap.hasAttribute("data-adviral-idle-bound")) {
           popupPlayerWrap.setAttribute("data-adviral-idle-bound", "1");
           let idleTimeout = null;
-          const IDLE_MS = 3000;
+          const IDLE_MS = 1000;
           function scheduleHide() {
             clearTimeout(idleTimeout);
             idleTimeout = setTimeout(() => popupPlayerWrap.classList.add("adviral-controls-idle"), IDLE_MS);

@@ -1714,18 +1714,18 @@ section[id] { scroll-margin-top: var(--header-h); }
   /* Без задержки - сразу начинается */
 }
 
-/* Второе изображение (Slide_Green): такая же анимация с задержкой 0.2 секунды */
+/* Второе изображение (Slide_Green): как у первого — та же анимация, без задержки */
 .media-tilted-frame:nth-child(2) img {
-  object-position: left center; /* Начальная позиция - левая часть (0%) */
+  object-position: left center;
   animation: slidePhotoPan 10s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  animation-delay: 0.2s; /* Фриз на 0.2 секунды после загрузки */
+  /* Без задержки — как у первого */
 }
 
-/* Третье изображение (Slide_Red): такая же анимация с задержкой 0.4 секунды */
+/* Третье изображение (Slide_Red): как у первого — та же анимация, без задержки */
 .media-tilted-frame:nth-child(3) img {
-  object-position: left center; /* Начальная позиция - левая часть (0%) */
+  object-position: left center;
   animation: slidePhotoPan 10s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  animation-delay: 0.4s; /* Фриз на 0.4 секунды после загрузки */
+  /* Без задержки — как у первого */
 }
 
 /* Анимация панорамирования фотографии: движение только вперед, конец цикла */
