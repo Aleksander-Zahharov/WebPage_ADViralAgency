@@ -156,6 +156,18 @@
         if (player && player.fullscreen && player.fullscreen.active) player.fullscreen.exit();
       });
     }
+    if (isTouchOrTablet && content) {
+      content.addEventListener("dblclick", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }, true);
+      player.on("enterfullscreen", function () {
+        if (content._adviralDoubleTapSeek && player && player.fullscreen && player.fullscreen.active) {
+          player.fullscreen.exit();
+        }
+        content._adviralDoubleTapSeek = false;
+      });
+    }
 
     function setupAdviralControlsIdle(container) {
       if (!container || container.hasAttribute("data-adviral-idle-bound")) return;
@@ -341,6 +353,8 @@
           var x = touch.clientX - rect.left;
           var screenWidth = rect.width;
           if (player && typeof player.currentTime !== "undefined") {
+            videoWrapper._adviralDoubleTapSeek = true;
+            setTimeout(function () { videoWrapper._adviralDoubleTapSeek = false; }, 200);
             if (x < screenWidth / 2) {
               player.rewind(SEEK_SEC);
               showSeekIndicatorDir("backward");

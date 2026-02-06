@@ -1714,18 +1714,18 @@ section[id] { scroll-margin-top: var(--header-h); }
   /* Без задержки - сразу начинается */
 }
 
-/* Второе изображение (Slide_Green): такая же анимация с задержкой 0.2 секунды */
+/* Второе изображение (Slide_Green): как у первого — та же анимация, без задержки */
 .media-tilted-frame:nth-child(2) img {
-  object-position: left center; /* Начальная позиция - левая часть (0%) */
+  object-position: left center;
   animation: slidePhotoPan 10s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  animation-delay: 0.2s; /* Фриз на 0.2 секунды после загрузки */
+  /* Без задержки — как у первого */
 }
 
-/* Третье изображение (Slide_Red): такая же анимация с задержкой 0.4 секунды */
+/* Третье изображение (Slide_Red): как у первого — та же анимация, без задержки */
 .media-tilted-frame:nth-child(3) img {
-  object-position: left center; /* Начальная позиция - левая часть (0%) */
+  object-position: left center;
   animation: slidePhotoPan 10s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  animation-delay: 0.4s; /* Фриз на 0.4 секунды после загрузки */
+  /* Без задержки — как у первого */
 }
 
 /* Анимация панорамирования фотографии: движение только вперед, конец цикла */
@@ -2875,30 +2875,42 @@ section[id] { scroll-margin-top: var(--header-h); }
   min-height: 0;
 }
 
-/* Мобильные и сенсор: попап без скролла, влезает в экран (масштаб + overflow hidden) */
+/* Мобильные и сенсор: попап с прокруткой контента; окно чуть выше по экрану */
 @media (max-width: 768px) {
-  .service-popup-container {
-    max-height: 85vh;
-    max-height: min(85vh, 85dvh);
-    overflow: hidden !important;
-    overflow-y: hidden !important;
+  .service-popup-scroll-outer {
+    max-height: 72vh;
+    max-height: min(72vh, 72dvh);
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
   }
-  .service-popup-scroll {
-    overflow: hidden !important;
-    -ms-overflow-style: none;
+  .service-popup-scroll-outer::-webkit-scrollbar {
+    width: 4px;
   }
-  @supports (scrollbar-width: none) {
-    .service-popup-scroll {
-      scrollbar-width: none;
+  .service-popup-scroll-outer::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+  }
+  @supports (scrollbar-width: thin) {
+    .service-popup-scroll-outer {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
     }
   }
-  .service-popup-scroll::-webkit-scrollbar {
-    display: none;
+  .service-popup-container {
+    max-height: none;
+    overflow: visible;
+    overflow-y: visible;
+  }
+  .service-popup-scroll {
+    overflow: visible;
+    min-height: 0;
   }
   .service-popup-wrapper {
     max-height: 85vh;
     max-height: min(85vh, 85dvh);
-    transform: scale(0.92);
+    transform: scale(0.92) translateY(-14px);
     transform-origin: center center;
   }
 }
@@ -5673,7 +5685,7 @@ input::placeholder, textarea::placeholder {
   outline: none;
 }
 
-/* Кнопка переключения темы: круглая, над scroll-to-top */
+/* Кнопка переключения темы: круглая, под scroll-to-top */
 .theme-toggle {
   width: 56px;
   height: 56px;
@@ -5879,12 +5891,6 @@ input::placeholder, textarea::placeholder {
   opacity: 0;
   transition: opacity 0.2s ease;
   z-index: 100;
-}
-.video-seek-indicator.backward {
-  left: 20%;
-}
-.video-seek-indicator.forward {
-  left: 80%;
 }
 
 .video-seek-indicator.show {
@@ -6874,16 +6880,20 @@ input::placeholder, textarea::placeholder {
   .service-popup-scroll-outer {
     width: min(917px, calc(100vw - 298px));
     max-width: min(917px, calc(100vw - 298px));
+    max-height: calc(100vh - 80px);
+    max-height: min(100vh - 80px, 100dvh - 80px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
   }
 
   .service-popup-container {
     width: min(900px, calc(100vw - 315px));
     max-width: min(900px, calc(100vw - 315px));
-    max-height: calc(100vh - 80px);
-    max-height: min(100vh - 80px, 100dvh - 80px);
+    max-height: none;
     padding: 48px 16px 16px 16px;
-    overflow: hidden !important;
-    overflow-y: hidden !important;
+    overflow: visible;
+    overflow-y: visible;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -6891,13 +6901,13 @@ input::placeholder, textarea::placeholder {
   }
 
   .service-popup-scroll {
-    overflow: hidden !important;
+    overflow: visible;
     min-height: 0;
     flex: 1 1 auto;
   }
 
   .service-popup-wrapper {
-    transform: scale(0.82);
+    transform: scale(0.82) translateY(-10px);
     transform-origin: center center;
   }
 

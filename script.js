@@ -2155,6 +2155,19 @@ document.addEventListener("DOMContentLoaded", () => {
             if (player && player.fullscreen && player.fullscreen.active) player.fullscreen.exit();
           });
         }
+        // Моб/планшет: отключаем включение fullscreen по двойному тапу по экрану (двойной тап только перематывает ±5 сек)
+        if (isTouchOrTablet && modalContent) {
+          modalContent.addEventListener("dblclick", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }, true);
+          player.on("enterfullscreen", () => {
+            if (modalContent._adviralDoubleTapSeek && player && player.fullscreen && player.fullscreen.active) {
+              player.fullscreen.exit();
+            }
+            modalContent._adviralDoubleTapSeek = false;
+          });
+        }
 
         // Панель плеера: показывается при любом взаимодействии, уезжает вниз через 1 с без взаимодействия
         // На моб/планшете: один тап по экрану показывает интерфейс, при уже показанном — скрывает
@@ -2261,6 +2274,8 @@ document.addEventListener("DOMContentLoaded", () => {
               const x = touch.clientX - rect.left;
               const screenWidth = rect.width;
               if (player && typeof player.currentTime !== 'undefined') {
+                videoWrapper._adviralDoubleTapSeek = true;
+                setTimeout(() => { videoWrapper._adviralDoubleTapSeek = false; }, 200);
                 if (x < screenWidth / 2) {
                   player.rewind(SEEK_SEC);
                   showSeekIndicator('backward');
@@ -3171,6 +3186,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (servicePopupPlyr && servicePopupPlyr.fullscreen) servicePopupPlyr.fullscreen.enter();
               }
             }
+          }, true);
+        }
+        if (!window.matchMedia("(hover: hover)").matches) {
+          popupPlayerWrap.addEventListener("dblclick", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
           }, true);
         }
         if (!popupPlayerWrap.hasAttribute("data-adviral-idle-bound")) {
