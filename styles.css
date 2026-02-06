@@ -61,12 +61,21 @@
   --fixed-btn-shadow: none;
   --fixed-btn-hover-bg: rgba(255,255,255,.10);
   --fixed-btn-hover-border: rgba(255,255,255,.28);
+  --action-right: calc(24px + env(safe-area-inset-right));
+  --menu-toggle-size: 56px;
 }
 
 @media (max-width: 768px) {
   :root {
     --gap: 18px;
     --header-h: 64px;
+  }
+}
+
+@media (max-width: 600px) {
+  :root {
+    --action-right: calc(16px + env(safe-area-inset-right));
+    --menu-toggle-size: 48px;
   }
 }
 
@@ -925,9 +934,9 @@ p { color: var(--muted); margin: 0 0 12px; }
 /* Кнопка-гамбургер: скрыта на десктопе */
 .menu-toggle {
   display: none;
-  width: 44px;
-  height: 38px;
-  border-radius: 20px;
+  width: var(--menu-toggle-size);
+  height: var(--menu-toggle-size);
+  border-radius: 50%;
   border: 1px solid rgba(255,255,255,.14);
   background: transparent; /* Прозрачный фон, оставляем только stroke */
   color: #fff;
@@ -1210,8 +1219,8 @@ p { color: var(--muted); margin: 0 0 12px; }
   .menu-toggle {
     display: inline-flex;
     position: fixed;
-    right: calc(var(--gap) + env(safe-area-inset-right));
-    top: calc((var(--header-h) - 38px) / 2);
+    right: var(--action-right);
+    top: calc((var(--header-h) - var(--menu-toggle-size)) / 2);
     z-index: 12;
   }
   /* Отступы справа у меню и переключателя языка совпадают с var(--gap) */
@@ -5615,7 +5624,7 @@ input::placeholder, textarea::placeholder {
 .fixed-actions {
   position: fixed;
   bottom: 24px;
-  right: 24px;
+  right: var(--action-right);
   z-index: 50;
   display: flex;
   flex-direction: column;
@@ -5754,7 +5763,7 @@ input::placeholder, textarea::placeholder {
 @media (max-width: 600px) {
   .fixed-actions {
     bottom: 16px;
-    right: 16px;
+    right: var(--action-right);
     gap: 10px;
   }
   .scroll-to-top,
@@ -7680,5 +7689,60 @@ input::placeholder, textarea::placeholder {
   /* На мобильных даём спейсеру высоту — после видео можно докрутить вниз */
   #service-popup .service-popup-spacer {
     height: 1px;
+  }
+}
+
+/* Service popup: fixed box size per mode, scroll inside */
+.service-popup {
+  --service-popup-box-height: min(520px, 85vh);
+}
+
+.service-popup-scroll-outer {
+  max-height: none;
+  height: auto;
+  overflow: visible;
+}
+
+.service-popup-container {
+  height: var(--service-popup-box-height);
+  min-height: var(--service-popup-box-height);
+  max-height: var(--service-popup-box-height);
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+}
+
+@media (min-width: 601px) {
+  .service-popup {
+    --service-popup-box-height: min(600px, calc(100vh - 48px));
+  }
+}
+
+@media (min-width: 901px) {
+  .service-popup {
+    --service-popup-box-height: min(640px, calc(100vh - 48px));
+  }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  .service-popup {
+    --service-popup-box-height: min(420px, calc(100vh - 24px));
+  }
+}
+
+@media (max-width: 768px) {
+  .service-popup-container::-webkit-scrollbar {
+    width: 4px;
+  }
+  .service-popup-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+  }
+  @supports (scrollbar-width: thin) {
+    .service-popup-container {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+    }
   }
 }
