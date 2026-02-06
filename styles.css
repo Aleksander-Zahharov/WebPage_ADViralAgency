@@ -6859,15 +6859,15 @@ input::placeholder, textarea::placeholder {
     overflow-y: visible !important;
   }
 
-  /* Попап услуг в мобильном ландшафте: отступ сверху под хедер браузера, в границах экрана; ширина меньше, чтобы стрелки влезали */
+  /* Попап услуг в мобильном ландшафте: почти на весь экран по высоте, без сильного scale — чтобы верх/низ не обрезались */
   .service-popup-wrapper {
     width: auto;
     max-width: calc(100vw - 24px);
-    max-height: calc(100vh - 24px);
-    max-height: min(100vh - 24px, 100dvh - 24px);
-    padding: max(12px, env(safe-area-inset-top)) 12px 12px 12px;
+    max-height: calc(100vh - 16px);
+    max-height: min(100vh - 16px, 100dvh - 16px);
+    padding: max(8px, env(safe-area-inset-top)) 12px 8px 12px;
     box-sizing: border-box;
-    transform: scale(0.85);
+    transform: scale(0.96);
     transform-origin: center center;
   }
 
@@ -6875,23 +6875,30 @@ input::placeholder, textarea::placeholder {
     width: min(967px, calc(100vw - 248px));
     max-width: min(967px, calc(100vw - 248px));
     position: relative;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
   }
 
   .service-popup-scroll-outer {
     width: min(917px, calc(100vw - 298px));
     max-width: min(917px, calc(100vw - 298px));
-    max-height: calc(100vh - 80px);
-    max-height: min(100vh - 80px, 100dvh - 80px);
+    max-height: calc(100vh - 40px);
+    max-height: min(100vh - 40px, 100dvh - 40px);
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    flex: 1 1 auto;
+    min-height: 0;
   }
 
   .service-popup-container {
     width: min(900px, calc(100vw - 315px));
     max-width: min(900px, calc(100vw - 315px));
     max-height: none;
-    padding: 48px 16px 16px 16px;
+    padding: 24px 16px 20px 16px;
     overflow: visible;
     overflow-y: visible;
     box-sizing: border-box;
@@ -6906,9 +6913,8 @@ input::placeholder, textarea::placeholder {
     flex: 1 1 auto;
   }
 
-  .service-popup-wrapper {
-    transform: scale(0.82) translateY(-10px);
-    transform-origin: center center;
+  .service-popup-body {
+    padding-top: 12px;
   }
 
   .service-popup-close {
