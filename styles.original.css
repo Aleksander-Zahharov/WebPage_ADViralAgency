@@ -709,19 +709,21 @@
   }
 }
 
-/* Подключаем основной шрифт Sansation-Light */
+/* Подключаем основной шрифт Sansation-Light (WOFF2 + TTF fallback) */
 @font-face {
   font-family: "Sansation-Light";
-  src: url("./assets/fonts/Sansation-Light.ttf") format("truetype");
+  src: url("./assets/fonts/Sansation-Light.woff2") format("woff2"),
+       url("./assets/fonts/Sansation-Light.ttf") format("truetype");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 
-/* Подключаем вторичный шрифт Sansation-Regular */
+/* Подключаем вторичный шрифт Sansation-Regular (WOFF2 + TTF fallback) */
 @font-face {
   font-family: "Sansation-Regular";
-  src: url("./assets/fonts/Sansation-Regular.ttf") format("truetype");
+  src: url("./assets/fonts/Sansation-Regular.woff2") format("woff2"),
+       url("./assets/fonts/Sansation-Regular.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -7928,4 +7930,23 @@ input::placeholder, textarea::placeholder {
       scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
     }
   }
+}
+
+/* =========================
+  Skeleton loading shimmer
+========================= */
+@keyframes skeleton-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(90deg, var(--bg-page) 25%, rgba(255,255,255,0.06) 50%, var(--bg-page) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+/* Hide skeleton elements once page is loaded */
+.js-loaded .skeleton-shimmer {
+  display: none;
 }

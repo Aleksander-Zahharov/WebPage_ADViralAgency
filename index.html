@@ -86,11 +86,16 @@
     <link rel="preconnect" href="https://storage.googleapis.com" crossorigin />
     <!-- Preload hero poster for instant visual -->
     <link rel="preload" href="./assets/images/poster_hero_desktop.webp" as="image" type="image/webp" />
-    <!-- Preload fonts actually used -->
-    <link rel="preload" href="./assets/fonts/Sansation-Light.ttf" as="font" type="font/ttf" crossorigin />
-    <link rel="preload" href="./assets/fonts/Sansation-Regular.ttf" as="font" type="font/ttf" crossorigin />
-    <!-- Plyr CSS/JS loaded on demand when video modal opens -->
-    <link rel="stylesheet" href="./styles.css" />
+    <!-- Preload WOFF2 fonts -->
+    <link rel="preload" href="./assets/fonts/Sansation-Light.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="./assets/fonts/Sansation-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- Prefetch next sections for smoother scrolling -->
+    <link rel="prefetch" href="./assets/images/photos/Slide_White.webp" />
+    <!-- Critical CSS inlined for instant first paint -->
+    <style>:root{--primary-font-family:"Sansation-Light";--secondary-font-family:"Sansation-Regular";--primary-font:var(--primary-font-family),sans-serif;--secondary-font:var(--secondary-font-family);--bg-page:#121214;--bg-1:#0a0a0b;--text:#fff;--muted:#c9c9d1;--primary-1:#6a11cb;--primary-2:#b086f9;--container:1160px;--gap:24px;--z-hero:1;--z-overlay:2;--z-header:10;--header-h:72px;--blur:6px;--radius-sm:10px}[data-theme="light"]{--bg-page:#f5f5f7;--bg-1:#fff;--text:#1a1a1a;--muted:#6b6b6b}@font-face{font-family:"Sansation-Light";src:url("./assets/fonts/Sansation-Light.woff2") format("woff2"),url("./assets/fonts/Sansation-Light.ttf") format("truetype");font-weight:300;font-style:normal;font-display:swap}@font-face{font-family:"Sansation-Regular";src:url("./assets/fonts/Sansation-Regular.woff2") format("woff2"),url("./assets/fonts/Sansation-Regular.ttf") format("truetype");font-weight:normal;font-style:normal;font-display:swap}*,*::before,*::after{box-sizing:border-box}html{overflow-x:hidden;scroll-behavior:smooth;background:var(--bg-page);scrollbar-gutter:stable}body{margin:0;color:var(--text);font:400 16px/1.55 var(--secondary-font);overflow-x:hidden;width:100%}.container{max-width:var(--container);margin:0 auto;padding:0 var(--gap)}.site-header{position:fixed;top:0;left:0;right:0;z-index:var(--z-header);background:rgba(10,10,11,.5);-webkit-backdrop-filter:blur(var(--blur));backdrop-filter:blur(var(--blur));border-bottom:1px solid rgba(255,255,255,.08);font-family:var(--primary-font);transition:transform .24s ease}.header-inner{height:var(--header-h);display:flex;align-items:center;justify-content:space-between;gap:16px}.logo{font-family:var(--primary-font);font-size:1.8rem;font-weight:700;display:flex;align-items:center;height:100%}.hero{position:relative;min-height:100vh;display:grid;place-items:center;overflow:hidden}.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;filter:saturate(.9) contrast(1.05) brightness(.7)}.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.5));z-index:1}.hero-content{position:relative;z-index:2;text-align:center;padding:72px 0}.hero-content h1{color:var(--muted);font-size:clamp(2.6rem,6vw,5rem);letter-spacing:.01em;line-height:1.28;font-family:var(--primary-font)}.btn{display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 18px;border-radius:20px;font-weight:600;white-space:nowrap;text-decoration:none;cursor:pointer;border:none;font-size:.97rem;font-family:var(--primary-font)}.btn-primary{color:#fff;background:linear-gradient(135deg,var(--primary-1),var(--primary-2))}.hero .btn-primary{background:linear-gradient(135deg,rgba(107,17,203,.5),rgba(176,134,249,.5));border:1px solid rgba(255,255,255,.18);-webkit-backdrop-filter:blur(var(--blur));backdrop-filter:blur(var(--blur))}.cta-row{margin-top:22px;display:inline-flex;gap:12px;flex-wrap:wrap}</style>
+    <!-- Full stylesheet loaded async (non-render-blocking) -->
+    <link rel="stylesheet" href="./styles.css" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="./styles.css" /></noscript>
   </head>
   <body>
     <!-- Google Tag Manager (noscript) -->
@@ -226,13 +231,22 @@
         <div class="media-wrapper">
           <div class="media-tilted-group reveal reveal-right">
             <div class="media-tilted-frame">
-              <img src="assets/images/photos/Slide_White.webp" alt="ADViral Agency team" loading="lazy" />
+              <img src="assets/images/photos/Slide_White.webp"
+                   srcset="assets/images/photos/Slide_White_sm.webp 480w, assets/images/photos/Slide_White_md.webp 800w, assets/images/photos/Slide_White.webp 2700w"
+                   sizes="(max-width: 480px) 480px, (max-width: 800px) 800px, 2700px"
+                   alt="ADViral Agency team" loading="lazy" width="2700" height="1600" />
             </div>
             <div class="media-tilted-frame">
-              <img src="assets/images/photos/Slide_Green.webp" alt="ADViral Agency team" loading="lazy" />
+              <img src="assets/images/photos/Slide_Green.webp"
+                   srcset="assets/images/photos/Slide_Green_sm.webp 480w, assets/images/photos/Slide_Green_md.webp 800w, assets/images/photos/Slide_Green.webp 2700w"
+                   sizes="(max-width: 480px) 480px, (max-width: 800px) 800px, 2700px"
+                   alt="ADViral Agency team" loading="lazy" width="2700" height="1600" />
             </div>
             <div class="media-tilted-frame">
-              <img src="assets/images/photos/Slide_Red.webp" alt="ADViral Agency team" loading="lazy" />
+              <img src="assets/images/photos/Slide_Red.webp"
+                   srcset="assets/images/photos/Slide_Red_sm.webp 480w, assets/images/photos/Slide_Red_md.webp 800w, assets/images/photos/Slide_Red.webp 2700w"
+                   sizes="(max-width: 480px) 480px, (max-width: 800px) 800px, 2700px"
+                   alt="ADViral Agency team" loading="lazy" width="2700" height="1600" />
             </div>
           </div>
         </div>
@@ -726,5 +740,7 @@
 
     <!-- Plyr JS loaded on demand when video modal opens -->
     <script src="./script.js" defer></script>
+    <!-- Service Worker registration for offline caching -->
+    <script>if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})})}</script>
   </body>
 </html>
