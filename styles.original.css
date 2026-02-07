@@ -4548,21 +4548,21 @@ section[id] { scroll-margin-top: var(--header-h); }
   @supports (scrollbar-width: thin) {
     #partners .clients-grid-scale-wrapper {
       scrollbar-width: thin;
-      scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+      scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
     }
   }
   #partners .clients-grid-scale-wrapper::-webkit-scrollbar {
-    height: 6px;
+    height: 4px;
   }
   #partners .clients-grid-scale-wrapper::-webkit-scrollbar-track {
     background: transparent;
   }
   #partners .clients-grid-scale-wrapper::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
   }
   #partners .clients-grid-scale-wrapper::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.45);
   }
 
   /* Ширина прокручиваемой области = визуальная ширина секции (1360×2/3) */
@@ -4775,9 +4775,10 @@ section[id] { scroll-margin-top: var(--header-h); }
   flex-wrap: wrap;
   gap: 6px;
   min-height: 44px;
-  max-height: 96px;
+  max-height: 80px;
   overflow-y: auto;
-  padding: 0 36px 0 18px;
+  padding: 6px 36px 6px 18px;
+  transition: height .2s ease;
   box-sizing: border-box;
   border-radius: 20px;
   border: 1px solid rgba(255,255,255,.14);
@@ -7950,3 +7951,86 @@ input::placeholder, textarea::placeholder {
 .js-loaded .skeleton-shimmer {
   display: none;
 }
+
+/* ==============================
+   Unified scrollbar style
+   (matches .service-popup-container scrollbar)
+============================== */
+*::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.45);
+}
+@supports (scrollbar-width: thin) {
+  *:not(.ig-strip):not(.ig-strip-scroll) {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+  }
+  /* Preserve hidden scrollbar for strips */
+  .ig-strip,
+  .ig-strip-scroll {
+    scrollbar-width: none;
+  }
+  /* Preserve hidden scrollbar for service cards */
+  #services .cards .card {
+    scrollbar-width: none !important;
+  }
+}
+
+/* Light theme scrollbar overrides */
+[data-theme="light"] *::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+}
+[data-theme="light"] *::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.35);
+}
+@supports (scrollbar-width: thin) {
+  [data-theme="light"] *:not(.ig-strip):not(.ig-strip-scroll) {
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+  }
+}
+
+/* ==============================
+   Dropdown option hover-lock
+   (keeps hover effect active until animation completes)
+============================== */
+.services-dropdown-option.option-hover-lock {
+  box-shadow: inset 0 0 0 1px var(--option-hover-border);
+}
+.services-dropdown-option.option-hover-lock img {
+  transform: scale(1.111) rotate(8deg);
+}
+.services-dropdown-option[data-value="analysis"].option-hover-lock { --option-hover-border: #6a11cb; }
+.services-dropdown-option[data-value="strategy"].option-hover-lock { --option-hover-border: #8b5cf6; }
+.services-dropdown-option[data-value="ads"].option-hover-lock { --option-hover-border: #b086f9; }
+.services-dropdown-option[data-value="content"].option-hover-lock { --option-hover-border: #22c55e; }
+.services-dropdown-option[data-value="social"].option-hover-lock { --option-hover-border: #65d94f; }
+.services-dropdown-option[data-value="community"].option-hover-lock { --option-hover-border: #a3e635; }
+.services-dropdown-option[data-value="video"].option-hover-lock { --option-hover-border: #9e1a47; }
+.services-dropdown-option[data-value="design"].option-hover-lock { --option-hover-border: #dc2626; }
+.services-dropdown-option[data-value="web"].option-hover-lock { --option-hover-border: #fb923c; }
+
+/* Light theme panel hover-lock */
+[data-theme="light"] .services-dropdown-panel .services-dropdown-option[data-value="analysis"].option-hover-lock { --option-hover-border: #6a11cb; }
+[data-theme="light"] .services-dropdown-panel .services-dropdown-option[data-value="strategy"].option-hover-lock { --option-hover-border: #8b5cf6; }
+[data-theme="light"] .services-dropdown-panel .services-dropdown-option[data-value="ads"].option-hover-lock { --option-hover-border: #b086f9; }
+[data-theme="light"] .services-dropdown-panel .services-dropdown-option[data-value="content"].option-hover-lock { --option-hover-border: #22c55e; }
+[data-theme="light"] .services-dropdown-panel .services-dropdown-option[data-value="social"].option-hover-lock { --option-hover-border: #65d94f; }
+[data-theme="light"] .services-dropdown-panel .services-dropdown-option[data-value="community"].option-hover-lock { --option-hover-border: #a3e635; }
+[data-theme="light"] .services-dropdown-panel .services-dropdown-option[data-value="video"].option-hover-lock { --option-hover-border: #9e1a47; }
+[data-theme="light"] .services-dropdown-panel .services-dropdown-option[data-value="design"].option-hover-lock { --option-hover-border: #dc2626; }
+[data-theme="light"] .services-dropdown-panel .services-dropdown-option[data-value="web"].option-hover-lock { --option-hover-border: #fb923c; }
+
+/* Light theme regular hover-lock */
+[data-theme="light"] .services-dropdown-option[data-value="analysis"].option-hover-lock { --option-hover-border: #c2410c; }
+[data-theme="light"] .services-dropdown-option[data-value="strategy"].option-hover-lock { --option-hover-border: #ea580c; }
+[data-theme="light"] .services-dropdown-option[data-value="ads"].option-hover-lock { --option-hover-border: #fb923c; }

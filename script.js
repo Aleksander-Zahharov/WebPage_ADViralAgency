@@ -216,4 +216,9 @@ enterTime=performance.now();el.classList.add("hover-scale-on");});el.addEventLis
 setupHoverScaleCompletion("#partners .client-item");setupHoverScaleCompletion("#works .ig-item");setupHoverScaleCompletion("#works .ig-item-horizontal");})();const hoverNone=window.matchMedia("(hover: none)");const narrowViewport=window.matchMedia("(max-width: 1024px)");const HOVER_TAP_DURATION_MS=550;function shouldApplyHoverTap(){return hoverNone.matches||narrowViewport.matches;}
 function applyHoverTap(e){if(!shouldApplyHoverTap())return;if(e.type==="click"&&hoverNone.matches)return;const added=[];let el=e.target;while(el&&el!==document.body){el.classList.add("hover-tap-active");added.push(el);el=el.parentElement;}
 setTimeout(()=>{added.forEach((node)=>node.classList.remove("hover-tap-active"));},HOVER_TAP_DURATION_MS);}
-document.addEventListener("click",applyHoverTap,{passive:true});});
+document.addEventListener("click",applyHoverTap,{passive:true});
+/* Dropdown option hover completion — same logic as card border-glow:
+   if mouse leaves before activation completes, activation finishes then deactivation plays;
+   if mouse re-enters during deactivation, activation resumes from current state. */
+(function initOptionHoverCompletion(){const hoverCapable=window.matchMedia("(hover: hover)");if(!hoverCapable.matches)return;const OPTION_GLOW_MS=200;const allOpts=document.querySelectorAll(".services-dropdown-option");allOpts.forEach(function(opt){let enterTime=null;let lockTimeoutId=null;opt.addEventListener("mouseenter",function(){if(lockTimeoutId!=null){clearTimeout(lockTimeoutId);lockTimeoutId=null;}opt.classList.remove("option-hover-lock");enterTime=performance.now();});opt.addEventListener("mouseleave",function(){var elapsed=performance.now()-(enterTime||0);var remaining=Math.max(0,OPTION_GLOW_MS-elapsed);opt.classList.add("option-hover-lock");lockTimeoutId=setTimeout(function(){lockTimeoutId=null;opt.classList.remove("option-hover-lock");enterTime=null;},remaining);});});})();
+});
