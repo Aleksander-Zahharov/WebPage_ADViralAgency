@@ -1735,6 +1735,23 @@ document.addEventListener("DOMContentLoaded", () => {
     target.addEventListener("pointerup", stopDrag);
     target.addEventListener("pointerleave", stopDrag);
     target.addEventListener("lostpointercapture", stopDrag);
+
+    // Фикс: вертикальная прокрутка страницы при наведении на горизонтальную ленту.
+    // Элементы .ig-strip / .ig-strip-scroll имеют overflow-x: auto, из-за чего
+    // некоторые браузеры могут «захватить» вертикальный wheel-скролл и преобразовать
+    // его в горизонтальный (Firefox), или заблокировать всплытие к странице.
+    // Перехватываем wheel-событие: если скролл преимущественно вертикальный —
+    // отменяем горизонтальный скролл ленты и вручную прокручиваем страницу.
+    target.addEventListener("wheel", (e) => {
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        e.preventDefault();
+        // deltaMode: 0 = пиксели, 1 = строки (~20px), 2 = страницы
+        let dy = e.deltaY;
+        if (e.deltaMode === 1) dy *= 20;
+        else if (e.deltaMode === 2) dy *= window.innerHeight;
+        window.scrollBy({ left: 0, top: dy, behavior: "instant" });
+      }
+    }, { passive: false });
   });
 
   // --- Менеджер загрузки видео ---
