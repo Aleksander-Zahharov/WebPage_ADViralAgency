@@ -1,0 +1,117 @@
+{
+  "timestamp": "2026-02-07T22:49:48.903569",
+  "results": {
+    "html": {
+      "url": "https://adviral.agency",
+      "status": 200,
+      "size": 42953,
+      "time_s": 0.524,
+      "ttfb_s": 0.519
+    },
+    "assets": [
+      {
+        "type": "CSS",
+        "url": "https://cdn.plyr.io/3.7.8/plyr.css",
+        "size": 32564,
+        "ttfb_s": 0.463,
+        "total_s": 0.463
+      },
+      {
+        "type": "CSS",
+        "url": "./styles.css",
+        "size": 276609,
+        "ttfb_s": 0.034,
+        "total_s": 0.167
+      },
+      {
+        "type": "JS",
+        "url": "https://cdn.plyr.io/3.7.8/plyr.polyfilled.js",
+        "size": 119965,
+        "ttfb_s": 0.022,
+        "total_s": 0.034
+      },
+      {
+        "type": "JS",
+        "url": "./script.js",
+        "size": 164746,
+        "ttfb_s": 0.035,
+        "total_s": 0.074
+      },
+      {
+        "type": "Font",
+        "url": "./assets/fonts/Sansation-Light.ttf",
+        "size": 37044,
+        "ttfb_s": 0.037,
+        "total_s": 0.05
+      },
+      {
+        "type": "Font",
+        "url": "./assets/fonts/Sansation-Regular.ttf",
+        "size": 36764,
+        "ttfb_s": 0.023,
+        "total_s": 0.035
+      },
+      {
+        "type": "Hero Video",
+        "url": "assets/videos/HeroSections/Vertical_Sun_girl.mp4",
+        "size": 10025402,
+        "ttfb_s": 0.404,
+        "total_s": 11.384
+      },
+      {
+        "type": "Hero Video",
+        "url": "assets/hero.mp4",
+        "size": 9379,
+        "ttfb_s": 0.032,
+        "total_s": 0.035
+      },
+      {
+        "type": "Contact Video",
+        "url": "assets/videos/HeroSections/TWTWfinal.mp4",
+        "size": 13015331,
+        "ttfb_s": 0.155,
+        "total_s": 10.74
+      },
+      {
+        "type": "Image",
+        "url": "assets/images/photos/Slide_White.png",
+        "size": 4988348,
+        "ttfb_s": 0.141,
+        "total_s": 2.534
+      },
+      {
+        "type": "Image",
+        "url": "assets/images/photos/Slide_Green.png",
+        "size": 3877417,
+        "ttfb_s": 0.024,
+        "total_s": 1.77
+      },
+      {
+        "type": "Image",
+        "url": "assets/images/photos/Slide_Red.png",
+        "size": 3540334,
+        "ttfb_s": 0.024,
+        "total_s": 1.441
+      },
+      {
+        "type": "Image",
+        "url": "./assets/images/Clients Logos/stockmann.webp",
+        "size": 5148,
+        "ttfb_s": 0.137,
+        "total_s": 0.139
+      },
+      {
+        "type": "Image",
+        "url": "./assets/images/Clients Logos/goGPS.webp",
+        "size": 36100,
+        "ttfb_s": 0.022,
+        "total_s": 0.035
+      }
+    ],
+    "totals": {
+      "total_size": 36208104,
+      "total_time_sequential": 28.9,
+      "asset_count": 14
+    }
+  }
+}

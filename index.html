@@ -82,13 +82,14 @@
     })(window,document,'script','dataLayer','GTM-TXV6V4W6');</script>
     <!-- End Google Tag Manager -->
     
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preconnect" href="https://storage.googleapis.com" crossorigin />
+    <!-- Preconnect to external origins -->
+    <link rel="preconnect" href="https://storage.googleapis.com" crossorigin />
+    <!-- Preload hero poster for instant visual -->
+    <link rel="preload" href="./assets/images/poster_hero_desktop.webp" as="image" type="image/webp" />
+    <!-- Preload fonts actually used -->
     <link rel="preload" href="./assets/fonts/Sansation-Light.ttf" as="font" type="font/ttf" crossorigin />
     <link rel="preload" href="./assets/fonts/Sansation-Regular.ttf" as="font" type="font/ttf" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+    <!-- Plyr CSS/JS loaded on demand when video modal opens -->
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
@@ -187,8 +188,7 @@
     </header>
   <!-- Герой-секция с видеофоном и основными CTA -->
     <section id="hero" class="hero" aria-label="ADViral hero">
-      <video class="hero-video" autoplay muted playsinline loop preload="metadata">
-        <source src="assets/videos/HeroSections/Vertical_Sun_girl.mp4" type="video/mp4" media="(max-width: 768px)" />
+      <video class="hero-video" autoplay muted playsinline loop preload="auto" poster="assets/images/poster_hero_desktop.webp" fetchpriority="high">
         <source src="assets/videos/HeroSections/LAMBO5.mp4" type="video/mp4" />
       </video>
       <div class="hero-overlay"></div>
@@ -226,13 +226,13 @@
         <div class="media-wrapper">
           <div class="media-tilted-group reveal reveal-right">
             <div class="media-tilted-frame">
-              <img src="assets/images/photos/Slide_White.png" alt="ADViral Agency team" loading="lazy" />
+              <img src="assets/images/photos/Slide_White.webp" alt="ADViral Agency team" loading="lazy" />
             </div>
             <div class="media-tilted-frame">
-              <img src="assets/images/photos/Slide_Green.png" alt="ADViral Agency team" loading="lazy" />
+              <img src="assets/images/photos/Slide_Green.webp" alt="ADViral Agency team" loading="lazy" />
             </div>
             <div class="media-tilted-frame">
-              <img src="assets/images/photos/Slide_Red.png" alt="ADViral Agency team" loading="lazy" />
+              <img src="assets/images/photos/Slide_Red.webp" alt="ADViral Agency team" loading="lazy" />
             </div>
           </div>
         </div>
@@ -509,42 +509,42 @@
               <div class="clients-grid reveal reveal-left">
                 <div class="client-pair">
                   <a href="https://stockmann.com" target="_blank" rel="noopener" class="client-item" data-client="stockmann">
-                    <img src="./assets/images/Clients Logos/stockmann.webp" alt="Stockmann" class="client-logo">
+                    <img src="./assets/images/Clients Logos/stockmann.webp" alt="Stockmann" class="client-logo" loading="lazy">
                   </a>
                   <a href="https://gogps.eu/en/" target="_blank" rel="noopener" class="client-item" data-client="gogps">
-                    <img src="./assets/images/Clients Logos/goGPS.webp" alt="GoGPS" class="client-logo">
+                    <img src="./assets/images/Clients Logos/goGPS.webp" alt="GoGPS" class="client-logo" loading="lazy">
                   </a>
                 </div>
                 <div class="client-pair">
                   <a href="https://err.ee" target="_blank" rel="noopener" class="client-item" data-client="err">
-                    <img src="./assets/images/Clients Logos/ERR.webp" alt="ERR" class="client-logo">
+                    <img src="./assets/images/Clients Logos/ERR.webp" alt="ERR" class="client-logo" loading="lazy">
                   </a>
                   <a href="https://roses.ee" target="_blank" rel="noopener" class="client-item" data-client="roses">
-                    <img src="./assets/images/Clients Logos/rosesee.webp" alt="Roses" class="client-logo">
+                    <img src="./assets/images/Clients Logos/rosesee.webp" alt="Roses" class="client-logo" loading="lazy">
                   </a>
                 </div>
                 <div class="client-pair">
                   <a href="https://dodopizza.ee" target="_blank" rel="noopener" class="client-item" data-client="dodo">
-                    <img src="./assets/images/Clients Logos/DoDoPizza.webp" alt="Dodo Pizza" class="client-logo">
+                    <img src="./assets/images/Clients Logos/DoDoPizza.webp" alt="Dodo Pizza" class="client-logo" loading="lazy">
                   </a>
                   <a href="https://expertautokool.ee" target="_blank" rel="noopener" class="client-item" data-client="expert">
-                    <img src="./assets/images/Clients Logos/ExpertAutokool.webp" alt="Expert Autokool" class="client-logo">
+                    <img src="./assets/images/Clients Logos/ExpertAutokool.webp" alt="Expert Autokool" class="client-logo" loading="lazy">
                   </a>
                 </div>
                 <div class="client-pair">
                   <a href="https://www.tlu.ee/bfm" target="_blank" rel="noopener" class="client-item" data-client="bfm">
-                    <img src="./assets/images/Clients Logos/BFM.webp" alt="BFM" class="client-logo">
+                    <img src="./assets/images/Clients Logos/BFM.webp" alt="BFM" class="client-logo" loading="lazy">
                   </a>
                   <a href="https://estee.ee/" target="_blank" rel="noopener" class="client-item" data-client="eeste">
-                    <img src="./assets/images/Clients Logos/Estee.webp" alt="Eeste ilusalong" class="client-logo">
+                    <img src="./assets/images/Clients Logos/Estee.webp" alt="Eeste ilusalong" class="client-logo" loading="lazy">
                   </a>
                 </div>
                 <div class="client-pair">
                   <a href="https://moto24.ee" target="_blank" rel="noopener" class="client-item" data-client="moto24">
-                    <img src="./assets/images/Clients Logos/Moto24ee.webp" alt="Moto24" class="client-logo">
+                    <img src="./assets/images/Clients Logos/Moto24ee.webp" alt="Moto24" class="client-logo" loading="lazy">
                   </a>
                   <a href="https://kaitsevagi.ee" target="_blank" rel="noopener" class="client-item" data-client="kaitsevagi">
-                    <img src="./assets/images/Clients Logos/Kajtsevägi.webp" alt="Kaitsevägi" class="client-logo">
+                    <img src="./assets/images/Clients Logos/Kajtsevägi.webp" alt="Kaitsevägi" class="client-logo" loading="lazy">
                   </a>
                 </div>
               </div>
@@ -557,8 +557,8 @@
 
   <!-- Секция 5: Контакты -->
     <section id="contact" class="section auto-scroll contact-section">
-      <video class="contact-video" autoplay muted playsinline loop preload="metadata">
-        <source src="assets/videos/HeroSections/TWTWfinal.mp4" type="video/mp4" />
+      <video class="contact-video" muted playsinline loop preload="none" poster="assets/images/poster_contact.webp" data-lazy-src="assets/videos/HeroSections/TWTWfinal.mp4">
+        <!-- Lazy-loaded: video src set by IntersectionObserver when section is visible -->
       </video>
       <div class="contact-overlay"></div>
       <div class="container">
@@ -599,7 +599,7 @@
                 </div>
                 <button type="submit" class="btn btn-primary full">
                   <span class="btn-icon">
-                    <img src="assets/images/icons/sendIcon.webp" alt="" aria-hidden="true" />
+                    <img src="assets/images/icons/sendIcon.webp" alt="" aria-hidden="true" loading="lazy" />
                   </span>
                   <span data-i18n="contact.form.submit">Send request</span>
                 </button>
@@ -724,7 +724,7 @@
     </button>
   </div>
 
-    <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+    <!-- Plyr JS loaded on demand when video modal opens -->
     <script src="./script.js" defer></script>
   </body>
 </html>
