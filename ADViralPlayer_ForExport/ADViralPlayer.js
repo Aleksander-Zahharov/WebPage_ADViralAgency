@@ -176,6 +176,7 @@
       var IDLE_MS = 1000;
       function scheduleHide() {
         clearTimeout(idleTimeout);
+        if (player && player.paused) return;
         idleTimeout = setTimeout(function () {
           container.classList.add("adviral-controls-idle");
         }, IDLE_MS);
@@ -186,12 +187,21 @@
       }
       function hideControls() {
         clearTimeout(idleTimeout);
+        if (player && player.paused) return;
         container.classList.add("adviral-controls-idle");
       }
       ["pointermove", "pointerdown", "touchstart", "click", "keydown"].forEach(function (ev) {
         container.addEventListener(ev, showControls, { passive: true });
       });
       container._adviralShowControls = showControls;
+
+      player.on("pause", function () {
+        clearTimeout(idleTimeout);
+        container.classList.remove("adviral-controls-idle");
+      });
+      player.on("play", function () {
+        scheduleHide();
+      });
 
       var hasHover = global.matchMedia("(hover: hover)").matches;
       if (!hasHover) {

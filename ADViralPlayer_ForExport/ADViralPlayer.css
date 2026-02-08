@@ -1149,7 +1149,7 @@
     max-height: 78vh;
     max-height: min(78vh, 78dvh);
     border-radius: 12px;
-    overflow: hidden;
+    overflow: visible;
   }
 
   .video-modal-content .plyr,
@@ -1162,8 +1162,8 @@
   }
 
   .video-modal-close {
-    top: 6px;
-    right: 6px;
+    top: -48px;
+    right: 0;
     width: 32px;
     height: 32px;
     font-size: 18px;
@@ -1242,17 +1242,16 @@
     padding-bottom: min(177.78%, 85vh);
     border-radius: 16px;
     max-height: 95vh;
-    overflow: hidden;
+    overflow: visible;
   }
 
-  /* Крестик у верхней границы окна плеера, чтобы не обрезался хедером браузера */
+  /* Крестик над верхней границей попапа, справа (как в десктоп-версии) */
   .video-modal-close {
-    top: 8px;
-    right: 8px;
+    top: -48px;
+    right: 0;
     width: 36px;
     height: 36px;
     font-size: 20px;
-    background: rgba(0, 0, 0, 0.7);
     z-index: 9999;
   }
 
@@ -1362,16 +1361,15 @@
     padding-bottom: min(177.78%, 90vh);
     border-radius: 12px;
     max-height: 95vh;
-    overflow: hidden;
+    overflow: visible;
   }
 
   .video-modal-close {
-    top: 6px;
-    right: 6px;
+    top: -48px;
+    right: 0;
     width: 32px;
     height: 32px;
     font-size: 18px;
-    background: rgba(0, 0, 0, 0.8);
     z-index: 9999;
   }
 
