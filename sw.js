@@ -10,7 +10,7 @@ const PRECACHE_URLS = [
   '/assets/images/poster_hero_desktop.webp',
   '/assets/images/poster_hero_mobile.webp',
   '/assets/images/poster_contact.webp',
-  '/assets/images/icons/favicon-ad-white.webp',
+  '/assets/images/icons/favicon-ad-transparent.webp',
 ];
 
 // Install: precache critical assets
