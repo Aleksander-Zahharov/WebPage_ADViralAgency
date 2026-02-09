@@ -42,6 +42,9 @@ create_*.ps1
 update_*.ps1
 VIDEO_OPTIMIZATION_README.md
 
+# Analytics reports
+GoogleAnalytics_Analysis/
+
 # Original video files (too large for Git, use optimized versions)
 assets/videos/*.mp4
 assets/videos/*.mov

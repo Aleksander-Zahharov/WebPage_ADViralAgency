@@ -22,7 +22,7 @@
     <link rel="alternate" href="/" hreflang="x-default" />
     <meta name="keywords" content="digital marketing agency, social media marketing, SMM, video production, Reels, TikTok, YouTube Shorts, performance marketing, advertising campaigns" />
     <meta name="robots" content="index,follow" />
-    <!-- Favicon: Icon_Logo_AD.svg (SVG primary + PNG/ICO fallback) -->
+    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/assets/images/icons/favicon.svg" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="icon" type="image/png" sizes="48x48" href="/assets/images/icons/favicon-48x48.png" />
@@ -80,13 +80,84 @@
       }
     </script>
     
-    <!-- Google Tag Manager -->
-    <script type="text/javascript">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-TXV6V4W6');</script>
-    <!-- End Google Tag Manager -->
+    <!-- Bot Detection + Rate Limiting + Google Tag Manager -->
+    <script type="text/javascript">
+    (function(w,d,s,l,i){
+      var now = Date.now();
+
+      // ═══ 1. BOT DETECTION ═══
+      var ua = (navigator.userAgent || '').toLowerCase();
+      var botPatterns = [
+        'bot','crawl','spider','slurp','mediapartners','facebookexternalhit',
+        'bingpreview','yandex','baidu','duckduckgo','sogou','exabot','ia_archiver',
+        'semrush','ahrefs','mj12bot','dotbot','rogerbot','screaming frog',
+        'gtmetrix','pingdom','pagespeed','lighthouse','headlesschrome',
+        'phantomjs','prerender','snap url','google-inspectiontool',
+        'bytespider','gptbot','claudebot','chatgpt','ccbot','amazonbot'
+      ];
+      var isBot = false;
+      for (var b = 0; b < botPatterns.length; b++) {
+        if (ua.indexOf(botPatterns[b]) !== -1) { isBot = true; break; }
+      }
+      if (navigator.webdriver === true) isBot = true;
+      if (!w.chrome && /chrome/.test(ua)) isBot = true;
+      if (typeof w.callPhantom === 'function' || typeof w._phantom === 'object') isBot = true;
+      if (screen.width === 0 && screen.height === 0) isBot = true;
+
+      // ═══ 2. RATE LIMITING — anti-spam & anti-DDoS for analytics ═══
+      // Limits: max 30 page loads per 10 min, max 200 per hour, max 500 per day
+      // If exceeded — GTM is blocked, analytics not polluted
+      var LIMITS = [
+        { key: '_av_r10m', max: 30,  windowMs: 10 * 60 * 1000 },   // 10 min
+        { key: '_av_r1h',  max: 200, windowMs: 60 * 60 * 1000 },   // 1 hour
+        { key: '_av_r1d',  max: 500, windowMs: 24 * 60 * 60 * 1000 } // 24 hours
+      ];
+      var isSpam = false;
+      try {
+        for (var r = 0; r < LIMITS.length; r++) {
+          var rule = LIMITS[r];
+          var raw = sessionStorage.getItem(rule.key) || localStorage.getItem(rule.key);
+          var data = raw ? JSON.parse(raw) : { count: 0, start: now };
+          // Reset window if expired
+          if (now - data.start > rule.windowMs) {
+            data = { count: 0, start: now };
+          }
+          data.count++;
+          // Persist: short windows in sessionStorage, day in localStorage
+          var store = rule.windowMs <= 3600000 ? sessionStorage : localStorage;
+          store.setItem(rule.key, JSON.stringify(data));
+          if (data.count > rule.max) { isSpam = true; }
+        }
+      } catch(e) { /* private browsing — skip rate limiting */ }
+
+      // ═══ 3. DECISION ═══
+      w[l] = w[l] || [];
+      w[l].push({
+        'adviral.isBot': isBot,
+        'adviral.isSpam': isSpam,
+        'adviral.blocked': isBot || isSpam
+      });
+
+      if (isBot) {
+        console.info('[ADViral] Bot detected, GTM blocked:', ua);
+        return;
+      }
+      if (isSpam) {
+        console.warn('[ADViral] Rate limit exceeded, GTM blocked for this page load');
+        return;
+      }
+
+      // ═══ 4. LOAD GTM — only for real, non-abusive users ═══
+      w[l].push({'gtm.start': now, event: 'gtm.js'});
+      var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l !== 'dataLayer' ? '&l=' + l : '';
+      j.async = true;
+      j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+      f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-TXV6V4W6');
+    </script>
+    <!-- End Bot Detection + Rate Limiting + Google Tag Manager -->
     
     <!-- Preconnect to external origins -->
     <link rel="preconnect" href="https://storage.googleapis.com" crossorigin />
@@ -103,7 +174,7 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <!-- Google Tag Manager (noscript) -->
+    <!-- Google Tag Manager (noscript fallback — bots without JS won't trigger this) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TXV6V4W6"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
