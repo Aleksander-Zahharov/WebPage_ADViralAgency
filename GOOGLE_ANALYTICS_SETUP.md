@@ -1,69 +1,108 @@
-# Инструкция по настройке Google Tag Manager
+# Google Analytics + Cursor AI — Настройка
 
-## Что уже сделано:
-✅ Код Google Tag Manager (GTM) полностью установлен в `index.html`:
-  - Основной скрипт в `<head>` 
-  - Резервный вариант `<noscript>` в `<body>`
-✅ GTM ID: **GTM-TXV6V4W6**
+## Что это
+MCP-сервер (`analytics-mcp`) позволяет ИИ в Cursor напрямую запрашивать данные из Google Analytics 4 — трафик, события, отчёты в реальном времени и т.д.
 
-## Что нужно сделать:
+## Что было сделано
 
-### 1. Настройте Google Analytics через GTM
+### 1. Google Analytics
+- GA4 подключена к сайту ADViralAgency
+- Тег отслеживания встроен в `index.html`
 
-Теперь для добавления Google Analytics (и любых других инструментов) не нужно менять код сайта! Всё делается через интерфейс GTM:
+### 2. Google Cloud Console (https://console.cloud.google.com)
+- Проект: **My First Project** (ID: `learned-shell-486720-n3`)
+- Включены API:
+  - Google Analytics Admin API
+  - Google Analytics Data API
+- Создан Service Account: `analytics-mcp@learned-shell-486720-n3.iam.gserviceaccount.com`
+- Скачан JSON-ключ сервисного аккаунта
 
-1. Перейдите на https://tagmanager.google.com/
-2. Войдите и откройте контейнер **GTM-TXV6V4W6**
-3. Нажмите "Теги" → "Создать" → "Конфигурация тега"
-4. Выберите "Google Analytics: GA4 Configuration"
-5. Введите ваш Measurement ID (G-XXXXXXXXXX) из Google Analytics
-6. В "Триггеры" выберите "All Pages"
-7. Сохраните и нажмите "Отправить" (Submit)
+### 3. Google Analytics — доступ
+- В GA4 (Admin → Property Access Management) сервисному аккаунту дана роль **Viewer**
 
-### 2. Проверьте установку кода на сайте
-
-После загрузки на сервер:
-1. Сделайте коммит и пуш изменений `index.html`
-2. Откройте ваш сайт в браузере
-3. Откройте консоль браузера (F12) и напишите: `dataLayer`
-4. Если видите массив - GTM работает ✅
-
-### 3. Расширенная проверка работы GTM
-
-**Способ 1: GTM Preview Mode**
-1. В интерфейсе GTM нажмите "Preview"
-2. Введите URL вашего сайта
-3. Откроется отладочная панель где видно все теги и события
-
-**Способ 2: Расширение браузера**
-- Установите "Tag Assistant Legacy" для Chrome
-- Откройте сайт и включите Tag Assistant
-- Он покажет какие теги Google загружены
+### 4. Cursor MCP
+- Конфиг: `.cursor/mcp.json`
+- MCP-сервер: `analytics-mcp` (официальный от Google, запускается через `pipx`)
 
 ---
 
-## Преимущества Google Tag Manager
+## Текущие пути и значения
 
-✅ **Не нужно менять код** - добавляйте и настраивайте теги через интерфейс  
-✅ **Управление всеми инструментами в одном месте:**
-  - Google Analytics (GA4)
-  - Facebook Pixel
-  - Google Ads конверсии
-  - Яндекс.Метрика
-  - И десятки других
+| Что | Значение |
+|-----|----------|
+| Google Cloud Project ID | `learned-shell-486720-n3` |
+| Service Account Email | `analytics-mcp@learned-shell-486720-n3.iam.gserviceaccount.com` |
+| JSON-ключ | `C:\Users\omego\Desktop\MyProjects\Programming\Sth_Unsorted\google-analytics-key.json` |
+| pipx | `C:\Users\omego\AppData\Roaming\Python\Python314\Scripts\pipx.exe` |
+| MCP конфиг | `.cursor/mcp.json` |
 
-✅ **Отслеживание событий без программирования:**
-  - Клики по кнопкам
-  - Отправка форм
-  - Просмотр видео
-  - Скроллинг
-  - И многое другое
+---
 
-✅ **Версионность** - можно откатить изменения одной кнопкой
+## Как пользоваться
 
-## Следующие шаги
+Просто спроси ИИ в Cursor, например:
+- "Сколько пользователей было на сайте за последнюю неделю?"
+- "Какие страницы самые популярные?"
+- "Покажи трафик в реальном времени"
+- "Какие события чаще всего срабатывают?"
 
-1. Добавьте тег Google Analytics GA4 через GTM
-2. Настройте отслеживание важных событий (клики, формы)
-3. Добавьте Facebook Pixel если нужен
-4. Настройте триггеры для конверсий
+ИИ сам вызовет MCP-сервер и получит данные из GA4.
+
+---
+
+## Как восстановить с нуля (новый компьютер / потеря данных)
+
+### Шаг 1 — Установить Python и pipx
+```
+pip install pipx
+pipx ensurepath
+```
+
+### Шаг 2 — Включить API в Google Cloud
+Зайти на https://console.cloud.google.com (проект `learned-shell-486720-n3`):
+- Включить [Google Analytics Admin API](https://console.cloud.google.com/apis/library/analyticsadmin.googleapis.com)
+- Включить [Google Analytics Data API](https://console.cloud.google.com/apis/library/analyticsdata.googleapis.com)
+
+### Шаг 3 — Создать новый ключ (если старый утерян)
+1. https://console.cloud.google.com/iam-admin/serviceaccounts?project=learned-shell-486720-n3
+2. Кликнуть на `analytics-mcp@...` → Keys → Add Key → Create new key → JSON
+3. Сохранить файл, запомнить путь
+
+### Шаг 4 — Дать доступ в GA4 (если новый сервисный аккаунт)
+1. Google Analytics → Admin → Property Access Management
+2. Добавить email сервисного аккаунта с ролью **Viewer**
+
+### Шаг 5 — Настроить .cursor/mcp.json
+```json
+{
+  "mcpServers": {
+    "analytics-mcp": {
+      "command": "ПОЛНЫЙ_ПУТЬ_К_pipx.exe",
+      "args": ["run", "analytics-mcp"],
+      "env": {
+        "GOOGLE_APPLICATION_CREDENTIALS": "ПОЛНЫЙ_ПУТЬ_К_JSON_КЛЮЧУ",
+        "GOOGLE_PROJECT_ID": "learned-shell-486720-n3"
+      }
+    }
+  }
+}
+```
+
+### Шаг 6 — Перезапустить Cursor
+MCP-сервер `analytics-mcp` должен появиться в настройках.
+
+---
+
+## Важно
+- **JSON-ключ — это секрет.** Не коммитить в git, не публиковать.
+- Терминал Google Cloud НЕ нужно держать открытым — всё работает через ключ.
+- Если ключ скомпрометирован — удалить его в Google Cloud Console и создать новый.
+- gcloud CLI установлен, но для работы MCP он не требуется.
+
+---
+
+## Полезные ссылки
+- [Google Cloud Console](https://console.cloud.google.com)
+- [Google Analytics](https://analytics.google.com)
+- [analytics-mcp на GitHub](https://github.com/googleanalytics/google-analytics-mcp)
+- [Service Accounts](https://console.cloud.google.com/iam-admin/serviceaccounts?project=learned-shell-486720-n3)
