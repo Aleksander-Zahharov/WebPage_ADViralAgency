@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "analytics-mcp": {
+      "command": "C:\\Users\\omego\\AppData\\Roaming\\Python\\Python314\\Scripts\\pipx.exe",
+      "args": [
+        "run",
+        "analytics-mcp"
+      ],
+      "env": {
+        "GOOGLE_APPLICATION_CREDENTIALS": "C:\\Users\\omego\\Desktop\\MyProjects\\Programming\\Sth_Unsorted\\google-analytics-key.json",
+        "GOOGLE_PROJECT_ID": "learned-shell-486720-n3"
+      }
+    }
+  }
+}
