@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADViral Agency — Price List 2026</title>
+<style>
+  @font-face {
+    font-family: "Sansation-Light";
+    src: url("../assets/fonts/Sansation-Light.woff2") format("woff2"),
+         url("../assets/fonts/Sansation-Light.ttf") format("truetype");
+    font-weight: 300;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "Sansation-Regular";
+    src: url("../assets/fonts/Sansation-Regular.woff2") format("woff2"),
+         url("../assets/fonts/Sansation-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  html, body {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    background: #121214;
+    color: #fff;
+    font-family: "Sansation-Regular", "Sansation-Light", Arial, Helvetica, sans-serif;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 18mm 16mm 14mm 16mm;
+    background: #121214;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Decorative gradient orbs */
+  .page::before {
+    content: '';
+    position: absolute;
+    top: -80px;
+    right: -80px;
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle, rgba(106,17,203,0.25) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .page::after {
+    content: '';
+    position: absolute;
+    bottom: -60px;
+    left: -60px;
+    width: 260px;
+    height: 260px;
+    background: radial-gradient(circle, rgba(176,134,249,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  /* Header */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+    position: relative;
+    z-index: 1;
+  }
+  .logo-block {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .logo-img {
+    width: 52px;
+    height: 52px;
+    object-fit: contain;
+  }
+  .logo-text {
+    font-family: "Sansation-Light", sans-serif;
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 1.5px;
+    color: #fff;
+  }
+  .logo-text span {
+    background: linear-gradient(135deg, #6a11cb, #b086f9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .header-right {
+    text-align: right;
+    font-size: 10px;
+    color: #c9c9d1;
+    line-height: 1.6;
+  }
+
+  /* Divider */
+  .divider {
+    height: 2px;
+    background: linear-gradient(90deg, #6a11cb, #b086f9, transparent);
+    border: none;
+    margin-bottom: 16px;
+  }
+
+  /* Title */
+  .title {
+    font-family: "Sansation-Light", sans-serif;
+    font-size: 28px;
+    font-weight: 300;
+    text-align: center;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    position: relative;
+    z-index: 1;
+  }
+  .title span {
+    background: linear-gradient(135deg, #6a11cb, #b086f9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 10.5px;
+    color: #c9c9d1;
+    margin-bottom: 18px;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Services Grid */
+  .services-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .service-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 14px 14px 12px;
+    position: relative;
+    transition: none;
+  }
+  .service-card.featured {
+    border-color: rgba(106,17,203,0.4);
+    background: rgba(106,17,203,0.08);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .card-icon {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+  /* Icon color filters matching site */
+  .card-icon[data-icon="social"]   { filter: brightness(0) saturate(100%) invert(63%) sepia(93%) saturate(2000%) hue-rotate(72deg) brightness(1.05) contrast(1.08); }
+  .card-icon[data-icon="content"]  { filter: brightness(0) saturate(100%) invert(60%) sepia(90%) saturate(2000%) hue-rotate(100deg) brightness(0.9) contrast(1.1); }
+  .card-icon[data-icon="video"]    { filter: brightness(0) saturate(100%) invert(22%) sepia(95%) saturate(2000%) hue-rotate(328deg) brightness(0.9) contrast(1.1); }
+  .card-icon[data-icon="ads"]      { filter: brightness(0) saturate(100%) invert(42%) sepia(95%) saturate(2000%) hue-rotate(250deg) brightness(0.85) contrast(1.1); }
+  .card-icon[data-icon="design"]   { filter: brightness(0) saturate(100%) invert(25%) sepia(95%) saturate(2000%) hue-rotate(350deg) brightness(0.85) contrast(1.1); }
+  .card-icon[data-icon="analysis"] { filter: brightness(0) saturate(100%) invert(30%) sepia(95%) saturate(2000%) hue-rotate(240deg) brightness(0.8) contrast(1.1); }
+  .card-icon[data-icon="web"]      { filter: brightness(0) saturate(100%) invert(60%) sepia(95%) saturate(2000%) hue-rotate(-15deg) brightness(1.1) contrast(1.05); }
+
+  /* Card accent borders matching icon colors */
+  .service-card[data-service="social"]   { border-left: 2px solid rgba(101,217,79,0.6); }
+  .service-card[data-service="content"]  { border-left: 2px solid rgba(34,197,94,0.6); }
+  .service-card[data-service="video"]    { border-left: 2px solid rgba(158,26,71,0.7); }
+  .service-card[data-service="ads"]      { border-left: 2px solid rgba(176,134,249,0.6); }
+  .service-card[data-service="design"]   { border-left: 2px solid rgba(220,38,38,0.6); }
+  .service-card[data-service="analysis"] { border-left: 2px solid rgba(106,17,203,0.6); }
+  .service-card[data-service="web"]      { border-left: 2px solid rgba(251,146,60,0.6); }
+  .card-title {
+    font-family: "Sansation-Light", sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    color: #fff;
+  }
+
+  .card-items {
+    list-style: none;
+    margin-bottom: 10px;
+  }
+  .card-items li {
+    font-size: 9.5px;
+    color: #c9c9d1;
+    padding: 3px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-items li:last-child {
+    border-bottom: none;
+  }
+  .item-name {
+    flex: 1;
+  }
+  .item-price {
+    font-family: "Sansation-Light", sans-serif;
+    font-size: 10px;
+    color: #b086f9;
+    white-space: nowrap;
+    font-weight: 300;
+  }
+
+  .card-price-main {
+    display: inline-block;
+    font-family: "Sansation-Light", sans-serif;
+    font-size: 11px;
+    color: #b086f9;
+    background: rgba(106,17,203,0.15);
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  /* Full-width card */
+  .service-card.full-width {
+    grid-column: 1 / -1;
+  }
+  .service-card.full-width .packages {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+  }
+  .package {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 10px 12px;
+    text-align: center;
+  }
+  .package.highlight {
+    border-color: rgba(106,17,203,0.5);
+    background: rgba(106,17,203,0.1);
+  }
+  .package-name {
+    font-family: "Sansation-Light", sans-serif;
+    font-size: 11px;
+    color: #fff;
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+  }
+  .package-price {
+    font-family: "Sansation-Light", sans-serif;
+    font-size: 16px;
+    color: #b086f9;
+    margin-bottom: 6px;
+  }
+  .package-price small {
+    font-size: 9px;
+    color: #c9c9d1;
+  }
+  .package-list {
+    list-style: none;
+    text-align: left;
+  }
+  .package-list li {
+    font-size: 8.5px;
+    color: #c9c9d1;
+    padding: 2px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .package-list li::before {
+    content: '✓';
+    color: #b086f9;
+    font-size: 8px;
+    margin-top: 1px;
+    flex-shrink: 0;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 14px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  .footer-left {
+    font-size: 8.5px;
+    color: #666;
+    line-height: 1.6;
+  }
+  .footer-contacts {
+    text-align: right;
+    font-size: 9px;
+    color: #c9c9d1;
+    line-height: 1.7;
+  }
+  .footer-contacts a {
+    color: #b086f9;
+    text-decoration: none;
+  }
+
+  .note {
+    font-size: 8px;
+    color: #555;
+    text-align: center;
+    margin-top: 8px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Print */
+  @media print {
+    html, body {
+      width: 210mm;
+      height: 297mm;
+    }
+    .page {
+      width: 210mm;
+      height: 297mm;
+      page-break-after: avoid;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-block">
+      <img src="../assets/images/ADViralAgency_Logo_1.0.webp" alt="ADViral" class="logo-img">
+      <div class="logo-text"><span>ADViral</span> Agency</div>
+    </div>
+    <div class="header-right">
+      adviral.agency<br>
+      info@adviral.agency<br>
+      +372 5624 8640
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Title -->
+  <div class="title"><span>Price List</span> 2026</div>
+  <div class="subtitle">Full-service digital marketing &amp; content production</div>
+
+  <!-- SMM Packages (full width) -->
+  <div class="services-grid">
+
+    <div class="service-card full-width featured">
+      <div class="card-header">
+        <img src="../assets/images/icons/Icon_SocialNetworks.webp" alt="" class="card-icon" data-icon="social">
+        <div class="card-title">Social Media Management — Monthly Packages</div>
+      </div>
+      <div class="packages">
+        <div class="package">
+          <div class="package-name">Starter</div>
+          <div class="package-price">€490 <small>/mo</small></div>
+          <ul class="package-list">
+            <li>2 platforms (IG + FB or TikTok)</li>
+            <li>12 posts / month</li>
+            <li>Content plan & captions</li>
+            <li>Basic analytics report</li>
+            <li>Story design (8/mo)</li>
+          </ul>
+        </div>
+        <div class="package highlight">
+          <div class="package-name">Growth</div>
+          <div class="package-price">€890 <small>/mo</small></div>
+          <ul class="package-list">
+            <li>3 platforms</li>
+            <li>20 posts + 12 stories / month</li>
+            <li>Reels / TikTok (4/mo)</li>
+            <li>Community management</li>
+            <li>Monthly strategy call</li>
+            <li>Detailed analytics</li>
+          </ul>
+        </div>
+        <div class="package">
+          <div class="package-name">Premium</div>
+          <div class="package-price">€1 490 <small>/mo</small></div>
+          <ul class="package-list">
+            <li>All platforms</li>
+            <li>30 posts + 20 stories / month</li>
+            <li>Reels / TikTok (8/mo)</li>
+            <li>Influencer coordination</li>
+            <li>Crisis management</li>
+            <li>Weekly reports & strategy</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Creation -->
+    <div class="service-card" data-service="content">
+      <div class="card-header">
+        <img src="../assets/images/icons/Icon_Content.webp" alt="" class="card-icon" data-icon="content">
+        <div class="card-title">Content Creation</div>
+      </div>
+      <ul class="card-items">
+        <li><span class="item-name">Short-form video (Reel / TikTok)</span><span class="item-price">from €120</span></li>
+        <li><span class="item-name">Photo session (up to 2h)</span><span class="item-price">from €250</span></li>
+        <li><span class="item-name">Product photography (per item)</span><span class="item-price">from €35</span></li>
+        <li><span class="item-name">Carousel / infographic post</span><span class="item-price">from €60</span></li>
+        <li><span class="item-name">Content pack (10 posts)</span><span class="item-price">from €450</span></li>
+      </ul>
+    </div>
+
+    <!-- Video Production -->
+    <div class="service-card" data-service="video">
+      <div class="card-header">
+        <img src="../assets/images/icons/Icon_Filming.webp" alt="" class="card-icon" data-icon="video">
+        <div class="card-title">Video Production</div>
+      </div>
+      <ul class="card-items">
+        <li><span class="item-name">Promo video (up to 60s)</span><span class="item-price">from €800</span></li>
+        <li><span class="item-name">Corporate / brand video</span><span class="item-price">from €1 500</span></li>
+        <li><span class="item-name">Event filming (half day)</span><span class="item-price">from €600</span></li>
+        <li><span class="item-name">3D animation / motion</span><span class="item-price">from €500</span></li>
+        <li><span class="item-name">Editing only (per minute)</span><span class="item-price">from €90</span></li>
+      </ul>
+    </div>
+
+    <!-- Advertising -->
+    <div class="service-card" data-service="ads">
+      <div class="card-header">
+        <img src="../assets/images/icons/Icon_Target.webp" alt="" class="card-icon" data-icon="ads">
+        <div class="card-title">Advertising & Performance</div>
+      </div>
+      <ul class="card-items">
+        <li><span class="item-name">Ad campaign setup (Meta / Google)</span><span class="item-price">from €300</span></li>
+        <li><span class="item-name">Monthly ad management</span><span class="item-price">from €400</span></li>
+        <li><span class="item-name">TikTok Ads management</span><span class="item-price">from €350</span></li>
+        <li><span class="item-name">Retargeting & funnel setup</span><span class="item-price">from €250</span></li>
+        <li><span class="item-name">Ad creative production (set of 3)</span><span class="item-price">from €200</span></li>
+      </ul>
+    </div>
+
+    <!-- Design -->
+    <div class="service-card" data-service="design">
+      <div class="card-header">
+        <img src="../assets/images/icons/Icon_Design.webp" alt="" class="card-icon" data-icon="design">
+        <div class="card-title">Design & Branding</div>
+      </div>
+      <ul class="card-items">
+        <li><span class="item-name">Logo design</span><span class="item-price">from €400</span></li>
+        <li><span class="item-name">Brand identity package</span><span class="item-price">from €1 200</span></li>
+        <li><span class="item-name">Social media template kit</span><span class="item-price">from €250</span></li>
+        <li><span class="item-name">Banner / ad visual</span><span class="item-price">from €50</span></li>
+        <li><span class="item-name">Presentation design</span><span class="item-price">from €300</span></li>
+      </ul>
+    </div>
+
+    <!-- Strategy & Analytics -->
+    <div class="service-card" data-service="analysis">
+      <div class="card-header">
+        <img src="../assets/images/icons/Icon_Analysis.webp" alt="" class="card-icon" data-icon="analysis">
+        <div class="card-title">Strategy & Analytics</div>
+      </div>
+      <ul class="card-items">
+        <li><span class="item-name">Market & competitor analysis</span><span class="item-price">from €350</span></li>
+        <li><span class="item-name">Digital marketing strategy</span><span class="item-price">from €600</span></li>
+        <li><span class="item-name">Social media audit</span><span class="item-price">from €200</span></li>
+        <li><span class="item-name">Monthly analytics report</span><span class="item-price">from €150</span></li>
+        <li><span class="item-name">Consultation (1 hour)</span><span class="item-price">€80</span></li>
+      </ul>
+    </div>
+
+    <!-- Web Development -->
+    <div class="service-card" data-service="web">
+      <div class="card-header">
+        <img src="../assets/images/icons/Icon_SoftwareDev.webp" alt="" class="card-icon" data-icon="web">
+        <div class="card-title">Web & Software Development</div>
+      </div>
+      <ul class="card-items">
+        <li><span class="item-name">Landing page</span><span class="item-price">from €600</span></li>
+        <li><span class="item-name">Corporate website</span><span class="item-price">from €1 800</span></li>
+        <li><span class="item-name">E-commerce store</span><span class="item-price">from €3 000</span></li>
+        <li><span class="item-name">Website maintenance (monthly)</span><span class="item-price">from €150</span></li>
+        <li><span class="item-name">Custom web application</span><span class="item-price">from €3 500</span></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-left">
+      © 2026 ADViral Agency OÜ<br>
+      All prices are in EUR, excl. VAT<br>
+      Ad budgets are not included in management fees
+    </div>
+    <div class="footer-contacts">
+      <a href="https://adviral.agency">adviral.agency</a><br>
+      <a href="mailto:info@adviral.agency">info@adviral.agency</a> · +372 5624 8640<br>
+      IG: @adv1ral · TikTok: @adv1ral
+    </div>
+  </div>
+  <div class="note">Prices may vary depending on project scope and requirements. Custom packages available upon request.</div>
+
+</div>
+</body>
+</html>
